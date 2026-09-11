@@ -29,10 +29,16 @@ import {
   ArrowLeft,
   Filter,
   Sun,
-  Moon
+  Moon,
+  CloudSun,
+  CloudRain,
+  Droplets,
+  Thermometer,
+  Wind
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { POPULAR_STATIONS, RECENT_SEARCHES, ROUTE_TRAINS } from '../data/routesData';
+import { fetchLiveStationWeather } from '../services/weatherService';
 
 export default function MobileRouteFinder({ onSelectCorridorTrain }) {
   // Screen Mode: 'search' | 'results' | 'live_status'
@@ -63,23 +69,125 @@ export default function MobileRouteFinder({ onSelectCorridorTrain }) {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [lastUpdatedSec, setLastUpdatedSec] = useState(4);
 
+  // Live Open-Meteo Weather State & Adhesion Metrics
+  const [stationWeather, setStationWeather] = useState(null);
+  const [isWeatherLoading, setIsWeatherLoading] = useState(false);
+
   const canvasRef = useRef(null);
   const animationFrameRef = useRef(null);
+
+  // Function to fetch live meteorological data from Open-Meteo
+  const loadWeatherForTrain = async (train, silent = true) => {
+    if (!train) return;
+    setIsWeatherLoading(true);
+    // Find active station code or fallback to 'HD' (Harda)
+    const currentStnObj = train.stations?.find(s => s.isCurrent) || train.stations?.[train.stations.length - 1];
+    const stnCode = currentStnObj?.code || 'HD';
+    
+    const wData = await fetchLiveStationWeather(stnCode);
+    setStationWeather(wData);
+    setIsWeatherLoading(false);
+
+    setActiveTrain(prev => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        weatherImpact: `${wData.railHeadCondition} • ${wData.temperature}°C • ${wData.adhesionText}`,
+        weatherAdhesionMu: wData.adhesionMu,
+        weatherAdvisory: wData.advisoryText,
+        weatherData: wData
+      };
+    });
+
+    if (!silent) {
+      toast.success(`🌤️ Synced Open-Meteo Weather: ${wData.stationName} (${wData.temperature}°C, ${wData.humidity}% Hum) • ${wData.adhesionText}`);
+    }
+  };
+
+  // Sync live weather on train change & every 45 seconds
+  useEffect(() => {
+    if (activeTrain?.number) {
+      loadWeatherForTrain(activeTrain, true);
+    }
+    const wInterval = setInterval(() => {
+      if (activeTrain?.number) {
+        loadWeatherForTrain(activeTrain, true);
+      }
+    }, 45000);
+    return () => clearInterval(wInterval);
+  }, [activeTrain?.number]);
 
   // Sync customSpeed when activeTrain changes
   useEffect(() => {
     if (activeTrain?.speedKmH !== undefined) {
       setCustomSpeed(activeTrain.speedKmH);
     }
-  }, [activeTrain]);
+  }, [activeTrain?.number]);
 
-  // Auto-update counter
+  // REAL-TIME DISTANCE COUNTDOWN & STATION PROGRESSION ENGINE
+  // Solves the problem where the train distance was stuck at the same KM!
   useEffect(() => {
-    const timer = setInterval(() => {
-      setLastUpdatedSec(prev => (prev >= 30 ? 2 : prev + 2));
-    }, 2000);
-    return () => clearInterval(timer);
-  }, []);
+    if (screenMode !== 'live_status') return;
+
+    const interval = setInterval(() => {
+      setLastUpdatedSec(prev => (prev >= 30 ? 2 : prev + 1));
+
+      if (customSpeed <= 0) return; // Train is halted at station
+
+      setActiveTrain(prev => {
+        if (!prev) return prev;
+
+        // Delta km per second = (speed in km/h) / 3600
+        // e.g. at 74 km/h, train moves 0.0205 km per second (20.5 meters/sec)
+        const deltaKm = (customSpeed / 3600) * 1.0;
+        const currentDist = typeof prev.distToNextKm === 'number' ? prev.distToNextKm : 2.0;
+        const newDist = Math.max(0, currentDist - deltaKm);
+
+        // If distance reaches 0 (or within 20 meters), train arrives at the station!
+        if (newDist <= 0.02) {
+          const currentIdx = prev.stations?.findIndex(s => s.isCurrent) ?? -1;
+          if (currentIdx !== -1 && currentIdx < prev.stations.length - 1) {
+            const nextIdx = currentIdx + 1;
+            const reachedStation = prev.stations[currentIdx];
+            const nextStation = prev.stations[nextIdx];
+            const interDist = Math.max(8.0, nextStation.km - reachedStation.km);
+
+            toast.success(`🏁 #${prev.number} arrived at ${reachedStation.name}! Now departing towards ${nextStation.name} (${interDist} km)`);
+
+            const updatedStations = prev.stations.map((s, idx) => {
+              if (idx === currentIdx) {
+                return { ...s, isCurrent: false, isPassed: true, status: 'Departed' };
+              }
+              if (idx === nextIdx) {
+                return { ...s, isCurrent: true, isPassed: false, status: 'Arriving' };
+              }
+              return s;
+            });
+
+            // Trigger weather update for newly reached station
+            loadWeatherForTrain({ ...prev, stations: updatedStations }, true);
+
+            return {
+              ...prev,
+              distToNextKm: interDist,
+              nextStationName: nextStation.name,
+              currentStation: `Departed ${reachedStation.name}`,
+              liveStatusText: `${interDist.toFixed(1)} km to ${nextStation.name} • Speed ${customSpeed} km/h`,
+              stations: updatedStations
+            };
+          }
+        }
+
+        return {
+          ...prev,
+          distToNextKm: newDist,
+          liveStatusText: `${newDist.toFixed(2)} km to ${prev.nextStationName} • Speed ${customSpeed} km/h`
+        };
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [screenMode, customSpeed]);
 
   // Web Audio API Indian Railways Pneumatic Air Horn (311 Hz + 370 Hz dual-tone)
   const playAirHorn = () => {
@@ -155,7 +263,9 @@ export default function MobileRouteFinder({ onSelectCorridorTrain }) {
   // Open Train Live Running Status
   const handleOpenLiveStatus = (train) => {
     setActiveTrain(train);
+    setCustomSpeed(train.speedKmH || 74);
     setScreenMode('live_status');
+    loadWeatherForTrain(train, false);
     toast.info(`📍 Tracking Train #${train.number} (${train.name})`);
   };
 
@@ -906,20 +1016,22 @@ export default function MobileRouteFinder({ onSelectCorridorTrain }) {
           ctx.fillRect(mastX - 18, contactWireY - 26, 6, 8);
         }
 
-        // Kilometer Marker Stone on the trackside (showing real distance!)
+        // Kilometer Marker Stone on the trackside (reflecting real remaining distance!)
         const kmStoneX = (width * 0.78 - (frame * currentSpd * 0.12) % (width * 2) + width * 2) % (width * 2) - 50;
         if (kmStoneX >= -50 && kmStoneX <= width + 50) {
           ctx.fillStyle = '#f8fafc';
           ctx.beginPath();
-          ctx.roundRect(kmStoneX, trackY + 22, 26, 32, [10, 10, 2, 2]);
+          ctx.roundRect(kmStoneX, trackY + 22, 28, 32, [10, 10, 2, 2]);
           ctx.fill();
           ctx.fillStyle = '#f59e0b';
-          ctx.fillRect(kmStoneX, trackY + 22, 26, 10);
+          ctx.fillRect(kmStoneX, trackY + 22, 28, 10);
           ctx.fillStyle = '#020617';
           ctx.font = 'bold 8px monospace';
           ctx.textAlign = 'center';
-          ctx.fillText('723', kmStoneX + 13, trackY + 30);
-          ctx.fillText('KM', kmStoneX + 13, trackY + 44);
+          const distNum = typeof activeTrain?.distToNextKm === 'number' ? activeTrain.distToNextKm : 2;
+          const displayKm = distNum < 1 ? `${Math.round(distNum * 1000)}m` : `${distNum.toFixed(1)}k`;
+          ctx.fillText(displayKm, kmStoneX + 14, trackY + 30);
+          ctx.fillText('NEXT', kmStoneX + 14, trackY + 44);
         }
 
         // =======================================================
@@ -1438,7 +1550,7 @@ export default function MobileRouteFinder({ onSelectCorridorTrain }) {
               </div>
             </div>
 
-            {/* Quick Status Pill & Tractive Physics Indicator */}
+            {/* Quick Status Pill, Weather & Tractive Physics Indicator */}
             <div className="flex flex-wrap items-center justify-between gap-2 pt-1 text-xs border-t border-white/10">
               <div className="flex items-center gap-2 font-mono">
                 <span className="px-2 py-0.5 rounded bg-black/30 border border-white/10 text-amber-300 font-bold">
@@ -1446,6 +1558,20 @@ export default function MobileRouteFinder({ onSelectCorridorTrain }) {
                 </span>
                 <span className="text-sky-200">
                   ⚡ {activeTrain.hpPerTonne} HP/T
+                </span>
+              </div>
+
+              {/* Dynamic Live Weather Badge */}
+              <div className="flex items-center gap-1.5 font-mono text-[11px] bg-black/30 px-2.5 py-0.5 rounded-lg border border-white/10">
+                <CloudSun className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
+                <span className="text-sky-200">
+                  {stationWeather ? (
+                    <span>
+                      {stationWeather.stationName}: <strong className="text-white">{stationWeather.temperature}°C</strong> ({stationWeather.humidity}% Hum) • <strong className="text-emerald-300">{stationWeather.adhesionText}</strong>
+                    </span>
+                  ) : (
+                    <span>Syncing Live Open-Meteo Weather...</span>
+                  )}
                 </span>
               </div>
 
@@ -1537,8 +1663,8 @@ export default function MobileRouteFinder({ onSelectCorridorTrain }) {
             )}
           </div>
 
-          {/* GATI-SETU AI Diagnosis Card */}
-          <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 space-y-2 shadow-xl">
+          {/* GATI-SETU AI Diagnosis Card with Live Open-Meteo Weather */}
+          <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 space-y-2.5 shadow-xl">
             <div className="flex items-center justify-between text-xs">
               <div className="flex items-center gap-2 font-bold text-amber-400">
                 <AlertTriangle className="w-4 h-4" />
@@ -1551,9 +1677,27 @@ export default function MobileRouteFinder({ onSelectCorridorTrain }) {
             <p className="text-xs text-slate-300 leading-relaxed font-sans">
               {activeTrain.delayReason}
             </p>
-            <div className="text-[11px] text-slate-400 font-mono flex items-center gap-2 border-t border-slate-800 pt-1.5">
-              <span>Friction / Adhesion: {activeTrain.weatherImpact}</span>
+
+            {/* Live Atmospheric Conditions & Wheel Rail Friction */}
+            <div className="border-t border-slate-800 pt-2 flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono">
+              <div className="flex items-center gap-1.5 text-slate-300">
+                <CloudSun className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
+                <span>
+                  <strong>{stationWeather?.stationName || 'Harda'} Station:</strong>{' '}
+                  {stationWeather ? `${stationWeather.temperature}°C • ${stationWeather.humidity}% Humidity • Visibility ${(stationWeather.visibilityMeters / 1000).toFixed(1)} km` : 'Open-Meteo Satellite Feed Connecting...'}
+                </span>
+              </div>
+              <span className="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800/50 font-bold">
+                {stationWeather?.adhesionText || 'μ = 0.38 (High Adhesion)'}
+              </span>
             </div>
+
+            {stationWeather?.advisoryText && (
+              <div className="text-[10px] font-mono text-sky-300 bg-sky-950/40 p-2 rounded-xl border border-sky-800/30 flex items-center justify-between">
+                <span>ℹ️ <strong>Railway Advisory:</strong> {stationWeather.advisoryText}</span>
+                <span className="text-slate-400 text-[9px]">{stationWeather.provider}</span>
+              </div>
+            )}
           </div>
 
           {/* ========================================================================= */}
@@ -1733,7 +1877,9 @@ export default function MobileRouteFinder({ onSelectCorridorTrain }) {
                 <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
                   <div className="text-slate-400 text-[10px]">NEXT SCHEDULED STOP</div>
                   <div className="text-sm font-bold text-white mt-0.5">{activeTrain.nextStationName}</div>
-                  <div className="text-xs font-mono text-amber-400">{activeTrain.distToNextKm} km remaining</div>
+                  <div className="text-xs font-mono text-amber-400">
+                    {typeof activeTrain.distToNextKm === 'number' ? activeTrain.distToNextKm.toFixed(2) : activeTrain.distToNextKm} km remaining
+                  </div>
                 </div>
 
                 <div className="bg-slate-950 p-3 rounded-xl border border-slate-800">
@@ -1931,7 +2077,7 @@ export default function MobileRouteFinder({ onSelectCorridorTrain }) {
 
                   <div className="bg-slate-950/85 backdrop-blur-md border border-slate-800 p-2 rounded-xl text-[11px] text-slate-300 space-y-0.5 shadow-md">
                     <div>Tractive Effort: <strong className="text-amber-400">{activeTrain.hpPerTonne} HP/T</strong></div>
-                    <div>Next Stoppage: <strong className="text-white">{activeTrain.nextStationName} ({activeTrain.distToNextKm} km)</strong></div>
+                    <div>Next Stoppage: <strong className="text-white">{activeTrain.nextStationName} ({typeof activeTrain.distToNextKm === 'number' ? activeTrain.distToNextKm.toFixed(2) : activeTrain.distToNextKm} km)</strong></div>
                   </div>
                 </div>
 
@@ -2118,7 +2264,7 @@ export default function MobileRouteFinder({ onSelectCorridorTrain }) {
                   <div className="bg-slate-900/60 p-2 rounded-xl border border-slate-800">
                     <div className="text-slate-500 text-[10px]">ADHESION COEFFICIENT</div>
                     <div className="font-bold text-sky-400 mt-0.5">
-                      {activeTrain.weatherImpact.includes('Dry') ? 'μ = 0.38 (High)' : 'μ = 0.28 (Wet/Dew)'}
+                      {stationWeather?.adhesionText || 'μ = 0.38 (High Adhesion)'}
                     </div>
                   </div>
                 </div>
@@ -2146,27 +2292,40 @@ export default function MobileRouteFinder({ onSelectCorridorTrain }) {
 
             {/* Next Station Distance & Update Timestamp */}
             <div className="text-center">
-              <div className="text-sm font-bold text-red-400 font-sans">
-                {activeTrain.distToNextKm} km to {activeTrain.nextStationName}
+              <div className="text-sm font-bold text-red-400 font-sans flex items-center justify-center gap-1.5">
+                <span>
+                  {typeof activeTrain.distToNextKm === 'number'
+                    ? activeTrain.distToNextKm.toFixed(2)
+                    : activeTrain.distToNextKm}{' '}
+                  km to {activeTrain.nextStationName}
+                </span>
+                {customSpeed > 0 && (
+                  <span className="text-[10px] text-emerald-400 font-mono font-normal">
+                    (-{(customSpeed / 3600).toFixed(3)} km/s)
+                  </span>
+                )}
               </div>
-              <div className="text-[11px] text-slate-400 font-mono mt-0.5">
-                Updated {lastUpdatedSec} seconds ago via ISRO NavIC
+              <div className="text-[11px] text-slate-400 font-mono mt-0.5 flex items-center justify-center gap-2">
+                <span>Updated {lastUpdatedSec}s ago via NavIC</span>
+                {stationWeather && (
+                  <span className="text-sky-300">
+                    • 🌤️ {stationWeather.temperature}°C ({stationWeather.railHeadCondition})
+                  </span>
+                )}
               </div>
             </div>
 
             {/* Refresh Button */}
             <button
               id="btn-refresh-live-telemetry"
-              onClick={() => {
+              onClick={async () => {
                 setIsRefreshing(true);
                 setLastUpdatedSec(1);
-                setTimeout(() => {
-                  setIsRefreshing(false);
-                  toast.success(`🔄 Synced latest GPS ping for #${activeTrain.number}`);
-                }, 600);
+                await loadWeatherForTrain(activeTrain, false);
+                setIsRefreshing(false);
               }}
-              className="p-2.5 rounded-2xl bg-sky-600 hover:bg-sky-500 text-white shadow-md transition-transform active:scale-95"
-              title="Refresh Live Status"
+              className="p-2.5 rounded-2xl bg-sky-600 hover:bg-sky-500 text-white shadow-md transition-transform active:scale-95 flex items-center justify-center"
+              title="Refresh Live GPS & Weather Telemetry"
             >
               <RefreshCw className={`w-5 h-5 ${isRefreshing ? 'animate-spin' : ''}`} />
             </button>
