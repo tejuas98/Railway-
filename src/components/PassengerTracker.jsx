@@ -122,6 +122,11 @@ export default function PassengerTracker({ trains, selectedTrainId, onSelectTrai
               <span className="px-2.5 py-1 rounded-lg bg-slate-800/80 text-slate-300 text-xs font-mono">
                 {currentTrain.rakeLength}
               </span>
+              {currentTrain.hpPerTonne && (
+                <span className="px-2.5 py-1 rounded-lg bg-indigo-500/20 border border-indigo-500/40 text-indigo-300 text-xs font-mono font-bold">
+                  ⚡ {currentTrain.hpPerTonne} HP/T ({currentTrain.horsepower} HP • {currentTrain.trailingTonnage}T)
+                </span>
+              )}
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-2">
               {currentTrain.name}
