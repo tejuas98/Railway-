@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920, height=1080, initial-scale=1.0" />
+  <title>Core Functional Modules - Proposed Solution Slide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      width: 1920px;
+      height: 1080px;
+      background-color: #FFFFFF;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #0F172A;
+      display: flex;
+      flex-direction: column;
+      padding: 42px 64px 36px 64px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Top Slide Header matching user reference style */
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid #E2E8F0;
+    }
+    .header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .slide-title {
+      font-size: 34px;
+      font-weight: 900;
+      color: #0F4C81; /* Classic Indian Railways navy/blue */
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      letter-spacing: -0.5px;
+      text-transform: uppercase;
+    }
+    .title-icon {
+      font-size: 28px;
+      color: #0F4C81;
+    }
+    .slide-subtitle {
+      font-size: 16px;
+      font-weight: 600;
+      color: #64748B;
+    }
+    .header-badges {
+      display: flex;
+      gap: 10px;
+    }
+    .badge {
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      border: 1px solid #CBD5E1;
+      background: #F8FAFC;
+      color: #334155;
+    }
+    .badge-railway {
+      background: #E0F2FE;
+      border-color: #0284C7;
+      color: #0369A1;
+    }
+    .badge-gold {
+      background: #FEF3C7;
+      border-color: #F59E0B;
+      color: #B45309;
+    }
+
+    /* Main Grid: 2 Columns of 6 Modules each */
+    .modules-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 40px;
+      row-gap: 14px;
+      flex: 1;
+    }
+
+    .column-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+
+    /* Individual Module Card matching user's exact uploaded example */
+    .module-card {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 3px;
+    }
+
+    /* Gold / Yellow Pill Header */
+    .module-pill-header {
+      background: #F59E0B; /* Vibrant Gold/Yellow matching user reference */
+      color: #000000;
+      font-size: 15px;
+      font-weight: 800;
+      padding: 4px 14px;
+      border-radius: 4px;
+      display: inline-block;
+      letter-spacing: -0.2px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Crisp White Box with Green Border */
+    .module-sub-box {
+      width: 100%;
+      background: #FFFFFF;
+      border: 1.6px solid #16A34A; /* Crisp Emerald Green matching user reference */
+      border-radius: 4px;
+      padding: 7px 14px;
+      font-size: 14.5px;
+      font-weight: 500;
+      color: #1E293B;
+      line-height: 1.35;
+      box-shadow: 0 1px 3px rgba(22, 163, 74, 0.08);
+    }
+    .module-sub-box strong {
+      color: #15803D;
+      font-weight: 700;
+    }
+
+    /* Bottom Status & Impact Bar */
+    .bottom-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 18px;
+      padding: 12px 20px;
+      background: #F8FAFC;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 8px;
+    }
+    .bottom-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      color: #475569;
+      font-weight: 600;
+    }
+    .bottom-left strong {
+      color: #0F4C81;
+    }
+    .bottom-chips {
+      display: flex;
+      gap: 8px;
+    }
+    .chip {
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #334155;
+    }
+    .bottom-right {
+      display: flex;
+      gap: 20px;
+    }
+    .metric-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+    .metric-val {
+      font-size: 16px;
+      font-weight: 800;
+      color: #16A34A;
+    }
+    .metric-lbl {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748B;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Slide Header -->
+  <div class="slide-header">
+    <div class="header-left">
+      <div class="slide-title">
+        <span class="title-icon">❖</span> CORE FUNCTIONAL MODULES (PROPOSED SOLUTION)
+      </div>
+      <div class="slide-subtitle">
+        GATI-SETU (गति-सेतु): Dynamic Expected Time of Arrival (ETA) Engine for Indian Railways • Problem ID: SIH26028
+      </div>
+    </div>
+    <div class="header-badges">
+      <div class="badge badge-gold">100% PS Coverage</div>
+      <div class="badge badge-railway">Ministry of Railways / CRIS</div>
+      <div class="badge">Zero Hardware Deployment</div>
+    </div>
+  </div>
+
+  <!-- 12 Functional Modules in 2 Columns of 6 -->
+  <div class="modules-grid">
+
+    <!-- Column 1: Modules 1 to 6 (Track, Train & Dynamic Running) -->
+    <div class="column-stack">
+
+      <!-- Module 1 -->
+      <div class="module-card">
+        <div class="module-pill-header">1. Live RTIS Satellite GPS Telemetry Fusion</div>
+        <div class="module-sub-box">
+          Directly ingests <strong>ISRO NavIC satellite locomotive feeds</strong> every 30s, snapping train position to rail coordinates to eliminate false jumps and GPS drift.
+        </div>
+      </div>
+
+      <!-- Module 2 -->
+      <div class="module-card">
+        <div class="module-pill-header">2. Dynamic e-Caution &amp; TSR Speed Parser</div>
+        <div class="module-sub-box">
+          Automatically reads civil engineering <strong>T/409 caution orders</strong>, calculating exact 20–30 km/h slow zones and full rake recovery delays.
+        </div>
+      </div>
+
+      <!-- Module 3 -->
+      <div class="module-card">
+        <div class="module-pill-header">3. Level Crossing Gate &amp; Interlocking Tracker</div>
+        <div class="module-sub-box">
+          Monitors station <strong>S&amp;T relay logs</strong> for road traffic gate delays, predicting signal halts and slowing curves before the train reaches red lights.
+        </div>
+      </div>
+
+      <!-- Module 4 -->
+      <div class="module-card">
+        <div class="module-pill-header">4. Physics-Informed Kinematic Running Engine</div>
+        <div class="module-sub-box">
+          Calculates real train motion using <strong>locomotive horsepower (WAP-7 vs WAG-9)</strong>, 24-coach weight, and track gradients instead of static timetables.
+        </div>
+      </div>
+
+      <!-- Module 5 -->
+      <div class="module-card">
+        <div class="module-pill-header">5. Spatio-Temporal Graph Headway (ST-GAT)</div>
+        <div class="module-sub-box">
+          Models <strong>preceding freight trains</strong> in automatic block sections, dynamically adjusting express train ETAs before red signals occur.
+        </div>
+      </div>
+
+      <!-- Module 6 -->
+      <div class="module-card">
+        <div class="module-pill-header">6. Multi-Day Journey Cascading Predictor</div>
+        <div class="module-sub-box">
+          Predicts downstream <strong>loop-line detentions 24 hours ahead</strong> once a long-distance train loses its scheduled timetable slot.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Column 2: Modules 7 to 12 (Environment, Terminals & Operations) -->
+    <div class="column-stack">
+
+      <!-- Module 7 -->
+      <div class="module-card">
+        <div class="module-pill-header">7. Spatial &amp; Temporal Variability ML Engine</div>
+        <div class="module-sub-box">
+          Self-adapts predictions to <strong>peak suburban rushes, Friday freight surges</strong>, and steep Ghat inclines using machine learning on 1.5M+ runs.
+        </div>
+      </div>
+
+      <!-- Module 8 -->
+      <div class="module-card">
+        <div class="module-pill-header">8. Adverse Weather &amp; Visibility (FSD) Adapter</div>
+        <div class="module-sub-box">
+          Connects to satellite weather and IMD radar, automatically enforcing the <strong>statutory 60 km/h fog safety speed ceiling</strong> under GR 3.61.
+        </div>
+      </div>
+
+      <!-- Module 9 -->
+      <div class="module-card">
+        <div class="module-pill-header">9. Terminal Platform Queuing &amp; Outer Hold Detector</div>
+        <div class="module-sub-box">
+          Tracks platform vacancy at terminal junctions, ending the <strong>"outer signal trap"</strong> by telling passengers and controllers the true wait time.
+        </div>
+      </div>
+
+      <!-- Module 10 -->
+      <div class="module-card">
+        <div class="module-pill-header">10. Station Turnaround, Cleaning &amp; Pit-Line Sync</div>
+        <div class="module-sub-box">
+          Broadcasts <strong>±2 min countdowns 45 minutes ahead</strong> so cleaning staff, watering teams, and maintenance slots are ready on arrival.
+        </div>
+      </div>
+
+      <!-- Module 11 -->
+      <div class="module-card">
+        <div class="module-pill-header">11. Loco Crew 10-Hour Duty Watchdog (HOER)</div>
+        <div class="module-sub-box">
+          Tracks crew running hours against statutory <strong>10-hour limits</strong>, alerting controllers 90 minutes early to arrange relief crews and avoid line halts.
+        </div>
+      </div>
+
+      <!-- Module 12 -->
+      <div class="module-card">
+        <div class="module-pill-header">12. Downstream Feeder Transport &amp; Logistics Bridge</div>
+        <div class="module-sub-box">
+          Exposes <strong>sub-25ms live APIs with 90% confidence windows</strong> to synchronize city cabs (Ola/Uber), metro feeders, and parcel logistics.
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Bottom Ecosystem & Verification Bar -->
+  <div class="bottom-bar">
+    <div class="bottom-left">
+      <strong>Integrated CRIS Systems:</strong>
+      <div class="bottom-chips">
+        <span class="chip">BEL / ISRO RTIS</span>
+        <span class="chip">FOIS Freight Radar</span>
+        <span class="chip">COA Control Office</span>
+        <span class="chip">CMS Crew Database</span>
+        <span class="chip">IMD Doppler Weather</span>
+      </div>
+    </div>
+    <div class="bottom-right">
+      <div class="metric-badge">
+        <span class="metric-val">&lt; 25 ms</span>
+        <span class="metric-lbl">API Response</span>
+      </div>
+      <div class="metric-badge">
+        <span class="metric-val">± 2 Mins</span>
+        <span class="metric-lbl">Terminal Precision</span>
+      </div>
+      <div class="metric-badge">
+        <span class="metric-val">12 of 12</span>
+        <span class="metric-lbl">PS Requirements Met</span>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

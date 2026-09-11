@@ -123,7 +123,70 @@ Unlike "black-box" models that predict physical impossibilities, GATI-SETU bound
 
 Every operational requirement and pain point highlighted in Problem Statement SIH26028 is directly addressed by a dedicated architectural subsystem in GATI-SETU:
 
-### 📋 The 12-Feature Master Matrix (At A Glance)
+---
+
+### ❖ CORE FUNCTIONAL MODULES (Proposed Solution Slide)
+
+> **Slide Deck Presentation View**: Below is the jury-facing slide visual structured for instantaneous solution comprehension (Yellow/Gold feature pill headers with crisp green-bordered 1-sentence solution explanations).
+
+![GATI-SETU Core Functional Modules](docs/screenshots/proposed_solution_12_modules.png)
+
+*Interactive Presentation Slide Available:* [View 1080p Presentation Slide (HTML)](file:///Users/toru/.gemini/antigravity-ide/scratch/Railway-repo/docs/proposed_solution_slide_12cards_presentation.html) • [Dark Cockpit Version (HTML)](file:///Users/toru/.gemini/antigravity-ide/scratch/Railway-repo/docs/proposed_solution_slide_12cards.html)
+
+---
+
+### 🎯 12-Module Solution Cards (At A Glance)
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+#### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">1. Live RTIS Satellite GPS Telemetry Fusion</mark>
+> 🟩 Directly ingests **ISRO NavIC satellite locomotive feeds** every 30s, snapping train position to rail coordinates to eliminate false jumps and GPS drift.
+
+#### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">2. Dynamic e-Caution & TSR Speed Parser</mark>
+> 🟩 Automatically reads civil engineering **T/409 caution orders**, calculating exact 20–30 km/h slow zones and full rake recovery delays.
+
+#### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">3. Level Crossing Gate & Interlocking Tracker</mark>
+> 🟩 Monitors station **S&T relay logs** for road traffic gate delays, predicting signal halts and slowing curves before the train reaches red lights.
+
+#### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">4. Physics-Informed Kinematic Running Engine</mark>
+> 🟩 Calculates real train motion using **locomotive horsepower (WAP-7 vs WAG-9)**, 24-coach weight, and track gradients instead of static timetables.
+
+#### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">5. Spatio-Temporal Graph Headway (ST-GAT)</mark>
+> 🟩 Models **preceding freight trains** in automatic block sections, dynamically adjusting express train ETAs before red signals occur.
+
+#### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">6. Multi-Day Journey Cascading Predictor</mark>
+> 🟩 Predicts downstream **loop-line detentions 24 hours ahead** once a long-distance train loses its scheduled timetable slot.
+
+</td>
+<td width="50%" valign="top">
+
+#### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">7. Spatial & Temporal Variability ML Engine</mark>
+> 🟩 Self-adapts predictions to **peak suburban rushes, Friday freight surges**, and steep Ghat inclines using machine learning on 1.5M+ runs.
+
+#### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">8. Adverse Weather & Visibility (FSD) Adapter</mark>
+> 🟩 Connects to satellite weather and IMD radar, automatically enforcing the **statutory 60 km/h fog safety speed ceiling** under GR 3.61.
+
+#### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">9. Terminal Platform Queuing & Outer Hold Detector</mark>
+> 🟩 Tracks platform vacancy at terminal junctions, ending the **"outer signal trap"** by telling passengers and controllers the true wait time.
+
+#### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">10. Station Turnaround, Cleaning & Pit-Line Sync</mark>
+> 🟩 Broadcasts **±2 min countdowns 45 minutes ahead** so cleaning staff, watering teams, and maintenance slots are ready on arrival.
+
+#### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">11. Loco Crew 10-Hour Duty Watchdog (HOER)</mark>
+> 🟩 Tracks crew running hours against statutory **10-hour limits**, alerting controllers 90 minutes early to arrange relief crews and avoid line halts.
+
+#### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">12. Downstream Feeder Transport & Logistics Bridge</mark>
+> 🟩 Exposes **sub-25ms live APIs with 90% confidence windows** to synchronize city cabs (Ola/Uber), metro feeders, and parcel logistics.
+
+</td>
+</tr>
+</table>
+
+---
+
+### 📋 The 12-Feature Master Matrix (Detailed Technical Specifications)
 
 | # | Feature Title (From Problem Statement) | Official Operational Challenge in PS | GATI-SETU Planned Technical Solution |
 | :---: | :--- | :--- | :--- |
