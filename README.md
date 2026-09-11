@@ -337,5 +337,57 @@ You can jump directly to any surface using URL query parameters:
 
 ---
 
+## 📚 11. Research References, Data Sources & Government Citations
+
+Every number, formula, architectural limit, and failure mechanism modeled in GATI-SETU is grounded in official Government of India portals, Comptroller and Auditor General (CAG) audits, and peer-reviewed railway operational research:
+
+### A. Official Government Portals & Technical Undertakings
+
+| Institution / System | Official Portal Link | Specific Data & Insights Extracted |
+| :--- | :--- | :--- |
+| **Ministry of Railways (MoR)** | [indianrailways.gov.in](https://indianrailways.gov.in) | Network scale: 13,523 passenger trains, 9,100+ freight trains, 7,325 stations, 68,426 route km; division structure (17 zones, 68 divisions). |
+| **Centre for Railway Information Systems (CRIS)** | [cris.org.in](https://cris.org.in) | Technical architecture of Control Office Application (COA), RTIS receiver server flow, NTES relational database schemas, Enterprise Service Bus (ESB) integration. |
+| **National Train Enquiry System (NTES)** | [enquiry.indianrail.gov.in](https://enquiry.indianrail.gov.in/ntes/) | Current ETA estimation formulas, station master manual event logging workflows, timetable data structure, public query response models. |
+| **Comptroller and Auditor General of India (CAG)** | [cag.gov.in](https://cag.gov.in) | **Report No. 32 of 2016** (Audit on Punctuality and Monitoring in Indian Railways) & **2018–19 Punctuality Review**: 15-minute lenient benchmark, punctuality drop from 79% to 69.23%, manual ICMS overrides, and terminal station yard throat bottlenecks. |
+| **Press Information Bureau (PIB India)** | [pib.gov.in](https://pib.gov.in/PressReleasePage.aspx?PRID=1886828) | Official releases on Real-Time Train Information System (RTIS) rollout: 8,500+ locomotives deployed, 30-second ping rates, automatic control chart plotting. |
+| **ISRO & Space Applications Centre (SAC)** | [isro.gov.in](https://www.isro.gov.in) | NavIC (IRNSS constellation) & GAGAN (GPS Aided GEO Augmented Navigation) satellite payload specifications on GSAT-7A / GSAT-8 for high-precision rail positioning. |
+| **Bharat Electronics Limited (BEL)** | [bel-india.in](https://bel-india.in) | Hardware specifications for on-board locomotive RTIS devices, dual-mode MSS satellite and 4G/GPRS cellular failover switching. |
+| **Open Government Data (OGD) Platform** | [data.gov.in](https://data.gov.in) | Indian Railways train schedule tables, station coordinates, section distances, and historical operational delay datasets. |
+
+---
+
+### B. Academic Research Papers & Mathematical Formulations
+
+1. **RSTGCN: Railway-centric Spatio-Temporal Graph Convolutional Network (2025/2026)**
+   * **Authors / Archive:** arXiv:2510.01262
+   * **Direct Link:** [https://arxiv.org/abs/2510.01262](https://arxiv.org/abs/2510.01262)
+   * **Data Extracted:** Full Indian Railway Network (IRN) topological graph covering **4,735 stations**, train-frequency aware spatial attention equations, and sectional congestion lag propagation.
+
+2. **Identifying Cascading Delay Effects in High-Density Networks using Graph Attention Networks (GAT)**
+   * **Authors / Archive:** arXiv:2510.09350
+   * **Direct Link:** [https://arxiv.org/abs/2510.09350](https://arxiv.org/abs/2510.09350)
+   * **Data Extracted:** Mathematical formulation for dynamic attention weights $\alpha_{ij}$, outer signal station queueing fragility, and inter-train headway modeling.
+
+3. **IIT Bombay Industrial Engineering & Operations Research (IEOR) Railway Studies**
+   * **Lead Researcher:** Prof. Narayan Rangaraj (Collaborator with Indian Railways & CRIS)
+   * **Direct Link:** [ieor.iitb.ac.in](https://www.ieor.iitb.ac.in)
+   * **Data Extracted:** Zero-Based Timetabling (ZBTT) methodology, difference between *Free Running Time* and *Actual Sectional Travel Time*, Golden Quadrilateral bottleneck simulation, and terminal yard capacity constraints.
+
+4. **IIT Kharagpur Signaling & Telecommunication Research**
+   * **Direct Link:** [iitkgp.ac.in](https://www.iitkgp.ac.in)
+   * **Data Extracted:** Electronic Interlocking (EI) logic, Fail-Safe Microprocessor relays, and S&T Relay Data Logger microsecond timestamp capture.
+
+---
+
+### C. Operational Railway Rulebooks & Real-World Guidelines
+
+* **Indian Railways General Rules (GR 3.61):** Fog Safe Device (FSD) rules mandating maximum speed cap of **60 km/h** during dense winter fog (visibility $< 200\text{m}$) on Automatic Block territories.
+* **Northern & North Central Railway Working Time Table (WTT):** Allahabad/Prayagraj Division WTT (Panki–Kanpur Central yard approach rules, permanent speed restrictions, and built-in engineering recovery times).
+* **Railway Board Caution Order System (T/409, T/A 409):** Civil engineering guidelines for Temporary Speed Restrictions (TSRs) across track tamping, ballast renewal, and bridge structural inspections.
+* **Kaggle Indian Railways 1.5M Journey Dataset (2018–2024):** Large-scale empirical validation benchmark for historical delay classification and punctuality probability distributions.
+
+---
+
 *Developed for the Ministry of Railways, Government of India · Smart India Hackathon (SIH) 2026*
+
 
