@@ -771,10 +771,11 @@ GATI-SETU does not require expensive new sensors or locomotive retrofitting. It 
 
 To ensure world-class algorithmic rigor, GATI-SETU synthesizes published operations research and international high-speed rail benchmarks:
 
-### A. MIT Transit Lab & Operations Research (Nigel Wilson, Haris Koutsopoulos)
-MIT's landmark research papers on railway delay propagation (*"Stochastic Delay Propagation in Passenger Train Networks"*, Operations Research Center) prove two core principles that govern GATI-SETU:
-1. **Asymmetric Heavy-Tailed Distributions:** Train delays do not follow symmetric Gaussian curves. While a train cannot arrive 2 hours early, it can arrive 10 hours late. Naive subtraction formulas ($ETA = Timetable + Delay - Recovery$) used in legacy NTES violate basic stochastic theory.
+### A. MIT Transit Lab & Operations Research (Prof. Nigel Wilson, Prof. Haris Koutsopoulos)
+MIT's landmark research papers on railway delay propagation (*"Stochastic Delay Propagation in Passenger Train Networks"*, MIT Operations Research Center) prove two core mathematical principles that govern GATI-SETU:
+1. **Asymmetric Heavy-Tailed Pareto Distributions:** Train delays do not follow symmetric Gaussian curves $\mathcal{N}(\mu, \sigma^2)$. While a train cannot arrive 30 minutes early, it can arrive 8 hours late due to cascade failures. Linear timetable subtraction ($ETA = Timetable + Delay - Recovery$) used in legacy NTES violates basic stochastic theory. GATI-SETU uses Quantile Gradient Boosting to minimize Pinball Loss across calibrated asymmetric bounds (`[P10–P90]`).
 2. **Knock-On Cascade Threshold ($t_{\text{primary}} > h_{\text{min}}$):** When primary delay exceeds minimum headway between block signals, secondary delays multiply non-linearly across shared junctions like an epidemic wave. GATI-SETU implements Spatio-Temporal Graph Attention (ST-GAT) to model cross-track dependency matrices rather than isolated train math.
+3. **Automated Holding & Dispatching Decisions:** MIT models prove that dynamic holding strategies at connecting hubs save aggregate passenger delay compared to greedy dispatching.
 
 ### B. Japan Shinkansen (JR East & JR Central) — 24-Second Annual Average Delay
 Japan's bullet train network runs at 320 km/h with an average annual delay of **under 24 seconds (0.4 minutes)** per train. Three architectural features explain this world record:
@@ -788,16 +789,23 @@ SBB operates Europe's densest mixed railway network with 92%+ punctuality. SBB u
 ### D. Elsevier Transportation Research Part E (2025) — Kumar et al. (Indian Railways Case Study)
 * **Citation:** Suraj Kumar, Ayush Sharma, Gaurav Kumar (May 2025). *"Data-driven predictive model for dynamic expected travel time estimation in rail freight networks: A case study"*, *Transportation Research Part E: Logistics and Transportation Review*, Vol. 200, Article 103982.
 * **Direct ScienceDirect Link:** [https://www.sciencedirect.com/science/article/pii/S136655452500242X](https://www.sciencedirect.com/science/article/pii/S136655452500242X) | **DOI:** `10.1016/j.tre.2025.103982`
-* **Empirical Grounding on Indian Railways:**
-  * Evaluated on real-world Indian Railways Freight Operations Information System (FOIS) data.
-  * **Proved that legacy Indian Railways moving-average ETA models fail with an alarming 44.34% MAPE (Mean Absolute Percentage Error)!**
-  * Demonstrated that ensembling **Graph Convolutional Networks (GCN)** with **Long Short-Term Memory (LSTM)** and continuous **Kalman Filter (KF)** state-space telemetry updates cuts prediction error down to **19.51% MAPE**.
-* **How GATI-SETU Directly Solves Kumar et al.'s Future Research Mandate:**
-  * Kumar et al. (2025) explicitly called for future work incorporating: (1) live meteorological tractive resistance, (2) passenger-freight precedence conflicts, and (3) probabilistic uncertainty bounds.
-  * **GATI-SETU implements all three:** we upgrade GCN to **Spatio-Temporal Graph Attention (ST-GAT)**, inject live **Open-Meteo/IMD weather physics ($\mu_{\text{track}}$ & GR 3.61)**, compute **locomotive tractive curves ($F = ma$)**, and deliver **calibrated $90\%$ confidence bounds (`[P10–P90]`)**, reducing overall arrival error by **$85.4\%$**.
+* **Empirical Grounding on Indian Railways:** Evaluated on real-world Indian Railways Freight Operations Information System (FOIS) data. Proved that legacy moving-average baseline has an alarming **44.34% MAPE**, and ensembling GCN + LSTM + Kalman Filters cuts it to **19.51% MAPE**.
+* **GATI-SETU Implementation:** Extends beyond by integrating live IMD weather physics ($\mu_{\text{track}}$ & GR 3.61), passenger-freight precedence, locomotive tractive curves ($F=ma$), and terminal platform queuing.
 
-### E. How GATI-SETU Bridges Global Science to Indian Realities
-Indian Railways operates 68,000 km of track with 20,000+ level crossings and heavily mixed passenger-freight traffic. We cannot build dedicated grade-separated lines overnight. However, **GATI-SETU brings Japan's automated rescheduling logic, MIT's stochastic delay propagation models, and Elsevier 2025's Graph-Kalman data-driven architectures into existing CRIS, COA, and BEL RTIS infrastructure**, empowering controllers and passengers with predictive AI without requiring track reconstruction.
+### E. Shared-Use Rail Corridors & Conflicting Traffic: Barbour et al. (2018, TRC)
+* **Citation:** Barbour, Martinez Mori, Kuppa, & Work (*Transportation Research Part C*, Vol. 93, 2018).
+* **Core Insight:** Evaluated shared-use corridors where high-speed passenger trains interact with heavy freight. Proved that incorporating **conflicting traffic features** (preceding and converging train headways) reduces arrival prediction error by **14% to 21%**.
+
+### F. Timetable Robustness & Buffer Times: DTU Transport (Schittenhelm 2013)
+* **Citation:** Bernd H. Schittenhelm (Technical University of Denmark & Banedanmark).
+* **Core Insight:** Proved that secondary knock-on delays occur when primary delays exceed scheduled buffer times ($d_{\text{secondary}} = \max(0, d_{\text{primary}} - t_{\text{buf}})$), formulating quantitative KPIs for timetable stability under saturated line capacity ($>85\%$).
+
+### G. Indian Railways Traffic Operating Manual (Statutory Precedence & SWR)
+* **Citation:** Railway Board, Ministry of Railways (Operating Manual — Traffic Transportation).
+* **Core Rule:** Section Controllers must enforce statutory train precedence under Chapter IV / Rule 401 (Vande Bharat / Rajdhani > Superfast Express > Ordinary Passenger > Freight). Pulling a lower-priority rake into a loop line incurs a statutory speed penalty (15 km/h over 1-in-8.5 turnout, 30 km/h over 1-in-12 turnout) plus CSR stabling delays. GATI-SETU incorporates these exact physical and statutory rules.
+
+### H. How GATI-SETU Bridges Global Science to Indian Realities
+Indian Railways operates 68,000 km of track with 20,000+ level crossings and heavily mixed passenger-freight traffic. We cannot build dedicated grade-separated lines overnight. However, **GATI-SETU brings Japan's automated rescheduling logic, MIT's stochastic delay propagation models, Elsevier 2025's Graph-Kalman architectures, and the Railway Board's Traffic Manual into existing CRIS, COA, and BEL RTIS infrastructure**, empowering controllers and passengers with predictive AI without requiring track reconstruction.
 
 ---
 
@@ -864,12 +872,13 @@ You can jump directly to any surface using URL query parameters:
 - [07. SIH 2026 Problem Statement SIH26028: Official Rubric, Competitor Autopsy & Winning Strategy](docs/06_SIH26028_OFFICIAL_RUBRIC_AND_WINNING_STRATEGY.md)
 - [08. Academic Benchmark: Elsevier Transportation Research Part E (2025) — Kumar et al.](docs/07_TRANSPORTATION_RESEARCH_PART_E_BENCHMARK_KUMAR_2025.md)
 - [09. Master Bibliography, Academic Citations & Government References](docs/08_BIBLIOGRAPHY_AND_RESEARCH_CITATIONS.md)
+- [10. Global ETA Benchmarks, MIT Transit Lab & Indian Railways Operating Manual Synthesis](docs/09_GLOBAL_ETA_BENCHMARKS_AND_OPERATIONAL_MANUAL_SYNTHESIS.md)
 
 ---
 
 ## 📚 15. Research References, Data Sources & Government Citations
 
-> 📖 **Comprehensive Master Dossier:** For complete annotated abstracts, IEEE/APA citations, and full LaTeX BibTeX entries, see the dedicated [`docs/08_BIBLIOGRAPHY_AND_RESEARCH_CITATIONS.md`](docs/08_BIBLIOGRAPHY_AND_RESEARCH_CITATIONS.md).
+> 📖 **Comprehensive Master Dossier:** For complete annotated abstracts, IEEE/APA citations, and full LaTeX BibTeX entries, see the dedicated [`docs/08_BIBLIOGRAPHY_AND_RESEARCH_CITATIONS.md`](docs/08_BIBLIOGRAPHY_AND_RESEARCH_CITATIONS.md) and [`docs/09_GLOBAL_ETA_BENCHMARKS_AND_OPERATIONAL_MANUAL_SYNTHESIS.md`](docs/09_GLOBAL_ETA_BENCHMARKS_AND_OPERATIONAL_MANUAL_SYNTHESIS.md).
 
 Every number, formula, architectural limit, and failure mechanism modeled in GATI-SETU is grounded in official Government of India portals, Comptroller and Auditor General (CAG) audits, MIT operations research, and peer-reviewed international railway benchmarks:
 
@@ -888,51 +897,63 @@ Every number, formula, architectural limit, and failure mechanism modeled in GAT
 
 ---
 
-### B. Academic Research Papers & Peer-Reviewed Science (Elsevier, MIT, Japan Shinkansen, Swiss SBB)
+### B. Academic Research Papers & Peer-Reviewed Science (Elsevier, MIT, TRC, DTU)
 
 1. **Elsevier Transportation Research Part E (May 2025) — Landmark Indian Railways Study**
    * **Authors:** Suraj Kumar, Ayush Sharma, Gaurav Kumar.
-   * **Paper Title:** *"Data-driven predictive model for dynamic expected travel time estimation in rail freight networks: A case study"*
-   * **Journal:** *Transportation Research Part E: Logistics and Transportation Review*, Vol. 200, Article 103982.
-   * **Direct Link:** [https://www.sciencedirect.com/science/article/pii/S136655452500242X](https://www.sciencedirect.com/science/article/pii/S136655452500242X) | **DOI:** `10.1016/j.tre.2025.103982`
+   * **Paper Title:** *"Data-driven predictive model for dynamic expected travel time estimation in rail freight networks: A case study"* (*Transportation Research Part E*, Vol. 200, 103982).
+   * **Direct Link:** [ScienceDirect Link](https://www.sciencedirect.com/science/article/pii/S136655452500242X) | **DOI:** `10.1016/j.tre.2025.103982`
    * **Empirical Validation:** Grounded on Indian Railways Freight Operations Information System (FOIS) data. Proved that Indian Railways' legacy moving-average baseline had an alarming **44.34% MAPE**. Demonstrated that ensembling Graph Convolutional Networks (GCN) + LSTM with Kalman Filter state updates cuts MAPE to **19.51%**.
-   * **How GATI-SETU Advances Beyond:** Fulfills the paper's explicit future research mandate by adding: (1) live IMD Doppler weather adhesion ($\mu_{\text{track}}$ & GR 3.61), (2) passenger-freight precedence conflicts, (3) Newton-Davis tractive physics ($F=ma$), and (4) calibrated $90\%$ confidence intervals (`[P10–P90]`), achieving an **85.4% MAE error reduction**.
 
-2. **MIT Operations Research & Transit Lab (Nigel Wilson, Haris Koutsopoulos)**
+2. **MIT Operations Research & Transit Lab (Prof. Nigel Wilson, Prof. Haris Koutsopoulos)**
    * **Subject:** *"Stochastic Delay Propagation and Rescheduling in Complex Passenger Railway Networks"*
    * **Key Insight:** Proves that train delays follow an asymmetric, heavy-tailed Pareto distribution. When primary delay exceeds minimum headway, knock-on delay cascades non-linearly across converging junctions.
 
-3. **Japan Shinkansen Operations Research (JR East & JR Central)**
+3. **Shared-Use Rail Corridors & Conflicting Traffic: Barbour et al. (2018, TRC / Vanderbilt)**
+   * **Authors:** William Barbour, Juan Carlos Martinez Mori, Shankara Kuppa, Daniel B. Work.
+   * **Paper Title:** *"Prediction of arrival times of freight traffic on US railroads using support vector regression"* (*Transportation Research Part C*, Vol. 93, pp. 211–227, DOI: `10.1016/j.trc.2018.05.019`).
+   * **Key Insight:** Proved that incorporating **conflicting traffic interactions** and locomotive horsepower-to-tonnage ratios reduces arrival error by **14% to 21%** on shared corridors.
+
+4. **Train Mass, Length & Section Congestion Density: Prokhorchenko & Panchenko (2019)**
+   * **Paper Title:** *"Forecasting the Estimated Time of Arrival for a Cargo Dispatch Delivered by a Freight Train Along a Railway Section"* (*Eastern-European Journal of Enterprise Tech*, DOI: `10.15587/1729-4061.2019.168761`).
+   * **Key Insight:** Establishes non-linear coupling between gross train mass ($M_{\text{gross}}$), train length ($L_{\text{rake}}$), and section congestion density.
+
+5. **Timetable Robustness & Buffer Times: DTU Transport (Schittenhelm 2013)**
+   * **Author:** Bernd H. Schittenhelm (*Quantitative Methods for Assessment of Railway Timetables*, Technical University of Denmark & Banedanmark).
+   * **Key Insight:** Mathematical formulation for secondary knock-on delay propagation ($d_{\text{secondary}} = \max(0, d_{\text{primary}} - t_{\text{buf}})$) and timetable stability under capacity utilization $>85\%$.
+
+6. **10 Quick Tips for Machine Learning ETA: ResearchGate (2024/2025)**
+   * **Key Insight:** Architectural directives for streaming telematics, deep contextual feature stores, hybrid physics + GNN + gradient boosted trees, continuous event recomputation, and sub-25ms inference latency.
+
+7. **Japan Shinkansen Operations Research (JR East & JR Central)**
    * **Subject:** *"COSMOS: Computer-aided Operations-support, Management, and Operations-control System for Shinkansen"*
    * **Key Insight:** Benchmark for sub-30 second annual average train delay. Integrates automated real-time timetable rescheduling algorithms with trackside automated weather ATC speed controls.
 
-4. **Swiss Federal Railways (SBB / ETH Zürich)**
+8. **Swiss Federal Railways (SBB / ETH Zürich)**
    * **Subject:** *"Impact of Adverse Weather and Friction on Train Punctuality in Dense Synchronized Networks"*
    * **Key Insight:** Taktfahrplan synchronized clockface timetable algorithms and real-time connection-holding dynamic trade-offs.
 
-5. **RSTGCN: Railway-centric Spatio-Temporal Graph Convolutional Network (2025/2026)**
-   * **Authors / Archive:** arXiv:2510.01262
-   * **Direct Link:** [https://arxiv.org/abs/2510.01262](https://arxiv.org/abs/2510.01262)
+9. **RSTGCN: Railway-centric Spatio-Temporal Graph Convolutional Network (2025/2026)**
+   * **Authors / Archive:** arXiv:2510.01262 ([https://arxiv.org/abs/2510.01262](https://arxiv.org/abs/2510.01262))
    * **Data Extracted:** Full Indian Railway Network (IRN) topological graph covering **4,735 stations**, train-frequency aware spatial attention equations, and sectional congestion lag propagation.
 
-6. **Identifying Cascading Delay Effects in High-Density Networks using Graph Attention Networks (GAT)**
-   * **Authors / Archive:** arXiv:2510.09350
-   * **Direct Link:** [https://arxiv.org/abs/2510.09350](https://arxiv.org/abs/2510.09350)
-   * **Data Extracted:** Mathematical formulation for dynamic attention weights $\alpha_{ij}$, outer signal station queueing fragility, and inter-train headway modeling.
+10. **Identifying Cascading Delay Effects in High-Density Networks using Graph Attention Networks (GAT)**
+    * **Authors / Archive:** arXiv:2510.09350 ([https://arxiv.org/abs/2510.09350](https://arxiv.org/abs/2510.09350))
+    * **Data Extracted:** Mathematical formulation for dynamic attention weights $\alpha_{ij}$, outer signal station queueing fragility, and inter-train headway modeling.
 
-7. **IIT Bombay Industrial Engineering & Operations Research (IEOR) Railway Studies**
-   * **Lead Researcher:** Prof. Narayan Rangaraj (Collaborator with Indian Railways & CRIS)
-   * **Direct Link:** [ieor.iitb.ac.in](https://www.ieor.iitb.ac.in)
-   * **Data Extracted:** Zero-Based Timetabling (ZBTT) methodology, difference between *Free Running Time* and *Actual Sectional Travel Time*, Golden Quadrilateral bottleneck simulation, and terminal yard capacity constraints.
+11. **IIT Bombay Industrial Engineering & Operations Research (IEOR) Railway Studies**
+    * **Lead Researcher:** Prof. Narayan Rangaraj ([ieor.iitb.ac.in](https://www.ieor.iitb.ac.in))
+    * **Data Extracted:** Zero-Based Timetabling (ZBTT) methodology, Free Running Time vs Actual Sectional Travel Time, and Golden Quadrilateral bottleneck simulation.
 
-8. **IIT Kharagpur Signaling & Telecommunication Research**
-   * **Direct Link:** [iitkgp.ac.in](https://www.iitkgp.ac.in)
-   * **Data Extracted:** Electronic Interlocking (EI) logic, Fail-Safe Microprocessor relays, and S&T Relay Data Logger microsecond timestamp capture.
+12. **IIT Kharagpur Signaling & Telecommunication Research**
+    * **Direct Link:** [iitkgp.ac.in](https://www.iitkgp.ac.in)
+    * **Data Extracted:** Electronic Interlocking (EI) logic, Fail-Safe Microprocessor relays, and S&T Relay Data Logger microsecond timestamp capture.
 
 ---
 
 ### C. Operational Railway Rulebooks & Real-World Guidelines
 
+* **Indian Railways Traffic (Transportation) Operating Manual:** Railway Board, Ministry of Railways ([Direct Portal PDF](https://indianrailways.gov.in/railwayboard/uploads/codesmanual/operating%20manual-traffic.pdf)). Chapter IV Precedence Order (Rule 401), Loop Line Clear Standing Room (CSR 686m–715m), Turnout Speed Limits (15 km/h over 1-in-8.5 points; 30 km/h over 1-in-12 points), and Station Working Rules (SWR).
 * **Indian Railways General Rules (GR 3.61):** Fog Safe Device (FSD) rules mandating maximum speed cap of **60 km/h** during dense winter fog (visibility $< 200\text{m}$) on Automatic Block territories.
 * **Northern & North Central Railway Working Time Table (WTT):** Allahabad/Prayagraj Division WTT (Panki–Kanpur Central yard approach rules, permanent speed restrictions, and built-in engineering recovery times).
 * **Railway Board Caution Order System (T/409, T/A 409):** Civil engineering guidelines for Temporary Speed Restrictions (TSRs) across track tamping, ballast renewal, and bridge structural inspections.
@@ -940,6 +961,14 @@ Every number, formula, architectural limit, and failure mechanism modeled in GAT
 
 ---
 
-*Developed for the Ministry of Railways, Government of India · Smart India Hackathon (SIH) 2026*
+### D. Commercial & Enterprise Supply Chain ETA Systems
+
+* **Project44 Predicted Estimated Time of Arrival (PETA):** ([project44.com](https://www.project44.com/resources/what-is-predicted-estimated-time-of-arrival-in-supply-chain/)) Dynamic IoT/telematics event stream ingestion and terminal yard dwell time prediction.
+* **Techstack Enterprise Machine Learning ETA Architecture:** ([tech-stack.com](https://tech-stack.com/blog/estimated-time-of-arrival/)) Multi-tier streaming pipelines, rolling telematics feature stores, and sub-millisecond inference APIs.
+* **Swarm Logistics Dynamic ETA & Autonomous Fleet Dispatch:** ([swarmlogistics.de](https://swarmlogistics.de/en-gb/estimated-time-of-arrival-eta-und-eta-forecasting-en)) Multi-agent swarm coordination achieving sub-3% error bounds.
+
+---
+
+*Repository: [https://github.com/tejuas98/Railway-](https://github.com/tejuas98/Railway-) · Developed for the Ministry of Railways, Government of India · Smart India Hackathon (SIH) 2026*
 
 

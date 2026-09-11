@@ -61,6 +61,35 @@
 * **Institutional Portal:** [https://www.iitkgp.ac.in](https://www.iitkgp.ac.in)
 * **Data Extracted:** Electronic Interlocking (EI) fail-safe microprocessor relay circuits and S&T Relay Data Logger microsecond timestamp packet logging.
 
+### [A-07] Barbour, Martinez Mori, Kuppa, & Work (2018) — Shared-Use Rail Corridors
+* **Full Title:** *"Prediction of arrival times of freight traffic on US railroads using support vector regression"*
+* **Journal:** *Transportation Research Part C: Emerging Technologies*, Volume 93, 2018, Pages 211–227.
+* **DOI:** [10.1016/j.trc.2018.05.019](https://doi.org/10.1016/j.trc.2018.05.019)
+* **Direct Paper URL:** [https://lab-work.github.io/download/barbour2018prediction.pdf](https://lab-work.github.io/download/barbour2018prediction.pdf)
+* **Key Principles Extracted:**
+  1. **Conflicting Traffic Interactions:** Proved that on shared-use rail networks where high-priority passenger trains share tracks with low-priority freight, evaluating conflicting traffic (preceding and converging trains) improves ETA accuracy by **14% to 21%**.
+  2. **Train Physics & HP-to-Tonnage Ratios:** Incorporated train length, trailing weight, and horsepower-to-tonnage ratio into arrival prediction.
+
+### [A-08] Prokhorchenko & Panchenko (2019) — Train Mass, Length & Section Density
+* **Full Title:** *"Forecasting the Estimated Time of Arrival for a Cargo Dispatch Delivered by a Freight Train Along a Railway Section"*
+* **Journal:** *Eastern-European Journal of Enterprise Technologies*, Volume 3/3, Issue 99, 2019.
+* **DOI:** [10.15587/1729-4061.2019.168761](https://doi.org/10.15587/1729-4061.2019.168761)
+* **Semantic Scholar URL:** [https://pdfs.semanticscholar.org/9f67/39912a7ea225287d86df71dc40a58eb98d9b.pdf](https://pdfs.semanticscholar.org/9f67/39912a7ea225287d86df71dc40a58eb98d9b.pdf)
+* **Data Extracted:** Correlation analysis linking train gross tonnage ($M_{\text{gross}}$), train length ($L_{\text{rake}}$), and section congestion density to non-linear running time expansion.
+
+### [A-09] Schittenhelm, Bernd H. (2013) — DTU Transport Industrial PhD
+* **Full Title:** *"Quantitative Methods for Assessment of Railway Timetables"*
+* **Institution:** Department of Transport, Technical University of Denmark (DTU) & Rail Net Denmark (*Banedanmark*).
+* **Direct Thesis URL:** [https://backend.orbit.dtu.dk/ws/portalfiles/portal/110602997/PhD_2013_02.pdf](https://backend.orbit.dtu.dk/ws/portalfiles/portal/110602997/PhD_2013_02.pdf)
+* **Key Principles Extracted:**
+  1. Buffer time distribution between scheduled paths and threshold conditions for secondary knock-on delay generation: $d_{\text{secondary}} = \max(0, d_{\text{primary}} - t_{\text{buf}})$.
+  2. Formulated 13 operational KPIs assessing timetable robustness and resilience against primary delay propagation.
+
+### [A-10] ResearchGate (2024/2025) — 10 Quick Tips for Machine Learning ETA
+* **Full Title:** *"Ten quick tips for improving estimated time of arrival predictions using machine learning in logistics and transportation systems"*
+* **Direct URL:** [https://www.researchgate.net/publication/396261601](https://www.researchgate.net/publication/396261601_Ten_quick_tips_for_improving_estimated_time_of_arrival_predictions_using_machine_learning_in_logistics_and_transportation_systems)
+* **10 Architectural Directives:** Ingestion of real-time streaming telematics, deep contextual feature engineering, hybrid physics + GNN + tree models, continuous event-driven recalculation, low-latency inference (<25ms), and modeling dispatcher/driver human factors.
+
 ---
 
 ## 🚅 2. International Railway Operational Benchmarks
@@ -137,6 +166,14 @@
 ### [E-03] Working Time Table (WTT) — Prayagraj / Allahabad Division
 * **Operational Rules Ingested:** Sectional running times, permanent speed restrictions (PSR), yard throat turnouts (15 km/h or 30 km/h over 1-in-12 / 1-in-8.5 points), and built-in engineering recovery times along the 786 KM Delhi–Kanpur–Prayagraj–DDU trunk route.
 
+### [E-04] Indian Railways Traffic (Transportation) Operating Manual
+* **Publishing Body:** Railway Board, Ministry of Railways, Government of India.
+* **Direct Official Document Link:** [https://indianrailways.gov.in/railwayboard/uploads/codesmanual/operating%20manual-traffic.pdf](https://indianrailways.gov.in/railwayboard/uploads/codesmanual/operating%20manual-traffic.pdf)
+* **Operational Principles Ingested:**
+  1. **Chapter IV Precedence Order (Rule 401):** Statutory hierarchy governing Section Controllers (Vande Bharat / Rajdhani > Superfast Mail/Express > Ordinary Passenger > Freight).
+  2. **Loop Line Stabling & CSR:** Clear Standing Room (686m–715m) and turnout deceleration penalties (15 km/h over 1-in-8.5 points; 30 km/h over 1-in-12 points).
+  3. **Station Working Rules (SWR):** Line Clear reception overlaps (180m) and platform occupation interlocking.
+
 ---
 
 ## 🌐 6. Open Datasets & Meteorological Observation Grids
@@ -155,7 +192,23 @@
 
 ---
 
-## 💾 7. Complete Academic BibTeX Library
+## 📦 7. Commercial & Enterprise Supply Chain ETA Systems
+
+### [G-01] Project44 — Predicted Estimated Time of Arrival (PETA)
+* **Resource Link:** [https://www.project44.com/resources/what-is-predicted-estimated-time-of-arrival-in-supply-chain/](https://www.project44.com/resources/what-is-predicted-estimated-time-of-arrival-in-supply-chain/)
+* **Architecture:** Ingests dynamic IoT/GPS streams and emphasizes terminal/yard dwell time prediction as 40%+ of total transit variability.
+
+### [G-02] Techstack — Modern Machine Learning ETA Architecture
+* **Resource Link:** [https://tech-stack.com/blog/estimated-time-of-arrival/](https://tech-stack.com/blog/estimated-time-of-arrival/)
+* **Architecture:** Enterprise multi-stage pipeline combining telematics feature stores, gradient-boosted trees, recurrent neural networks, and sub-millisecond inference APIs.
+
+### [G-03] Swarm Logistics — Autonomous Fleet Coordination & Dynamic ETA
+* **Resource Link:** [https://swarmlogistics.de/en-gb/estimated-time-of-arrival-eta-und-eta-forecasting-en](https://swarmlogistics.de/en-gb/estimated-time-of-arrival-eta-und-eta-forecasting-en)
+* **Architecture:** Multi-agent autonomous dispatching, delivering sub-3% error bounds over legacy static timetables.
+
+---
+
+## 💾 8. Complete Academic BibTeX Library
 
 For inclusion in academic research publications, IEEE/ACM conference papers, and hackathon technical dossiers:
 
@@ -169,6 +222,36 @@ For inclusion in academic research publications, IEEE/ACM conference papers, and
   year={2025},
   publisher={Elsevier},
   doi={10.1016/j.tre.2025.103982}
+}
+
+@article{barbour2018prediction,
+  title={Prediction of arrival times of freight traffic on US railroads using support vector regression},
+  author={Barbour, William and Martinez Mori, Juan Carlos and Kuppa, Shankara and Work, Daniel B.},
+  journal={Transportation Research Part C: Emerging Technologies},
+  volume={93},
+  pages={211--227},
+  year={2018},
+  publisher={Elsevier},
+  doi={10.1016/j.trc.2018.05.019}
+}
+
+@article{prokhorchenko2019forecasting,
+  title={Forecasting the Estimated Time of Arrival for a Cargo Dispatch Delivered by a Freight Train Along a Railway Section},
+  author={Prokhorchenko, A. and Panchenko, A.},
+  journal={Eastern-European Journal of Enterprise Technologies},
+  volume={3},
+  number={3 (99)},
+  pages={6--15},
+  year={2019},
+  doi={10.15587/1729-4061.2019.168761}
+}
+
+@phdthesis{schittenhelm2013quantitative,
+  title={Quantitative Methods for Assessment of Railway Timetables},
+  author={Schittenhelm, Bernd H.},
+  school={Department of Transport, Technical University of Denmark (DTU) and Banedanmark},
+  year={2013},
+  number={PhD-2013-02}
 }
 
 @article{wilson2020stochastic,
@@ -213,6 +296,14 @@ For inclusion in academic research publications, IEEE/ACM conference papers, and
   author={{Railway Board, Ministry of Railways}},
   organization={Government of India},
   year={2020}
+}
+
+@manual{mor2020operatingmanual,
+  title={Operating Manual for Traffic (Transportation) Department},
+  author={{Railway Board, Ministry of Railways}},
+  organization={Government of India},
+  year={2020},
+  url={https://indianrailways.gov.in/railwayboard/uploads/codesmanual/operating%20manual-traffic.pdf}
 }
 ```
 
