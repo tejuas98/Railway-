@@ -30,6 +30,33 @@
 
 ---
 
+### How It Works: Simple 5-Step Resolution for Every Passenger
+
+> Below is the simple step-by-step workflow showing how a passenger's everyday delay uncertainty is completely resolved from search to arrival.
+
+<div align="center">
+
+![How It Works Flowchart](docs/screenshots/how_it_works_flowchart.png)
+
+</div>
+
+#### Step 1: User Input (Train or Station)
+The passenger opens the mobile app, web tracker, or views the station display and enters their train number (e.g. 12301) or selects their upcoming journey.
+
+#### Step 2: Live Track & Signal Scan
+In the background, GATI-SETU performs an instant operational scan of the corridor: querying satellite GPS positions, checking if a heavy freight train is crawling in the block section ahead, and monitoring active track signals.
+
+#### Step 3: Ground Realities Check
+The system factors in real-world friction: active civil engineering speed limits (e.g. 30 km/h caution orders), weather visibility limits (e.g. winter fog safety rules), and checks whether the destination platform is currently occupied by another rake.
+
+#### Step 4: Dynamic ETA Calculation
+Instead of using static timetable subtraction, the engine calculates the realistic travel time, incorporating locomotive pulling power, train weight, and exact outer signal hold countdowns.
+
+#### Step 5: Transparent Output on App & Display
+The passenger sees an honest, reliable arrival time, a calm countdown for outer signal waiting, and a plain-English explanation for any delay (such as waiting for platform clearance or an overtake).
+
+---
+
 ## 1. Detailed Explanation of the Proposed Solution
 
 ### Core Concept: The Digital Twin & Spatio-Temporal Graph Architecture

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=600, height=900, initial-scale=1.0" />
+  <title>How It Works - Simple User Flowchart</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      width: 560px;
+      padding: 30px 24px 30px 24px;
+      background-color: #FFFFFF;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #0F172A;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0 auto;
+    }
+
+    /* Top Title Banner matching user reference */
+    .title-banner {
+      background: #0F4C81; /* Classic Indian Railways Navy */
+      color: #FFFFFF;
+      font-size: 20px;
+      font-weight: 800;
+      padding: 8px 36px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 4px rgba(15, 76, 129, 0.2);
+    }
+
+    .flow-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      gap: 0px;
+    }
+
+    /* Step Box Base Styling */
+    .step-box {
+      width: 100%;
+      border: 1.5px solid #334155;
+      border-radius: 6px;
+      padding: 14px 18px;
+      text-align: center;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .step-title {
+      font-size: 16.5px;
+      font-weight: 800;
+      color: #0F172A;
+      letter-spacing: -0.2px;
+    }
+
+    .step-desc {
+      font-size: 13.5px;
+      font-weight: 500;
+      color: #334155;
+      line-height: 1.35;
+    }
+
+    /* Distinct Theme Colors matching user reference images */
+    .box-peach {
+      background-color: #FEEAD8; /* Soft Peach */
+      border-color: #F97316;
+    }
+    .box-peach .step-title {
+      color: #C2410C;
+    }
+
+    .box-mint {
+      background-color: #E2F6EE; /* Mint Green */
+      border-color: #10B981;
+    }
+    .box-mint .step-title {
+      color: #047857;
+    }
+
+    .box-lavender {
+      background-color: #EDE9FE; /* Soft Lavender */
+      border-color: #8B5CF6;
+    }
+    .box-lavender .step-title {
+      color: #6D28D9;
+    }
+
+    .box-blue {
+      background-color: #E0F2FE; /* Sky Blue */
+      border-color: #0284C7;
+    }
+    .box-blue .step-title {
+      color: #0369A1;
+    }
+
+    .box-gold {
+      background-color: #FEF3C7; /* Soft Gold / Warm Yellow */
+      border-color: #F59E0B;
+    }
+    .box-gold .step-title {
+      color: #B45309;
+    }
+
+    /* Downward Connector Arrow */
+    .arrow-down {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 32px;
+      color: #475569;
+      font-size: 20px;
+      font-weight: 800;
+      user-select: none;
+    }
+
+    /* Bottom Subtitle / Tagline */
+    .bottom-tag {
+      margin-top: 24px;
+      padding: 6px 20px;
+      border: 1.5px solid #CBD5E1;
+      border-radius: 4px;
+      background: #F8FAFC;
+      font-size: 13px;
+      font-weight: 700;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Title Banner -->
+  <div class="title-banner">How It Works</div>
+
+  <!-- Flowchart Stack -->
+  <div class="flow-container">
+
+    <!-- Step 1 -->
+    <div class="step-box box-peach">
+      <div class="step-title">1. User Input: Train or Station</div>
+      <div class="step-desc">Passenger enters train number (e.g. 12301) or selects upcoming journey</div>
+    </div>
+
+    <div class="arrow-down">↓</div>
+
+    <!-- Step 2 -->
+    <div class="step-box box-mint">
+      <div class="step-title">2. Live Track &amp; Signal Scan</div>
+      <div class="step-desc">System checks live satellite GPS, preceding freight trains, and track signals</div>
+    </div>
+
+    <div class="arrow-down">↓</div>
+
+    <!-- Step 3 -->
+    <div class="step-box box-lavender">
+      <div class="step-title">3. Ground Realities Check</div>
+      <div class="step-desc">Factors in track caution slow zones, winter fog visibility, and platform occupancy</div>
+    </div>
+
+    <div class="arrow-down">↓</div>
+
+    <!-- Step 4 -->
+    <div class="step-box box-blue">
+      <div class="step-title">4. Dynamic ETA Calculation</div>
+      <div class="step-desc">Calculates true realistic arrival time and exact outer signal hold countdown</div>
+    </div>
+
+    <div class="arrow-down">↓</div>
+
+    <!-- Step 5 -->
+    <div class="step-box box-gold">
+      <div class="step-title">5. Transparent Output on App &amp; Display</div>
+      <div class="step-desc">Passenger sees honest arrival time, countdown to platform entry, and plain reason for any delay</div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Label -->
+  <div class="bottom-tag">Simple 5-Step Resolution For Every Passenger</div>
+
+</body>
+</html>

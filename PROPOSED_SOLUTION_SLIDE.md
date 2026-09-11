@@ -30,6 +30,33 @@
 
 ---
 
+### How It Works: Simple 5-Step Resolution for Every Passenger
+
+> Below is the simple step-by-step workflow showing how a passenger's everyday delay uncertainty is completely resolved from search to arrival.
+
+<div align="center">
+
+![How It Works Flowchart](docs/screenshots/how_it_works_flowchart.png)
+
+</div>
+
+#### Step 1: User Input (Train or Station)
+The passenger opens the mobile app, web tracker, or views the station display and enters their train number (e.g. 12301) or selects their upcoming journey.
+
+#### Step 2: Live Track & Signal Scan
+In the background, GATI-SETU performs an instant operational scan of the corridor: querying satellite GPS positions, checking if a heavy freight train is crawling in the block section ahead, and monitoring active track signals.
+
+#### Step 3: Ground Realities Check
+The system factors in real-world friction: active civil engineering speed limits (e.g. 30 km/h caution orders), weather visibility limits (e.g. winter fog safety rules), and checks whether the destination platform is currently occupied by another rake.
+
+#### Step 4: Dynamic ETA Calculation
+Instead of using static timetable subtraction, the engine calculates the realistic travel time, incorporating locomotive pulling power, train weight, and exact outer signal hold countdowns.
+
+#### Step 5: Transparent Output on App & Display
+The passenger sees an honest, reliable arrival time, a calm countdown for outer signal waiting, and a plain-English explanation for any delay (such as waiting for platform clearance or an overtake).
+
+---
+
 ## 1. Detailed Explanation of the Proposed Solution
 
 ### Core Concept: The Digital Twin & Spatio-Temporal Graph Architecture
@@ -142,43 +169,43 @@ Every operational requirement and pain point highlighted in Problem Statement SI
 <td width="50%" valign="top">
 
 #### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">1. Live RTIS Satellite GPS Telemetry Fusion</mark>
-> **Operational Delivery:** Directly ingests **ISRO NavIC satellite locomotive feeds** every 30s, snapping train position to rail coordinates to eliminate false jumps and GPS drift.
+> **Solution:** Directly ingests **ISRO NavIC satellite locomotive feeds** every 30s, snapping train position to rail coordinates to eliminate false jumps and GPS drift.
 
 #### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">2. Dynamic e-Caution & TSR Speed Parser</mark>
-> **Operational Delivery:** Automatically reads civil engineering **T/409 caution orders**, calculating exact 20–30 km/h slow zones and full rake recovery delays.
+> **Solution:** Automatically reads civil engineering **T/409 caution orders**, calculating exact 20–30 km/h slow zones and full rake recovery delays.
 
 #### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">3. Level Crossing Gate & Interlocking Tracker</mark>
-> **Operational Delivery:** Monitors station **S&T relay logs** for road traffic gate delays, predicting signal halts and slowing curves before the train reaches red lights.
+> **Solution:** Monitors station **S&T relay logs** for road traffic gate delays, predicting signal halts and slowing curves before the train reaches red lights.
 
 #### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">4. Physics-Informed Kinematic Running Engine</mark>
-> **Operational Delivery:** Calculates real train motion using **locomotive horsepower (WAP-7 vs WAG-9)**, 24-coach weight, and track gradients instead of static timetables.
+> **Solution:** Calculates real train motion using **locomotive horsepower (WAP-7 vs WAG-9)**, 24-coach weight, and track gradients instead of static timetables.
 
 #### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">5. Spatio-Temporal Graph Headway (ST-GAT)</mark>
-> **Operational Delivery:** Models **preceding freight trains** in automatic block sections, dynamically adjusting express train ETAs before red signals occur.
+> **Solution:** Models **preceding freight trains** in automatic block sections, dynamically adjusting express train ETAs before red signals occur.
 
 #### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">6. Multi-Day Journey Cascading Predictor</mark>
-> **Operational Delivery:** Predicts downstream **loop-line detentions 24 hours ahead** once a long-distance train loses its scheduled timetable slot.
+> **Solution:** Predicts downstream **loop-line detentions 24 hours ahead** once a long-distance train loses its scheduled timetable slot.
 
 </td>
 <td width="50%" valign="top">
 
 #### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">7. Spatial & Temporal Variability ML Engine</mark>
-> **Operational Delivery:** Self-adapts predictions to **peak suburban rushes, Friday freight surges**, and steep Ghat inclines using machine learning on 1.5M+ runs.
+> **Solution:** Self-adapts predictions to **peak suburban rushes, Friday freight surges**, and steep Ghat inclines using machine learning on 1.5M+ runs.
 
 #### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">8. Adverse Weather & Visibility (FSD) Adapter</mark>
-> **Operational Delivery:** Connects to satellite weather and IMD radar, automatically enforcing the **statutory 60 km/h fog safety speed ceiling** under GR 3.61.
+> **Solution:** Connects to satellite weather and IMD radar, automatically enforcing the **statutory 60 km/h fog safety speed ceiling** under GR 3.61.
 
 #### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">9. Terminal Platform Queuing & Outer Hold Detector</mark>
-> **Operational Delivery:** Tracks platform vacancy at terminal junctions, ending the **"outer signal trap"** by telling passengers and controllers the true wait time.
+> **Solution:** Tracks platform vacancy at terminal junctions, ending the **"outer signal trap"** by telling passengers and controllers the true wait time.
 
 #### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">10. Station Turnaround, Cleaning & Pit-Line Sync</mark>
-> **Operational Delivery:** Broadcasts **±2 min countdowns 45 minutes ahead** so cleaning staff, watering teams, and maintenance slots are ready on arrival.
+> **Solution:** Broadcasts **±2 min countdowns 45 minutes ahead** so cleaning staff, watering teams, and maintenance slots are ready on arrival.
 
 #### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">11. Loco Crew 10-Hour Duty Watchdog (HOER)</mark>
-> **Operational Delivery:** Tracks crew running hours against statutory **10-hour limits**, alerting controllers 90 minutes early to arrange relief crews and avoid line halts.
+> **Solution:** Tracks crew running hours against statutory **10-hour limits**, alerting controllers 90 minutes early to arrange relief crews and avoid line halts.
 
 #### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">12. Downstream Feeder Transport & Logistics Bridge</mark>
-> **Operational Delivery:** Exposes **sub-25ms live APIs with 90% confidence windows** to synchronize city cabs (Ola/Uber), metro feeders, and parcel logistics.
+> **Solution:** Exposes **sub-25ms live APIs with 90% confidence windows** to synchronize city cabs (Ola/Uber), metro feeders, and parcel logistics.
 
 </td>
 </tr>
@@ -357,14 +384,14 @@ Every operational requirement and pain point highlighted in Problem Statement SI
 
 | Ground-Level Operational Capability | Legacy NTES (Govt) | Commercial Apps (Where Is My Train / RailYatri) | Generic Hackathon "AI" Teams | GATI-SETU |
 | :--- | :---: | :---: | :---: | :---: |
-| **"Outer Signal Trap" Alert (Platform Vacancy Tracking)** |  No (Says "Arriving in 2m") |  No (Assumes moving to platform) |  No (Blind to station yard) | ** Yes (Alerts passenger if PF is blocked & gives true wait time)** |
-| **Preceding Freight Train Visibility** |  No (Passenger trains only) |  No (No freight data) |  No (Timetable CSVs only) | ** Yes (Direct CRIS FOIS freight radar integration)** |
-| **Plain-English Delay Reason (No Mystery Halts)** |  No ("Running Late") |  No (Silent number bump) |  No (Just gives an ETA number) | ** Yes (Explains overtakes, track work, signal holds)** |
-| **Statutory Fog & Monsoon Safety Governor** |  No (Keeps 130 km/h) |  No (Ignores weather laws) |  No (Historical averages) | ** Yes (Enforces IR General Rule 3.61 60 km/h ceiling)** |
-| **Loco Crew 10-Hour Expiry Alert (Preventing Stalls)** |  None |  None |  None | ** Yes (Alerts controllers 90m early to position relief crew)** |
-| **Station Cleaning & Water Pre-Staging Countdown** |  None |  None |  None | ** Yes (45m advance alert so teams are ready on platform)** |
-| **Last-Mile City Feeder & Cab Sync (Ola/Uber/Bus)** |  None |  None |  None | ** Yes (Open APIs for urban transport & connecting trains)** |
-| **Hardware Deployment Cost** | Zero (Legacy) | Zero (Scraped) | Usually requires new sensors | ** 100% Zero-Hardware (Plug-and-play on existing IR data)** |
+| **"Outer Signal Trap" Alert (Platform Vacancy Tracking)** | No (Reports false arrival) | No (Assumes continuous motion) | No (Blind to station yard occupancy) | **Yes (Detects platform occupation & provides exact hold countdown)** |
+| **Preceding Freight Train Visibility** | No (Passenger trains only) | No (No freight data access) | No (Static schedule CSVs only) | **Yes (Direct CRIS FOIS freight radar integration)** |
+| **Plain-English Delay Reason (No Mystery Halts)** | No (Only displays "Running Late") | No (Silent delay counter increment) | No (Numerical output only) | **Yes (Explains overtakes, track maintenance, and gate holds)** |
+| **Statutory Fog & Monsoon Safety Governor** | No (Projects 130 km/h in zero visibility) | No (Ignores statutory safety speeds) | No (Historical average extrapolations) | **Yes (Enforces IR General Rule 3.61 60 km/h ceiling)** |
+| **Loco Crew 10-Hour Expiry Alert (Preventing Stalls)** | No | No | No | **Yes (Alerts controllers 90m early to position relief crew)** |
+| **Station Cleaning & Water Pre-Staging Countdown** | No | No | No | **Yes (45m advance countdown for cleaning & water hydrants)** |
+| **Last-Mile City Feeder & Cab Sync (Ola/Uber/Bus)** | No | No | No | **Yes (Open APIs for urban transport & connecting trains)** |
+| **Hardware Deployment Cost** | Zero (Legacy) | Zero (Scraped) | Usually requires new sensors | **Yes (100% Software Layer on existing IR data)** |
 
 ---
 
