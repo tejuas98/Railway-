@@ -252,6 +252,8 @@ Every single requirement, constraint, and operational friction point mentioned i
 └────────────────────────────────┴─────────────────────────────────────────────────────────────────┘
 ```
 
+![GATI-SETU 12 Core Modules Solution Architecture](docs/screenshots/proposed_solution_slide_12cards.png)
+
 ### Deep Technical Breakdown: How GATI-SETU Solves Each Module
 
 #### 🛰️ Module 1: Live RTIS Satellite GPS Telemetry Fusion

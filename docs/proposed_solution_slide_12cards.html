@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920, height=1080, initial-scale=1.0" />
+  <title>GATI-SETU Proposed Solution - SIH 2026 Presentation Slide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      width: 1920px;
+      height: 1080px;
+      background-color: #0F172A;
+      font-family: 'Inter', sans-serif;
+      color: #F8FAFC;
+      display: flex;
+      flex-direction: column;
+      padding: 38px 50px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Ambient Railway Blue Glow */
+    body::before {
+      content: '';
+      position: absolute;
+      top: -150px;
+      right: -100px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(14, 165, 233, 0.15) 0%, rgba(15, 23, 42, 0) 70%);
+      pointer-events: none;
+    }
+
+    /* Slide Header */
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #334155;
+      padding-bottom: 14px;
+    }
+    .slide-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .title-icon {
+      font-size: 34px;
+      color: #38BDF8;
+    }
+    .slide-title {
+      font-size: 38px;
+      font-weight: 900;
+      color: #38BDF8;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .slide-title span.hindi {
+      font-size: 28px;
+      color: #F59E0B;
+      font-weight: 700;
+    }
+    .slide-subtitle {
+      font-size: 17px;
+      font-weight: 600;
+      color: #94A3B8;
+      margin-top: 4px;
+    }
+    .header-badges {
+      display: flex;
+      gap: 12px;
+    }
+    .badge {
+      background: #1E293B;
+      border: 1px solid #334155;
+      padding: 6px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #CBD5E1;
+    }
+    .badge-primary {
+      background: #0284C7;
+      border-color: #38BDF8;
+      color: #FFFFFF;
+    }
+    .badge-gold {
+      background: #78350F;
+      border-color: #F59E0B;
+      color: #FDE68A;
+    }
+
+    /* Main Grid: 2 Columns of 6 Cards each + Bottom Metric Bar */
+    .slide-body {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      flex: 1;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 28px;
+      row-gap: 10px;
+      flex: 1;
+    }
+
+    /* Individual Card with Orange Header & Green-Bordered Box */
+    .feature-card {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .feature-header-bar {
+      background: #F59E0B;
+      color: #000000;
+      font-size: 14.5px;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 4px;
+      display: inline-block;
+      align-self: flex-start;
+      letter-spacing: -0.2px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+    .feature-sub-box {
+      background: #1E293B;
+      border: 1.5px solid #10B981;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: #E2E8F0;
+      line-height: 1.35;
+      box-shadow: 0 1px 3px rgba(16, 185, 129, 0.12);
+    }
+    .feature-sub-box strong {
+      color: #34D399;
+      font-weight: 700;
+    }
+
+    /* Bottom Architecture & Impact Bar */
+    .bottom-bar {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 20px;
+      background: #1E293B;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 10px 18px;
+      align-items: center;
+    }
+    .bottom-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13.5px;
+      color: #94A3B8;
+    }
+    .bottom-left strong {
+      color: #38BDF8;
+    }
+    .bottom-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .pill {
+      background: #0F172A;
+      border: 1px solid #475569;
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #CBD5E1;
+    }
+    .bottom-right {
+      display: flex;
+      justify-content: flex-end;
+      gap: 16px;
+    }
+    .metric-item {
+      text-align: right;
+    }
+    .metric-val {
+      font-size: 17px;
+      font-weight: 800;
+      color: #10B981;
+    }
+    .metric-lbl {
+      font-size: 11px;
+      font-weight: 600;
+      color: #64748B;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Slide Header -->
+  <div class="slide-header">
+    <div>
+      <div class="slide-title-wrap">
+        <span class="title-icon">❖</span>
+        <h1 class="slide-title">Proposed Solution: GATI-SETU <span class="hindi">(गति-सेतु)</span></h1>
+      </div>
+      <div class="slide-subtitle">
+        Dynamic Real-Time Expected Time of Arrival (ETA) Engine for Coaching Trains across Indian Railways
+      </div>
+    </div>
+    <div class="header-badges">
+      <div class="badge badge-gold">Ministry of Railways</div>
+      <div class="badge badge-primary">Problem ID: 26028</div>
+      <div class="badge">Smart India Hackathon 2026</div>
+    </div>
+  </div>
+
+  <!-- Slide Body: 12 Modules Grid (6 Left, 6 Right) -->
+  <div class="slide-body">
+    <div class="cards-grid">
+
+      <!-- Column 1 (Modules 1 to 6) -->
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        
+        <!-- Card 1 -->
+        <div class="feature-card">
+          <div class="feature-header-bar">1. Live RTIS Satellite GPS Telemetry Fusion</div>
+          <div class="feature-sub-box">
+            Ingests <strong>ISRO NavIC/GAGAN 30s locomotive pings</strong> via Kafka and applies an Extended Kalman Filter to snap coordinates to 1D track chainage, eliminating drift and phantom jumps.
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="feature-card">
+          <div class="feature-header-bar">2. Dynamic e-Caution &amp; TSR Speed Parser</div>
+          <div class="feature-sub-box">
+            Parses civil engineering <strong>T/409 electronic caution orders</strong> in real-time, calculating exact kinematic deceleration, 20-30 km/h crawl, and rake-length acceleration recovery penalties.
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="feature-card">
+          <div class="feature-header-bar">3. Level Crossing Gate &amp; Interlocking Tracker</div>
+          <div class="feature-sub-box">
+            Monitors station <strong>S&amp;T relay data loggers</strong> for road traffic gate-closure delays, proactively injecting signal halt penalties before loco pilots encounter red aspects.
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="feature-card">
+          <div class="feature-header-bar">4. Physics-Informed Kinematic Running Engine</div>
+          <div class="feature-sub-box">
+            Replaces static timetables with continuous <strong>Newton-Davis physics equations</strong> factoring in locomotive horsepower (WAP-7 vs WAG-9), coach trailing tonnage, and track gradients.
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="feature-card">
+          <div class="feature-header-bar">5. Spatio-Temporal Graph Headway (ST-GAT)</div>
+          <div class="feature-sub-box">
+            Simulates <strong>4-aspect signal progression</strong> and models preceding freight headway lag using Spatio-Temporal Graph Attention Networks to dynamically propagate upstream delays.
+          </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="feature-card">
+          <div class="feature-header-bar">6. Multi-Day Journey Cascading Predictor</div>
+          <div class="feature-sub-box">
+            Uses an <strong>autoregressive path-loss model</strong> that anticipates downstream cross-zone loop-line overtakes once a long-distance multi-day train loses its scheduled timetable slot.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Column 2 (Modules 7 to 12) -->
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+
+        <!-- Card 7 -->
+        <div class="feature-card">
+          <div class="feature-header-bar">7. Spatial &amp; Temporal Variability ML Engine</div>
+          <div class="feature-sub-box">
+            Deploys <strong>online LightGBM regressors</strong> trained on 1.5M+ runs to capture peak suburban rush, weekly freight surges, and Ghat incline crawls with daily automated retraining.
+          </div>
+        </div>
+
+        <!-- Card 8 -->
+        <div class="feature-card">
+          <div class="feature-header-bar">8. Adverse Weather &amp; Visibility (FSD) Adapter</div>
+          <div class="feature-sub-box">
+            Ingests live <strong>IMD Doppler radar feeds</strong>, automatically enforcing the statutory General Rule 3.61 Fog Safe 60 km/h speed ceiling during dense winter fog conditions.
+          </div>
+        </div>
+
+        <!-- Card 9 -->
+        <div class="feature-card">
+          <div class="feature-header-bar">9. Terminal Platform Queuing &amp; Outer Hold Detector</div>
+          <div class="feature-sub-box">
+            Applies <strong>Markovian queueing</strong> to track platform clearance, alerting passengers and dispatchers when trains are stabled at outer home signals awaiting platform evacuation.
+          </div>
+        </div>
+
+        <!-- Card 10 -->
+        <div class="feature-card">
+          <div class="feature-header-bar">10. Station Turnaround, Cleaning &amp; Pit-Line Sync</div>
+          <div class="feature-sub-box">
+            Broadcasts <strong>±2 min high-precision countdowns</strong> 45 minutes ahead, pre-staging OBHS cleaning squads, water replenishment, and pit-line maintenance slots for on-time return rakes.
+          </div>
+        </div>
+
+        <!-- Card 11 -->
+        <div class="feature-card">
+          <div class="feature-header-bar">11. Loco Crew 10-Hour Duty Watchdog (HOER)</div>
+          <div class="feature-sub-box">
+            Tracks pilot running hours against the statutory <strong>10-hour HOER limit</strong> via CMS, alerting controllers 90 minutes early to arrange relief crews and avoid mid-line stalls.
+          </div>
+        </div>
+
+        <!-- Card 12 -->
+        <div class="feature-card">
+          <div class="feature-header-bar">12. Downstream Feeder Transport &amp; Logistics Bridge</div>
+          <div class="feature-sub-box">
+            Exposes <strong>sub-25ms OpenAPI 3.1 REST/WebSockets</strong> with 90% confidence bounds [P10, P90] to synchronize city cabs (Ola/Uber), state buses, metros, and parcel cargo logistics.
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Bottom Infrastructure & Metric Bar -->
+    <div class="bottom-bar">
+      <div class="bottom-left">
+        <strong>Ecosystem Integration:</strong>
+        <div class="bottom-pills">
+          <div class="pill">ISRO NavIC RTIS</div>
+          <div class="pill">CRIS COA Control Office</div>
+          <div class="pill">S&amp;T Relay Data Loggers</div>
+          <div class="pill">e-Caution Orders (T/409)</div>
+          <div class="pill">FOIS Freight</div>
+          <div class="pill">IMD Weather Radar</div>
+        </div>
+      </div>
+      <div class="bottom-right">
+        <div class="metric-item">
+          <div class="metric-val">&lt; 25 ms</div>
+          <div class="metric-lbl">API Query Latency</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-val">± 2 Mins</div>
+          <div class="metric-lbl">Terminal Accuracy</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-val">100% End-to-End</div>
+          <div class="metric-lbl">PS 26028 Coverage</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
