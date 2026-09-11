@@ -753,6 +753,7 @@ You can jump directly to any surface using URL query parameters:
 - [04. Mathematical Formulations & ST-GNN Architecture](docs/02_MATHEMATICAL_FORMULATION.md)
 - [05. REST & WebSocket API Specifications](docs/03_API_SPECIFICATIONS.md)
 - [06. Locomotive Engine, Trailing Load & Kinematics (Why GPS Alone Fails)](docs/05_LOCOMOTIVE_ENGINE_AND_TRAILING_LOAD_PHYSICS.md)
+- [07. SIH 2026 Problem Statement SIH26028: Official Rubric, Competitor Autopsy & Winning Strategy](docs/06_SIH26028_OFFICIAL_RUBRIC_AND_WINNING_STRATEGY.md)
 
 ---
 
