@@ -19,7 +19,28 @@ When a train encounters real-world dynamic friction—such as a preceding goods 
 
 This document presents a comprehensive government-level autopsy of existing systems and proposes **GATI-SETU (Graph-Augmented Transit Intelligence for Indian Railways)**: a Physics-Informed Spatio-Temporal Graph Neural Network (PI-STGNN) with real-time digital twin simulation.
 
-> **Simple Analogy:** Imagine you ordered food for delivery. The restaurant looks at a chart written a year ago and says: *"It will reach you at 8:00 PM."* They did not look outside. Right now, there is a storm, the road is closed for repair, and the driver is stuck behind a slow truck. The food actually arrives at 8:45 PM. Indian Railways today mostly tells you arrival times using an old printed timetable + current delay, without properly looking at what is physically happening on the tracks ahead.
+---
+
+### 🍕 The Whole Problem in One Simple Story (The Pizza Analogy)
+
+Imagine you ordered a pizza. 🍕  
+The pizza shop says: **"It will reach you at 8:00 PM."**
+
+How did they decide 8:00 PM? They just looked at a chart on the wall that says *"Delivery to your area = 30 minutes"*. They wrote that chart **one year ago**. They did **not** look outside.
+
+But right now, outside:
+- There is a **traffic jam** on the main road.
+- It is **raining heavily**.
+- The delivery boy's scooter is stuck behind a **slow truck**.
+- There is a **wedding procession** blocking the lane.
+
+So the pizza actually arrives at **8:45 PM**. You waited outside your gate for 45 extra minutes. You are angry. You feel cheated. You will not trust that shop's timing again.
+
+**Now replace "pizza" with "train", and "you" with 8 billion passengers a year.** 🚆
+
+That is exactly the problem. Indian Railways today mostly tells you a train's arrival time using an **old printed timetable + how late the train is right now**. It does not properly look at what is physically happening on the tracks ahead — the jams, the rain, the red signals, the slow zones.
+
+**GATI-SETU behaves like Google Maps for Indian Railways:** Google Maps does not say "it always takes 30 minutes." It says *"22 minutes, heavy traffic ahead, ETA 8:22 PM"* — and it continuously updates as conditions evolve.
 
 ---
 
@@ -307,10 +328,14 @@ You can jump directly to any surface using URL query parameters:
 
 ## 📜 10. Documentation Index
 
-- [01. Government Ecosystem Audit & Failure Autopsy](docs/01_RESEARCH_AND_FAILURE_AUTOPSY.md)
-- [02. Mathematical Formulations & ST-GNN Architecture](docs/02_MATHEMATICAL_FORMULATION.md)
-- [03. REST & WebSocket API Specifications](docs/03_API_SPECIFICATIONS.md)
+- [00. The Complete Problem Explained Like You're in 5th Standard (Full Pizza Story)](docs/00-PROBLEM-EXPLAINED-SIMPLY.md)
+- [01. A–Z Keyword & Jargon Glossary](docs/01-KEYWORD-GLOSSARY.md)
+- [02. Full Implementation Blueprint & Government Autopsy](docs/00_FULL_IMPLEMENTATION_PLAN_AND_GOVT_AUTOPSY.md)
+- [03. Government Ecosystem Audit & Delay Autopsy](docs/01_RESEARCH_AND_FAILURE_AUTOPSY.md)
+- [04. Mathematical Formulations & ST-GNN Architecture](docs/02_MATHEMATICAL_FORMULATION.md)
+- [05. REST & WebSocket API Specifications](docs/03_API_SPECIFICATIONS.md)
 
 ---
 
 *Developed for the Ministry of Railways, Government of India · Smart India Hackathon (SIH) 2026*
+
