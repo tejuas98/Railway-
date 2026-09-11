@@ -250,6 +250,136 @@ const PAN_INDIA_TRAINS = [
     reason: '⚡ Looped by AI Section Controller to save Shiv Ganga 19 mins',
     weatherImpact: 'Heavy trailing tonnage (4,850 Tonnes)',
     satLock: 'ISRO NavIC 7 Sats (BEL RTIS)'
+  },
+  {
+    id: '12424',
+    name: 'Dibrugarh Rajdhani Express',
+    route: 'New Delhi (NDLS) → Dibrugarh (DBRG)',
+    loco: 'WAP-7 #30490',
+    locoType: 'Electric WAP-7 (6,350 HP, Co-Co)',
+    loadTonnage: '20 LHB Coaches (1,020 T)',
+    powerToWeight: '6.22 HP/Tonne',
+    p2wValue: 6.22,
+    accelProfile: '0 → 130 km/h: 188s (4.1 km)',
+    brakingDist: '810m (LHB Disc Brakes + WSP)',
+    psrPenalty: '+3.6m recovery penalty from 30 km/h PSR',
+    currentStation: 'New Jalpaiguri – Katihar Section',
+    x: 810,
+    y: 395,
+    speed: 118,
+    heading: 'ENE',
+    status: 'ON TIME (+3m)',
+    statusColor: 'text-emerald-400',
+    scheduleEta: '10:30',
+    dynamicEta: '10:33',
+    confidence: '93% [10:31 – 10:35]',
+    reason: '🟢 Green Aspect Block Clearance through Siliguri Gap',
+    weatherImpact: 'Sub-Himalayan drizzle (12 mm/h), track adhesion good',
+    satLock: 'ISRO NavIC 9 Sats (BEL RTIS)'
+  },
+  {
+    id: '12626',
+    name: 'Kerala Express',
+    route: 'New Delhi (NDLS) → Thiruvananthapuram (TVC)',
+    loco: 'WAP-7 #30355',
+    locoType: 'Electric WAP-7 (6,350 HP, Co-Co)',
+    loadTonnage: '24 LHB Coaches (1,180 T)',
+    powerToWeight: '5.38 HP/Tonne',
+    p2wValue: 5.38,
+    accelProfile: '0 → 130 km/h: 215s (4.7 km)',
+    brakingDist: '860m (Axle Mounted Disc Brakes)',
+    psrPenalty: '+4.2m recovery penalty from 30 km/h PSR',
+    currentStation: 'Shoranur – Ernakulam Section',
+    x: 390,
+    y: 940,
+    speed: 88,
+    heading: 'SSE',
+    status: 'DELAYED (+26m)',
+    statusColor: 'text-amber-400',
+    scheduleEta: '18:00',
+    dynamicEta: '18:26',
+    confidence: '89% [18:22 – 18:29]',
+    reason: '⚠️ Heavy monsoon speed restriction (PSR 75 km/h on curves)',
+    weatherImpact: 'Tropical monsoon downpour 45 mm/h, wet rail condition',
+    satLock: 'ISRO NavIC 8 Sats (BEL RTIS)'
+  },
+  {
+    id: '12628',
+    name: 'Karnataka Express',
+    route: 'New Delhi (NDLS) → KSR Bengaluru (SBC)',
+    loco: 'WAP-7 #30512',
+    locoType: 'Electric WAP-7 (6,350 HP, Co-Co)',
+    loadTonnage: '24 LHB Coaches (1,180 T)',
+    powerToWeight: '5.38 HP/Tonne',
+    p2wValue: 5.38,
+    accelProfile: '0 → 130 km/h: 215s (4.7 km)',
+    brakingDist: '860m (Axle Mounted Disc Brakes)',
+    psrPenalty: '+4.2m recovery penalty from 30 km/h PSR',
+    currentStation: 'Solapur – Gulbarga Section',
+    x: 425,
+    y: 770,
+    speed: 110,
+    heading: 'SSW',
+    status: 'ON TIME (+1m)',
+    statusColor: 'text-emerald-400',
+    scheduleEta: '12:00',
+    dynamicEta: '12:01',
+    confidence: '94% [12:00 – 12:03]',
+    reason: '🟢 High speed gradient descent on Deccan plateau',
+    weatherImpact: 'Dry ambient 33°C, optimal tractive adhesion',
+    satLock: 'ISRO NavIC 10 Sats (BEL RTIS)'
+  },
+  {
+    id: '12009',
+    name: 'Mumbai – Ahmedabad Shatabdi',
+    route: 'Mumbai Central (BCT) → Ahmedabad (ADI)',
+    loco: 'WAP-7 #30401',
+    locoType: 'Electric WAP-7 (6,350 HP, Co-Co)',
+    loadTonnage: '16 LHB Coaches (820 T)',
+    powerToWeight: '7.74 HP/Tonne',
+    p2wValue: 7.74,
+    accelProfile: '0 → 130 km/h: 160s (3.4 km)',
+    brakingDist: '740m (LHB Disc Brakes + WSP)',
+    psrPenalty: '+2.8m recovery penalty from 30 km/h PSR',
+    currentStation: 'Surat – Bharuch Section',
+    x: 255,
+    y: 530,
+    speed: 130,
+    heading: 'N',
+    status: 'ON TIME (-2m)',
+    statusColor: 'text-emerald-400',
+    scheduleEta: '13:10',
+    dynamicEta: '13:08',
+    confidence: '96% [13:07 – 13:10]',
+    reason: '🟢 Automatic block signaling running at maximum permissible speed 130 km/h',
+    weatherImpact: 'Coastal breeze, dry track',
+    satLock: 'ISRO NavIC 11 Sats (BEL RTIS)'
+  },
+  {
+    id: '12414',
+    name: 'Jammu Pooja Superfast',
+    route: 'New Delhi (NDLS) → Jammu Tawi (JAT)',
+    loco: 'WAP-7 #30267',
+    locoType: 'Electric WAP-7 (6,350 HP, Co-Co)',
+    loadTonnage: '22 LHB Coaches (1,080 T)',
+    powerToWeight: '5.88 HP/Tonne',
+    p2wValue: 5.88,
+    accelProfile: '0 → 130 km/h: 195s (4.2 km)',
+    brakingDist: '820m (LHB Disc Brakes + WSP)',
+    psrPenalty: '+3.8m recovery penalty from 30 km/h PSR',
+    currentStation: 'Ludhiana – Pathankot Section',
+    x: 345,
+    y: 230,
+    speed: 102,
+    heading: 'NNW',
+    status: 'ON TIME (+4m)',
+    statusColor: 'text-emerald-400',
+    scheduleEta: '08:15',
+    dynamicEta: '08:19',
+    confidence: '92% [08:17 – 08:21]',
+    reason: '🟢 Clear double line running in Firozpur Division',
+    weatherImpact: 'Morning mist clearing, 21°C',
+    satLock: 'ISRO NavIC 9 Sats (BEL RTIS)'
   }
 ];
 
@@ -292,7 +422,7 @@ export default function PanIndiaLiveMap() {
         break;
       case 'west':
         setTransform({ scale: 2.2, x: -160, y: -540 });
-        toast.success('🔭 Zoomed: Western India (WR / CR Corridor - Mumbai)');
+        toast.success('🔭 Zoomed: Western India (WR / CR Corridor - Mumbai & Gujarat)');
         break;
       case 'east':
         setTransform({ scale: 2.4, x: -680, y: -450 });
@@ -300,7 +430,15 @@ export default function PanIndiaLiveMap() {
         break;
       case 'south':
         setTransform({ scale: 2.1, x: -350, y: -780 });
-        toast.success('🔭 Zoomed: Southern India (SR / SCR - Chennai & Bengaluru)');
+        toast.success('🔭 Zoomed: Southern India (SR / SWR - Chennai, Bengaluru & Kerala)');
+        break;
+      case 'central':
+        setTransform({ scale: 2.2, x: -380, y: -480 });
+        toast.success('🔭 Zoomed: Central India (CR / WCR - Bhopal, Nagpur, Deccan)');
+        break;
+      case 'northeast':
+        setTransform({ scale: 2.6, x: -840, y: -300 });
+        toast.success('🔭 Zoomed: Northeast Frontier (NFR - Guwahati & Siliguri Gap)');
         break;
       default:
         handleResetZoom();
@@ -378,6 +516,52 @@ export default function PanIndiaLiveMap() {
         </div>
       </div>
 
+      {/* Pan-India National Scale & Train Fleet Quick Selector */}
+      <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-3 sm:p-4 shadow-xl space-y-2.5">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-800/80 pb-2.5">
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+            <h3 className="text-xs sm:text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              Pan-India Active Train Fleet
+              <span className="text-[11px] text-slate-400 normal-case font-normal font-mono hidden sm:inline">
+                (17 Zones • Golden Quad &amp; Diagonals • Scalable to all 13,523 IR Coaching Trains)
+              </span>
+            </h3>
+          </div>
+          <div className="flex items-center gap-2 text-xs">
+            <span className="px-2 py-0.5 rounded-md bg-sky-500/10 text-sky-400 border border-sky-500/20 font-mono text-[11px]">
+              Active Inspector: #{selectedTrain.id} • {selectedTrain.name}
+            </span>
+          </div>
+        </div>
+
+        {/* Scrollable Train Chips */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-thin scrollbar-thumb-slate-700">
+          {PAN_INDIA_TRAINS.map((train) => {
+            const isSelected = selectedTrain?.id === train.id;
+            return (
+              <button
+                key={train.id}
+                onClick={() => {
+                  setSelectedTrain(train);
+                  toast.success(`🚆 Inspecting #${train.id} ${train.name}`);
+                }}
+                className={`flex-shrink-0 px-2.5 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all border ${
+                  isSelected
+                    ? 'bg-amber-500/20 border-amber-500/50 text-amber-300 shadow-sm shadow-amber-500/20'
+                    : 'bg-slate-950/70 hover:bg-slate-800 border-slate-800 text-slate-300'
+                }`}
+              >
+                <span className={`w-2 h-2 rounded-full ${train.id.includes('BOXN') ? 'bg-purple-400' : train.status.includes('DELAYED') ? 'bg-red-400' : 'bg-emerald-400'}`} />
+                <span className="font-mono font-bold text-[11px]">#{train.id}</span>
+                <span className="text-[11px] text-slate-200">{train.name}</span>
+                <span className="text-[10px] font-mono text-slate-400">({train.p2wValue} HP/T)</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Main Interactive Map Canvas Container */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
@@ -442,6 +626,18 @@ export default function PanIndiaLiveMap() {
                 className="px-2 py-1 rounded bg-slate-900 hover:bg-slate-800 text-purple-300 font-semibold text-[11px]"
               >
                 South
+              </button>
+              <button
+                onClick={() => handlePresetRegion('central')}
+                className="px-2 py-1 rounded bg-slate-900 hover:bg-slate-800 text-orange-300 font-semibold text-[11px]"
+              >
+                Central
+              </button>
+              <button
+                onClick={() => handlePresetRegion('northeast')}
+                className="px-2 py-1 rounded bg-slate-900 hover:bg-slate-800 text-teal-300 font-semibold text-[11px]"
+              >
+                Northeast
               </button>
             </div>
           </div>
