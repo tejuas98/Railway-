@@ -27,6 +27,12 @@ This legacy arithmetic fails systematically in the real world because it treats 
 
 It delivers **calibrated probabilistic arrival windows (P10–P90)**, **plain-text operational delay explanations**, and **automated section controller overtake advisories** with **zero new trackside hardware expenditure**.
 
+### 💡 Concept at a Glance: How Dynamic ETA Forecasting Works
+
+![How GATI-SETU Dynamic ETA Forecasting Works](docs/screenshots/how_gati_setu_works.png)
+
+> **The Paradigm Shift**: Moving from **Static Guesswork (Legacy NTES)** where passengers face unexplained red-signal halts and delays, through **Real-Time Enterprise Fusion (GPS + S&T Relays + Physics Kinematics)**, to the **GATI-SETU Dynamic Twin** delivering clear, calibrated 90% confidence arrival windows and route clearance certainty.
+
 ---
 
 ## 1. Systemic Failure Autopsy of Current Railway ETA Systems

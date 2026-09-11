@@ -22,6 +22,12 @@
 └────────────────────────────────┴─────────────────────────────────────────────────────────┘
 ```
 
+### 💡 Concept at a Glance: How Dynamic ETA Forecasting Works
+
+![How GATI-SETU Dynamic ETA Forecasting Works](docs/screenshots/how_gati_setu_works.png)
+
+> **The Paradigm Shift**: Moving from **Static Guesswork (Legacy NTES)** where passengers face unexplained red-signal halts and delays, through **Real-Time Enterprise Fusion (GPS + S&T Relays + Physics Kinematics)**, to the **GATI-SETU Dynamic Twin** delivering clear, calibrated 90% confidence arrival windows and route clearance certainty.
+
 ---
 
 ## 1. Detailed Explanation of the Proposed Solution
