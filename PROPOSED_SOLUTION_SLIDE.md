@@ -7,7 +7,7 @@
 
 ---
 
-## 📌 Slide Overview & Executive Summary
+## Slide Overview & Executive Summary
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────────┐
@@ -22,7 +22,7 @@
 └────────────────────────────────┴─────────────────────────────────────────────────────────┘
 ```
 
-### 💡 Concept at a Glance: How Dynamic ETA Forecasting Works
+### Concept at a Glance: How Dynamic ETA Forecasting Works
 
 ![How GATI-SETU Dynamic ETA Forecasting Works](docs/screenshots/how_gati_setu_works.png)
 
@@ -114,7 +114,7 @@ Unlike "black-box" models that predict physical impossibilities, GATI-SETU bound
 
 #### Tier 4: Conformal Uncertainty & Dual Dissemination
 * **Probabilistic 90% Confidence Window**: Replaces brittle single-point timestamps with honest ranges (e.g. `22:19 [22:18 – 22:21, 90% Confidence]`).
-* **Root-Cause Plain-Text Explanations**: Informs passengers *why* a delay is occurring (e.g. `🛑 Held at Kanpur Outer: Platform 1 occupied by #12452`).
+* **Root-Cause Plain-Text Explanations**: Informs passengers *why* a delay is occurring (e.g. `[HOLD] Held at Kanpur Outer: Platform 1 occupied by #12452`).
 * **Section Controller Decision Support**: Advises dispatchers on optimal loop line overtakes to minimize cascading delays across the section.
 
 ---
@@ -135,50 +135,50 @@ Every operational requirement and pain point highlighted in Problem Statement SI
 
 ---
 
-### 🎯 12-Module Solution Cards (At A Glance)
+### 12-Module Solution Cards (At A Glance)
 
 <table>
 <tr>
 <td width="50%" valign="top">
 
 #### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">1. Live RTIS Satellite GPS Telemetry Fusion</mark>
-> 🟩 Directly ingests **ISRO NavIC satellite locomotive feeds** every 30s, snapping train position to rail coordinates to eliminate false jumps and GPS drift.
+> **Operational Delivery:** Directly ingests **ISRO NavIC satellite locomotive feeds** every 30s, snapping train position to rail coordinates to eliminate false jumps and GPS drift.
 
 #### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">2. Dynamic e-Caution & TSR Speed Parser</mark>
-> 🟩 Automatically reads civil engineering **T/409 caution orders**, calculating exact 20–30 km/h slow zones and full rake recovery delays.
+> **Operational Delivery:** Automatically reads civil engineering **T/409 caution orders**, calculating exact 20–30 km/h slow zones and full rake recovery delays.
 
 #### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">3. Level Crossing Gate & Interlocking Tracker</mark>
-> 🟩 Monitors station **S&T relay logs** for road traffic gate delays, predicting signal halts and slowing curves before the train reaches red lights.
+> **Operational Delivery:** Monitors station **S&T relay logs** for road traffic gate delays, predicting signal halts and slowing curves before the train reaches red lights.
 
 #### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">4. Physics-Informed Kinematic Running Engine</mark>
-> 🟩 Calculates real train motion using **locomotive horsepower (WAP-7 vs WAG-9)**, 24-coach weight, and track gradients instead of static timetables.
+> **Operational Delivery:** Calculates real train motion using **locomotive horsepower (WAP-7 vs WAG-9)**, 24-coach weight, and track gradients instead of static timetables.
 
 #### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">5. Spatio-Temporal Graph Headway (ST-GAT)</mark>
-> 🟩 Models **preceding freight trains** in automatic block sections, dynamically adjusting express train ETAs before red signals occur.
+> **Operational Delivery:** Models **preceding freight trains** in automatic block sections, dynamically adjusting express train ETAs before red signals occur.
 
 #### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">6. Multi-Day Journey Cascading Predictor</mark>
-> 🟩 Predicts downstream **loop-line detentions 24 hours ahead** once a long-distance train loses its scheduled timetable slot.
+> **Operational Delivery:** Predicts downstream **loop-line detentions 24 hours ahead** once a long-distance train loses its scheduled timetable slot.
 
 </td>
 <td width="50%" valign="top">
 
 #### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">7. Spatial & Temporal Variability ML Engine</mark>
-> 🟩 Self-adapts predictions to **peak suburban rushes, Friday freight surges**, and steep Ghat inclines using machine learning on 1.5M+ runs.
+> **Operational Delivery:** Self-adapts predictions to **peak suburban rushes, Friday freight surges**, and steep Ghat inclines using machine learning on 1.5M+ runs.
 
 #### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">8. Adverse Weather & Visibility (FSD) Adapter</mark>
-> 🟩 Connects to satellite weather and IMD radar, automatically enforcing the **statutory 60 km/h fog safety speed ceiling** under GR 3.61.
+> **Operational Delivery:** Connects to satellite weather and IMD radar, automatically enforcing the **statutory 60 km/h fog safety speed ceiling** under GR 3.61.
 
 #### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">9. Terminal Platform Queuing & Outer Hold Detector</mark>
-> 🟩 Tracks platform vacancy at terminal junctions, ending the **"outer signal trap"** by telling passengers and controllers the true wait time.
+> **Operational Delivery:** Tracks platform vacancy at terminal junctions, ending the **"outer signal trap"** by telling passengers and controllers the true wait time.
 
 #### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">10. Station Turnaround, Cleaning & Pit-Line Sync</mark>
-> 🟩 Broadcasts **±2 min countdowns 45 minutes ahead** so cleaning staff, watering teams, and maintenance slots are ready on arrival.
+> **Operational Delivery:** Broadcasts **±2 min countdowns 45 minutes ahead** so cleaning staff, watering teams, and maintenance slots are ready on arrival.
 
 #### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">11. Loco Crew 10-Hour Duty Watchdog (HOER)</mark>
-> 🟩 Tracks crew running hours against statutory **10-hour limits**, alerting controllers 90 minutes early to arrange relief crews and avoid line halts.
+> **Operational Delivery:** Tracks crew running hours against statutory **10-hour limits**, alerting controllers 90 minutes early to arrange relief crews and avoid line halts.
 
 #### <mark style="background:#F59E0B; padding:3px 10px; border-radius:4px; color:#000; font-weight:800;">12. Downstream Feeder Transport & Logistics Bridge</mark>
-> 🟩 Exposes **sub-25ms live APIs with 90% confidence windows** to synchronize city cabs (Ola/Uber), metro feeders, and parcel logistics.
+> **Operational Delivery:** Exposes **sub-25ms live APIs with 90% confidence windows** to synchronize city cabs (Ola/Uber), metro feeders, and parcel logistics.
 
 </td>
 </tr>
@@ -186,7 +186,7 @@ Every operational requirement and pain point highlighted in Problem Statement SI
 
 ---
 
-### 📋 The 12-Feature Master Matrix (Detailed Technical Specifications)
+### The 12-Feature Master Matrix (Detailed Technical Specifications)
 
 | # | Feature Title (From Problem Statement) | Official Operational Challenge in PS | GATI-SETU Planned Technical Solution |
 | :---: | :--- | :--- | :--- |
@@ -205,9 +205,9 @@ Every operational requirement and pain point highlighted in Problem Statement SI
 
 ---
 
-### 🔍 Detailed Breakdown of the 12 Operational Solutions
+### Detailed Breakdown of the 12 Operational Solutions
 
-#### 🚄 Group A: Track, Traction & Dynamic Train Running (Features 1 – 6)
+#### Section A: Track, Traction & Dynamic Train Running (Features 1 – 6)
 
 1. **Live RTIS Satellite GPS Telemetry Fusion**:
    * *Problem Statement Gap*: Naive GPS trackers suffer from multipath reflection in urban canyons, signal loss in deep rock cuttings, and jitter, causing apps to display trains jumping tracks.
@@ -247,7 +247,7 @@ Every operational requirement and pain point highlighted in Problem Statement SI
 
 ---
 
-#### 🌦️ Group B: Environment, Terminals, Crew & Ecosystem (Features 7 – 12)
+#### Section B: Environment, Terminals, Crew & Ecosystem (Features 7 – 12)
 
 7. **Spatial & Temporal Variability Self-Refining ML Engine**:
    * *Problem Statement Gap*: Static models ignore suburban peak hours, weekly freight loading cycles, and vast geographic variations between Gangetic plains and steep Ghat territories.
@@ -267,7 +267,7 @@ Every operational requirement and pain point highlighted in Problem Statement SI
      ```math
      \Delta T_{\text{outer}} = \max\left(0, T_{\text{clearance}}(B) - T_{\text{yard\_arrival}}(A)\right)
      ```
-     and displaying plain-text explanations: *"🛑 Outer Signal Hold: PF 1 occupied by #12452"*.
+     and displaying plain-text explanations: *"[HOLD] Outer Signal Delay: PF 1 occupied by #12452"*.
 
 10. **Station Turnaround, Cleaning & Pit-Line Maintenance Sync**:
     * *Problem Statement Gap*: Incoming trains suffer late return departures because on-board housekeeping (OBHS) cleaning and watering crews receive no reliable advance countdown.
@@ -298,51 +298,51 @@ Every operational requirement and pain point highlighted in Problem Statement SI
 
 ---
 
-### 🌟 The 8 Unmatched Ground-Level Innovations (Why GATI-SETU Stands Out)
+### The 8 Unmatched Ground-Level Innovations (Why GATI-SETU Stands Out)
 
-#### 1. 🛑 "The Outer Signal Trap" Buster (Platform Clearance Awareness)
+#### 1. "The Outer Signal Trap" Elimination (Platform Clearance Awareness)
 * **The Real-World Problem:** Every train traveler in India knows this nightmare: The app says *"Arriving at New Delhi in 3 minutes"*. Passengers pack their luggage, crowd the carriage vestibules in the heat or cold, only for the train to grind to a dead halt at the red outer home signal for 45 minutes because Platform 1 is still physically occupied!
 * **What Others Do:** Current apps (*Where Is My Train*, NTES) only look at raw GPS distance. If the train is 3 km outside the junction, they falsely assume arrival in 3 minutes.
 * **Our Innovation & Extra Feature:** GATI-SETU tracks **actual station platform vacancy and interlocking routes**. When a destination platform is occupied, the app explicitly alerts passengers:  
-  `🛑 Held at Outer Signal: Platform 1 is currently occupied by Train #12452 (cleaning in progress). Expected platform entry: 20:15. Please remain comfortably seated.`
+  `[STATUS] Held at Outer Signal: Platform 1 is currently occupied by Train #12452 (cleaning in progress). Expected platform entry: 20:15. Please remain comfortably seated.`
 
-#### 2. 🚛 Preceding Freight "Ghost Block" Visibility
+#### 2. Preceding Freight "Ghost Block" Visibility
 * **The Real-World Problem:** Over 70% of Indian Railways tracks carry mixed traffic. Slower freight trains (carrying coal, cement, or grain at 35–45 km/h) run directly ahead of high-speed passenger expresses. When a freight train crawls in the block section ahead, the passenger train faces continuous yellow and double-yellow caution signals.
 * **What Others Do:** Freight trains are 100% invisible on passenger apps and public timetables. Competitor models assume the track ahead is clear and falsely promise 130 km/h speeds.
 * **Our Innovation & Extra Feature:** GATI-SETU directly bridges with Indian Railways' **Freight Operations Information System (FOIS)**. When a heavy freight rake occupies the track ahead, GATI-SETU calculates the freight clearance lag *before* the express train gets stuck behind it.
 
-#### 3. 💬 Plain-English "Reason for Delay" Badges (Zero Mystery Halts)
+#### 3. Plain-English "Reason for Delay" Badges (Zero Mystery Halts)
 * **The Real-World Problem:** When a train suddenly stops in a remote forest or rural loop line for 40 minutes with zero announcements, passengers panic, rumors spread, and station enquiry counters are besieged by angry crowds.
 * **What Others Do:** Existing systems provide zero context—they silently increment the delay counter from 15 mins to 30 mins to 50 mins without explaining why.
 * **Our Innovation & Extra Feature:** GATI-SETU pairs every delay with a clear, transparent human-language reason badge:
-  * `⏳ Scheduled Halt: Held on loop line to allow high-priority 22436 Vande Bharat to overtake`
-  * `🚧 Track Safety Work: 30 km/h caution order for civil engineering track renewal (KM 412–415)`
-  * `🚗 Road Traffic Delay: Level Crossing Gate #48 held open for local traffic clearance`
-  * `🌫️ Winter Fog Advisory: Operating under statutory 60 km/h fog safety limits`
+  * `[HALT] Scheduled Halt: Held on loop line to allow high-priority 22436 Vande Bharat to overtake`
+  * `[MAINTENANCE] Track Safety Work: 30 km/h caution order for civil engineering track renewal (KM 412–415)`
+  * `[GATE] Road Traffic Delay: Level Crossing Gate #48 held open for local traffic clearance`
+  * `[WEATHER] Winter Fog Advisory: Operating under statutory 60 km/h fog safety limits`
 
-#### 4. 🌫️ Statutory Fog & Weather Safety Governor (Respecting Safety Regulations)
+#### 4. Statutory Fog & Weather Safety Governor (Enforcing General Rule 3.61)
 * **The Real-World Problem:** In North Indian winters, thick fog drops visibility below 150 meters. Under Indian Railways statutory safety regulations (**General Rule 3.61**), loco pilots are legally required to cap speed at 60 km/h using Fog Safe Devices (FSD).
 * **What Others Do:** Existing apps and naive algorithms ignore railway safety laws and continue projecting normal 110–130 km/h speeds, causing predicted arrival times to lag reality by 3 to 4 hours.
 * **Our Innovation & Extra Feature:** GATI-SETU monitors live satellite and radar visibility data. The instant visibility drops below safety thresholds, it **automatically enforces the statutory 60 km/h speed ceiling**, delivering honest, realistic winter schedules that passengers can actually depend on.
 
-#### 5. ⏰ Loco Crew 10-Hour Duty Watchdog (Ending Mainline Train Abandonment)
+#### 5. Loco Crew 10-Hour Duty Watchdog (Preventing Mainline Train Stalls)
 * **The Real-World Problem:** Under Indian railway labor and safety regulations (HOER), loco pilots are legally prohibited from driving past 10 hours of continuous duty. If a train is delayed and the crew exceeds 10 hours, the driver is legally bound to stop the train—even on the mainline—causing multi-hour network gridlocks while officials scramble to find a relief crew.
 * **What Others Do:** Zero commercial apps or standard student projects account for crew shift regulations.
 * **Our Innovation & Extra Feature:** GATI-SETU tracks crew sign-on hours in real time. If delay projections indicate a crew will hit their 10-hour limit before reaching the next crew-change terminal, it triggers an **automated 90-minute advance alert to the Section Controller** to position a relief crew at an intermediate station, preventing stranded trains.
 
-#### 6. 🚰 Pre-Staged Station Cleaning & Watering Sync (Turnaround Acceleration)
+#### 6. Pre-Staged Station Cleaning & Watering Synchronization (Turnaround Acceleration)
 * **The Real-World Problem:** When a delayed train finally rolls into an intermediate junction, station on-board housekeeping (OBHS) cleaners, water-filling squads, and pit-line teams are often caught off-guard. Scrambling to connect hoses after arrival turns a scheduled 10-minute halt into an agonizing 35-minute delay.
 * **What Others Do:** Existing systems treat arrival as a static milestone; station staff only mobilize *after* the train has already stopped.
 * **Our Innovation & Extra Feature:** GATI-SETU broadcasts an exact **±2 minute arrival countdown 45 minutes ahead** directly to station supervisors and maintenance depots. Cleaning staff and water pipe operators are pre-stationed on the platform before the train stops, slashing turnaround delays.
 
-#### 7. 🚕 Multi-Modal Last-Mile & Connecting Train Shield
+#### 7. Multi-Modal Last-Mile & Connecting Passenger Transfer Shield
 * **The Real-World Problem:** Train delays cause passengers to miss connecting trains across platforms, while ride-hailing drivers (Ola/Uber) and city feeder buses cancel rides or leave the station empty-handed.
 * **What Others Do:** Standalone train apps operate in complete isolation from the passenger’s broader journey and city transport.
 * **Our Innovation & Extra Feature:** 
   * **Cab & City Transit Sync:** Provides live arrival countdowns to ride-hailing aggregators so pickups are timed to the exact moment passengers step off the platform.
   * **Connecting Passenger Alert:** Identifies passengers with tight train connections at the destination junction, alerting the Station Master to hold the connection or provide porter assistance across platforms.
 
-#### 8. ⚡ 100% Zero-Hardware Implementation (Plug-and-Play on Existing Assets)
+#### 8. 100% Zero-Hardware Implementation (Plug-and-Play on Existing Assets)
 * **The Real-World Problem:** Many proposals recommend installing expensive IoT sensors, trackside cameras, or new onboard gadgets across 15,000 trains and 70,000 km of track—costing thousands of crores and taking 10 years to implement.
 * **What Others Do:** Propose impractical, hardware-heavy overhauls that Indian Railways cannot fund or approve.
 * **Our Innovation & Extra Feature:** GATI-SETU requires **ZERO new hardware**. It functions 100% as a secure software intelligence layer tapping into data Indian Railways already possesses:
@@ -353,22 +353,22 @@ Every operational requirement and pain point highlighted in Problem Statement SI
 
 ---
 
-### 📊 Feature Reality Matrix: GATI-SETU vs The Rest
+### Feature Reality Matrix: GATI-SETU vs Existing Alternatives
 
 | Ground-Level Operational Capability | Legacy NTES (Govt) | Commercial Apps (Where Is My Train / RailYatri) | Generic Hackathon "AI" Teams | GATI-SETU |
 | :--- | :---: | :---: | :---: | :---: |
-| **"Outer Signal Trap" Alert (Platform Vacancy Tracking)** | ❌ No (Says "Arriving in 2m") | ❌ No (Assumes moving to platform) | ❌ No (Blind to station yard) | **✅ Yes (Alerts passenger if PF is blocked & gives true wait time)** |
-| **Preceding Freight Train Visibility** | ❌ No (Passenger trains only) | ❌ No (No freight data) | ❌ No (Timetable CSVs only) | **✅ Yes (Direct CRIS FOIS freight radar integration)** |
-| **Plain-English Delay Reason (No Mystery Halts)** | ❌ No ("Running Late") | ❌ No (Silent number bump) | ❌ No (Just gives an ETA number) | **✅ Yes (Explains overtakes, track work, signal holds)** |
-| **Statutory Fog & Monsoon Safety Governor** | ❌ No (Keeps 130 km/h) | ❌ No (Ignores weather laws) | ❌ No (Historical averages) | **✅ Yes (Enforces IR General Rule 3.61 60 km/h ceiling)** |
-| **Loco Crew 10-Hour Expiry Alert (Preventing Stalls)** | ❌ None | ❌ None | ❌ None | **✅ Yes (Alerts controllers 90m early to position relief crew)** |
-| **Station Cleaning & Water Pre-Staging Countdown** | ❌ None | ❌ None | ❌ None | **✅ Yes (45m advance alert so teams are ready on platform)** |
-| **Last-Mile City Feeder & Cab Sync (Ola/Uber/Bus)** | ❌ None | ❌ None | ❌ None | **✅ Yes (Open APIs for urban transport & connecting trains)** |
-| **Hardware Deployment Cost** | Zero (Legacy) | Zero (Scraped) | Usually requires new sensors | **✅ 100% Zero-Hardware (Plug-and-play on existing IR data)** |
+| **"Outer Signal Trap" Alert (Platform Vacancy Tracking)** |  No (Says "Arriving in 2m") |  No (Assumes moving to platform) |  No (Blind to station yard) | ** Yes (Alerts passenger if PF is blocked & gives true wait time)** |
+| **Preceding Freight Train Visibility** |  No (Passenger trains only) |  No (No freight data) |  No (Timetable CSVs only) | ** Yes (Direct CRIS FOIS freight radar integration)** |
+| **Plain-English Delay Reason (No Mystery Halts)** |  No ("Running Late") |  No (Silent number bump) |  No (Just gives an ETA number) | ** Yes (Explains overtakes, track work, signal holds)** |
+| **Statutory Fog & Monsoon Safety Governor** |  No (Keeps 130 km/h) |  No (Ignores weather laws) |  No (Historical averages) | ** Yes (Enforces IR General Rule 3.61 60 km/h ceiling)** |
+| **Loco Crew 10-Hour Expiry Alert (Preventing Stalls)** |  None |  None |  None | ** Yes (Alerts controllers 90m early to position relief crew)** |
+| **Station Cleaning & Water Pre-Staging Countdown** |  None |  None |  None | ** Yes (45m advance alert so teams are ready on platform)** |
+| **Last-Mile City Feeder & Cab Sync (Ola/Uber/Bus)** |  None |  None |  None | ** Yes (Open APIs for urban transport & connecting trains)** |
+| **Hardware Deployment Cost** | Zero (Legacy) | Zero (Scraped) | Usually requires new sensors | ** 100% Zero-Hardware (Plug-and-play on existing IR data)** |
 
 ---
 
-## 📈 Real-World Performance Impact
+## Real-World Performance Impact
 
 ```
                        MEAN ABSOLUTE ERROR (MAE) COMPARISON
