@@ -89,7 +89,7 @@ flowchart TB
 
 ## 3. The Autopsy: Why Previous Systems & Government Attempts Always Failed
 
-Why has this problem persisted for decades despite hundreds of crores invested in IT? Comprehensive review of **CAG Audit Reports (Report No. 32 of 2016, 2018–19 Punctuality Review)**, Ministry of Railways internal whitepapers, and academic research (IIT Bombay, IIT Kharagpur, arXiv:2510.01262) reveals **6 structural failure reasons**:
+Why has this problem persisted for decades despite hundreds of crores invested in IT? Comprehensive review of **CAG Audit Reports (Report No. 32 of 2016, 2018–19 Punctuality Review)**, peer-reviewed Indian Railways empirical benchmarks (**Elsevier Transportation Research Part E, Kumar et al., May 2025**, which proved that legacy moving-average models fail with a **44.34% MAPE**), Ministry of Railways internal whitepapers, and academic research (IIT Bombay, IIT Kharagpur, arXiv:2510.01262) reveals **6 structural failure reasons**:
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────────┐

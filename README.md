@@ -863,10 +863,13 @@ You can jump directly to any surface using URL query parameters:
 - [06. Locomotive Engine, Trailing Load & Kinematics (Why GPS Alone Fails)](docs/05_LOCOMOTIVE_ENGINE_AND_TRAILING_LOAD_PHYSICS.md)
 - [07. SIH 2026 Problem Statement SIH26028: Official Rubric, Competitor Autopsy & Winning Strategy](docs/06_SIH26028_OFFICIAL_RUBRIC_AND_WINNING_STRATEGY.md)
 - [08. Academic Benchmark: Elsevier Transportation Research Part E (2025) — Kumar et al.](docs/07_TRANSPORTATION_RESEARCH_PART_E_BENCHMARK_KUMAR_2025.md)
+- [09. Master Bibliography, Academic Citations & Government References](docs/08_BIBLIOGRAPHY_AND_RESEARCH_CITATIONS.md)
 
 ---
 
 ## 📚 15. Research References, Data Sources & Government Citations
+
+> 📖 **Comprehensive Master Dossier:** For complete annotated abstracts, IEEE/APA citations, and full LaTeX BibTeX entries, see the dedicated [`docs/08_BIBLIOGRAPHY_AND_RESEARCH_CITATIONS.md`](docs/08_BIBLIOGRAPHY_AND_RESEARCH_CITATIONS.md).
 
 Every number, formula, architectural limit, and failure mechanism modeled in GATI-SETU is grounded in official Government of India portals, Comptroller and Auditor General (CAG) audits, MIT operations research, and peer-reviewed international railway benchmarks:
 

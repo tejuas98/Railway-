@@ -46,7 +46,7 @@ To understand why, we must audit the existing tech stack managed by the **Centre
 
 ## 2. Autopsy: The 6 Structural Failures of Current ETA
 
-Comprehensive review of **Comptroller and Auditor General of India (CAG) Reports** (Report No. 32 of 2016, 2018–19 Punctuality Review) and railway operational research (IIT Bombay, IIT Kharagpur, arXiv:2510.01262) reveals why the current system fails:
+Comprehensive review of **Comptroller and Auditor General of India (CAG) Reports** (Report No. 32 of 2016, 2018–19 Punctuality Review), peer-reviewed scientific benchmarks (**Elsevier Transportation Research Part E, Kumar et al., May 2025**, which proved that Indian Railways' legacy moving-average baseline has an alarming **44.34% MAPE**), and railway operational research (IIT Bombay, IIT Kharagpur, arXiv:2510.01262) reveals why the current system fails:
 
 ### Failure Mode 1: The Isolated Train Fallacy (Network Headway Blindness)
 * **How NTES thinks:** Assumes Train A moves down a track in an empty universe at standard sectional running times.

@@ -125,3 +125,13 @@ SIH Buddy identifies 4 critical red flags that trip up teams. Here is how GATI-S
 > *In held-out backtests over 100,000 kilometers of the Golden Quadrilateral, GATI-SETU slashes arrival error from **42.6 minutes down to 6.2 minutes**—an **85.4% improvement**.*
 >
 > *GATI-SETU does not require building new tracks. It provides the software intelligence that turns Indian Railways' existing 8,500 BEL RTIS locomotives into a world-class predictive transit network."*
+
+---
+
+## 🔬 7. Academic Defensibility & Research Grounding
+
+When technical jury members ask about algorithmic validation, cite the peer-reviewed literature grounded on Indian Railways:
+
+* **Elsevier Transportation Research Part E (May 2025):** Kumar, Sharma, & Kumar proved that Indian Railways' legacy moving-average baseline has an alarming **44.34% MAPE**, and demonstrated that GCN + Kalman Filter cuts error in half (**19.51% MAPE**). GATI-SETU builds directly upon this foundation ([Full Analysis Dossier](docs/07_TRANSPORTATION_RESEARCH_PART_E_BENCHMARK_KUMAR_2025.md)).
+* **Comptroller & Auditor General (CAG) Report No. 32:** Quantifies the 15-minute tolerance distortion and manual ICMS overrides.
+* **Complete Bibliography:** Consult [`docs/08_BIBLIOGRAPHY_AND_RESEARCH_CITATIONS.md`](docs/08_BIBLIOGRAPHY_AND_RESEARCH_CITATIONS.md) for full BibTeX and institutional citations.
