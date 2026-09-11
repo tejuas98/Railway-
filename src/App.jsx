@@ -17,7 +17,8 @@ import {
   Satellite,
   CloudSun,
   RefreshCw,
-  Compass
+  Compass,
+  Search
 } from 'lucide-react';
 
 import { INITIAL_TRAINS } from './data/trainsData';
@@ -28,16 +29,17 @@ import StationCidsDisplay from './components/StationCidsDisplay';
 import SectionControllerCockpit from './components/SectionControllerCockpit';
 import AuditDossier from './components/AuditDossier';
 import PanIndiaLiveMap from './components/PanIndiaLiveMap';
+import MobileRouteFinder from './components/MobileRouteFinder';
 
 export default function App() {
-  // Navigation tabs: 'passenger' | 'station' | 'controller' | 'map' | 'dossier'
+  // Navigation tabs: 'route' | 'passenger' | 'station' | 'controller' | 'map' | 'dossier'
   const getInitialTab = () => {
     const params = new URLSearchParams(window.location.search);
     const tabParam = params.get('tab');
-    if (['passenger', 'station', 'controller', 'map', 'dossier'].includes(tabParam)) {
+    if (['route', 'passenger', 'station', 'controller', 'map', 'dossier'].includes(tabParam)) {
       return tabParam;
     }
-    return 'passenger';
+    return 'route'; // Default to the Where-Is-My-Train Station-to-Station route finder!
   };
 
   const [activeTab, setActiveTab] = useState(getInitialTab);
@@ -349,11 +351,24 @@ export default function App() {
             </div>
 
             {/* Navigation Tabs */}
-            <nav className="flex items-center bg-slate-900 p-1 rounded-2xl border border-slate-800 text-xs font-semibold">
+            <nav className="flex items-center bg-slate-900 p-1 rounded-2xl border border-slate-800 text-xs font-semibold overflow-x-auto max-w-full">
+              <button
+                id="nav-tab-route"
+                onClick={() => setActiveTab('route')}
+                className={`px-3.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 whitespace-nowrap ${
+                  activeTab === 'route'
+                    ? 'bg-emerald-600 text-white font-bold shadow-md shadow-emerald-600/30'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                <Search className="w-3.5 h-3.5 text-emerald-300" />
+                <span>Find Trains (2D/3D)</span>
+              </button>
+
               <button
                 id="nav-tab-passenger"
                 onClick={() => setActiveTab('passenger')}
-                className={`px-3.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 ${
+                className={`px-3.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 whitespace-nowrap ${
                   activeTab === 'passenger'
                     ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20'
                     : 'text-slate-400 hover:text-slate-200'
@@ -366,7 +381,7 @@ export default function App() {
               <button
                 id="nav-tab-station"
                 onClick={() => setActiveTab('station')}
-                className={`px-3.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 ${
+                className={`px-3.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 whitespace-nowrap ${
                   activeTab === 'station'
                     ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20'
                     : 'text-slate-400 hover:text-slate-200'
@@ -379,7 +394,7 @@ export default function App() {
               <button
                 id="nav-tab-controller"
                 onClick={() => setActiveTab('controller')}
-                className={`px-3.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 ${
+                className={`px-3.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 whitespace-nowrap ${
                   activeTab === 'controller'
                     ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20'
                     : 'text-slate-400 hover:text-slate-200'
@@ -392,7 +407,7 @@ export default function App() {
               <button
                 id="nav-tab-map"
                 onClick={() => setActiveTab('map')}
-                className={`px-3.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 ${
+                className={`px-3.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 whitespace-nowrap ${
                   activeTab === 'map'
                     ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20'
                     : 'text-slate-400 hover:text-slate-200'
@@ -405,14 +420,14 @@ export default function App() {
               <button
                 id="nav-tab-dossier"
                 onClick={() => setActiveTab('dossier')}
-                className={`px-3.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 ${
+                className={`px-3.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 whitespace-nowrap ${
                   activeTab === 'dossier'
                     ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20'
                     : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
                 <FileText className="w-3.5 h-3.5" />
-                <span>Audit & Solution Dossier</span>
+                <span>Audit &amp; Solution Dossier</span>
               </button>
             </nav>
           </div>
@@ -421,6 +436,15 @@ export default function App() {
 
       {/* Main Content View */}
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full">
+        {activeTab === 'route' && (
+          <MobileRouteFinder
+            onSelectCorridorTrain={(trainId) => {
+              setSelectedTrainId(trainId);
+              setActiveTab('passenger');
+            }}
+          />
+        )}
+
         {activeTab === 'passenger' && (
           <PassengerTracker
             trains={trains}
