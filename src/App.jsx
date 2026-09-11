@@ -16,7 +16,8 @@ import {
   Sparkles,
   Satellite,
   CloudSun,
-  RefreshCw
+  RefreshCw,
+  Compass
 } from 'lucide-react';
 
 import { INITIAL_TRAINS } from './data/trainsData';
@@ -26,13 +27,14 @@ import PassengerTracker from './components/PassengerTracker';
 import StationCidsDisplay from './components/StationCidsDisplay';
 import SectionControllerCockpit from './components/SectionControllerCockpit';
 import AuditDossier from './components/AuditDossier';
+import PanIndiaLiveMap from './components/PanIndiaLiveMap';
 
 export default function App() {
-  // Navigation tabs: 'passenger' | 'station' | 'controller' | 'dossier'
+  // Navigation tabs: 'passenger' | 'station' | 'controller' | 'map' | 'dossier'
   const getInitialTab = () => {
     const params = new URLSearchParams(window.location.search);
     const tabParam = params.get('tab');
-    if (['passenger', 'station', 'controller', 'dossier'].includes(tabParam)) {
+    if (['passenger', 'station', 'controller', 'map', 'dossier'].includes(tabParam)) {
       return tabParam;
     }
     return 'passenger';
@@ -388,6 +390,19 @@ export default function App() {
               </button>
 
               <button
+                id="nav-tab-map"
+                onClick={() => setActiveTab('map')}
+                className={`px-3.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 ${
+                  activeTab === 'map'
+                    ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                <Compass className="w-3.5 h-3.5" />
+                <span>Pan-India Live Radar</span>
+              </button>
+
+              <button
                 id="nav-tab-dossier"
                 onClick={() => setActiveTab('dossier')}
                 className={`px-3.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 ${
@@ -435,6 +450,10 @@ export default function App() {
             onExecuteOvertake={handleExecuteOvertake}
             onResetSimulation={handleResetSimulation}
           />
+        )}
+
+        {activeTab === 'map' && (
+          <PanIndiaLiveMap />
         )}
 
         {activeTab === 'dossier' && (
