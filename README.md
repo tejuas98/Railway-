@@ -216,6 +216,37 @@ flowchart TD
     style OutputLayer fill:#dcfce7,stroke:#15803d,stroke-width:2px
 ```
 
+### 🔒 Architectural Mandate: 100% In-House Sovereign Machine Learning (Zero External Cloud / LLM APIs)
+
+A critical architectural decision in GATI-SETU is the **complete exclusion of external proprietary cloud APIs (such as OpenAI or Google Gemini)**. Indian Railways is a critical national infrastructure asset, and train dispatching is a high-speed, safety-critical discipline. 
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│               WHY GATI-SETU USES IN-HOUSE DEEP LEARNING INSTEAD OF EXTERNAL CLOUD LLMs                │
+├────────────────────────────────┬───────────────────────────────────────────────────────────────────────┤
+│ 1. Zero Hallucination Risk     │ Large Language Models (LLMs) hallucinate numbers; they cannot solve   │
+│    (Deterministic Physics)     │ Newton-Davis differential equations or 4-aspect signal braking curves.│
+├────────────────────────────────┼───────────────────────────────────────────────────────────────────────┤
+│ 2. National Data Sovereignty   │ Section 70 (IT Act): Live telemetry of 8,500+ locos & freight cargo   │
+│    (Critical Infrastructure)   │ (coal, defense, strategic goods) cannot be sent to foreign clouds.    │
+├────────────────────────────────┼───────────────────────────────────────────────────────────────────────┤
+│ 3. Sub-25ms Execution Latency  │ External LLM APIs take 1,500ms–3,000ms. GATI-SETU's compiled PyTorch  │
+│    (National Scale Real-Time)  │ Geometric ST-GAT & LightGBM pipelines execute in < 25 milliseconds.   │
+├────────────────────────────────┼───────────────────────────────────────────────────────────────────────┤
+│ 4. Zero Recurring Token Fees   │ 13,500 trains & 8B annual passenger queries would incur millions in   │
+│    (Permanent In-House Asset)  │ API billing. GATI-SETU runs 100% locally on CRIS RailCloud servers.   │
+├────────────────────────────────┼───────────────────────────────────────────────────────────────────────┤
+│ 5. Technical Clarification:    │ "OpenAPI 3.1" refers strictly to the Linux Foundation open standard   │
+│    OpenAPI ≠ OpenAI            │ for REST interface documentation (formerly Swagger), NOT OpenAI.     │
+└────────────────────────────────┴───────────────────────────────────────────────────────────────────────┘
+```
+
+Our engine is composed entirely of **self-contained, mathematically rigorous, in-house algorithms**:
+* **Physics-Informed Kinematics Engine:** Direct C++/Python numerical integration of tractive effort and Davis rolling resistance.
+* **Spatio-Temporal Graph Attention Networks (ST-GAT):** Custom PyTorch Geometric model topology tracking 4,735 stations and block headway propagation.
+* **Online LightGBM Regressors:** In-memory gradient boosting over 1.5 million historical train runs for temporal/seasonal variance.
+* **Extended Kalman Filtering (EKF):** Real-time sensor fusion running on local CPU cores.
+
 ---
 
 ## 🧩 6. The 12 Core Functional Modules: How GATI-SETU Solves Each One
@@ -401,7 +432,7 @@ Every single requirement, constraint, and operational friction point mentioned i
 * **Problem Statement Requirement:** *"downstream logistics services face uncertainty... feeder transport services... APIs for integration with mobile apps, station displays"*
 * **Why Legacy Systems Fail:** Millions of passengers arriving at major junctions rely on downstream feeder transport—city metro feeders, state road transport corporation (SRTC) buses, and ride-hailing cabs (Ola, Uber, auto-rickshaws). Simultaneously, express parcel and cargo logistics services depend on coaching train parcel vans (VPs). When train arrival times jump erratically by 1 to 2 hours, cabs cancel rides, passengers get stranded at midnight, and parcel logistics networks suffer supply chain disruption.
 * **How GATI-SETU Solves It:**
-  1. **OpenAPI 3.1 REST & WebSocket Gateway:** Provides an ultra-low latency (<25ms) public and partner API gateway protected by rate-limited API keys and mTLS authentication.
+  1. **Sovereign REST & WebSocket Gateway (OpenAPI 3.1 Standard):** Provides an ultra-low latency (<25ms) public and partner API gateway protected by rate-limited API keys and mTLS authentication, defined strictly according to the open Linux Foundation REST interface standard (formerly Swagger) with zero third-party cloud/LLM runtime dependencies.
   2. **Probabilistic Arrival Confidence Intervals:** Rather than returning a deceptive single-point number, the API returns a full confidence interval $[P_{10}, P_{50}, P_{90}]$:
      ```json
      {
