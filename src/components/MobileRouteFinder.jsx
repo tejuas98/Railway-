@@ -24,9 +24,12 @@ import {
   Satellite,
   Compass,
   Volume2,
+  VolumeX,
   Sparkles,
   ArrowLeft,
-  Filter
+  Filter,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { POPULAR_STATIONS, RECENT_SEARCHES, ROUTE_TRAINS } from '../data/routesData';
@@ -49,12 +52,26 @@ export default function MobileRouteFinder({ onSelectCorridorTrain }) {
   // View Mode in Live Running Status: 'timeline' | 'map2d' | 'view3d'
   const [viewMode, setViewMode] = useState('timeline');
   const [showIntermediateStations, setShowIntermediateStations] = useState(true);
-  const [cameraMode3D, setCameraMode3D] = useState('cab'); // 'cab' | 'drone'
+  
+  // 3D Perspective & Simulator States (Defaults to 3/4 Side Profile as requested!)
+  const [cameraMode3D, setCameraMode3D] = useState('side'); // 'side' (Default!) | 'drone' | 'cab'
+  const [timeOfDay, setTimeOfDay] = useState('dusk'); // 'day' | 'dusk' | 'night'
+  const [customSpeed, setCustomSpeed] = useState(74); // dynamic speed slider
+  const [isHornActive, setIsHornActive] = useState(false);
+  const [isSoundMuted, setIsSoundMuted] = useState(false);
+  
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [lastUpdatedSec, setLastUpdatedSec] = useState(4);
 
   const canvasRef = useRef(null);
   const animationFrameRef = useRef(null);
+
+  // Sync customSpeed when activeTrain changes
+  useEffect(() => {
+    if (activeTrain?.speedKmH !== undefined) {
+      setCustomSpeed(activeTrain.speedKmH);
+    }
+  }, [activeTrain]);
 
   // Auto-update counter
   useEffect(() => {
@@ -63,6 +80,52 @@ export default function MobileRouteFinder({ onSelectCorridorTrain }) {
     }, 2000);
     return () => clearInterval(timer);
   }, []);
+
+  // Web Audio API Indian Railways Pneumatic Air Horn (311 Hz + 370 Hz dual-tone)
+  const playAirHorn = () => {
+    setIsHornActive(true);
+    setTimeout(() => setIsHornActive(false), 1200);
+    toast.info(`📢 Indian Railways Pneumatic Horn: 311 Hz + 370 Hz Air Blast!`);
+
+    if (isSoundMuted) return;
+
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      const t = ctx.currentTime;
+      const osc1 = ctx.createOscillator();
+      const osc2 = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc1.type = 'sawtooth';
+      osc1.frequency.setValueAtTime(311, t); // D#4 tone (WAP-7 low horn)
+
+      osc2.type = 'sawtooth';
+      osc2.frequency.setValueAtTime(370, t); // F#4 tone (WAP-7 high horn)
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(1400, t);
+
+      gain.gain.setValueAtTime(0, t);
+      gain.gain.linearRampToValueAtTime(0.35, t + 0.08);
+      gain.gain.setValueAtTime(0.35, t + 0.75);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 1.2);
+
+      osc1.connect(filter);
+      osc2.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc1.start(t);
+      osc2.start(t);
+      osc1.stop(t + 1.25);
+      osc2.stop(t + 1.25);
+    } catch (e) {
+      console.warn('AudioContext error:', e);
+    }
+  };
 
   // Handle station swap
   const handleSwapStations = () => {
@@ -96,7 +159,532 @@ export default function MobileRouteFinder({ onSelectCorridorTrain }) {
     toast.info(`📍 Tracking Train #${train.number} (${train.name})`);
   };
 
-  // 3D Rail Corridor Canvas Simulation
+  // Helper function to draw a rotating steel wheel with spokes and counterweight
+  const drawWheel = (ctx, cx, cy, radius, angle, speed) => {
+    ctx.save();
+    ctx.translate(cx, cy);
+
+    // Flanged steel wheel rim
+    const rimGrad = ctx.createRadialGradient(0, 0, radius * 0.5, 0, 0, radius);
+    rimGrad.addColorStop(0, '#475569');
+    rimGrad.addColorStop(0.7, '#94a3b8');
+    rimGrad.addColorStop(0.9, '#cbd5e1');
+    rimGrad.addColorStop(1, '#334155');
+    ctx.fillStyle = rimGrad;
+    ctx.beginPath();
+    ctx.arc(0, 0, radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = '#0f172a';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // Inner wheel disc
+    ctx.fillStyle = '#1e293b';
+    ctx.beginPath();
+    ctx.arc(0, 0, radius * 0.72, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Rotating spokes (6 spokes)
+    ctx.strokeStyle = speed > 80 ? 'rgba(203, 213, 225, 0.4)' : '#94a3b8';
+    ctx.lineWidth = 2;
+    for (let i = 0; i < 6; i++) {
+      const spkAngle = angle + (i * Math.PI) / 3;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(Math.cos(spkAngle) * radius * 0.68, Math.sin(spkAngle) * radius * 0.68);
+      ctx.stroke();
+    }
+
+    // Axle center hub & brass cap
+    ctx.fillStyle = '#f59e0b';
+    ctx.beginPath();
+    ctx.arc(0, 0, radius * 0.28, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#0f172a';
+    ctx.beginPath();
+    ctx.arc(0, 0, radius * 0.12, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.restore();
+  };
+
+  // Helper to draw a heavy 3-axle Co-Co locomotive bogie or 2-axle coach bogie
+  const drawBogie = (ctx, x, y, width, wheelRadius, wheelAngle, speed, numAxles = 3) => {
+    // Bogie cast steel frame
+    ctx.fillStyle = '#0f172a';
+    ctx.fillRect(x, y - 10, width, 12);
+    ctx.strokeStyle = '#334155';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(x, y - 10, width, 12);
+
+    // Axles & suspension helical springs
+    const spacing = width / (numAxles + 1);
+    for (let i = 1; i <= numAxles; i++) {
+      const wx = x + i * spacing;
+      // Primary coil springs
+      ctx.fillStyle = '#f59e0b';
+      ctx.fillRect(wx - 4, y - 15, 8, 6);
+
+      // Rotating Wheel
+      drawWheel(ctx, wx, y, wheelRadius, wheelAngle, speed);
+    }
+  };
+
+  // Helper to draw the authentic Indian Railways Electric Locomotive (WAP-7 / Vande Bharat)
+  const drawLocomotive = (
+    ctx,
+    x,
+    y,
+    w,
+    h,
+    frontX,
+    wheelAngle,
+    contactWireY,
+    speed,
+    timeOfDay,
+    isVandeBharat,
+    train,
+    isHornActive,
+    frame
+  ) => {
+    ctx.save();
+
+    // 1. Underframe & Heavy Co-Co Bogies (Front & Rear Bogies)
+    const bogieW = 95;
+    const wheelR = 15;
+    const bogieY = y - wheelR;
+
+    // Rear Bogie (3 Axles)
+    drawBogie(ctx, x + 18, bogieY, bogieW, wheelR, wheelAngle, speed, 3);
+    // Front Bogie (3 Axles)
+    drawBogie(ctx, x + w - bogieW - 22, bogieY, bogieW, wheelR, wheelAngle, speed, 3);
+
+    // Fuel/Battery and Transformer Under-slung Equipment between bogies
+    ctx.fillStyle = '#1e293b';
+    ctx.fillRect(x + bogieW + 24, y - 28, w - (bogieW * 2 + 48), 16);
+    ctx.strokeStyle = '#334155';
+    ctx.strokeRect(x + bogieW + 24, y - 28, w - (bogieW * 2 + 48), 16);
+
+    // 2. Locomotive Main Chasis Deck (Floor)
+    const deckY = y - 30;
+    ctx.fillStyle = '#0f172a';
+    ctx.fillRect(x - 6, deckY, w + 16, 6);
+
+    // Cowcatcher (Cattle Guard) at the bottom front
+    ctx.fillStyle = '#020617';
+    ctx.beginPath();
+    ctx.moveTo(frontX - 4, deckY + 6);
+    ctx.lineTo(frontX + 16, y - 4);
+    ctx.lineTo(frontX - 8, y - 4);
+    ctx.closePath();
+    ctx.fill();
+    // Hazard diagonal stripes on cowcatcher
+    ctx.strokeStyle = '#f59e0b';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(frontX, deckY + 10);
+    ctx.lineTo(frontX + 10, y - 6);
+    ctx.moveTo(frontX - 5, deckY + 12);
+    ctx.lineTo(frontX + 4, y - 6);
+    ctx.stroke();
+
+    // Screw Coupler & Buffer beam
+    ctx.fillStyle = '#dc2626';
+    ctx.fillRect(frontX - 2, deckY - 6, 8, 12);
+    ctx.fillStyle = '#475569';
+    ctx.fillRect(frontX + 6, deckY - 3, 10, 6);
+
+    // 3. Main Locomotive Body Shell
+    const bodyTop = deckY - h + 18;
+    const bodyH = h - 24;
+
+    if (isVandeBharat) {
+      // Sleek Aerodynamic Bullet Nose (White & Navy Blue)
+      const vGrad = ctx.createLinearGradient(x, bodyTop, frontX, bodyTop + bodyH);
+      vGrad.addColorStop(0, '#f8fafc');
+      vGrad.addColorStop(0.7, '#ffffff');
+      vGrad.addColorStop(1, '#e2e8f0');
+      ctx.fillStyle = vGrad;
+
+      ctx.beginPath();
+      ctx.moveTo(x, deckY);
+      ctx.lineTo(frontX - 50, deckY);
+      // Aerodynamic curved nose
+      ctx.quadraticCurveTo(frontX + 10, deckY, frontX + 12, bodyTop + bodyH * 0.45);
+      ctx.quadraticCurveTo(frontX - 10, bodyTop, frontX - 55, bodyTop);
+      ctx.lineTo(x, bodyTop);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#0284c7';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Royal Navy Blue Streak
+      ctx.fillStyle = '#1e3a8a';
+      ctx.beginPath();
+      ctx.moveTo(x, bodyTop + bodyH * 0.45);
+      ctx.lineTo(frontX - 40, bodyTop + bodyH * 0.45);
+      ctx.quadraticCurveTo(frontX + 6, bodyTop + bodyH * 0.5, frontX + 8, bodyTop + bodyH * 0.7);
+      ctx.lineTo(x, bodyTop + bodyH * 0.7);
+      ctx.closePath();
+      ctx.fill();
+    } else {
+      // Classic Indian Railways WAP-7 Locomotive Body (Red & Cream Livery)
+      // Main Body Fill
+      const locoGrad = ctx.createLinearGradient(x, bodyTop, frontX, bodyTop + bodyH);
+      locoGrad.addColorStop(0, '#ffffff');
+      locoGrad.addColorStop(0.5, '#f8fafc');
+      locoGrad.addColorStop(1, '#f1f5f9');
+      ctx.fillStyle = locoGrad;
+
+      ctx.beginPath();
+      ctx.moveTo(x, deckY);
+      ctx.lineTo(frontX - 25, deckY);
+      // Raked cab nose
+      ctx.lineTo(frontX + 6, deckY - bodyH * 0.45);
+      ctx.lineTo(frontX - 35, bodyTop);
+      ctx.lineTo(x, bodyTop);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#94a3b8';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Iconic Central Crimson Red Stripe
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath();
+      ctx.moveTo(x, bodyTop + bodyH * 0.35);
+      ctx.lineTo(frontX - 20, bodyTop + bodyH * 0.35);
+      ctx.lineTo(frontX - 6, bodyTop + bodyH * 0.65);
+      ctx.lineTo(x, bodyTop + bodyH * 0.65);
+      ctx.closePath();
+      ctx.fill();
+
+      // Golden pinstripes
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(x, bodyTop + bodyH * 0.35);
+      ctx.lineTo(frontX - 20, bodyTop + bodyH * 0.35);
+      ctx.moveTo(x, bodyTop + bodyH * 0.65);
+      ctx.lineTo(frontX - 6, bodyTop + bodyH * 0.65);
+      ctx.stroke();
+
+      // Indian Railways Stencil Markings
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 9px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('भारतीय रेल • INDIAN RAILWAYS', x + w * 0.42, bodyTop + bodyH * 0.54);
+
+      // Locomotive Class Plate
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(x + w * 0.28, bodyTop + bodyH * 0.72, 65, 12);
+      ctx.fillStyle = '#fef08a';
+      ctx.font = 'bold 8px monospace';
+      ctx.fillText('WAP-7 #30412', x + w * 0.28 + 32, bodyTop + bodyH * 0.72 + 9);
+    }
+
+    // 4. Cab Windshield & Loco Pilot (Driver)
+    ctx.fillStyle = '#0f172a';
+    ctx.beginPath();
+    ctx.moveTo(frontX - 35, bodyTop + 4);
+    ctx.lineTo(frontX - 2, bodyTop + bodyH * 0.38);
+    ctx.lineTo(frontX - 25, bodyTop + bodyH * 0.38);
+    ctx.lineTo(frontX - 45, bodyTop + 4);
+    ctx.closePath();
+    ctx.fill();
+
+    // Windshield glass tint & reflection
+    const glassGrad = ctx.createLinearGradient(frontX - 45, bodyTop, frontX - 2, bodyTop + bodyH * 0.38);
+    glassGrad.addColorStop(0, 'rgba(56, 189, 248, 0.6)');
+    glassGrad.addColorStop(0.5, 'rgba(186, 230, 253, 0.4)');
+    glassGrad.addColorStop(1, 'rgba(15, 23, 42, 0.8)');
+    ctx.fillStyle = glassGrad;
+    ctx.fill();
+    ctx.strokeStyle = '#38bdf8';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Loco Pilot Silhouette in Cab
+    ctx.fillStyle = '#0f172a';
+    ctx.beginPath();
+    ctx.arc(frontX - 28, bodyTop + 16, 5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillRect(frontX - 33, bodyTop + 21, 10, 9);
+
+    // Cab Windshield Wiper
+    ctx.strokeStyle = '#020617';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(frontX - 16, bodyTop + bodyH * 0.36);
+    ctx.lineTo(frontX - 24, bodyTop + bodyH * 0.16);
+    ctx.stroke();
+
+    // 5. Dual High-Intensity Headlights
+    const headlightX = frontX + 2;
+    const headlightY = deckY - bodyH * 0.38;
+
+    ctx.fillStyle = '#fef08a';
+    ctx.shadowColor = '#fef08a';
+    ctx.shadowBlur = 18;
+    ctx.beginPath();
+    ctx.arc(headlightX, headlightY, 6, 0, Math.PI * 2);
+    ctx.arc(headlightX - 4, headlightY + 8, 4.5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // 6. Rooftop Equipment & Raised Electric Pantograph
+    // Roof AC pods & dynamic brake resistor bank
+    ctx.fillStyle = '#334155';
+    ctx.fillRect(x + 25, bodyTop - 6, 65, 6);
+    ctx.fillRect(x + 110, bodyTop - 6, 80, 6);
+
+    // Single-Arm High-Speed Pantograph (Reaching up to 25kV Catenary Contact Wire)
+    const pantoBaseX = x + 60;
+    const pantoBaseY = bodyTop;
+    const pantoKneeX = pantoBaseX + 18;
+    const pantoKneeY = bodyTop - (bodyTop - contactWireY) * 0.55;
+    const pantoHeadX = pantoBaseX + 4;
+    const pantoHeadY = contactWireY;
+
+    // Lower & Upper Pantograph Arms (Orange / Red steel tubing)
+    ctx.strokeStyle = '#ea580c';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(pantoBaseX, pantoBaseY);
+    ctx.lineTo(pantoKneeX, pantoKneeY);
+    ctx.lineTo(pantoHeadX, pantoHeadY);
+    ctx.stroke();
+
+    // Pantograph Collector Pan (Carbon strip sliding on contact wire)
+    ctx.strokeStyle = '#475569';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(pantoHeadX - 18, pantoHeadY);
+    ctx.lineTo(pantoHeadX + 18, pantoHeadY);
+    ctx.stroke();
+
+    // Dynamic High-Speed Electrical Spark at Pantograph Contact Point!
+    if (speed > 15 && Math.sin(frame * 0.6) > 0.4) {
+      ctx.fillStyle = '#38bdf8';
+      ctx.shadowColor = '#67e8f9';
+      ctx.shadowBlur = 14;
+      ctx.beginPath();
+      ctx.arc(pantoHeadX + (Math.random() * 6 - 3), pantoHeadY, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+
+    // 7. Roof Pneumatic Horn & Horn Audio Shockwaves
+    ctx.fillStyle = '#f59e0b';
+    ctx.fillRect(frontX - 48, bodyTop - 7, 14, 4);
+
+    if (isHornActive) {
+      // Golden animated soundwave rings expanding from horn!
+      ctx.strokeStyle = 'rgba(245, 158, 11, 0.8)';
+      ctx.lineWidth = 2;
+      for (let s = 1; s <= 3; s++) {
+        ctx.beginPath();
+        ctx.arc(frontX - 40, bodyTop - 8, s * 14 + (frame % 8) * 2, -Math.PI * 0.6, Math.PI * 0.1);
+        ctx.stroke();
+      }
+    }
+
+    ctx.restore();
+  };
+
+  // Helper to draw coupled trailing LHB passenger coaches
+  const drawLhbCoach = (ctx, x, y, w, h, wheelAngle, timeOfDay, isVandeBharat, coachIndex) => {
+    ctx.save();
+
+    // Underframe Bogies (2 FIAT bogies per coach, 2 axles each)
+    const wheelR = 13;
+    const bogieW = 55;
+    const bogieY = y - wheelR;
+
+    // Left Bogie
+    drawBogie(ctx, x + 16, bogieY, bogieW, wheelR, wheelAngle, 80, 2);
+    // Right Bogie
+    drawBogie(ctx, x + w - bogieW - 16, bogieY, bogieW, wheelR, wheelAngle, 80, 2);
+
+    // Coach Base Deck
+    const deckY = y - 28;
+    ctx.fillStyle = '#0f172a';
+    ctx.fillRect(x, deckY, w, 5);
+
+    // Coach Body Box
+    const bodyTop = deckY - h + 22;
+    const bodyH = h - 22;
+
+    if (isVandeBharat) {
+      // White and Blue Vande Bharat coach livery
+      ctx.fillStyle = '#f8fafc';
+      ctx.fillRect(x, bodyTop, w, bodyH);
+      ctx.strokeStyle = '#cbd5e1';
+      ctx.lineWidth = 1.2;
+      ctx.strokeRect(x, bodyTop, w, bodyH);
+
+      // Blue window band
+      ctx.fillStyle = '#1e3a8a';
+      ctx.fillRect(x, bodyTop + 14, w, 28);
+    } else {
+      // Classic Indian Railways Red & Grey LHB Coach livery
+      ctx.fillStyle = '#e2e8f0'; // Silver-grey stainless steel body
+      ctx.fillRect(x, bodyTop, w, bodyH);
+      ctx.strokeStyle = '#94a3b8';
+      ctx.lineWidth = 1.2;
+      ctx.strokeRect(x, bodyTop, w, bodyH);
+
+      // Crimson Red Window Band (LHB Rajdhani style)
+      ctx.fillStyle = '#b91c1c';
+      ctx.fillRect(x, bodyTop + 14, w, 28);
+
+      // Yellow pinstripe
+      ctx.fillStyle = '#f59e0b';
+      ctx.fillRect(x, bodyTop + 12, w, 2);
+      ctx.fillRect(x, bodyTop + 42, w, 2);
+    }
+
+    // Longitudinal corrugated roof ribs
+    ctx.strokeStyle = '#64748b';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(x, bodyTop + 4);
+    ctx.lineTo(x + w, bodyTop + 4);
+    ctx.moveTo(x, bodyTop + 7);
+    ctx.lineTo(x + w, bodyTop + 7);
+    ctx.stroke();
+
+    // Passenger Tinted Windows with warm interior lighting
+    const numWindows = 6;
+    const winW = (w - 30) / numWindows;
+    for (let i = 0; i < numWindows; i++) {
+      const winX = x + 15 + i * winW;
+      const winY = bodyTop + 17;
+
+      // Window Frame
+      ctx.fillStyle = '#020617';
+      ctx.fillRect(winX + 2, winY, winW - 6, 22);
+
+      // Glowing Interior Glass
+      ctx.fillStyle = timeOfDay === 'night' ? '#fef08a' : '#fef9c3';
+      ctx.fillRect(winX + 3, winY + 1, winW - 8, 20);
+
+      // Passenger silhouettes inside
+      if (i % 2 === 0) {
+        ctx.fillStyle = '#1e293b';
+        ctx.beginPath();
+        ctx.arc(winX + winW * 0.45, winY + 8, 3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillRect(winX + winW * 0.35, winY + 12, 7, 8);
+      }
+    }
+
+    // Coach Type Label
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 7px system-ui';
+    ctx.textAlign = 'center';
+    ctx.fillText(`LHB AC-3T • COACH B${coachIndex}`, x + w * 0.5, bodyTop + bodyH - 5);
+
+    ctx.restore();
+  };
+
+  // Helper to draw flexible rubber vestibule bellows
+  const drawVestibule = (ctx, x, y, w, h) => {
+    ctx.fillStyle = '#090d16';
+    ctx.fillRect(x, y - h - 6, w, h);
+    // Accordion folds
+    ctx.strokeStyle = '#334155';
+    ctx.lineWidth = 1.5;
+    for (let f = 0; f < w; f += 4) {
+      ctx.beginPath();
+      ctx.moveTo(x + f, y - h - 6);
+      ctx.lineTo(x + f, y - 6);
+      ctx.stroke();
+    }
+  };
+
+  // Helper to draw Loco Pilot Cab Driver HUD View
+  const drawCabDriverView = (ctx, width, height, speed, train, timeOfDay, frame, isHornActive) => {
+    // Sky
+    const skyGrad = ctx.createLinearGradient(0, 0, 0, height * 0.45);
+    skyGrad.addColorStop(0, timeOfDay === 'night' ? '#020617' : timeOfDay === 'dusk' ? '#431407' : '#0284c7');
+    skyGrad.addColorStop(1, timeOfDay === 'night' ? '#0f172a' : timeOfDay === 'dusk' ? '#ea580c' : '#bae6fd');
+    ctx.fillStyle = skyGrad;
+    ctx.fillRect(0, 0, width, height * 0.45);
+
+    // Ground
+    ctx.fillStyle = timeOfDay === 'night' ? '#0b0f19' : '#1e293b';
+    ctx.fillRect(0, height * 0.45, width, height * 0.55);
+
+    const vanishX = width / 2;
+    const vanishY = height * 0.45;
+    const bottomSpacing = width * 0.32;
+
+    // Moving Sleepers
+    const zOffset = (frame * speed * 0.15) % 60;
+    for (let i = 28; i >= 1; i--) {
+      const rawZ = i * 25 - zOffset;
+      if (rawZ <= 5) continue;
+      const scale = 320 / (rawZ + 80);
+      const y = vanishY + (height - vanishY) * (1 - scale * 0.95);
+      if (y < vanishY || y > height - 60) continue;
+      const sleeperWidth = 140 * scale;
+      ctx.fillStyle = '#64748b';
+      ctx.fillRect(vanishX - sleeperWidth / 2, y, sleeperWidth, Math.max(3, 8 * scale));
+    }
+
+    // Steel Rails converging to vanishing point
+    ctx.strokeStyle = '#38bdf8';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(vanishX - 6, vanishY);
+    ctx.lineTo(vanishX - bottomSpacing, height);
+    ctx.moveTo(vanishX + 6, vanishY);
+    ctx.lineTo(vanishX + bottomSpacing, height);
+    ctx.stroke();
+
+    // Headlight cone on track
+    const beamGrad = ctx.createRadialGradient(vanishX, height - 90, 30, vanishX, height * 0.65, width * 0.4);
+    beamGrad.addColorStop(0, 'rgba(254, 240, 138, 0.4)');
+    beamGrad.addColorStop(1, 'rgba(254, 240, 138, 0)');
+    ctx.fillStyle = beamGrad;
+    ctx.fillRect(0, height * 0.45, width, height * 0.55);
+
+    // Driver Cab Dashboard Bottom
+    ctx.fillStyle = '#0f172a';
+    ctx.beginPath();
+    ctx.moveTo(0, height - 90);
+    ctx.lineTo(width * 0.2, height - 105);
+    ctx.lineTo(width * 0.8, height - 105);
+    ctx.lineTo(width, height - 90);
+    ctx.lineTo(width, height);
+    ctx.lineTo(0, height);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle = '#334155';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    // Windshield Wipers
+    ctx.strokeStyle = '#475569';
+    ctx.lineWidth = 3.5;
+    ctx.beginPath();
+    ctx.moveTo(width * 0.35, height - 105);
+    ctx.lineTo(width * 0.42, height - 170);
+    ctx.stroke();
+
+    // Signal Gantry ahead (Green aspect)
+    ctx.fillStyle = '#10b981';
+    ctx.shadowColor = '#10b981';
+    ctx.shadowBlur = 20;
+    ctx.beginPath();
+    ctx.arc(vanishX - bottomSpacing * 0.8, vanishY - 20, 6, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  };
+
+  // 3D Rail Corridor Canvas Simulation Engine
   useEffect(() => {
     if (screenMode !== 'live_status' || viewMode !== 'view3d') return;
 
@@ -104,209 +692,321 @@ export default function MobileRouteFinder({ onSelectCorridorTrain }) {
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     let width = (canvas.width = canvas.parentElement.clientWidth);
-    let height = (canvas.height = 420);
+    let height = (canvas.height = 440);
 
-    let zOffset = 0;
-    const speed = (activeTrain?.speedKmH || 75) * 0.15;
+    let frame = 0;
+    let wheelAngle = 0;
+    let trackOffset = 0;
+    let mountainOffset = 0;
+    let treesOffset = 0;
+    let catenaryOffset = 0;
 
-    const render3D = () => {
+    const render = () => {
+      frame++;
+      const currentSpd = customSpeed;
+      const step = currentSpd * 0.14;
+
+      // Continuous rotation & parallax scrolling based on actual speed
+      wheelAngle = (wheelAngle + currentSpd * 0.08) % (Math.PI * 2);
+      trackOffset = (trackOffset + step) % 36;
+      catenaryOffset = (catenaryOffset + step) % 260;
+      treesOffset = (treesOffset + step * 0.35) % width;
+      mountainOffset = (mountainOffset + step * 0.08) % width;
+
       ctx.clearRect(0, 0, width, height);
 
-      // Sky & Horizon gradient
-      const skyGrad = ctx.createLinearGradient(0, 0, 0, height * 0.45);
-      skyGrad.addColorStop(0, '#090d16');
-      skyGrad.addColorStop(0.7, '#0f172a');
-      skyGrad.addColorStop(1, '#1e293b');
-      ctx.fillStyle = skyGrad;
-      ctx.fillRect(0, 0, width, height * 0.45);
+      if (cameraMode3D === 'side' || cameraMode3D === 'drone') {
+        // =======================================================
+        // 3/4 SIDE-PROFILE CINEMATIC TRACKSIDE CAMERA (USER REQUESTED!)
+        // =======================================================
+        const isDrone = cameraMode3D === 'drone';
+        const trackY = isDrone ? 340 : 315;
+        const horizonY = isDrone ? 150 : 175;
 
-      // Distant mountains / terrain
-      ctx.fillStyle = '#0a101d';
-      ctx.beginPath();
-      ctx.moveTo(0, height * 0.45);
-      for (let x = 0; x <= width; x += 40) {
-        const my = height * 0.45 - Math.sin((x + zOffset * 0.2) * 0.015) * 25 - Math.cos(x * 0.03) * 15;
-        ctx.lineTo(x, my);
-      }
-      ctx.lineTo(width, height * 0.45);
-      ctx.closePath();
-      ctx.fill();
+        // 1. Sky Gradient based on timeOfDay
+        const skyGrad = ctx.createLinearGradient(0, 0, 0, horizonY);
+        if (timeOfDay === 'day') {
+          skyGrad.addColorStop(0, '#0284c7');
+          skyGrad.addColorStop(0.6, '#38bdf8');
+          skyGrad.addColorStop(1, '#bae6fd');
+        } else if (timeOfDay === 'dusk') {
+          skyGrad.addColorStop(0, '#0f172a');
+          skyGrad.addColorStop(0.3, '#312e81');
+          skyGrad.addColorStop(0.6, '#7c2d12');
+          skyGrad.addColorStop(0.85, '#ea580c');
+          skyGrad.addColorStop(1, '#fbbf24');
+        } else {
+          // Night
+          skyGrad.addColorStop(0, '#020617');
+          skyGrad.addColorStop(0.7, '#090d16');
+          skyGrad.addColorStop(1, '#111827');
+        }
+        ctx.fillStyle = skyGrad;
+        ctx.fillRect(0, 0, width, horizonY);
 
-      // Ballast ground gradient
-      const groundGrad = ctx.createLinearGradient(0, height * 0.45, 0, height);
-      groundGrad.addColorStop(0, '#1e293b');
-      groundGrad.addColorStop(0.3, '#182030');
-      groundGrad.addColorStop(1, '#0b0f19');
-      ctx.fillStyle = groundGrad;
-      ctx.fillRect(0, height * 0.45, width, height * 0.55);
+        // Celestial Body (Sun / Moon)
+        if (timeOfDay === 'day') {
+          ctx.fillStyle = '#fef08a';
+          ctx.shadowColor = '#fef08a';
+          ctx.shadowBlur = 30;
+          ctx.beginPath();
+          ctx.arc(width * 0.82, 45, 24, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        } else if (timeOfDay === 'dusk') {
+          ctx.fillStyle = '#fb923c';
+          ctx.shadowColor = '#f97316';
+          ctx.shadowBlur = 40;
+          ctx.beginPath();
+          ctx.arc(width * 0.85, horizonY - 15, 28, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        } else {
+          // Crescent Moon
+          ctx.fillStyle = '#f8fafc';
+          ctx.shadowColor = '#e2e8f0';
+          ctx.shadowBlur = 20;
+          ctx.beginPath();
+          ctx.arc(width * 0.85, 45, 18, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        }
 
-      const vanishX = width / 2;
-      const vanishY = height * 0.45;
+        // 2. Parallax Distant Mountains (Deccan Plateau / Vindhya Range)
+        ctx.fillStyle = timeOfDay === 'night' ? '#0b1120' : timeOfDay === 'dusk' ? '#2e1065' : '#0369a1';
+        ctx.beginPath();
+        ctx.moveTo(0, horizonY);
+        for (let x = 0; x <= width + 40; x += 30) {
+          const mx = (x + mountainOffset) % (width + 60);
+          const mh = Math.sin(mx * 0.008) * 35 + Math.cos(mx * 0.02) * 18 + 25;
+          ctx.lineTo(x, horizonY - mh);
+        }
+        ctx.lineTo(width, horizonY);
+        ctx.closePath();
+        ctx.fill();
 
-      // Track Sleepers (Cross ties moving toward camera)
-      zOffset = (zOffset + speed) % 60;
-      const numSleepers = 32;
+        // 3. Midground: Trees & Electrical Transmission Pylons
+        ctx.fillStyle = timeOfDay === 'night' ? '#060a12' : timeOfDay === 'dusk' ? '#1c1917' : '#065f46';
+        for (let t = -60; t < width + 60; t += 70) {
+          const tx = (t - treesOffset + width + 140) % (width + 140) - 70;
+          const treeH = 35 + Math.sin(tx * 0.1) * 12;
+          ctx.beginPath();
+          ctx.arc(tx, horizonY - treeH * 0.6, treeH * 0.5, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillRect(tx - 3, horizonY - treeH * 0.6, 6, treeH * 0.6);
+        }
 
-      ctx.lineWidth = 1.5;
-      for (let i = numSleepers; i >= 1; i--) {
-        const rawZ = i * 25 - zOffset;
-        if (rawZ <= 5) continue;
+        // 4. Ground / Embankment below horizon
+        const groundGrad = ctx.createLinearGradient(0, horizonY, 0, height);
+        if (timeOfDay === 'night') {
+          groundGrad.addColorStop(0, '#0a0f1d');
+          groundGrad.addColorStop(0.4, '#111827');
+          groundGrad.addColorStop(1, '#05070c');
+        } else if (timeOfDay === 'dusk') {
+          groundGrad.addColorStop(0, '#292524');
+          groundGrad.addColorStop(0.4, '#1c1917');
+          groundGrad.addColorStop(1, '#0c0a09');
+        } else {
+          groundGrad.addColorStop(0, '#15803d');
+          groundGrad.addColorStop(0.3, '#166534');
+          groundGrad.addColorStop(0.6, '#334155');
+          groundGrad.addColorStop(1, '#1e293b');
+        }
+        ctx.fillStyle = groundGrad;
+        ctx.fillRect(0, horizonY, width, height - horizonY);
 
-        const scale = 320 / (rawZ + 80);
-        const y = vanishY + (height - vanishY) * (1 - scale * 0.95);
-        if (y < vanishY || y > height + 20) continue;
+        // 5. Ballast Bed (Crushed granite stone trackbed)
+        ctx.fillStyle = timeOfDay === 'night' ? '#182030' : '#334155';
+        ctx.beginPath();
+        ctx.moveTo(0, trackY - 20);
+        ctx.lineTo(width, trackY - (isDrone ? 26 : 20));
+        ctx.lineTo(width, trackY + 55);
+        ctx.lineTo(0, trackY + 55);
+        ctx.closePath();
+        ctx.fill();
 
-        const sleeperWidth = 140 * scale;
-        const sleeperHeight = Math.max(3, 10 * scale);
+        // Ballast texture grain
+        ctx.fillStyle = 'rgba(255,255,255,0.03)';
+        for (let bx = 0; bx < width; bx += 18) {
+          ctx.fillRect(bx + (frame % 7), trackY - 15, 8, 45);
+        }
 
-        // Sleeper concrete block
-        ctx.fillStyle = `rgba(100, 116, 139, ${Math.min(1, scale * 1.2)})`;
-        ctx.fillRect(vanishX - sleeperWidth / 2, y, sleeperWidth, sleeperHeight);
+        // 6. Concrete Monoblock Sleepers (Moving left at actual train speed!)
+        const sleeperSpacing = 36;
+        for (let sx = -sleeperSpacing; sx < width + sleeperSpacing; sx += sleeperSpacing) {
+          const sleeperX = sx - trackOffset;
+          ctx.fillStyle = '#64748b';
+          ctx.fillRect(sleeperX, trackY - (isDrone ? 6 : 4), 16, isDrone ? 32 : 26);
+          // Pandrol clip fastenings
+          ctx.fillStyle = '#f59e0b';
+          ctx.fillRect(sleeperX + 3, trackY - 2, 4, 3);
+          ctx.fillRect(sleeperX + 9, trackY + (isDrone ? 18 : 14), 4, 3);
+        }
 
-        // Rail fastening clips
-        ctx.fillStyle = '#f59e0b';
-        ctx.fillRect(vanishX - sleeperWidth * 0.38, y - 1, 4 * scale, 3 * scale);
-        ctx.fillRect(vanishX + sleeperWidth * 0.38 - 4 * scale, y - 1, 4 * scale, 3 * scale);
-      }
-
-      // Steel Rails (Perspective lines receding to vanishing point)
-      const bottomRailSpacing = width * 0.32;
-      ctx.strokeStyle = '#38bdf8';
-      ctx.lineWidth = 4;
-      ctx.shadowColor = '#0284c7';
-      ctx.shadowBlur = 10;
-
-      // Left Rail
-      ctx.beginPath();
-      ctx.moveTo(vanishX - 8, vanishY);
-      ctx.lineTo(vanishX - bottomRailSpacing, height);
-      ctx.stroke();
-
-      // Right Rail
-      ctx.beginPath();
-      ctx.moveTo(vanishX + 8, vanishY);
-      ctx.lineTo(vanishX + bottomRailSpacing, height);
-      ctx.stroke();
-      ctx.shadowBlur = 0;
-
-      // Overhead 25kV Catenary Wire & Contact Wire
-      ctx.strokeStyle = '#e2e8f0';
-      ctx.lineWidth = 1.2;
-      ctx.beginPath();
-      ctx.moveTo(vanishX, vanishY - 40);
-      ctx.lineTo(vanishX, 0);
-      ctx.stroke();
-
-      // Catenary Mast Poles (receding into distance)
-      for (let m = 5; m >= 1; m--) {
-        const mastZ = m * 140 - (zOffset * 2.2);
-        if (mastZ < 20) continue;
-        const mScale = 320 / (mastZ + 100);
-        const mX = vanishX + bottomRailSpacing * 1.35 * mScale;
-        const mBaseY = vanishY + (height - vanishY) * (1 - mScale * 0.95);
-        const mTopY = mBaseY - 180 * mScale;
-
-        // Mast steel pillar
+        // 7. Dual Continuous Polished Steel Rails
         ctx.strokeStyle = '#94a3b8';
-        ctx.lineWidth = Math.max(2, 6 * mScale);
+        ctx.lineWidth = 5;
         ctx.beginPath();
-        ctx.moveTo(mX, mBaseY);
-        ctx.lineTo(mX, mTopY);
-        ctx.lineTo(vanishX, mTopY + 15 * mScale);
+        ctx.moveTo(0, trackY);
+        ctx.lineTo(width, trackY - (isDrone ? 6 : 0));
         ctx.stroke();
 
-        // Insulator
-        ctx.fillStyle = '#f97316';
+        ctx.strokeStyle = '#64748b';
+        ctx.lineWidth = 5;
         ctx.beginPath();
-        ctx.arc(vanishX, mTopY + 15 * mScale, Math.max(2, 4 * mScale), 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      // Live 4-Aspect Colour Light Signal Gantry ahead (at fixed distance)
-      const signalZ = 280 - (zOffset % 280);
-      const sScale = 320 / (signalZ + 80);
-      const sX = vanishX - bottomRailSpacing * 1.25 * sScale;
-      const sBaseY = vanishY + (height - vanishY) * (1 - sScale * 0.95);
-      const sTopY = sBaseY - 160 * sScale;
-
-      // Signal post
-      ctx.strokeStyle = '#cbd5e1';
-      ctx.lineWidth = Math.max(2, 5 * sScale);
-      ctx.beginPath();
-      ctx.moveTo(sX, sBaseY);
-      ctx.lineTo(sX, sTopY);
-      ctx.stroke();
-
-      // Signal target head
-      const targetW = 20 * sScale;
-      const targetH = 50 * sScale;
-      ctx.fillStyle = '#020617';
-      ctx.fillRect(sX - targetW / 2, sTopY - targetH, targetW, targetH);
-      ctx.strokeStyle = '#475569';
-      ctx.strokeRect(sX - targetW / 2, sTopY - targetH, targetW, targetH);
-
-      // Active Signal Aspect (Green or Yellow depending on train delay)
-      const isYellow = activeTrain?.statusColor?.includes('red') || activeTrain?.statusColor?.includes('amber');
-      ctx.fillStyle = isYellow ? '#f59e0b' : '#10b981';
-      ctx.shadowColor = isYellow ? '#f59e0b' : '#10b981';
-      ctx.shadowBlur = 18;
-      ctx.beginPath();
-      ctx.arc(sX, sTopY - (isYellow ? targetH * 0.5 : targetH * 0.8), Math.max(3, 6 * sScale), 0, Math.PI * 2);
-      ctx.fill();
-      ctx.shadowBlur = 0;
-
-      // Locomotive Front / Windshield Frame (if in Cab View)
-      if (cameraMode3D === 'cab') {
-        // Cab dashboard bottom
-        ctx.fillStyle = '#0f172a';
-        ctx.beginPath();
-        ctx.moveTo(0, height - 85);
-        ctx.lineTo(width * 0.2, height - 95);
-        ctx.lineTo(width * 0.8, height - 95);
-        ctx.lineTo(width, height - 85);
-        ctx.lineTo(width, height);
-        ctx.lineTo(0, height);
-        ctx.closePath();
-        ctx.fill();
-        ctx.strokeStyle = '#334155';
-        ctx.lineWidth = 3;
+        ctx.moveTo(0, trackY + (isDrone ? 20 : 16));
+        ctx.lineTo(width, trackY + (isDrone ? 14 : 16));
         ctx.stroke();
 
-        // Cab windshield wipers
-        ctx.strokeStyle = '#475569';
-        ctx.lineWidth = 3;
+        // Top rail metallic specular highlight
+        ctx.strokeStyle = '#f8fafc';
+        ctx.lineWidth = 1.2;
         ctx.beginPath();
-        ctx.moveTo(width * 0.35, height - 95);
-        ctx.lineTo(width * 0.42, height - 160);
+        ctx.moveTo(0, trackY - 2);
+        ctx.lineTo(width, trackY - (isDrone ? 8 : 2));
         ctx.stroke();
 
-        // Twin headlight beams projecting onto track
-        const beamGrad = ctx.createRadialGradient(
-          vanishX, height - 95, 20,
-          vanishX, height * 0.7, width * 0.4
+        // 8. 25kV Overhead Catenary System (Portal Masts + Contact Wire)
+        const contactWireY = trackY - 145;
+        ctx.strokeStyle = '#cbd5e1';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(0, contactWireY);
+        ctx.lineTo(width, contactWireY);
+        ctx.stroke();
+
+        // Catenary Messenger Wire & Droppers
+        ctx.strokeStyle = '#64748b';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(0, contactWireY - 22);
+        for (let wx = 0; wx <= width; wx += 50) {
+          const sag = Math.sin((wx - catenaryOffset) * 0.02) * 8;
+          ctx.lineTo(wx, contactWireY - 22 + sag);
+        }
+        ctx.stroke();
+
+        // Catenary Portal Masts passing by
+        const mastDist = 260;
+        for (let mx = -mastDist; mx < width + mastDist; mx += mastDist) {
+          const mastX = mx - catenaryOffset;
+          // Steel girder lattice pole
+          ctx.fillStyle = '#475569';
+          ctx.fillRect(mastX - 4, contactWireY - 50, 8, trackY - (contactWireY - 50) + 20);
+          ctx.strokeStyle = '#64748b';
+          ctx.lineWidth = 1;
+          ctx.strokeRect(mastX - 4, contactWireY - 50, 8, trackY - (contactWireY - 50) + 20);
+
+          // Cantilever horizontal bracket arm
+          ctx.fillStyle = '#94a3b8';
+          ctx.fillRect(mastX - 25, contactWireY - 32, 25, 4);
+
+          // Porcelain insulator discs
+          ctx.fillStyle = '#ea580c';
+          ctx.fillRect(mastX - 18, contactWireY - 26, 6, 8);
+        }
+
+        // Kilometer Marker Stone on the trackside (showing real distance!)
+        const kmStoneX = (width * 0.78 - (frame * currentSpd * 0.12) % (width * 2) + width * 2) % (width * 2) - 50;
+        if (kmStoneX >= -50 && kmStoneX <= width + 50) {
+          ctx.fillStyle = '#f8fafc';
+          ctx.beginPath();
+          ctx.roundRect(kmStoneX, trackY + 22, 26, 32, [10, 10, 2, 2]);
+          ctx.fill();
+          ctx.fillStyle = '#f59e0b';
+          ctx.fillRect(kmStoneX, trackY + 22, 26, 10);
+          ctx.fillStyle = '#020617';
+          ctx.font = 'bold 8px monospace';
+          ctx.textAlign = 'center';
+          ctx.fillText('723', kmStoneX + 13, trackY + 30);
+          ctx.fillText('KM', kmStoneX + 13, trackY + 44);
+        }
+
+        // =======================================================
+        // 9. THE ACTUAL TRAIN (LOCOMOTIVE + 2 LHB COACHES!)
+        // =======================================================
+        // Suspension vertical bounce based on speed
+        const suspensionBounce = Math.sin(frame * 0.4) * (currentSpd > 0 ? 0.9 : 0);
+        const trainY = trackY - 2 + suspensionBounce;
+
+        // Train X position: centered with front at 70% width
+        const locoFrontX = width * 0.68;
+        const locoW = 280;
+        const locoH = 92;
+        const locoX = locoFrontX - locoW;
+
+        const isVandeBharat = activeTrain.name?.includes('Vande Bharat');
+
+        // --- TRAILING LHB COACH 2 (Partially visible on far left) ---
+        const coach2W = 220;
+        const coach2X = locoX - 440;
+        if (coach2X + coach2W > 0) {
+          drawLhbCoach(ctx, coach2X, trainY, coach2W, locoH - 4, wheelAngle, timeOfDay, isVandeBharat, 2);
+        }
+
+        // Vestibule Bellows between Coach 2 and Coach 1
+        drawVestibule(ctx, locoX - 220, trainY, 18, locoH - 12);
+
+        // --- TRAILING LHB COACH 1 ---
+        const coach1W = 210;
+        const coach1X = locoX - 202;
+        drawLhbCoach(ctx, coach1X, trainY, coach1W, locoH - 4, wheelAngle, timeOfDay, isVandeBharat, 1);
+
+        // Vestibule Bellows between Coach 1 and Locomotive
+        drawVestibule(ctx, locoX - 14, trainY, 14, locoH - 12);
+
+        // --- THE MAIN ELECTRIC LOCOMOTIVE (WAP-7 / TRAIN-18) ---
+        drawLocomotive(
+          ctx,
+          locoX,
+          trainY,
+          locoW,
+          locoH,
+          locoFrontX,
+          wheelAngle,
+          contactWireY,
+          currentSpd,
+          timeOfDay,
+          isVandeBharat,
+          activeTrain,
+          isHornActive,
+          frame
         );
-        beamGrad.addColorStop(0, 'rgba(254, 240, 138, 0.35)');
-        beamGrad.addColorStop(0.5, 'rgba(254, 240, 138, 0.12)');
-        beamGrad.addColorStop(1, 'rgba(254, 240, 138, 0)');
-        ctx.fillStyle = beamGrad;
-        ctx.beginPath();
-        ctx.moveTo(width * 0.38, height - 95);
-        ctx.lineTo(vanishX - bottomRailSpacing * 1.1, height);
-        ctx.lineTo(vanishX + bottomRailSpacing * 1.1, height);
-        ctx.lineTo(width * 0.62, height - 95);
-        ctx.closePath();
-        ctx.fill();
+
+        // Headlight Beam illumination on track (cone of light)
+        if (timeOfDay !== 'day' || currentSpd > 0) {
+          const beamLength = 340;
+          const beamY = trainY - 32;
+          const beamGrad = ctx.createLinearGradient(locoFrontX, beamY, locoFrontX + beamLength, beamY + 40);
+          beamGrad.addColorStop(0, timeOfDay === 'night' ? 'rgba(254, 240, 138, 0.7)' : 'rgba(254, 240, 138, 0.45)');
+          beamGrad.addColorStop(0.4, 'rgba(254, 240, 138, 0.2)');
+          beamGrad.addColorStop(1, 'rgba(254, 240, 138, 0)');
+
+          ctx.fillStyle = beamGrad;
+          ctx.beginPath();
+          ctx.moveTo(locoFrontX, beamY - 6);
+          ctx.lineTo(locoFrontX + beamLength, beamY - 40);
+          ctx.lineTo(locoFrontX + beamLength, trackY + 45);
+          ctx.lineTo(locoFrontX, beamY + 20);
+          ctx.closePath();
+          ctx.fill();
+        }
+      } else {
+        // =======================================================
+        // LOCO PILOT CAB DRIVER HUD VIEW
+        // =======================================================
+        drawCabDriverView(ctx, width, height, customSpeed, activeTrain, timeOfDay, frame, isHornActive);
       }
 
-      animationFrameRef.current = requestAnimationFrame(render3D);
+      animationFrameRef.current = requestAnimationFrame(render);
     };
 
-    render3D();
+    render();
 
     return () => {
       if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
     };
-  }, [screenMode, viewMode, activeTrain, cameraMode3D]);
+  }, [screenMode, viewMode, activeTrain, cameraMode3D, timeOfDay, customSpeed, isHornActive]);
 
   return (
     <div className="max-w-4xl mx-auto space-y-4">
@@ -813,16 +1513,25 @@ export default function MobileRouteFinder({ onSelectCorridorTrain }) {
             {viewMode === 'view3d' && (
               <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 text-[11px] font-mono">
                 <button
-                  onClick={() => setCameraMode3D('cab')}
-                  className={`px-2 py-0.5 rounded ${cameraMode3D === 'cab' ? 'bg-amber-500/20 text-amber-300 font-bold' : 'text-slate-400'}`}
+                  id="btn-cam-side-header"
+                  onClick={() => setCameraMode3D('side')}
+                  className={`px-2 py-0.5 rounded transition-all ${cameraMode3D === 'side' ? 'bg-amber-500 text-slate-950 font-bold shadow' : 'text-slate-400 hover:text-white'}`}
                 >
-                  Cab HUD
+                  🚂 Side View
                 </button>
                 <button
+                  id="btn-cam-drone-header"
                   onClick={() => setCameraMode3D('drone')}
-                  className={`px-2 py-0.5 rounded ${cameraMode3D === 'drone' ? 'bg-amber-500/20 text-amber-300 font-bold' : 'text-slate-400'}`}
+                  className={`px-2 py-0.5 rounded transition-all ${cameraMode3D === 'drone' ? 'bg-amber-500 text-slate-950 font-bold shadow' : 'text-slate-400 hover:text-white'}`}
                 >
-                  Trackside
+                  🚁 Drone
+                </button>
+                <button
+                  id="btn-cam-cab-header"
+                  onClick={() => setCameraMode3D('cab')}
+                  className={`px-2 py-0.5 rounded transition-all ${cameraMode3D === 'cab' ? 'bg-amber-500 text-slate-950 font-bold shadow' : 'text-slate-400 hover:text-white'}`}
+                >
+                  🧑‍✈️ Cab
                 </button>
               </div>
             )}
@@ -1045,48 +1754,376 @@ export default function MobileRouteFinder({ onSelectCorridorTrain }) {
           )}
 
           {/* ========================================================================= */}
-          {/* SUB-VIEW 3: 3D RAIL CORRIDOR & CAB PERSPECTIVE */}
+          {/* SUB-VIEW 3: REALISTIC 3/4 SIDE PROFILE TRAIN SIMULATION & SPEED CONTROLS */}
           {/* ========================================================================= */}
           {viewMode === 'view3d' && (
-            <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-2xl space-y-4">
-              <div className="flex items-center justify-between text-xs border-b border-slate-800 pb-3">
-                <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse" />
-                  <h3 className="font-bold text-white text-sm">
-                    3D Rail Perspective: {cameraMode3D === 'cab' ? "Loco Pilot Cab HUD View" : "Trackside Isometric View"}
-                  </h3>
+            <div className="bg-slate-900 border border-slate-800 rounded-3xl p-4 sm:p-5 shadow-2xl space-y-4">
+              
+              {/* Header with Camera View & Live Status */}
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-3 h-3 rounded-full bg-emerald-400 animate-pulse ring-4 ring-emerald-500/20" />
+                  <div>
+                    <h3 className="font-bold text-white text-sm sm:text-base flex items-center gap-2">
+                      {cameraMode3D === 'side' && '🚂 3/4 Trackside Side Profile (WAP-7 + LHB Coaches)'}
+                      {cameraMode3D === 'drone' && '🚁 Elevated Trackside Drone Camera'}
+                      {cameraMode3D === 'cab' && '🧑‍✈️ Loco Pilot Forward Cab HUD'}
+                      <span className="px-2 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-800 text-[10px] font-mono">
+                        #{activeTrain.number}
+                      </span>
+                    </h3>
+                    <p className="text-[11px] text-slate-400 font-mono">
+                      Real-time physics simulation • Rotating steel flanged wheels • 25kV OHE catenary
+                    </p>
+                  </div>
                 </div>
 
-                <span className="font-mono text-xs text-sky-400 bg-sky-950 px-2.5 py-1 rounded-lg border border-sky-800/40">
-                  Speed: {activeTrain.speedKmH} km/h • OHE 25kV 50Hz
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-xs font-bold text-emerald-400 bg-emerald-950/80 px-3 py-1 rounded-xl border border-emerald-800/50 flex items-center gap-1.5 shadow-inner">
+                    <Gauge className="w-3.5 h-3.5" />
+                    <span>{customSpeed} km/h</span>
+                  </span>
+                  <span className="font-mono text-xs text-sky-400 bg-sky-950 px-2.5 py-1 rounded-xl border border-sky-800/40 hidden sm:inline-block">
+                    25kV AC 50Hz
+                  </span>
+                </div>
+              </div>
+
+              {/* Simulation Toolbar: Camera Angles, Time of Day & Air Horn */}
+              <div className="bg-slate-950/80 border border-slate-800/80 rounded-2xl p-2.5 flex flex-wrap items-center justify-between gap-2.5">
+                
+                {/* Camera Angles */}
+                <div className="flex items-center gap-1 bg-slate-900 p-1 rounded-xl border border-slate-800 text-xs font-mono">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 px-1.5 hidden md:inline">Camera:</span>
+                  <button
+                    id="btn-cam-side-panel"
+                    onClick={() => setCameraMode3D('side')}
+                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                      cameraMode3D === 'side'
+                        ? 'bg-amber-500 text-slate-950 shadow-md scale-105'
+                        : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    <span>🚂</span>
+                    <span>Side Profile</span>
+                  </button>
+                  <button
+                    id="btn-cam-drone-panel"
+                    onClick={() => setCameraMode3D('drone')}
+                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                      cameraMode3D === 'drone'
+                        ? 'bg-amber-500 text-slate-950 shadow-md scale-105'
+                        : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    <span>🚁</span>
+                    <span>Drone</span>
+                  </button>
+                  <button
+                    id="btn-cam-cab-panel"
+                    onClick={() => setCameraMode3D('cab')}
+                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                      cameraMode3D === 'cab'
+                        ? 'bg-amber-500 text-slate-950 shadow-md scale-105'
+                        : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    <span>🧑‍✈️</span>
+                    <span>Cab HUD</span>
+                  </button>
+                </div>
+
+                {/* Time of Day Switcher */}
+                <div className="flex items-center gap-1 bg-slate-900 p-1 rounded-xl border border-slate-800 text-xs font-mono">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 px-1.5 hidden lg:inline">Atmosphere:</span>
+                  <button
+                    id="btn-tod-day"
+                    onClick={() => setTimeOfDay('day')}
+                    className={`px-2 py-1 rounded-lg text-xs font-medium transition-all flex items-center gap-1 ${
+                      timeOfDay === 'day' ? 'bg-sky-500 text-white font-bold' : 'text-slate-400 hover:text-white'
+                    }`}
+                    title="Bright Daylight"
+                  >
+                    <Sun className="w-3.5 h-3.5" />
+                    <span>Day</span>
+                  </button>
+                  <button
+                    id="btn-tod-dusk"
+                    onClick={() => setTimeOfDay('dusk')}
+                    className={`px-2 py-1 rounded-lg text-xs font-medium transition-all flex items-center gap-1 ${
+                      timeOfDay === 'dusk' ? 'bg-amber-600 text-white font-bold' : 'text-slate-400 hover:text-white'
+                    }`}
+                    title="Golden Sunset"
+                  >
+                    <span>🌅</span>
+                    <span>Sunset</span>
+                  </button>
+                  <button
+                    id="btn-tod-night"
+                    onClick={() => setTimeOfDay('night')}
+                    className={`px-2 py-1 rounded-lg text-xs font-medium transition-all flex items-center gap-1 ${
+                      timeOfDay === 'night' ? 'bg-indigo-600 text-white font-bold' : 'text-slate-400 hover:text-white'
+                    }`}
+                    title="Night with Headlight Beam"
+                  >
+                    <Moon className="w-3.5 h-3.5" />
+                    <span>Night</span>
+                  </button>
+                </div>
+
+                {/* Indian Railways Air Horn & Sound Toggle */}
+                <div className="flex items-center gap-1.5">
+                  <button
+                    id="btn-play-air-horn"
+                    onClick={playAirHorn}
+                    className={`px-3 py-1.5 rounded-xl font-mono text-xs font-bold transition-all flex items-center gap-2 shadow-lg active:scale-95 ${
+                      isHornActive
+                        ? 'bg-red-500 text-white animate-bounce shadow-red-500/50'
+                        : 'bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white'
+                    }`}
+                    title="Synthesize 311Hz + 370Hz pneumatic twin horns"
+                  >
+                    <span className="text-sm">📢</span>
+                    <span>Air Horn</span>
+                  </button>
+                  <button
+                    id="btn-toggle-sound"
+                    onClick={() => {
+                      setIsSoundMuted(!isSoundMuted);
+                      toast.info(isSoundMuted ? '🔊 Audio Unmuted' : '🔇 Audio Muted');
+                    }}
+                    className={`p-2 rounded-xl border transition-all ${
+                      isSoundMuted
+                        ? 'bg-slate-900 border-slate-700 text-slate-500'
+                        : 'bg-slate-800 border-slate-700 text-emerald-400'
+                    }`}
+                    title={isSoundMuted ? 'Unmute audio' : 'Mute audio'}
+                  >
+                    {isSoundMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                  </button>
+                </div>
               </div>
 
               {/* Interactive 3D Canvas Viewport */}
               <div className="relative rounded-2xl overflow-hidden border border-slate-800 shadow-2xl bg-black">
                 <canvas ref={canvasRef} className="w-full block" />
 
-                {/* Cab HUD Overlay (Speedometer, Throttle, Power) */}
-                <div className="absolute top-4 left-4 z-20 flex flex-col gap-2 font-mono text-xs">
+                {/* High-Tech Telemetry Overlay (Top Left) */}
+                <div className="absolute top-3 left-3 z-20 flex flex-col gap-2 font-mono text-xs">
                   <div className="bg-slate-950/85 backdrop-blur-md border border-slate-800 p-2.5 rounded-xl space-y-1 shadow-lg">
-                    <div className="text-[10px] text-slate-400 font-bold uppercase">DIGITAL SPEEDOMETER</div>
-                    <div className="text-2xl font-extrabold text-white flex items-baseline gap-1">
-                      {activeTrain.speedKmH} <span className="text-xs font-normal text-slate-400">km/h</span>
+                    <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                      <Gauge className="w-3 h-3 text-sky-400" />
+                      <span>ACTUAL SPEEDOMETER</span>
                     </div>
-                    <div className="text-[10px] text-emerald-400">MPS 130 km/h Allowed</div>
+                    <div className="text-3xl font-black text-white flex items-baseline gap-1">
+                      {customSpeed} <span className="text-xs font-normal text-slate-400">km/h</span>
+                    </div>
+                    <div className="text-[10px] flex items-center gap-2">
+                      <span className={customSpeed > 130 ? "text-amber-400 font-bold" : "text-emerald-400"}>
+                        MPS: 130 km/h
+                      </span>
+                      <span className="text-slate-500">•</span>
+                      <span className="text-sky-300">
+                        {customSpeed === 0 ? "Station Dwell" : customSpeed < 40 ? "Loop Line Caution" : customSpeed < 100 ? "Cruising Mainline" : "Maximum Permissible Speed"}
+                      </span>
+                    </div>
                   </div>
 
-                  <div className="bg-slate-950/85 backdrop-blur-md border border-slate-800 p-2 rounded-xl text-[11px] text-slate-300 space-y-0.5">
+                  <div className="bg-slate-950/85 backdrop-blur-md border border-slate-800 p-2 rounded-xl text-[11px] text-slate-300 space-y-0.5 shadow-md">
                     <div>Tractive Effort: <strong className="text-amber-400">{activeTrain.hpPerTonne} HP/T</strong></div>
-                    <div>Next Station: <strong className="text-white">{activeTrain.nextStationName} ({activeTrain.distToNextKm} km)</strong></div>
+                    <div>Next Stoppage: <strong className="text-white">{activeTrain.nextStationName} ({activeTrain.distToNextKm} km)</strong></div>
                   </div>
                 </div>
 
-                {/* Bottom Center 3D Controls Tip */}
-                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 bg-black/70 backdrop-blur-md px-3 py-1 rounded-full text-[10px] text-slate-300 font-mono border border-white/10">
-                  🎮 Real-Time 3D Track Physics • 25kV OHE Catenary &amp; 4-Aspect Signal Gantry
+                {/* Live Air Horn Blast Notification Overlay */}
+                {isHornActive && (
+                  <div className="absolute top-3 right-3 z-20 bg-red-600/90 text-white font-mono text-xs font-bold px-3 py-1.5 rounded-xl border border-red-400 animate-pulse shadow-lg flex items-center gap-2">
+                    <span className="animate-spin text-sm">⚠️</span>
+                    <span>311Hz + 370Hz DUAL AIR BLAST!</span>
+                  </div>
+                )}
+
+                {/* Bottom Center 3D Mode Label */}
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 bg-black/80 backdrop-blur-md px-3.5 py-1 rounded-full text-[10px] text-slate-300 font-mono border border-white/10 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span>
+                    {cameraMode3D === 'side'
+                      ? '🚂 Side View • Parallax Scenery • Flanged Wheel Physics'
+                      : cameraMode3D === 'drone'
+                      ? '🚁 Drone View • Trackside Elevation'
+                      : '🧑‍✈️ Loco Pilot Cab • Forward 4-Aspect Signal HUD'}
+                  </span>
                 </div>
               </div>
+
+              {/* ===================================================================== */}
+              {/* SPEED CONTROLLER CONSOLE (THROTTLE SLIDER & ONE-TAP SPEED PRESETS) */}
+              {/* ===================================================================== */}
+              <div className="bg-slate-950/90 border border-slate-800 rounded-2xl p-4 space-y-3.5 shadow-xl">
+                <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
+                  <div className="flex items-center gap-2 font-bold text-white font-mono">
+                    <Zap className="w-4 h-4 text-amber-400" />
+                    <span>TRACTION MOTOR THROTTLE &amp; SPEED CONTROLLER:</span>
+                  </div>
+                  <div className="font-mono text-slate-400 text-xs">
+                    Current Notch: <strong className="text-amber-400">{Math.round((customSpeed / 160) * 32)}/32 Notch</strong> ({customSpeed} km/h)
+                  </div>
+                </div>
+
+                {/* Dynamic Speed Slider (0 to 160 km/h) */}
+                <div className="space-y-1">
+                  <div className="flex items-center gap-3">
+                    <span className="font-mono text-xs text-slate-400 w-12 text-right">0 km/h</span>
+                    <input
+                      id="input-speed-slider"
+                      type="range"
+                      min="0"
+                      max="160"
+                      step="1"
+                      value={customSpeed}
+                      onChange={(e) => setCustomSpeed(Number(e.target.value))}
+                      className="flex-1 accent-amber-500 cursor-pointer h-2 bg-slate-800 rounded-lg"
+                    />
+                    <span className="font-mono text-xs font-bold text-amber-400 w-16">160 km/h</span>
+                  </div>
+                  <div className="flex justify-between text-[10px] font-mono text-slate-500 px-12">
+                    <span>🛑 Halt</span>
+                    <span>⚠️ Caution (30)</span>
+                    <span>⚡ Live GPS ({activeTrain.speedKmH})</span>
+                    <span>🚀 Fast (110)</span>
+                    <span>🚄 MPS (130)</span>
+                    <span>🚅 VB (160)</span>
+                  </div>
+                </div>
+
+                {/* Quick Speed Preset Buttons */}
+                <div className="flex flex-wrap items-center gap-2 pt-1 font-mono text-xs">
+                  <button
+                    id="btn-speed-stop"
+                    onClick={() => {
+                      setCustomSpeed(0);
+                      toast.info('🛑 Loco Throttle 0: Full Service Brake Applied');
+                    }}
+                    className={`px-3 py-1.5 rounded-xl border transition-all flex items-center gap-1.5 ${
+                      customSpeed === 0
+                        ? 'bg-red-500/20 border-red-500 text-red-300 font-bold'
+                        : 'bg-slate-900 border-slate-800 text-slate-300 hover:border-slate-700'
+                    }`}
+                  >
+                    <span>🛑</span>
+                    <span>Stop (0)</span>
+                  </button>
+
+                  <button
+                    id="btn-speed-caution"
+                    onClick={() => {
+                      setCustomSpeed(30);
+                      toast.info('⚠️ Loop Line Speed Limit: 30 km/h');
+                    }}
+                    className={`px-3 py-1.5 rounded-xl border transition-all flex items-center gap-1.5 ${
+                      customSpeed === 30
+                        ? 'bg-amber-500/20 border-amber-500 text-amber-300 font-bold'
+                        : 'bg-slate-900 border-slate-800 text-slate-300 hover:border-slate-700'
+                    }`}
+                  >
+                    <span>⚠️</span>
+                    <span>Caution (30)</span>
+                  </button>
+
+                  <button
+                    id="btn-speed-live"
+                    onClick={() => {
+                      setCustomSpeed(activeTrain.speedKmH);
+                      toast.success(`⚡ Synced to live GPS speed: ${activeTrain.speedKmH} km/h`);
+                    }}
+                    className={`px-3 py-1.5 rounded-xl border transition-all flex items-center gap-1.5 ${
+                      customSpeed === activeTrain.speedKmH
+                        ? 'bg-emerald-500/20 border-emerald-500 text-emerald-300 font-bold'
+                        : 'bg-slate-900 border-slate-800 text-slate-300 hover:border-slate-700'
+                    }`}
+                  >
+                    <span>⚡</span>
+                    <span>Live GPS ({activeTrain.speedKmH} km/h)</span>
+                  </button>
+
+                  <button
+                    id="btn-speed-110"
+                    onClick={() => {
+                      setCustomSpeed(110);
+                      toast.info('🚀 Fast Section Run: 110 km/h');
+                    }}
+                    className={`px-3 py-1.5 rounded-xl border transition-all flex items-center gap-1.5 ${
+                      customSpeed === 110
+                        ? 'bg-sky-500/20 border-sky-500 text-sky-300 font-bold'
+                        : 'bg-slate-900 border-slate-800 text-slate-300 hover:border-slate-700'
+                    }`}
+                  >
+                    <span>🚀</span>
+                    <span>110 km/h</span>
+                  </button>
+
+                  <button
+                    id="btn-speed-130"
+                    onClick={() => {
+                      setCustomSpeed(130);
+                      toast.success('🚄 Maximum Permissible Speed (MPS): 130 km/h');
+                    }}
+                    className={`px-3 py-1.5 rounded-xl border transition-all flex items-center gap-1.5 ${
+                      customSpeed === 130
+                        ? 'bg-amber-500/20 border-amber-500 text-amber-300 font-bold'
+                        : 'bg-slate-900 border-slate-800 text-slate-300 hover:border-slate-700'
+                    }`}
+                  >
+                    <span>🚄</span>
+                    <span>130 MPS</span>
+                  </button>
+
+                  <button
+                    id="btn-speed-160"
+                    onClick={() => {
+                      setCustomSpeed(160);
+                      toast.success('🚅 Vande Bharat / Gatimaan Express: 160 km/h Top Speed');
+                    }}
+                    className={`px-3 py-1.5 rounded-xl border transition-all flex items-center gap-1.5 ${
+                      customSpeed === 160
+                        ? 'bg-purple-500/20 border-purple-500 text-purple-300 font-bold'
+                        : 'bg-slate-900 border-slate-800 text-slate-300 hover:border-slate-700'
+                    }`}
+                  >
+                    <span>🚅</span>
+                    <span>160 VB Max</span>
+                  </button>
+                </div>
+
+                {/* Locomotive Engineering Specs Grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-slate-800/80 font-mono text-[11px]">
+                  <div className="bg-slate-900/60 p-2 rounded-xl border border-slate-800">
+                    <div className="text-slate-500 text-[10px]">LOCOMOTIVE</div>
+                    <div className="font-bold text-slate-200 mt-0.5">
+                      {activeTrain.name?.includes('Vande Bharat') ? 'Train-18 EMU' : 'WAP-7 #30412'}
+                    </div>
+                  </div>
+                  <div className="bg-slate-900/60 p-2 rounded-xl border border-slate-800">
+                    <div className="text-slate-500 text-[10px]">OHE CURRENT DRAW</div>
+                    <div className="font-bold text-amber-400 mt-0.5">
+                      {customSpeed === 0 ? '42 A (Aux)' : `${Math.round((customSpeed / 130) * 440 + 60)} Amps`}
+                    </div>
+                  </div>
+                  <div className="bg-slate-900/60 p-2 rounded-xl border border-slate-800">
+                    <div className="text-slate-500 text-[10px]">BRAKE CYLINDER</div>
+                    <div className="font-bold text-emerald-400 mt-0.5">
+                      {customSpeed === 0 ? '3.8 kg/cm² (Full)' : '0.0 kg/cm² (Released)'}
+                    </div>
+                  </div>
+                  <div className="bg-slate-900/60 p-2 rounded-xl border border-slate-800">
+                    <div className="text-slate-500 text-[10px]">ADHESION COEFFICIENT</div>
+                    <div className="font-bold text-sky-400 mt-0.5">
+                      {activeTrain.weatherImpact.includes('Dry') ? 'μ = 0.38 (High)' : 'μ = 0.28 (Wet/Dew)'}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
           )}
 
