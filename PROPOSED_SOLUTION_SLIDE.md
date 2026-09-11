@@ -170,7 +170,7 @@ The chronic failure of existing ETA systems stems from **6 structural failure mo
 
 ### 📊 Comparative Benchmark Matrix
 
-| Dimension | Legacy NTES (Govt) | Commercial Apps (Where Is My Train, RailYatri) | Generic Hackathon ML (LSTM/XGBoost) | GATI-SETU (Our Innovation) |
+| Dimension | Legacy NTES (Govt) | Commercial Apps (Where Is My Train, RailYatri) | Standard ML Baselines (LSTM / GBDT) | GATI-SETU (Enterprise System) |
 | :--- | :---: | :---: | :---: | :---: |
 | **Prediction Paradigm** | Static timetable subtraction ($\text{ETA} = \text{Timetable} + \Delta t$) | Historical regression + scraped NTES pings | "Black-box" sequence model trained on CSV timestamps | **Physics-Informed Graph Neural Network (PI-STGAT)** |
 | **Preceding Train Headway** | ❌ None (Isolated train assumption) | ❌ None (No access to freight or block data) | ❌ None (Single-series time sequence) | **✅ Fully modeled via Spatio-Temporal Graph Attention** |
@@ -179,7 +179,7 @@ The chronic failure of existing ETA systems stems from **6 structural failure mo
 | **Weather & Adhesion Rules** | ❌ Generic manual alert banner | ❌ None | ❌ None | **✅ Live satellite grid enforces GR 3.61 fog ceiling (60 km/h) and railhead adhesion ($\mu$)** |
 | **Output Type** | Single static point (regularly false) | Single static point + crowd notes | Single point prediction | **Probabilistic expected arrival + 90% Confidence Band** |
 | **Explainability** | ❌ None ("Running Late") | ❌ Generic ("Delayed by 40 mins") | ❌ Black-box model score | **✅ Root-cause badge ("Outer Signal Hold: PF 1 occupied")** |
-| **Operational Control Utility** | Read-only public portal | Read-only consumer mobile app | Prototype model only | **Bi-directional: Serves Passengers AND Section Controllers (Overtake Advisor)** |
+| **Operational Control Utility** | Read-only public portal | Read-only consumer mobile app | Isolated offline models (No live loop) | **Bi-directional: Serves Passengers AND Section Controllers (Overtake Advisor)** |
 
 ---
 
