@@ -65,19 +65,19 @@ export default function App() {
   });
   const [isWeatherLoading, setIsWeatherLoading] = useState(false);
 
-  const loadLiveWeather = async (silent = false) => {
+  const loadLiveWeather = async (silent = false, stationCode = 'CNB') => {
     setIsWeatherLoading(true);
-    const data = await fetchLiveStationWeather('CNB');
+    const data = await fetchLiveStationWeather(stationCode);
     setLiveWeather(data);
     setIsWeatherLoading(false);
     if (!silent) {
-      toast.success(`🌤️ Live Weather Synced: ${data.stationName} ${data.temperature}°C, Visibility: ${(data.visibilityMeters/1000).toFixed(1)} km`);
+      toast.success(`🌤️ Live API Synced: ${data.stationName} (${data.stationCode}) • ${data.temperature}°C • ${(data.visibilityMeters/1000).toFixed(1)} km Visibility`);
     }
   };
 
   useEffect(() => {
-    loadLiveWeather(true);
-    const weatherInterval = setInterval(() => loadLiveWeather(true), 60000); // 60s live weather sync
+    loadLiveWeather(true, 'CNB');
+    const weatherInterval = setInterval(() => loadLiveWeather(true, liveWeather?.stationCode || 'CNB'), 60000); // 60s live weather sync
     return () => clearInterval(weatherInterval);
   }, []);
 
@@ -267,18 +267,34 @@ export default function App() {
           )}
         </div>
 
-        <div className="flex items-center gap-3">
-          <span className="text-[11px] text-slate-400 font-mono hidden lg:inline">
-            Telemetry Stream: <span className="text-emerald-400 font-bold">ACTIVE (30s NMEA GPS)</span>
-          </span>
+        <div className="flex items-center gap-2">
+          {/* Corridor Station Weather Selector */}
+          <div className="flex items-center gap-1 bg-slate-950/80 p-0.5 rounded-lg border border-slate-800">
+            {['CNB', 'NDLS', 'PRYJ', 'DDU'].map((code) => (
+              <button
+                key={code}
+                id={`btn-weather-stn-${code}`}
+                onClick={() => loadLiveWeather(false, code)}
+                className={`px-2 py-0.5 rounded text-[11px] font-mono font-bold transition-all ${
+                  liveWeather?.stationCode === code
+                    ? 'bg-sky-500/20 text-sky-300 border border-sky-500/40 shadow-sm'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+                title={`Fetch real live weather for ${code}`}
+              >
+                {code}
+              </button>
+            ))}
+          </div>
+
           <button
-            onClick={() => loadLiveWeather(false)}
+            onClick={() => loadLiveWeather(false, liveWeather?.stationCode || 'CNB')}
             disabled={isWeatherLoading}
             className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 text-xs transition-colors"
             title="Re-sync live weather data from Open-Meteo"
           >
             <RefreshCw className={`w-3 h-3 ${isWeatherLoading ? 'animate-spin text-amber-400' : 'text-slate-400'}`} />
-            <span>{isWeatherLoading ? 'Syncing...' : 'Sync Live Weather'}</span>
+            <span>{isWeatherLoading ? 'Syncing...' : 'Sync Live'}</span>
           </button>
         </div>
       </div>
