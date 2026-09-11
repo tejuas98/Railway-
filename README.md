@@ -863,6 +863,7 @@ You can jump directly to any surface using URL query parameters:
 ## 📜 14. Documentation Index
 
 - [⭐ **Official SIH Proposed Solution Slide & Evaluation Dossier**](PROPOSED_SOLUTION_SLIDE.md)
+- [📖 **Non-Technical Solution Guide: Solving Train Delays in Plain English**](NON_TECH_SOLUTION_EXPLANATION.md)
 - [00. The Complete Problem Explained Like You're in 5th Standard (Full Pizza Story)](docs/00-PROBLEM-EXPLAINED-SIMPLY.md)
 - [01. A–Z Keyword & Jargon Glossary](docs/01-KEYWORD-GLOSSARY.md)
 - [02. Full Implementation Blueprint & Government Autopsy](docs/00_FULL_IMPLEMENTATION_PLAN_AND_GOVT_AUTOPSY.md)
