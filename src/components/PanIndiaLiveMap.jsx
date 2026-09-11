@@ -18,7 +18,10 @@ import {
   ShieldAlert,
   Sparkles,
   ChevronRight,
-  Maximize2
+  Maximize2,
+  Zap,
+  Scale,
+  Gauge
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -71,6 +74,13 @@ const PAN_INDIA_TRAINS = [
     name: 'Howrah Rajdhani Express',
     route: 'New Delhi (NDLS) → Howrah (HWH)',
     loco: 'WAP-7 #30452',
+    locoType: 'Electric WAP-7 (6,350 HP, Co-Co)',
+    loadTonnage: '22 LHB Coaches (1,080 T)',
+    powerToWeight: '5.88 HP/Tonne',
+    p2wValue: 5.88,
+    accelProfile: '0 → 130 km/h: 195s (4.2 km)',
+    brakingDist: '820m (LHB Disc Brakes + WSP)',
+    psrPenalty: '+3.8m recovery penalty from 30 km/h PSR',
     currentStation: 'Approaching Kanpur Outer',
     x: 495,
     y: 382,
@@ -90,6 +100,13 @@ const PAN_INDIA_TRAINS = [
     name: 'Shiv Ganga Express',
     route: 'New Delhi (NDLS) → Varanasi (BSB)',
     loco: 'WAP-7 #30311',
+    locoType: 'Electric WAP-7 (6,350 HP, Co-Co)',
+    loadTonnage: '24 LHB Coaches (1,180 T)',
+    powerToWeight: '5.38 HP/Tonne',
+    p2wValue: 5.38,
+    accelProfile: '0 → 130 km/h: 215s (4.7 km)',
+    brakingDist: '860m (Axle Mounted Disc Brakes)',
+    psrPenalty: '+4.2m recovery penalty from 30 km/h PSR',
     currentStation: 'Aligarh – Tundla Section',
     x: 430,
     y: 345,
@@ -109,6 +126,13 @@ const PAN_INDIA_TRAINS = [
     name: 'Vande Bharat Express',
     route: 'New Delhi (NDLS) → Varanasi (BSB)',
     loco: 'Train-18 Trainset',
+    locoType: 'Train-18 EMU (12,000 HP Distributed, 8 Motor Bogies)',
+    loadTonnage: '16 Aerodynamic Coaches (430 T)',
+    powerToWeight: '27.9 HP/Tonne',
+    p2wValue: 27.9,
+    accelProfile: '0 → 130 km/h: 68s (1.3 km)',
+    brakingDist: '650m (Regen + Electro-Pneumatic)',
+    psrPenalty: '+1.2m recovery penalty from 30 km/h PSR',
     currentStation: 'Approaching Etawah Jn',
     x: 460,
     y: 360,
@@ -128,6 +152,13 @@ const PAN_INDIA_TRAINS = [
     name: 'Mumbai Tejas Rajdhani',
     route: 'New Delhi (NDLS) → Mumbai Central (BCT)',
     loco: 'WAP-7 #30229',
+    locoType: 'Electric WAP-7 (6,350 HP, Co-Co)',
+    loadTonnage: '18 Tejas LHB Coaches (920 T)',
+    powerToWeight: '6.90 HP/Tonne',
+    p2wValue: 6.90,
+    accelProfile: '0 → 130 km/h: 175s (3.8 km)',
+    brakingDist: '780m (LHB Disc Brakes + WSP)',
+    psrPenalty: '+3.3m recovery penalty from 30 km/h PSR',
     currentStation: 'Vadodara – Surat Section',
     x: 275,
     y: 585,
@@ -147,6 +178,13 @@ const PAN_INDIA_TRAINS = [
     name: 'Tamil Nadu Express',
     route: 'New Delhi (NDLS) → Chennai Central (MAS)',
     loco: 'WAP-7 #30418',
+    locoType: 'Electric WAP-7 (6,350 HP, Co-Co)',
+    loadTonnage: '24 LHB Coaches (1,180 T)',
+    powerToWeight: '5.38 HP/Tonne',
+    p2wValue: 5.38,
+    accelProfile: '0 → 130 km/h: 215s (4.7 km)',
+    brakingDist: '860m (Axle Mounted Disc Brakes)',
+    psrPenalty: '+4.2m recovery penalty from 30 km/h PSR',
     currentStation: 'Nagpur – Balharshah Section',
     x: 450,
     y: 610,
@@ -166,6 +204,13 @@ const PAN_INDIA_TRAINS = [
     name: 'Howrah – SMVB Duronto',
     route: 'Howrah (HWH) → Bengaluru (SMVB)',
     loco: 'WAP-7 #30588',
+    locoType: 'Electric WAP-7 (6,350 HP, Co-Co)',
+    loadTonnage: '20 LHB Coaches (990 T)',
+    powerToWeight: '6.41 HP/Tonne',
+    p2wValue: 6.41,
+    accelProfile: '0 → 130 km/h: 185s (4.0 km)',
+    brakingDist: '800m (LHB Disc Brakes + WSP)',
+    psrPenalty: '+3.5m recovery penalty from 30 km/h PSR',
     currentStation: 'Visakhapatnam – Vijayawada',
     x: 580,
     y: 740,
@@ -185,6 +230,13 @@ const PAN_INDIA_TRAINS = [
     name: 'Coal Freight Rake (BOXN)',
     route: 'Anpara Thermal → Dadri Power Plant',
     loco: 'Twin WAG-9 #31189',
+    locoType: 'Twin WAG-9 (12,000 HP Heavy Haul, 12 Axles)',
+    loadTonnage: '58 BOXN Wagons (4,850 T Coal Payload)',
+    powerToWeight: '2.47 HP/Tonne',
+    p2wValue: 2.47,
+    accelProfile: '0 → 75 km/h: 740s (12.8 km)',
+    brakingDist: '1,650m (Air Brake pipe lag 16s)',
+    psrPenalty: '+15.4m recovery penalty from 30 km/h PSR',
     currentStation: 'Shikohabad Loop Line 2',
     x: 440,
     y: 352,
@@ -196,7 +248,7 @@ const PAN_INDIA_TRAINS = [
     dynamicEta: 'Freight Run',
     confidence: 'Operational Slot',
     reason: '⚡ Looped by AI Section Controller to save Shiv Ganga 19 mins',
-    weatherImpact: 'Heavy trailing tonnage (4,200 Tonnes)',
+    weatherImpact: 'Heavy trailing tonnage (4,850 Tonnes)',
     satLock: 'ISRO NavIC 7 Sats (BEL RTIS)'
   }
 ];
@@ -213,6 +265,7 @@ export default function PanIndiaLiveMap() {
   const [selectedTrain, setSelectedTrain] = useState(PAN_INDIA_TRAINS[0]);
   const [showHardwareInfo, setShowHardwareInfo] = useState(false);
   const [showMitResearch, setShowMitResearch] = useState(false);
+  const [showLocoPhysics, setShowLocoPhysics] = useState(false);
 
   const containerRef = useRef(null);
 
@@ -296,8 +349,17 @@ export default function PanIndiaLiveMap() {
           </div>
         </div>
 
-        {/* Action Buttons: BEL Hardware Modal & MIT Research Modal */}
+        {/* Action Buttons: Engine & Load Physics, BEL Hardware Modal & MIT Research Modal */}
         <div className="flex flex-wrap items-center gap-2">
+          <button
+            id="btn-loco-physics"
+            onClick={() => setShowLocoPhysics(true)}
+            className="px-3 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-sm"
+          >
+            <Zap className="w-3.5 h-3.5 text-amber-400" />
+            <span>Engine &amp; Load Dynamics</span>
+          </button>
+
           <button
             onClick={() => setShowHardwareInfo(true)}
             className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700 text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-sm"
@@ -751,6 +813,58 @@ export default function PanIndiaLiveMap() {
                 </p>
               </div>
 
+              {/* Locomotive Engine & Trailing Mass Dynamics */}
+              <div className="bg-slate-950/90 border border-slate-800/90 p-3.5 rounded-xl space-y-2 text-xs">
+                <div className="flex items-center justify-between border-b border-slate-800/60 pb-2">
+                  <div className="flex items-center gap-1.5 text-amber-400 font-bold">
+                    <Zap className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Engine &amp; Trailing Mass:</span>
+                  </div>
+                  <span className="font-mono text-[11px] px-2 py-0.5 rounded bg-slate-900 border border-slate-700 text-sky-300 font-bold">
+                    {selectedTrain.powerToWeight}
+                  </span>
+                </div>
+
+                <div className="space-y-1.5 text-[11px]">
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Locomotive Class:</span>
+                    <span className="font-mono text-slate-200 font-medium">{selectedTrain.locoType}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Trailing Tonnage:</span>
+                    <span className="font-mono text-amber-300 font-bold">{selectedTrain.loadTonnage}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Acceleration Curve:</span>
+                    <span className="font-mono text-slate-300">{selectedTrain.accelProfile}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Emergency Braking:</span>
+                    <span className="font-mono text-slate-300">{selectedTrain.brakingDist}</span>
+                  </div>
+                  <div className="flex justify-between text-rose-300 bg-rose-950/30 p-1.5 rounded border border-rose-900/40">
+                    <span className="text-slate-400">30 km/h Caution Recovery:</span>
+                    <span className="font-mono font-bold">{selectedTrain.psrPenalty}</span>
+                  </div>
+                </div>
+
+                {/* Power-to-weight gauge */}
+                <div className="space-y-1 pt-1">
+                  <div className="flex justify-between text-[10px] text-slate-400">
+                    <span>Power-to-Weight Ratio</span>
+                    <span className="font-mono text-amber-300">{selectedTrain.p2wValue} HP/T</span>
+                  </div>
+                  <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                    <div 
+                      className={`h-full rounded-full transition-all duration-500 ${
+                        selectedTrain.p2wValue > 15 ? 'bg-emerald-400' : selectedTrain.p2wValue > 4 ? 'bg-sky-400' : 'bg-purple-400'
+                      }`}
+                      style={{ width: `${Math.min(100, (selectedTrain.p2wValue / 30) * 100)}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+
               {/* Atmospheric Weather Impact on Physics */}
               <div className="bg-sky-950/30 border border-sky-800/40 p-3 rounded-xl text-xs space-y-1">
                 <div className="font-bold text-sky-300 flex items-center gap-1.5">
@@ -982,6 +1096,148 @@ export default function PanIndiaLiveMap() {
                 className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs"
               >
                 Close Dossier
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Locomotive Engine & Trailing Mass Physics Modal */}
+      {showLocoPhysics && (
+        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-slate-900 border border-slate-700 rounded-3xl max-w-4xl w-full p-6 shadow-2xl space-y-6 my-8">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center border border-amber-500/30">
+                  <Zap className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-white">
+                    Locomotive Engine, Trailing Mass &amp; Kinematics
+                  </h3>
+                  <p className="text-xs text-slate-400">
+                    Why instantaneous GPS speed alone fails, and how Newton-Davis physics + load profiles govern true train ETAs
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowLocoPhysics(false)}
+                className="text-slate-400 hover:text-white text-lg font-bold p-1"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-4 text-xs text-slate-300 leading-relaxed">
+              
+              {/* The GPS Speed Illusion */}
+              <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+                <h4 className="font-bold text-amber-400 text-sm flex items-center gap-2">
+                  <span>⚡</span> The &ldquo;GPS Speed Illusion&rdquo;: Two Trains at 50 km/h, Completely Different ETAs
+                </h4>
+                <p>
+                  Legacy NTES and commercial apps assume: <span className="font-mono text-amber-300 font-bold">ETA = Distance &divide; Current GPS Speed</span>.
+                  Here is why this naive calculation fails completely in heavy railway operations:
+                </p>
+                <div className="overflow-x-auto pt-1">
+                  <table className="w-full text-left font-mono text-[11px] border-collapse border border-slate-800">
+                    <thead>
+                      <tr className="bg-slate-900 text-slate-300 border-b border-slate-800">
+                        <th className="p-2 border-r border-slate-800">Train &amp; Locomotive</th>
+                        <th className="p-2 border-r border-slate-800">Trailing Mass</th>
+                        <th className="p-2 border-r border-slate-800">Power / Weight</th>
+                        <th className="p-2 border-r border-slate-800">Time: 50&rarr;100 km/h</th>
+                        <th className="p-2 border-r border-slate-800">True 25km Run</th>
+                        <th className="p-2 text-rose-400">Naive GPS ETA</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-800 text-slate-300">
+                      <tr>
+                        <td className="p-2 font-bold text-emerald-400 border-r border-slate-800">Vande Bharat (Train-18)</td>
+                        <td className="p-2 border-r border-slate-800">430 Tonnes</td>
+                        <td className="p-2 border-r border-slate-800 text-emerald-300">27.9 HP/T</td>
+                        <td className="p-2 border-r border-slate-800">38s (0.8 km)</td>
+                        <td className="p-2 border-r border-slate-800 font-bold text-emerald-300">12.1 mins</td>
+                        <td className="p-2 text-rose-400 font-bold">30.0 mins (Off by +18m!)</td>
+                      </tr>
+                      <tr>
+                        <td className="p-2 font-bold text-sky-400 border-r border-slate-800">Rajdhani (WAP-7, 6350 HP)</td>
+                        <td className="p-2 border-r border-slate-800">1,080 Tonnes</td>
+                        <td className="p-2 border-r border-slate-800 text-sky-300">5.88 HP/T</td>
+                        <td className="p-2 border-r border-slate-800">145s (3.1 km)</td>
+                        <td className="p-2 border-r border-slate-800 font-bold text-sky-300">14.5 mins</td>
+                        <td className="p-2 text-rose-400 font-bold">30.0 mins (Off by +15m!)</td>
+                      </tr>
+                      <tr>
+                        <td className="p-2 font-bold text-purple-400 border-r border-slate-800">Coal Freight (Twin WAG-9)</td>
+                        <td className="p-2 border-r border-slate-800">4,850 Tonnes</td>
+                        <td className="p-2 border-r border-slate-800 text-purple-300">2.47 HP/T</td>
+                        <td className="p-2 border-r border-slate-800">580s (11.8 km)</td>
+                        <td className="p-2 border-r border-slate-800 font-bold text-purple-300">24.2 mins</td>
+                        <td className="p-2 text-rose-400 font-bold">30.0 mins (Off by -6m!)</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* The Newton-Davis Physics Formula */}
+              <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+                <h4 className="font-bold text-sky-400 text-sm flex items-center gap-2">
+                  <span>📐</span> The Governing Equation of Motion (Newton-Davis Integration)
+                </h4>
+                <p>
+                  GATI-SETU does not guess speeds; it continuously integrates Newton&rsquo;s Second Law at 10-second intervals:
+                </p>
+                <div className="bg-slate-900 p-3 rounded-lg border border-slate-800 font-mono text-center text-amber-300 text-xs">
+                  a(t) = [ F_traction(v) &minus; (A + B&middot;v + C&middot;v&sup2;) &minus; M&middot;g&middot;sin(&theta;) &minus; F_curve ] &divide; M_effective
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                  <div className="bg-slate-900/60 p-3 rounded-lg border border-slate-800/80 space-y-1">
+                    <div className="text-amber-300 font-bold">1. Tractive Effort Curve F_traction(v)</div>
+                    <p className="text-[11px] text-slate-400">
+                      WAP-7 produces 322 kN at start, falling inversely with speed (P = F&middot;v). WAG-9 produces 500 kN for heavy haulage. Vande Bharat distributes power over 8 motor bogies, eliminating wheel slip.
+                    </p>
+                  </div>
+                  <div className="bg-slate-900/60 p-3 rounded-lg border border-slate-800/80 space-y-1">
+                    <div className="text-amber-300 font-bold">2. Davis Rolling Resistance R(v)</div>
+                    <p className="text-[11px] text-slate-400">
+                      A is journal bearing friction (proportional to mass), B is track wave deformation, and C is aerodynamic drag. Open coal wagons experience 3.6&times; more air drag than sleek Vande Bharat noses.
+                    </p>
+                  </div>
+                  <div className="bg-slate-900/60 p-3 rounded-lg border border-slate-800/80 space-y-1">
+                    <div className="text-amber-300 font-bold">3. Gradient Retardation (1% Incline)</div>
+                    <p className="text-[11px] text-slate-400">
+                      A 1 in 100 rising gradient exerts 98 kN retarding force on a 1,000T passenger train (speed drops ~4 km/h), but exerts a massive 476 kN on a 4,850T freight train (collapsing speed from 65 to 22 km/h).
+                    </p>
+                  </div>
+                  <div className="bg-slate-900/60 p-3 rounded-lg border border-slate-800/80 space-y-1">
+                    <div className="text-amber-300 font-bold">4. Emergency Braking Distance (EBD)</div>
+                    <p className="text-[11px] text-slate-400">
+                      Disc-braked LHB passenger trains stop in 820m from 100 km/h. Long freight trains take 1,650m due to a 16-second air pipe pressure wave lag to the 58th wagon, requiring drivers to brake 2 km early.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Real-time Data Fusion Architecture */}
+              <div className="bg-amber-950/30 border border-amber-800/40 p-4 rounded-xl space-y-2">
+                <h4 className="font-bold text-amber-300 text-sm flex items-center gap-2">
+                  <span>🛰️</span> Data Fusion: How GATI-SETU Connects Engine &amp; Load Feeds
+                </h4>
+                <p>
+                  GATI-SETU marries <strong>BEL RTIS</strong> (GPS latitude, longitude, and speed) with <strong>CRIS ICMS</strong> (locomotive shed assignment, rated HP, and LHB coach count) and <strong>CRIS FOIS</strong> (gross freight trailing tonnage, rake length, and brake power certificate). This turns blind GPS coordinates into predictive physics.
+                </p>
+              </div>
+
+            </div>
+
+            <div className="flex justify-end pt-2">
+              <button
+                onClick={() => setShowLocoPhysics(false)}
+                className="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold text-xs"
+              >
+                Close Dynamics Dossier
               </button>
             </div>
           </div>

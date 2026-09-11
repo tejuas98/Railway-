@@ -82,6 +82,22 @@ The moment visibility drops below 200m on the Delhi–Kanpur trunk line:
 Instead of naive division, GATI-SETU integrates over the track sections: 
 $$T_{\text{ETA}} = T_{\text{current}} + \int_{KM_{\text{current}}}^{KM_{\text{destination}}} \frac{1}{V_{\text{kinematic}}(s, \text{Weather}(s), \text{TSR}(s))} \, ds + \Delta T_{\text{outer\_hold}} + \epsilon_{\text{LightGBM}}$$
 
+#### E. Locomotive Engine Horsepower, Trailing Load Tonnage & Kinematics ($F = ma$)
+> 📖 **Full Engineering Document:** See [`docs/05_LOCOMOTIVE_ENGINE_AND_TRAILING_LOAD_PHYSICS.md`](docs/05_LOCOMOTIVE_ENGINE_AND_TRAILING_LOAD_PHYSICS.md)
+
+**Why GPS Speed Alone is a Dangerous Illusion:**
+Suppose two trains are at Kilometer 420, both reporting a GPS speed of $50\text{ km/h}$:
+1. **Train A: Vande Bharat Express (Train-18):** Distributed EMU ($12,000\text{ HP}$), lightweight rake ($430\text{ Tonnes}$), Power-to-Weight = $\mathbf{27.9\text{ HP/Tonne}}$.
+   * Accelerates $50 \to 100\text{ km/h}$ in **$38\text{ seconds}$ ($0.8\text{ km}$)**.
+   * Traverses a $25\text{ km}$ section in **$12.1\text{ minutes}$**.
+2. **Train B: BOXN Coal Freight Rake:** Twin WAG-9 locomotives ($12,000\text{ HP}$), heavy freight ($4,850\text{ Tonnes}$), Power-to-Weight = $\mathbf{2.47\text{ HP/Tonne}}$.
+   * Takes **$580\text{ seconds}$ ($9.6\text{ minutes}$, $11.8\text{ km}$)** just to crawl up to $75\text{ km/h}$!
+   * Traverses the same $25\text{ km}$ section in **$24.2\text{ minutes}$**.
+
+A naive GPS app assuming constant $50\text{ km/h}$ calculates $30\text{ minutes}$ for both—making an error of **$+18\text{ minutes}$ for passenger** and **$-6\text{ minutes}$ for freight**.
+GATI-SETU fuses **BEL RTIS GPS** with **CRIS ICMS** (locomotive class and coach count) and **CRIS FOIS** (gross trailing tonnage) into Newton's Second Law:
+$$a(t) = \frac{F_{\text{traction}}(v) - R_{\text{Davis}}(v) - M \cdot g \cdot \sin\theta}{M_{\text{effective}}}$$
+
 ---
 
 ### 🌐 3. Are There Previous Solutions or Projects on the Internet (GPS + KM + Weather)?
@@ -736,6 +752,7 @@ You can jump directly to any surface using URL query parameters:
 - [03. Government Ecosystem Audit & Delay Autopsy](docs/01_RESEARCH_AND_FAILURE_AUTOPSY.md)
 - [04. Mathematical Formulations & ST-GNN Architecture](docs/02_MATHEMATICAL_FORMULATION.md)
 - [05. REST & WebSocket API Specifications](docs/03_API_SPECIFICATIONS.md)
+- [06. Locomotive Engine, Trailing Load & Kinematics (Why GPS Alone Fails)](docs/05_LOCOMOTIVE_ENGINE_AND_TRAILING_LOAD_PHYSICS.md)
 
 ---
 
