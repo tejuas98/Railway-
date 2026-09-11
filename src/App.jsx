@@ -14,11 +14,14 @@ import {
   Activity,
   Layers,
   Sparkles,
-  Satellite
+  Satellite,
+  CloudSun,
+  RefreshCw
 } from 'lucide-react';
 
 import { INITIAL_TRAINS } from './data/trainsData';
 import { INITIAL_DISRUPTIONS } from './data/disruptionsData';
+import { fetchLiveStationWeather } from './services/weatherService';
 import PassengerTracker from './components/PassengerTracker';
 import StationCidsDisplay from './components/StationCidsDisplay';
 import SectionControllerCockpit from './components/SectionControllerCockpit';
@@ -44,6 +47,39 @@ export default function App() {
   const [isSimulating, setIsSimulating] = useState(true);
   const [simSpeed, setSimSpeed] = useState(1); // 1x, 2x, 5x
   const [telemetryTicks, setTelemetryTicks] = useState(184);
+
+  // Live External Weather API State
+  const [liveWeather, setLiveWeather] = useState({
+    success: true,
+    stationCode: 'CNB',
+    stationName: 'Kanpur Central',
+    temperature: 28.4,
+    humidity: 68,
+    visibilityMeters: 4500,
+    windSpeed: 8.2,
+    weatherCode: 1,
+    isFoggy: false,
+    isFsdRuleActive: false,
+    fetchedAt: new Date().toLocaleTimeString('en-IN', { hour12: false }),
+    provider: 'Open-Meteo Live Satellite Grid (WMO Compliant)'
+  });
+  const [isWeatherLoading, setIsWeatherLoading] = useState(false);
+
+  const loadLiveWeather = async (silent = false) => {
+    setIsWeatherLoading(true);
+    const data = await fetchLiveStationWeather('CNB');
+    setLiveWeather(data);
+    setIsWeatherLoading(false);
+    if (!silent) {
+      toast.success(`🌤️ Live Weather Synced: ${data.stationName} ${data.temperature}°C, Visibility: ${(data.visibilityMeters/1000).toFixed(1)} km`);
+    }
+  };
+
+  useEffect(() => {
+    loadLiveWeather(true);
+    const weatherInterval = setInterval(() => loadLiveWeather(true), 60000); // 60s live weather sync
+    return () => clearInterval(weatherInterval);
+  }, []);
 
   // Live Simulation Clock & Movement Tick
   useEffect(() => {
@@ -194,13 +230,56 @@ export default function App() {
           </span>
         </div>
         <div className="flex items-center gap-3 font-mono text-[10px]">
-          <span className="flex items-center gap-1">
-            <Satellite className="w-3.5 h-3.5 text-emerald-300" />
-            ISRO NavIC / GAGAN Telemetry
+          <span className="flex items-center gap-1 text-emerald-300">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping inline-block" />
+            <Satellite className="w-3.5 h-3.5" />
+            ISRO NavIC / GAGAN Telemetry Synced
           </span>
           <span className="hidden md:inline text-amber-300">
             Ticks: #{telemetryTicks}
           </span>
+        </div>
+      </div>
+
+      {/* Live External API & Weather Integration Ribbon */}
+      <div className="bg-slate-900/90 border-b border-slate-800 px-4 sm:px-6 py-2 flex flex-wrap items-center justify-between gap-3 text-xs">
+        <div className="flex items-center gap-2.5">
+          <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-sky-950/80 border border-sky-500/30 text-sky-300 font-semibold">
+            <CloudSun className="w-3.5 h-3.5 text-amber-400" />
+            <span>LIVE METEOROLOGICAL API (Open-Meteo):</span>
+          </span>
+          {liveWeather ? (
+            <span className="text-slate-300 font-mono flex items-center gap-2">
+              <strong className="text-white">{liveWeather.stationName} ({liveWeather.stationCode})</strong>: 
+              <span className="text-amber-400 font-bold">{liveWeather.temperature}°C</span>
+              <span className="text-slate-500">•</span>
+              <span>Humidity: <strong className="text-slate-200">{liveWeather.humidity}%</strong></span>
+              <span className="text-slate-500">•</span>
+              <span>Visibility: <strong className={liveWeather.visibilityMeters < 1000 ? "text-red-400" : "text-emerald-400"}>{(liveWeather.visibilityMeters / 1000).toFixed(1)} km</strong></span>
+              {liveWeather.isFoggy && (
+                <span className="px-1.5 py-0.5 rounded bg-red-950/80 text-red-300 border border-red-800 text-[10px] font-bold">
+                  ⚠️ FOG DETECTED (GR 3.61 SPEED CAP APPLIES)
+                </span>
+              )}
+            </span>
+          ) : (
+            <span className="text-slate-500 italic">Connecting to Open-Meteo Satellite Feed...</span>
+          )}
+        </div>
+
+        <div className="flex items-center gap-3">
+          <span className="text-[11px] text-slate-400 font-mono hidden lg:inline">
+            Telemetry Stream: <span className="text-emerald-400 font-bold">ACTIVE (30s NMEA GPS)</span>
+          </span>
+          <button
+            onClick={() => loadLiveWeather(false)}
+            disabled={isWeatherLoading}
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 text-xs transition-colors"
+            title="Re-sync live weather data from Open-Meteo"
+          >
+            <RefreshCw className={`w-3 h-3 ${isWeatherLoading ? 'animate-spin text-amber-400' : 'text-slate-400'}`} />
+            <span>{isWeatherLoading ? 'Syncing...' : 'Sync Live Weather'}</span>
+          </button>
         </div>
       </div>
 
@@ -317,6 +396,7 @@ export default function App() {
             selectedTrainId={selectedTrainId}
             onSelectTrain={setSelectedTrainId}
             disruptions={disruptions}
+            liveWeather={liveWeather}
           />
         )}
 
@@ -324,6 +404,7 @@ export default function App() {
           <StationCidsDisplay
             trains={trains}
             disruptions={disruptions}
+            liveWeather={liveWeather}
           />
         )}
 
@@ -331,6 +412,7 @@ export default function App() {
           <SectionControllerCockpit
             trains={trains}
             disruptions={disruptions}
+            liveWeather={liveWeather}
             onToggleTsr={handleToggleTsr}
             onToggleFog={handleToggleFog}
             onTogglePlatformHold={handleTogglePlatformHold}

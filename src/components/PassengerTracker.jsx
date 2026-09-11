@@ -17,7 +17,7 @@ import {
 import { CORRIDOR_STATIONS } from '../data/corridorData';
 import { getComparativeForecast } from '../engine/gatiSetuEngine';
 
-export default function PassengerTracker({ trains, selectedTrainId, onSelectTrain, disruptions }) {
+export default function PassengerTracker({ trains, selectedTrainId, onSelectTrain, disruptions, liveWeather }) {
   const currentTrain = trains.find(t => t.id === selectedTrainId) || trains[0];
   const [selectedStationCode, setSelectedStationCode] = useState(currentTrain.targetStation || 'CNB');
 
@@ -141,6 +141,18 @@ export default function PassengerTracker({ trains, selectedTrainId, onSelectTrai
                 KM {currentTrain.currentKm.toFixed(1)} / 786.0
               </div>
             </div>
+
+            {liveWeather && (
+              <div className="pl-4 border-l border-slate-800 hidden sm:block">
+                <div className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Atmospheric Feed</div>
+                <div className="text-sm font-bold font-mono text-sky-300 flex items-center gap-1">
+                  {liveWeather.temperature}°C <span className="text-xs font-normal text-slate-400">({(liveWeather.visibilityMeters / 1000).toFixed(1)} km)</span>
+                </div>
+                <div className="text-[10px] text-slate-500 font-mono truncate max-w-[140px]">
+                  {liveWeather.isFoggy ? '⚠️ GR 3.61 Fog Active' : 'Open-Meteo Live API'}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
