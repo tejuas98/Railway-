@@ -21,7 +21,7 @@ You get excited and stand at your front door.
 * The app didn't know that right in front of the delivery bike was a massive, slow-moving tractor crawling at 10 km/h on a narrow one-lane road.
 * The app didn't know that your apartment building elevator was broken, creating a 20-minute line in the lobby.
 * The app didn't know that it was pouring rain, making the road slippery so the bike couldn't brake fast.
-* The app just took the distance ($2\text{ km}$), divided it by normal speed, and gave you a fake, useless number.
+* The app just took the distance (2 km), divided it by normal speed, and gave you a fake, useless number.
 
 **This is EXACTLY how Indian Railways' current arrival system (NTES) works today.**
 

@@ -486,8 +486,13 @@ Every single requirement, constraint, and operational friction point mentioned i
 * **How GATI-SETU Solves It:**
   1. **e-Caution Electronic Ingestion:** Connects directly to the divisional civil engineering e-Caution database via automated ETL pipelines, ingesting active TSR zones $[x_{\text{start}}, x_{\text{end}}]$ with their associated speed limits $V_{\text{TSR}}$.
   2. **Numerical Kinematic Integration:** Rather than guessing a flat delay, the engine calculates the three physical phases of speed restriction traversal:
-     $$\Delta T_{\text{TSR}} = t_{\text{decel}} + t_{\text{crawl}} + t_{\text{accel}} - t_{\text{unrestricted}}$$
-     $$\Delta T_{\text{TSR}} = \frac{V_{\text{MPS}} - V_{\text{TSR}}}{2 \cdot a_{\text{service\_brake}}} + \frac{x_{\text{end}} - x_{\text{start}}}{V_{\text{TSR}}} + \frac{V_{\text{MPS}} - V_{\text{TSR}}}{2 \cdot a_{\text{traction}}(v)} - \frac{x_{\text{end}} - x_{\text{start}}}{V_{\text{MPS}}}$$
+
+     ```math
+     \Delta T_{\text{TSR}} = t_{\text{decel}} + t_{\text{crawl}} + t_{\text{accel}} - t_{\text{unrestricted}}
+     ```
+     ```math
+     \Delta T_{\text{TSR}} = \frac{V_{\text{MPS}} - V_{\text{TSR}}}{2 \cdot a_{\text{service\_brake}}} + \frac{x_{\text{end}} - x_{\text{start}}}{V_{\text{TSR}}} + \frac{V_{\text{MPS}} - V_{\text{TSR}}}{2 \cdot a_{\text{traction}}(v)} - \frac{x_{\text{end}} - x_{\text{start}}}{V_{\text{MPS}}}
+     ```
   3. **Rake Length Compensation:** Incorporates the physical train length (e.g. 24 LHB coaches = 576 meters). The train cannot resume acceleration until the rear brake-van (guard van) clears $x_{\text{end}}$, a critical factor legacy calculations ignore.
 * **Real-World Impact:** Sectional ETAs automatically account for the 4 to 12 minutes lost per caution order before the train even enters the affected section.
 
@@ -510,12 +515,23 @@ Every single requirement, constraint, and operational friction point mentioned i
 * **How GATI-SETU Solves It:**
   1. **Locomotive Tractive Effort Curves:** Models the specific tractive effort $F_{\text{traction}}(v)$ as a function of speed across locomotive classes (WAP-7, WAP-5, WAG-9 twin, Vande Bharat Train-18).
   2. **Davis Train Resistance Formulation:** Numerically integrates the empirical Davis equation for rolling and aerodynamic friction:
-     $$R_{\text{Davis}}(v) = A + B \cdot v + C \cdot v^2$$
+
+     ```math
+     R_{\text{Davis}}(v) = A + B \cdot v + C \cdot v^2
+     ```
+
      where $A$ accounts for journal bearing resistance, $B$ accounts for wheel flange friction, and $C$ accounts for aerodynamic drag of the coach rake profile.
   3. **Gradient & Curvature Resistance:** Integrates civil track profile data ($KM \rightarrow \text{gradient } \theta, \text{curvature } D$):
-     $$R_{\text{gradient}} = M \cdot g \cdot \sin(\theta), \quad R_{\text{curvature}} = 0.0004 \cdot M \cdot D$$
+
+     ```math
+     R_{\text{gradient}} = M \cdot g \cdot \sin(\theta), \quad R_{\text{curvature}} = 0.0004 \cdot M \cdot D
+     ```
+
   4. **Dynamic Running Time Computation:** Computes instantaneous speed and position updates every second ($dt = 1.0\text{s}$):
-     $$M_{\text{effective}} \frac{dv}{dt} = F_{\text{traction}}(v) - R_{\text{total}}(v, \theta, D)$$
+
+     ```math
+     M_{\text{effective}} \frac{dv}{dt} = F_{\text{traction}}(v) - R_{\text{total}}(v, \theta, D)
+     ```
 * **Real-World Impact:** Predicts sectional running time to within $\pm 45$ seconds across undulating gradients and heavy trailing load conditions.
 
 ---
@@ -541,7 +557,11 @@ Every single requirement, constraint, and operational friction point mentioned i
 * **How GATI-SETU Solves It:**
   1. **Slot-Loss Fragility Classifier:** Models the train's scheduled timetable slot tolerance window $\tau_{\text{slot}}$ (typically $\pm 20$ minutes).
   2. **Autoregressive Cascading Path-Loss Function:** When a train's delay $\Delta(t)$ crosses $\tau_{\text{slot}}$, the model activates an autoregressive delay multiplier:
-     $$\Delta_{\text{terminal}} = \Delta_{\text{current}} + \sum_{k \in \text{Downstream Zones}} \gamma_k \cdot \ln(1 + \Delta_k) \cdot \Psi_{\text{dispatch\_density}}(k)$$
+
+     ```math
+     \Delta_{\text{terminal}} = \Delta_{\text{current}} + \sum_{k \in \text{Downstream Zones}} \gamma_k \cdot \ln(1 + \Delta_k) \cdot \Psi_{\text{dispatch\_density}}(k)
+     ```
+
      where $\gamma_k$ is the zone-specific congestion coefficient and $\Psi$ represents the conflicting train density during the shifted arrival window.
   3. **Downstream Cross-Zone Horizon Forecast:** Re-evaluates platform availability, crew change schedules, and single-line junction crossings 1,000+ km ahead based on the *actual* predicted arrival window rather than original schedule.
 * **Real-World Impact:** Predicts 6-to-8 hour delay cascades 24 hours in advance, giving long-distance passengers realistic arrival horizons instead of misleading optimism.
@@ -567,7 +587,10 @@ Every single requirement, constraint, and operational friction point mentioned i
 * **How GATI-SETU Solves It:**
   1. **Live Weather Ingestion:** Ingests live weather feeds from India Meteorological Department (IMD) Doppler radars, automated airport runway visual range (RVR) sensors, and station weather stations.
   2. **Automated GR 3.61 Speed Cap Enforcement:** When visibility in a division drops below $200\text{ meters}$, the engine automatically applies a dynamic speed ceiling:
-     $$V_{\text{MPS\_effective}} = \min(V_{\text{track\_MPS}}, 60\text{ km/h})$$
+
+     ```math
+     V_{\text{MPS\_effective}} = \min(V_{\text{track\_MPS}}, 60\text{ km/h})
+     ```
   3. **Loco Pilot Reaction Buffer:** Adds a statutory 15% headway expansion buffer to account for pilots running cautiously on audio-visual detonator and FSD indications.
 * **Real-World Impact:** The moment dense fog sets in, passenger ETAs immediately adjust by 3 to 6 hours, reflecting operational reality rather than unrealistic clear-weather speeds.
 
@@ -579,9 +602,16 @@ Every single requirement, constraint, and operational friction point mentioned i
 * **How GATI-SETU Solves It:**
   1. **Terminal Throat & Platform Digital Twin:** Models the station layout, reception lines, and platform tracks (e.g. Platforms 1 through 10 at Kanpur Central).
   2. **Markovian Platform Clearance Queue:** Tracks the departure progress of the preceding train occupying the target platform:
-     $$T_{\text{clearance}} = T_{\text{departure\_scheduled}} + \Delta_{\text{shunting\_buffer}} + \Delta_{\text{turnaround\_dwell}}$$
+
+     ```math
+     T_{\text{clearance}} = T_{\text{departure\_scheduled}} + \Delta_{\text{shunting\_buffer}} + \Delta_{\text{turnaround\_dwell}}
+     ```
+
   3. **Outer Signal Detention Calculator:** When an incoming train $A$ approaches the yard approach zone ($KM < 10\text{ km}$) and its designated platform remains occupied by train $B$, the engine computes the detention penalty:
-     $$\Delta T_{\text{outer}} = \max\left(0, T_{\text{clearance}}(B) - T_{\text{yard\_arrival}}(A)\right)$$
+
+     ```math
+     \Delta T_{\text{outer}} = \max\left(0, T_{\text{clearance}}(B) - T_{\text{yard\_arrival}}(A)\right)
+     ```
   4. **Direct Passenger Alerting:** Flags the delay reason transparently: *"Train stabled at Outer Signal awaiting Platform 1 clearance. Expected hold: 24 mins."*
 * **Real-World Impact:** Eliminates passenger panic and false platform rushes, while enabling station masters to re-route incoming trains to alternative vacant platforms.
 
@@ -604,7 +634,10 @@ Every single requirement, constraint, and operational friction point mentioned i
 * **How GATI-SETU Solves It:**
   1. **Crew Management System (CMS) Ingestion:** Interlinks with CRIS CMS to track the exact sign-on timestamp $T_{\text{sign\_on}}$ of the active loco crew.
   2. **Duty-Hour Horizon Projection:** Continuously evaluates whether the projected arrival at the scheduled crew-changing station ($T_{\text{crew\_change\_station}}$) will violate the HOER limit:
-     $$T_{\text{remaining\_duty}} = T_{\text{sign\_on}} + 10.0\text{ hours} - T_{\text{current\_time}}$$
+
+     ```math
+     T_{\text{remaining\_duty}} = T_{\text{sign\_on}} + 10.0\text{ hours} - T_{\text{current\_time}}
+     ```
   3. **90-Minute Early Warning Dispatcher Alert:** If $T_{\text{remaining\_duty}} < \text{Estimated Run Time to Crew Base}$, GATI-SETU triggers a critical visual alert on the Section Controller’s Cockpit 90 minutes in advance, advising them to mobilize a relief crew at an intermediate station before the crew expires on the running line.
 * **Real-World Impact:** Prevents mid-section main-line train abandonment, saving hundreds of hours of trapped network delay.
 

@@ -15,7 +15,7 @@
 ├────────────────────────────────┬─────────────────────────────────────────────────────────┤
 │ Innovation Name                │ GATI-SETU (Graph-Augmented Transit Intelligence)        │
 │ Model Architecture             │ Physics-Informed Spatio-Temporal Graph Attention Network│
-│ Mathematical Backbone          │ Kinematic Davis Equations ($F = ma$) + Conformal Bayes  │
+│ Mathematical Backbone          │ Kinematic Davis Equations (F = m·a) + Conformal Bayes   │
 │ Benchmark Performance          │ 6.2 min MAE vs 42.6 min for Legacy NTES (85.4% Gain)    │
 │ Critical Problem Solved        │ Outer signal stabling, preceding freight & weather blind│
 │ Deployment Footprint           │ 100% Zero-Hardware Software Layer on BEL RTIS & FOIS    │
@@ -27,7 +27,7 @@
 ## 1. Detailed Explanation of the Proposed Solution
 
 ### Core Concept: The Digital Twin & Spatio-Temporal Graph Architecture
-Current railway ETA forecasting in India fails because trains are evaluated in **complete isolation** using a static timetable subtraction formula ($ETA = \text{Timetable} + \text{Delay} - \text{Recovery Slack}$).
+Current railway ETA forecasting in India fails because trains are evaluated in **complete isolation** using a static timetable subtraction formula ($\text{ETA} = \text{Timetable} + \text{Delay} - \text{Recovery Slack}$).
 
 **GATI-SETU** fundamentally replaces this with a **Physics-Informed Spatio-Temporal Graph Neural Network (PI-STGAT) Digital Twin**. Instead of viewing a train as an isolated point on a map, GATI-SETU models the **entire railway corridor as an interconnected directed multigraph** $\mathcal{G} = (\mathcal{V}, \mathcal{E}, \mathcal{W})$, where:
 * **Nodes ($\mathcal{V}$)**: All stations, loop lines, terminal outer home signals, turnout crossover switches, and 4-aspect signal gantry posts spaced every 1 to 1.5 km.
@@ -89,14 +89,21 @@ GATI-SETU streams and ingests data from 5 mission-critical railway and meteorolo
 
 #### Tier 2: The Spatio-Temporal Graph Neural Network (ST-GAT)
 Spatial headway attention captures how preceding trains dictate downstream speeds:
-$$\alpha_{ij} = \frac{\exp\left(\text{LeakyReLU}\left(\mathbf{a}^T [\mathbf{W} h_i \parallel \mathbf{W} h_j \parallel e_{ij}]\right)\right)}{\sum_{k \in \mathcal{N}_i} \exp\left(\text{LeakyReLU}\left(\mathbf{a}^T [\mathbf{W} h_i \parallel \mathbf{W} h_k \parallel e_{ik}]\right)\right)}$$
+
+```math
+\alpha_{ij} = \frac{\exp\left(\text{LeakyReLU}\left(\mathbf{a}^T [\mathbf{W} h_i \parallel \mathbf{W} h_j \parallel e_{ij}]\right)\right)}{\sum_{k \in \mathcal{N}_i} \exp\left(\text{LeakyReLU}\left(\mathbf{a}^T [\mathbf{W} h_i \parallel \mathbf{W} h_k \parallel e_{ik}]\right)\right)}
+```
+
 When a freight rake crawls in an automatic block section ahead, attention weights peak, directly propagating headway slowdowns into the trailing coaching express.
 
 #### Tier 3: The Physics-Informed Kinematic Engine
 Unlike "black-box" models that predict physical impossibilities, GATI-SETU bounds all predictions within the laws of train mechanics:
-* **Newtonian Motion**: $F_{\text{net}} = m \cdot a$
+
+* **Newtonian Motion**: $F = m \cdot a$
 * **Davis Tractive Resistance**:
-  $$R_{\text{total}} = A + B \cdot v + C \cdot v^2 + m \cdot g \cdot \sin(\theta) + \frac{K \cdot m \cdot g}{R_{\text{curve}}}$$
+  ```math
+  R_{\text{total}} = A + B \cdot v + C \cdot v^2 + m \cdot g \cdot \sin(\theta) + \frac{K \cdot m \cdot g}{R_{\text{curve}}}
+  ```
 * **Rail Head Adhesion Limits**: Bounds acceleration and braking based on rail friction ($\mu = 0.38$ dry vs $\mu = 0.24$ wet/dew).
 
 #### Tier 4: Conformal Uncertainty & Dual Dissemination
@@ -125,7 +132,7 @@ The chronic failure of existing ETA systems stems from **6 structural failure mo
 │                                                          │ is locked by interlocking relays.                        │
 ├──────────────────────────────────────────────────────────┼──────────────────────────────────────────────────────────┤
 │ 3. The Recovery Slack Paradox                            │ 3. Non-Linear Kinematic Slack Absorption                 │
-│ Erroneously subtracts scheduled end-to-end recovery time │ Realistically models locomotive acceleration ($F = ma$)   │
+│ Erroneously subtracts scheduled end-to-end recovery time │ Realistically models locomotive acceleration (F = m·a)    │
 │ even when a train is crawling at 20 km/h in dense traffic.│ and only applies slack where maximum permissible speed   │
 │                                                          │ (MPS 130 km/h) can physically be achieved.               │
 ├──────────────────────────────────────────────────────────┼──────────────────────────────────────────────────────────┤
@@ -154,8 +161,8 @@ The chronic failure of existing ETA systems stems from **6 structural failure mo
    * *GATI-SETU Fix*: Ingests division e-Caution databases, automatically capping section speeds and calculating the precise kinetic deceleration and acceleration penalties.
 
 3. **Enforcing Winter Fog Rules (General Rule 3.61)**:
-   * *Problem*: Under Indian Railways GR 3.61, Loco Pilots running with Fog Safe Devices (FSD) are legally capped at $60\text{ km/h}$ in automatic block territory when visibility is poor. NTES continues to calculate ETAs assuming $130\text{ km/h}$ cruising.
-   * *GATI-SETU Fix*: Live Open-Meteo satellite atmospheric feed checks visibility every 30 seconds. If visibility drops below $1,000\text{ m}$, GATI-SETU automatically applies the $60\text{ km/h}$ ceiling across the affected corridor.
+   * *Problem*: Under Indian Railways GR 3.61, Loco Pilots running with Fog Safe Devices (FSD) are legally capped at **60 km/h** in automatic block territory when visibility is poor. NTES continues to calculate ETAs assuming 130 km/h cruising.
+   * *GATI-SETU Fix*: Live Open-Meteo satellite atmospheric feed checks visibility every 30 seconds. If visibility drops below 1,000 m, GATI-SETU automatically applies the **60 km/h** ceiling across the affected corridor.
 
 ---
 
@@ -165,11 +172,11 @@ The chronic failure of existing ETA systems stems from **6 structural failure mo
 
 | Dimension | Legacy NTES (Govt) | Commercial Apps (Where Is My Train, RailYatri) | Generic Hackathon ML (LSTM/XGBoost) | GATI-SETU (Our Innovation) |
 | :--- | :---: | :---: | :---: | :---: |
-| **Prediction Paradigm** | Static timetable subtraction ($ETA = TT + \Delta t$) | Historical regression + scraped NTES pings | "Black-box" sequence model trained on CSV timestamps | **Physics-Informed Graph Neural Network (PI-STGAT)** |
+| **Prediction Paradigm** | Static timetable subtraction ($\text{ETA} = \text{Timetable} + \Delta t$) | Historical regression + scraped NTES pings | "Black-box" sequence model trained on CSV timestamps | **Physics-Informed Graph Neural Network (PI-STGAT)** |
 | **Preceding Train Headway** | ❌ None (Isolated train assumption) | ❌ None (No access to freight or block data) | ❌ None (Single-series time sequence) | **✅ Fully modeled via Spatio-Temporal Graph Attention** |
 | **Locomotive Traction Physics** | ❌ None | ❌ None | ❌ None | **✅ Models tractive effort, rake tonnage, and Davis resistance** |
 | **Speed Restrictions (TSR/T-409)** | ❌ Completely ignored | ❌ Completely ignored | ❌ Ignored (No active engineering integration) | **✅ Real-time ingestion of civil engineering caution orders** |
-| **Weather & Adhesion Rules** | ❌ Generic manual alert banner | ❌ None | ❌ None | **✅ Live satellite grid enforces GR 3.61 fog ceiling ($60\text{ km/h}$) and rail adhesion $\mu$** |
+| **Weather & Adhesion Rules** | ❌ Generic manual alert banner | ❌ None | ❌ None | **✅ Live satellite grid enforces GR 3.61 fog ceiling (60 km/h) and railhead adhesion ($\mu$)** |
 | **Output Type** | Single static point (regularly false) | Single static point + crowd notes | Single point prediction | **Probabilistic expected arrival + 90% Confidence Band** |
 | **Explainability** | ❌ None ("Running Late") | ❌ Generic ("Delayed by 40 mins") | ❌ Black-box model score | **✅ Root-cause badge ("Outer Signal Hold: PF 1 occupied")** |
 | **Operational Control Utility** | Read-only public portal | Read-only consumer mobile app | Prototype model only | **Bi-directional: Serves Passengers AND Section Controllers (Overtake Advisor)** |
@@ -179,9 +186,13 @@ The chronic failure of existing ETA systems stems from **6 structural failure mo
 ### The 5 Architectural Breakthroughs (Our Competitive Moat)
 
 1. **Physics-Informed Machine Learning (PINN)**:
-   Embeds locomotive tractive effort ($6,350\text{ HP}$ WAP-7), rake weight, Davis rolling drag, and railhead friction directly into the neural loss function:
-   $$\mathcal{L}_{\text{total}} = \mathcal{L}_{\text{data}} (y, \hat{y}) + \lambda_1 \mathcal{L}_{\text{kinematics}} (a, v, F_{\text{net}}) + \lambda_2 \mathcal{L}_{\text{headway}} (d_{\text{lead}})$$
-   Prevents "black-box" ML hallucinations like a 1,200-tonne train accelerating from $0$ to $130\text{ km/h}$ in 20 seconds.
+   Embeds locomotive tractive effort (6,350 HP WAP-7), rake weight, Davis rolling drag, and railhead friction directly into the neural loss function:
+
+   ```math
+   \mathcal{L}_{\text{total}} = \mathcal{L}_{\text{data}}(y, \hat{y}) + \lambda_1 \mathcal{L}_{\text{kinematics}}(a, v, F_{\text{net}}) + \lambda_2 \mathcal{L}_{\text{headway}}(d_{\text{lead}})
+   ```
+
+   Prevents "black-box" ML hallucinations like a 1,200-tonne train accelerating from 0 to 130 km/h in 20 seconds.
 
 2. **Cross-Train Spatio-Temporal Graph Attention**:
    Existing apps evaluate trains in silos. GATI-SETU evaluates the **entire corridor cluster**. If an express train is trailing a heavy coal freight rake in an automatic block, the attention weights automatically scale down the express train's ETA *before* it gets stopped at a red signal.
@@ -218,6 +229,6 @@ The chronic failure of existing ETA systems stems from **6 structural failure mo
  0 min └─GATI-SETU PI-STGAT (85.4% Error Reduction)───────────────────┘
 ```
 
-* **Legacy NTES Baseline Error:** $42.6\text{ minutes}$ MAE on congested multi-hour corridors.
-* **GATI-SETU Dynamic ETA Error:** **$6.2\text{ minutes}$ MAE**.
-* **Statistically Validated Accuracy Advantage:** **$85.4\%\text{ error reduction}$** on challenging multi-station horizons, terminal bottlenecks, and adverse weather conditions.
+* **Legacy NTES Baseline Error:** **42.6 minutes** MAE on congested multi-hour corridors.
+* **GATI-SETU Dynamic ETA Error:** **6.2 minutes** MAE.
+* **Statistically Validated Accuracy Advantage:** **85.4% error reduction** on challenging multi-station horizons, terminal bottlenecks, and adverse weather conditions.
