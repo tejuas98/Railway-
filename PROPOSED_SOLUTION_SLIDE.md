@@ -177,15 +177,17 @@ Unlike "black-box" models that predict physical impossibilities, GATI-SETU bound
 
 Every operational requirement and pain point highlighted in Problem Statement SIH26028 is directly addressed by a dedicated architectural subsystem in GATI-SETU:
 
----
+### ❖ Proposed Solution Slide (Master SIH Presentation View)
 
-### ❖ CORE FUNCTIONAL MODULES (Proposed Solution Slide)
+> **Single-Slide Jury Solution Visual**: Follows the exact layout of the official Smart India Hackathon presentation template. In just one slide, it cleanly communicates the entire solution: **7 Core Functional Modules** (yellow pill + green sub-box stack), **How It Works 5-Stage Processing Pipeline**, **3-Branch Innovation & Uniqueness Tree**, **3 Native iOS Mobile App Mockups**, and the **Kinematic ETA Calculation Flow**.
 
-> **Slide Deck Presentation View**: Below is the jury-facing slide visual structured for instantaneous solution comprehension (Yellow/Gold feature pill headers with crisp green-bordered 1-sentence solution explanations).
+<div align="center">
 
-![GATI-SETU Core Functional Modules](docs/screenshots/proposed_solution_12_modules.png)
+![GATI-SETU Proposed Solution Slide](docs/screenshots/proposed_solution_sarjom_slide.png)
 
-*Interactive Presentation Slide Available:* [View 1080p Presentation Slide (HTML)](file:///Users/toru/.gemini/antigravity-ide/scratch/Railway-repo/docs/proposed_solution_slide_12cards_presentation.html) • [Dark Cockpit Version (HTML)](file:///Users/toru/.gemini/antigravity-ide/scratch/Railway-repo/docs/proposed_solution_slide_12cards.html)
+</div>
+
+*Interactive Presentation Slide Available:* [View 1080p Single-Slide Presentation (HTML)](file:///Users/toru/.gemini/antigravity-ide/scratch/Railway-repo/docs/proposed_solution_sarjom_slide.html) • [12-Card Grid Slide (HTML)](file:///Users/toru/.gemini/antigravity-ide/scratch/Railway-repo/docs/proposed_solution_slide_12cards_presentation.html)
 
 ---
 

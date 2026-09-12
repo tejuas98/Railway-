@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920, height=1080, initial-scale=1.0" />
+  <title>GATI-SETU - Proposed Solution (SIH 2026 Slide)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      width: 1920px;
+      height: 1080px;
+      background: #FFFFFF;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #000000;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 24px 44px 0 44px;
+    }
+
+    /* ======================================================== */
+    /* 1. TOP HEADER                                            */
+    /* ======================================================== */
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 72px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+
+    /* Team Pill (Top Left) */
+    .team-badge-wrap {
+      width: 260px;
+    }
+    .team-oval {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 2.5px solid #4338CA;
+      border-radius: 9999px;
+      padding: 6px 28px;
+      background: #FFFFFF;
+    }
+    .team-oval-title {
+      font-size: 21px;
+      font-weight: 800;
+      color: #1E1B4B;
+      letter-spacing: -0.3px;
+    }
+
+    /* Center Main Title */
+    .header-center-wrap {
+      text-align: center;
+      flex: 1;
+    }
+    .main-title {
+      font-size: 44px;
+      font-weight: 900;
+      letter-spacing: 2.5px;
+      color: #000000;
+      text-transform: uppercase;
+      line-height: 1.1;
+    }
+    .main-subtitle {
+      font-size: 16.5px;
+      font-weight: 600;
+      color: #374151;
+      margin-top: 3px;
+    }
+
+    /* SIH Emblem & Text (Top Right) */
+    .sih-badge-wrap {
+      width: 330px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+    .sih-emblem-svg {
+      width: 58px;
+      height: 58px;
+    }
+    .sih-text {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+    .sih-text .line1 {
+      font-size: 15px;
+      font-weight: 900;
+      color: #1E3A8A;
+      line-height: 1.1;
+      letter-spacing: 0.5px;
+    }
+    .sih-text .line2 {
+      font-size: 15px;
+      font-weight: 900;
+      color: #1E3A8A;
+      line-height: 1.1;
+      letter-spacing: 0.5px;
+    }
+    .sih-text .year {
+      font-size: 22px;
+      font-weight: 900;
+      color: #047857;
+      line-height: 1.1;
+      margin-top: 1px;
+    }
+
+    /* ======================================================== */
+    /* 2. MAIN 3-COLUMN LAYOUT                                  */
+    /* ======================================================== */
+    .slide-body {
+      display: grid;
+      grid-template-columns: 630px 380px 780px;
+      gap: 20px;
+      flex: 1;
+      height: 920px;
+    }
+
+    /* -------------------------------------------------------- */
+    /* COLUMN 1: CORE FUNCTIONAL MODULES (7 STACKED CARDS)      */
+    /* -------------------------------------------------------- */
+    .col-modules {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .modules-heading {
+      font-size: 22px;
+      font-weight: 900;
+      color: #1E40AF;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 2px;
+    }
+
+    .feature-card {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .feature-header-bar {
+      background: #F59E0B;
+      color: #000000;
+      font-size: 14.5px;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 4px;
+      display: inline-block;
+      align-self: flex-start;
+      letter-spacing: -0.2px;
+    }
+    .feature-sub-box {
+      background: #FFFFFF;
+      border: 1.8px solid #10B981;
+      border-radius: 5px;
+      padding: 6px 12px;
+      font-size: 13.2px;
+      font-weight: 500;
+      color: #0F172A;
+      line-height: 1.32;
+    }
+
+    /* -------------------------------------------------------- */
+    /* COLUMN 2: HOW IT WORKS & INNOVATION FLOW                 */
+    /* -------------------------------------------------------- */
+    .col-how-it-works {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .btn-how-it-works {
+      background: #C2410C;
+      color: #FFFFFF;
+      font-size: 14.5px;
+      font-weight: 800;
+      padding: 6px 20px;
+      border-radius: 6px;
+      text-align: center;
+      border: none;
+      margin-bottom: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .flow-step-box {
+      width: 100%;
+      background: #FFFFFF;
+      border: 1.5px solid #000000;
+      border-radius: 6px;
+      padding: 6px 10px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    }
+    .flow-step-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: #000000;
+    }
+    .flow-step-subtitle {
+      font-size: 11.5px;
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    .flow-arrow-down {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 14px;
+    }
+    .flow-arrow-down svg {
+      width: 12px;
+      height: 14px;
+      fill: #000000;
+    }
+
+    /* Innovation & Uniqueness Box */
+    .innovation-box-wrap {
+      width: 100%;
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .innovation-header-pill {
+      background: #DBEAFE;
+      border: 1.5px solid #60A5FA;
+      color: #1E3A8A;
+      font-size: 13.5px;
+      font-weight: 800;
+      padding: 5px 16px;
+      border-radius: 8px;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .tree-branch-svg {
+      width: 100%;
+      height: 16px;
+    }
+
+    .innovation-cards-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+      width: 100%;
+      margin-top: 4px;
+    }
+
+    .inno-card {
+      background: #FEF9C3;
+      border: 1.2px solid #FACC15;
+      border-radius: 6px;
+      padding: 6px 4px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 60px;
+    }
+    .inno-card-title {
+      font-size: 11px;
+      font-weight: 800;
+      color: #713F12;
+      line-height: 1.2;
+    }
+
+    /* -------------------------------------------------------- */
+    /* COLUMN 3: 3 PHONE MOCKUPS + HOW ETA CALCULATION WORKS     */
+    /* -------------------------------------------------------- */
+    .col-prototype {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    .phones-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .phone-column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+    }
+
+    /* Native iPhone Bezel Frame */
+    .iphone-frame {
+      width: 248px;
+      height: 520px;
+      background: #000000;
+      border-radius: 38px;
+      border: 3.5px solid #0F172A;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Dynamic Island */
+    .dynamic-island {
+      position: absolute;
+      top: 7px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 66px;
+      height: 16px;
+      background: #000000;
+      border-radius: 10px;
+      z-index: 10;
+    }
+
+    .iphone-screen-wrap {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+      border-radius: 34px;
+    }
+
+    .iphone-screen-img {
+      width: 100%;
+      height: calc(100% + 54px);
+      object-fit: cover;
+      object-position: top center;
+      margin-bottom: -54px;
+    }
+
+    .phone-label-box {
+      border: 1.5px solid #000000;
+      border-radius: 6px;
+      padding: 4px 14px;
+      background: #FFFFFF;
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #000000;
+      text-align: center;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    }
+
+    /* Bottom Right: How ETA Calculation Works Box */
+    .diagram-card {
+      background: #FFFFFF;
+      border: 1.8px solid #CBD5E1;
+      border-radius: 12px;
+      padding: 10px 16px;
+      height: 180px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      margin-top: 6px;
+    }
+
+    .diagram-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: #0F172A;
+      text-align: center;
+    }
+
+    .diagram-flow-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex: 1;
+      padding: 4px 6px;
+    }
+
+    .diag-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 4px;
+      flex: 1;
+    }
+
+    .diag-icon-box {
+      width: 52px;
+      height: 52px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px solid #E2E8F0;
+    }
+
+    .diag-label-title {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #0F172A;
+    }
+    .diag-label-sub {
+      font-size: 9.5px;
+      color: #64748B;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .diag-arrow {
+      font-size: 18px;
+      font-weight: 900;
+      color: #94A3B8;
+    }
+
+    /* ======================================================== */
+    /* 3. BOTTOM FOOTER BAR                                     */
+    /* ======================================================== */
+    .slide-footer {
+      width: calc(100% + 88px);
+      margin-left: -44px;
+      height: 44px;
+      background: #0284C7;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      color: #FFFFFF;
+    }
+
+    .footer-tools {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .footer-tool-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: #FFFFFF;
+      font-weight: 700;
+    }
+
+    .footer-template-text {
+      font-size: 16.5px;
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: 0.2px;
+    }
+
+    .footer-slide-num {
+      font-size: 24px;
+      font-weight: 900;
+      color: #FFFFFF;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======================================================== -->
+  <!-- 1. TOP SLIDE HEADER                                      -->
+  <!-- ======================================================== -->
+  <div class="slide-header">
+
+    <!-- Team Badge (Top Left) -->
+    <div class="team-badge-wrap">
+      <div class="team-oval">
+        <span class="team-oval-title">Karasuno</span>
+      </div>
+    </div>
+
+    <!-- Center Main Title -->
+    <div class="header-center-wrap">
+      <h1 class="main-title">GATI-SETU</h1>
+      <div class="main-subtitle">Bridging the Railway Predictability Gap Today for an Honest &amp; Smarter Journey Tomorrow</div>
+    </div>
+
+    <!-- SIH 2026 Emblem & Badge (Top Right) -->
+    <div class="sih-badge-wrap">
+      <!-- High-Resolution Vector SIH Logo -->
+      <svg class="sih-emblem-svg" viewBox="0 0 100 100" fill="none">
+        <!-- Orange Gear / Brain Left Half -->
+        <path d="M48 12 C32 12 20 25 20 42 C20 53 26 62 34 68 L34 78 L48 78 Z" fill="#F97316"/>
+        <path d="M48 20 C36 20 27 29 27 42 C27 50 31 57 37 62 L37 72 L48 72 Z" fill="#FFFFFF"/>
+        <circle cx="38" cy="40" r="4" fill="#F97316"/>
+        <circle cx="34" cy="52" r="3.5" fill="#F97316"/>
+        <!-- Green Binary Tree Right Half -->
+        <path d="M52 12 C68 12 80 25 80 42 C80 53 74 62 66 68 L66 78 L52 78 Z" fill="#10B981"/>
+        <text x="56" y="32" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="900" fill="#FFFFFF">0101</text>
+        <text x="56" y="46" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="900" fill="#FFFFFF">1010</text>
+        <text x="56" y="60" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="900" fill="#FFFFFF">0101</text>
+        <!-- SIH Center Footer -->
+        <path d="M38 78 L62 78 L58 88 L42 88 Z" fill="#1E3A8A"/>
+        <text x="50" y="97" font-family="'Inter', sans-serif" font-size="9" font-weight="900" fill="#1E3A8A" text-anchor="middle">SIH</text>
+      </svg>
+      <div class="sih-text">
+        <span class="line1">SMART INDIA</span>
+        <span class="line2">HACKATHON</span>
+        <span class="year">2026</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- 2. MAIN 3-COLUMN BODY                                    -->
+  <!-- ======================================================== -->
+  <div class="slide-body">
+
+    <!-- ------------------------------------------------------ -->
+    <!-- COLUMN 1: CORE FUNCTIONAL MODULES                      -->
+    <!-- ------------------------------------------------------ -->
+    <div class="col-modules">
+      <div class="modules-heading">❖ CORE FUNCTIONAL MODULES</div>
+
+      <!-- Card 1 -->
+      <div class="feature-card">
+        <div class="feature-header-bar">1. Physics-Informed Digital Twin (Davis Equations)</div>
+        <div class="feature-sub-box">
+          Calculates rolling friction, aerodynamic drag, track gradient &amp; curvature for true deceleration.
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="feature-card">
+        <div class="feature-header-bar">2. Dynamic Headway &amp; Signal Clearance Radar</div>
+        <div class="feature-sub-box">
+          Tracks preceding passenger &amp; freight trains block-by-block to eliminate surprise signal halts.
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="feature-card">
+        <div class="feature-header-bar">3. Station Congestion &amp; Platform Turnaround Model</div>
+        <div class="feature-sub-box">
+          Predicts outer signal queues by forecasting when departure trains clear platforms ahead.
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="feature-card">
+        <div class="feature-header-bar">4. Sectional Run-Time &amp; TSR Caution Sync</div>
+        <div class="feature-sub-box">
+          Dynamically factors in engineering caution orders and track maintenance speed restrictions.
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="feature-card">
+        <div class="feature-header-bar">5. IMD Weather &amp; Statutory Fog Speed Governor</div>
+        <div class="feature-sub-box">
+          Enforces statutory 60 km/h fog limits (GR 3.61) and wet rail adhesion changes automatically.
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="feature-card">
+        <div class="feature-header-bar">6. Secondary Delay Ripple &amp; Cascading Propagator</div>
+        <div class="feature-sub-box">
+          Simulates single-line crossing meets, rake turnaround, and crew duty limits across junctions.
+        </div>
+      </div>
+
+      <!-- Card 7 -->
+      <div class="feature-card">
+        <div class="feature-header-bar">7. 100% Zero-Hardware Deployment (Pure Software)</div>
+        <div class="feature-sub-box">
+          Operates 100% on existing BEL RTIS GPS &amp; CRIS FOIS/COA data feeds with zero onboard cost.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ------------------------------------------------------ -->
+    <!-- COLUMN 2: HOW IT WORKS & INNOVATION FLOW               -->
+    <!-- ------------------------------------------------------ -->
+    <div class="col-how-it-works">
+
+      <button class="btn-how-it-works">How it Works</button>
+
+      <!-- Step 1 -->
+      <div class="flow-step-box">
+        <div class="flow-step-title">Live Telemetry Input</div>
+        <div class="flow-step-subtitle" style="color: #EA580C;">RTIS GPS (30s) + Loco Class &amp; Load Data</div>
+      </div>
+
+      <!-- Down Arrow -->
+      <div class="flow-arrow-down">
+        <svg viewBox="0 0 10 12"><path d="M5 12 L0 5 L3 5 L3 0 L7 0 L7 5 L10 5 Z"/></svg>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="flow-step-box">
+        <div class="flow-step-title">Track &amp; Safety Bounds</div>
+        <div class="flow-step-subtitle" style="color: #0D9488;">GIS alignment + Dynamic TSR Caution Zones</div>
+      </div>
+
+      <!-- Down Arrow -->
+      <div class="flow-arrow-down">
+        <svg viewBox="0 0 10 12"><path d="M5 12 L0 5 L3 5 L3 0 L7 0 L7 5 L10 5 Z"/></svg>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="flow-step-box">
+        <div class="flow-step-title">Signal &amp; Headway Clearance</div>
+        <div class="flow-step-subtitle" style="color: #0D9488;">Preceding trains &amp; automatic block spacing</div>
+      </div>
+
+      <!-- Down Arrow -->
+      <div class="flow-arrow-down">
+        <svg viewBox="0 0 10 12"><path d="M5 12 L0 5 L3 5 L3 0 L7 0 L7 5 L10 5 Z"/></svg>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="flow-step-box">
+        <div class="flow-step-title">Spatial-Temporal AI Engine</div>
+        <div class="flow-step-subtitle" style="color: #4338CA;">Digital twin Davis physics + outer queues</div>
+      </div>
+
+      <!-- Down Arrow -->
+      <div class="flow-arrow-down">
+        <svg viewBox="0 0 10 12"><path d="M5 12 L0 5 L3 5 L3 0 L7 0 L7 5 L10 5 Z"/></svg>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="flow-step-box">
+        <div class="flow-step-title">Honest Arrival Time &amp; Reason</div>
+        <div class="flow-step-subtitle" style="color: #1E293B;">Dynamic ETA + Human Delay Badges to user</div>
+      </div>
+
+      <!-- Down Arrow to Innovation -->
+      <div class="flow-arrow-down" style="height: 18px;">
+        <svg viewBox="0 0 10 12"><path d="M5 12 L0 5 L3 5 L3 0 L7 0 L7 5 L10 5 Z"/></svg>
+      </div>
+
+      <!-- Innovation & Uniqueness -->
+      <div class="innovation-box-wrap">
+        <div class="innovation-header-pill">Innovation &amp; Uniqueness</div>
+
+        <!-- 3-Branch Tree Fork SVG -->
+        <svg class="tree-branch-svg" viewBox="0 0 340 18">
+          <line x1="170" y1="0" x2="170" y2="8" stroke="#000000" stroke-width="1.5"/>
+          <line x1="56" y1="8" x2="284" y2="8" stroke="#000000" stroke-width="1.5"/>
+          <line x1="56" y1="8" x2="56" y2="18" stroke="#000000" stroke-width="1.5"/>
+          <line x1="170" y1="8" x2="170" y2="18" stroke="#000000" stroke-width="1.5"/>
+          <line x1="284" y1="8" x2="284" y2="18" stroke="#000000" stroke-width="1.5"/>
+        </svg>
+
+        <div class="innovation-cards-row">
+          <div class="inno-card">
+            <span class="inno-card-title">Outer Signal Trap Predictor</span>
+          </div>
+          <div class="inno-card">
+            <span class="inno-card-title">Ghost Freight Detection Radar</span>
+          </div>
+          <div class="inno-card">
+            <span class="inno-card-title">Statutory Fog Speed Governor</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ------------------------------------------------------ -->
+    <!-- COLUMN 3: 3 PHONE MOCKUPS + HOW ETA CALCULATION WORKS  -->
+    <!-- ------------------------------------------------------ -->
+    <div class="col-prototype">
+
+      <!-- 3 iPhone Mockups Side-by-Side -->
+      <div class="phones-row">
+
+        <!-- Phone 1: Weather Radar Map -->
+        <div class="phone-column">
+          <div class="iphone-frame">
+            <div class="dynamic-island"></div>
+            <div class="iphone-screen-wrap">
+              <img class="iphone-screen-img" src="screenshots/sim_bw_clean_no_watermark.png" alt="Weather Radar Map" />
+            </div>
+          </div>
+          <div class="phone-label-box">Live Weather Radar</div>
+        </div>
+
+        <!-- Phone 2: Dynamic ETA Timeline -->
+        <div class="phone-column">
+          <div class="iphone-frame">
+            <div class="dynamic-island"></div>
+            <div class="iphone-screen-wrap">
+              <img class="iphone-screen-img" src="screenshots/sim_tab_timeline.png" alt="Dynamic ETA Timeline" />
+            </div>
+          </div>
+          <div class="phone-label-box">Dynamic ETA Timeline</div>
+        </div>
+
+        <!-- Phone 3: Platform Live Board -->
+        <div class="phone-column">
+          <div class="iphone-frame">
+            <div class="dynamic-island"></div>
+            <div class="iphone-screen-wrap">
+              <img class="iphone-screen-img" src="screenshots/sim_tab_stations.png" alt="Station Platform Board" />
+            </div>
+          </div>
+          <div class="phone-label-box">Platform Live Board</div>
+        </div>
+
+      </div>
+
+      <!-- Bottom Right: How ETA Calculation Works Box -->
+      <div class="diagram-card">
+        <div class="diagram-title">How ETA Calculation works</div>
+
+        <div class="diagram-flow-content">
+
+          <!-- 1. Train on Track -->
+          <div class="diag-node">
+            <div class="diag-icon-box" style="background: #EFF6FF; border-color: #BFDBFE;">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="3" width="16" height="16" rx="2"/>
+                <path d="M4 11h16"/>
+                <path d="M12 3v8"/>
+                <path d="m8 19-2 3"/>
+                <path d="m18 22-2-3"/>
+                <circle cx="8" cy="15" r="1"/>
+                <circle cx="16" cy="15" r="1"/>
+              </svg>
+            </div>
+            <span class="diag-label-title">Train on Track</span>
+            <span class="diag-label-sub">RTIS GPS + Loco Mass</span>
+          </div>
+
+          <div class="diag-arrow">➔</div>
+
+          <!-- 2. Physical & Signal Limits -->
+          <div class="diag-node">
+            <div class="diag-icon-box" style="background: #FEF3C7; border-color: #FDE68A;">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2v4"/>
+                <path d="m4.93 4.93 2.83 2.83"/>
+                <path d="M2 12h4"/>
+                <path d="m4.93 19.07 2.83-2.83"/>
+                <circle cx="12" cy="12" r="4"/>
+                <path d="M12 18v4"/>
+                <path d="m16.24 16.24 2.83 2.83"/>
+                <path d="M18 12h4"/>
+                <path d="m16.24 7.76 2.83-2.83"/>
+              </svg>
+            </div>
+            <span class="diag-label-title">Physics &amp; Signals</span>
+            <span class="diag-label-sub">Davis Drag + TSR Limits</span>
+          </div>
+
+          <div class="diag-arrow">➔</div>
+
+          <!-- 3. Spatial-Temporal Engine -->
+          <div class="diag-node">
+            <div class="diag-icon-box" style="background: #F3E8FF; border-color: #DDD6FE;">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="8" rx="2"/>
+                <rect x="2" y="14" width="20" height="8" rx="2"/>
+                <line x1="6" y1="6" x2="6.01" y2="6"/>
+                <line x1="6" y1="18" x2="6.01" y2="18"/>
+              </svg>
+            </div>
+            <span class="diag-label-title">Digital Twin AI</span>
+            <span class="diag-label-sub">Headway + Outer Queue</span>
+          </div>
+
+          <div class="diag-arrow">➔</div>
+
+          <!-- 4. Honest Passenger ETA -->
+          <div class="diag-node">
+            <div class="diag-icon-box" style="background: #ECFDF5; border-color: #A7F3D0;">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </div>
+            <span class="diag-label-title">Honest ETA</span>
+            <span class="diag-label-sub">Dynamic Arrival + Reason</span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- 3. BOTTOM FOOTER BAR                                     -->
+  <!-- ======================================================== -->
+  <div class="slide-footer">
+
+    <!-- PPT Navigation Toolbar Icons -->
+    <div class="footer-tools">
+      <div class="footer-tool-icon">‹</div>
+      <div class="footer-tool-icon">✎</div>
+      <div class="footer-tool-icon">🔍</div>
+      <div class="footer-tool-icon">📹</div>
+      <div class="footer-tool-icon">•••</div>
+      <div class="footer-tool-icon">›</div>
+    </div>
+
+    <!-- Center Slide Template Watermark -->
+    <div class="footer-template-text">@SIH Idea submission- Template</div>
+
+    <!-- Slide Number (Slide 2) -->
+    <div class="footer-slide-num">2</div>
+
+  </div>
+
+</body>
+</html>

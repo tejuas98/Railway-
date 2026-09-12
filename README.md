@@ -192,15 +192,27 @@ Every operational requirement and pain point highlighted in Problem Statement SI
 
 ---
 
-### 3.1 Proposed Solution Presentation Slide View
+### 3.1 Proposed Solution Master Presentation Slide (SIH Official Template)
 
-Below is the jury-facing slide visual structured for instantaneous solution comprehension (Yellow feature pill headers with crisp green-bordered 1-sentence solution explanations):
+Follows the exact layout of the official Smart India Hackathon presentation template. In just one single slide, it cleanly communicates the entire solution: **7 Core Functional Modules** (yellow pill + green sub-box stack), **How It Works 5-Stage Processing Pipeline**, **3-Branch Innovation & Uniqueness Tree**, **3 Native iOS Mobile App Mockups**, and the **Kinematic ETA Calculation Flow**:
+
+<div align="center">
+
+![GATI-SETU Proposed Solution Slide](docs/screenshots/proposed_solution_sarjom_slide.png)
+
+</div>
+
+*Interactive Presentation Slide Available:* [View 1080p Single-Slide Presentation (HTML)](file:///Users/toru/.gemini/antigravity-ide/scratch/Railway-repo/docs/proposed_solution_sarjom_slide.html) • [12-Card Grid Slide (HTML)](file:///Users/toru/.gemini/antigravity-ide/scratch/Railway-repo/docs/proposed_solution_slide_12cards_presentation.html)
+
+---
+
+### 3.2 12 Core Functional Modules Slide Grid
 
 ![GATI-SETU Core Functional Modules](docs/screenshots/proposed_solution_12_modules.png)
 
 ---
 
-### 3.2 The 12-Module Solution Cards (At A Glance)
+### 3.3 The 12-Module Solution Cards (At A Glance)
 
 <table>
 <tr>
