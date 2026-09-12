@@ -41,25 +41,46 @@
 </div>
 
 #### 1. Telemetry & Route Input
-The system ingests high-frequency real-time data feeds: 30-second ISRO NavIC satellite GPS pings from BEL RTIS locomotive transceivers, station electronic interlocking relay logs (S&T data loggers), and freight train positions from CRIS FOIS.
+* **Railway Operations (Technical):** Ingests high-frequency real-time data feeds: 30-second ISRO NavIC satellite GPS pings from BEL RTIS locomotive transceivers, station electronic interlocking relay logs (S&T data loggers), and freight train positions from CRIS FOIS.
+* **Plain English (What You See):** The system connects directly to satellite receivers on top of the train engine, checking where the train physically is, which track signals are active, and what freight trains are sharing the corridor ahead.
 
 #### 2. Track Map-Matching & Jitter Filter
-Raw 2D GPS coordinates are projected onto a 1D linear railway track coordinate chainage ($KM_t$) using an Extended Kalman Filter, eliminating GPS multipath drift, tunnel signal loss, and phantom jumps.
+* **Railway Operations (Technical):** Raw 2D GPS coordinates are projected onto a 1D linear railway track coordinate chainage ($KM_t$) using an Extended Kalman Filter, eliminating GPS multipath drift, tunnel signal loss, and phantom jumps.
+* **Plain English (What You See):** Eliminates erratic GPS errors so your train never appears to drift onto parallel highways or teleport 15 kilometers forward and backward on your mobile screen.
 
 #### 3. Dynamic e-Caution & TSR Parser
-The engine parses divisional civil engineering T/409 electronic caution orders, dynamically calculating the kinematic deceleration, 20–30 km/h slow zones, and full rake-length acceleration recovery penalties.
+* **Railway Operations (Technical):** The engine parses divisional civil engineering T/409 electronic caution orders, dynamically calculating kinematic deceleration, 20–30 km/h slow zones, and full rake-length (576m) acceleration recovery penalties.
+* **Plain English (What You See):** Detects active track maintenance and slow zones ahead, calculating the exact minutes lost instead of pretending the train can rush through repair sections at top speed.
 
 #### 4. Weather & Fog Safety Governor
-Live satellite weather grids and IMD radar feeds automatically enforce statutory railway safety limits—specifically capping running speed at 60 km/h under Indian Railways General Rule 3.61 during dense winter fog conditions and adjusting for wet rail adhesion.
+* **Railway Operations (Technical):** Live satellite weather grids and IMD radar feeds automatically enforce statutory railway safety limits—specifically capping running speed at 60 km/h under Indian Railways General Rule 3.61 during dense winter fog conditions and adjusting for wet rail adhesion.
+* **Plain English (What You See):** When thick winter fog or heavy monsoon rain strikes, the system automatically respects official railway safety speed limits so your arrival estimate stays realistic instead of giving false hope.
 
 #### 5. Preceding Headway & Kinematics
-Instead of assuming an empty track or static timetable, the engine simulates 4-aspect signal progression and trailing friction behind slower preceding freight trains, factoring in locomotive tractive horsepower (WAP-7 vs WAG-9) and 24-coach rake tonnage.
+* **Railway Operations (Technical):** Instead of assuming an empty track or static timetable, the engine simulates 4-aspect signal progression and trailing friction behind slower preceding freight trains, factoring in locomotive tractive horsepower (WAP-7 vs WAG-9) and 24-coach rake tonnage.
+* **Plain English (What You See):** Understands when a heavy, slow goods train is crawling in front of your express, adjusting your arrival time before your train actually hits the red signal.
 
 #### 6. Platform Clearance & Outer Queue
-The terminal yard state machine tracks actual platform vacancy and preceding train turnaround times at destination stations, accurately calculating outer home signal stabling delays and ending the "outer signal trap".
+* **Railway Operations (Technical):** The terminal yard state machine tracks actual platform vacancy and preceding train turnaround times at destination stations, accurately calculating outer home signal stabling delays and ending the "outer signal trap".
+* **Plain English (What You See):** Ends the dreaded surprise where the train stops 2 km outside the station; tells you upfront if your platform is still occupied and counts down the true wait time before you reach the station.
 
 #### 7. Display & Dynamic ETA Output
-The dissemination engine delivers calibrated probabilistic arrival windows [P10–P90] (e.g. `20:19 [20:18 – 20:21, 90% Confidence]`) alongside plain-text root-cause delay explanations directly to passenger mobile apps, station CIDS displays, and section controllers.
+* **Railway Operations (Technical):** The dissemination engine delivers calibrated probabilistic arrival windows [P10–P90] (e.g. `20:19 [20:18 – 20:21, 90% Confidence]`) alongside plain-text root-cause delay explanations directly to passenger mobile apps, station CIDS displays, and section controllers.
+* **Plain English (What You See):** You get an honest arrival time on your phone or station platform board, plus an easy-to-read explanation (such as *"Waiting for Platform 1 to clear"* or *"Held for Vande Bharat overtake"*) so you are never left guessing in the dark.
+
+---
+
+### Quick Comparison: Technical Operation vs Passenger Experience
+
+| Pipeline Stage | What the System Does Behind the Scenes (Technical) | What the Passenger Experiences (Plain English) |
+| :--- | :--- | :--- |
+| **1. Input** | Pulls 30s NavIC GPS & track interlocking relays | You search your train; system locates it instantly |
+| **2. Alignment** | Snaps coordinates to 1D rail chainage | Accurate train position with zero erratic jumping |
+| **3. Caution Work** | Parses T/409 civil repair speed limits | Factors in slow zones instead of assuming top speed |
+| **4. Weather** | Enforces GR 3.61 fog safety limits (60 km/h) | Realistic winter schedule that does not collapse |
+| **5. Preceding Trains** | Simulates trailing friction behind goods trains | Predicts yellow signals before your train slows down |
+| **6. Platform Check** | Monitors destination platform occupancy | Warns you about outer signal holds before you reach |
+| **7. Clear Output** | Delivers P10-P90 arrival bounds & root cause | Honest arrival time & clear reason for any delay |
 
 ---
 
