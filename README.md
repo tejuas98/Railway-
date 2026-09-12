@@ -6,7 +6,7 @@
 
 ---
 
-![GATI-SETU Hero Banner](docs/screenshots/passenger_tracker.png)
+![How GATI-SETU Dynamic ETA Forecasting Works](docs/screenshots/how_gati_setu_works.png)
 
 ## At A Glance: Executive Summary & Performance Metrics
 
@@ -738,55 +738,65 @@ GATI-SETU provides dedicated operational interfaces tailored for each key stakeh
 
 ---
 
-### 6.3 The 5 Interactive Surfaces (Screenshots & Interfaces)
+### 6.3 The 5 Operational Surfaces: Functional Architecture & Data Contracts
 
-#### Surface 1: Passenger Experience Hub
-* **Direct Access:** `/?tab=passenger`
-* **Target User:** Train passenger, family members, everyday commuter.
-* **Controls & Display:** Real-time train search, live GPS track view, calibrated [P10–P90] confidence arrival window, speed gauge, distance remaining, and human-readable causal delay badges.
-* **What the User Does:** Enters train number (e.g. 12302 Howrah Rajdhani); gets an honest arrival window; reads the exact reason for delay; books a synchronized cab; avoids standing in carriage vestibules during outer signal holds.
-
-![Passenger Experience Hub](docs/screenshots/passenger_tracker.png)
-
----
-
-#### Surface 2: Station Concourse Display (CIDS)
-* **Direct Access:** `/?tab=station`
-* **Target User:** Station Master, Platform Superintendent, on-board housekeeping (OBHS) cleaners, watering crews, licensed porters (coolies), and waiting concourse passengers.
-* **Controls & Display:** Terminal station selector, 45-minute high-precision touchdown countdown ($\pm 2$ min), platform allocation status (PF 1, 2, 3), outer home signal holding queue status, automated public address (PA) feed.
-* **What the User Does:** Station staff pre-stages cleaning supplies and water hoses on the platform before the rake docks; passengers watch real-time touchdown countdowns on platform display boards without rushing.
-
-![Station Concourse CIDS](docs/screenshots/station_cids.png)
+#### Surface 1: Passenger Experience Hub (Public Dissemination Surface)
+* **Functional Objective:** Deliver honest, calibrated arrival windows and transparent causal delay explanations directly to passenger mobile devices.
+* **Primary Target Audience:** Everyday passengers, family members, commuters, and city feeder transport.
+* **Input Data Stream:** Filtered 1D track chainage ($KM_t$) from EKF, Conformal Bayes Quantile predictions [P10, P50, P90], and causal delay state classification.
+* **Key Output Schema & Visual Fields:**
+  * **Calibrated Arrival Window:** `20:19 [20:17 – 20:22, 90% Confidence]` (replaces brittle single timestamps).
+  * **Causal Delay Reason Badge:** Human-readable explanations such as `[HOLD] Outer Signal Delay: PF 1 occupied` or `[WEATHER] Operating under GR 3.61 fog speed limit (60 km/h)`.
+  * **Kinematic Trip Status:** Real-time sectional speed, distance to next station, and preceding block clearance indicators.
+* **Operational Impact:** Eliminates platform crowding and boarding panic; keeps passengers comfortably seated during outer signal stabling.
 
 ---
 
-#### Surface 3: Section Controller AI Dispatch Cockpit
-* **Target User:** Section Traffic Controller (Train Dispatcher in Divisional Control Office).
-* **Direct Access:** `/?tab=controller`
-* **Controls & Display:** Active division selector, dynamic line schematic diagram (signals, block sections, mainline, loop lines), AI Loop-Line Overtake Advisory Card, One-Click **[Approve Overtake]** / **[Override]** buttons, Loco Crew 10-Hour HOER Duty-Hour countdown with **[Order Relief Crew]** alert.
-* **What the User Does:** Clicks **[Approve Overtake]** to route a slow coal freight into a loop siding, allowing a high-priority Rajdhani to pass and recovering 19 minutes of delay; clicks **[Order Relief Crew]** 90 minutes before a driver's shift expires to prevent a mainline stoppage.
-
-![Section Controller Cockpit](docs/screenshots/controller_cockpit.png)
-
----
-
-#### Surface 4: Government Audit & Technical Dossier
-* **Target User:** Divisional Railway Manager (DRM), Principal Chief Operations Manager (PCOM), CAG Audit Officers, CRIS Data Scientists.
-* **Direct Access:** `/?tab=dossier`
-* **Controls & Display:** Comparative accuracy benchmark (NTES 42.6 min vs GATI-SETU 6.2 min MAE), S&T relay contact replay, e-Caution speed restriction logs, CAG compliance report export.
-* **What the User Does:** Verifies untamperable digital twin logs; audits punctuality without relying on manual station diary entries; evaluates traction energy savings.
-
-![Government Audit Dossier](docs/screenshots/audit_dossier.png)
+#### Surface 2: Station Concourse Display (CIDS) (Terminal Operations Surface)
+* **Functional Objective:** Synchronize station terminal platform reception, passenger information displays (CIDS), and ground servicing turnarounds.
+* **Primary Target Audience:** Station Masters, Platform Superintendents, On-Board Housekeeping (OBHS) squads, watering crews, licensed porters (coolies).
+* **Input Data Stream:** Station interlocking relay logs, platform track circuit occupancy, and high-precision terminal yard queue state machines.
+* **Key Output Schema & Visual Fields:**
+  * **T - 45 Minute Arrival Countdown:** High-precision countdown ($\pm 2$ min window) broadcast 45 minutes prior to platform entry.
+  * **Platform Reception Status:** Real-time occupancy status across all platforms (PF 1, 2, 3, etc.) with automated conflict flags.
+  * **Outer Signal Queue Monitor:** Counts down stabling wait times before trains cross the yard throat.
+* **Operational Impact:** Pre-stages OBHS cleaning staff and watering hoses on the platform before the train stops, slashing turnaround detention by 25–35 minutes per rake.
 
 ---
 
-#### Surface 5: Pan-India Live Railway Network & Weather Radar Map
-* **Target User:** Central Control Office (Railway Board), CRIS Operations, Disaster Management Teams.
-* **Direct Access:** `/?tab=map`
-* **Controls & Display:** Real-time GIS map tracking 10,000+ trains, Doppler weather radar layers (fog, rain, storm), divisional congestion density heatmaps, corridor bottleneck filters.
-* **What the User Does:** Monitors high-density trunk routes (Golden Quadrilateral) nationwide; tracks adverse weather fronts moving across Northern railway divisions; coordinates inter-zonal traffic dispatch.
+#### Surface 3: Section Controller AI Dispatch Cockpit (Traffic Management Surface)
+* **Functional Objective:** Assist human train controllers in resolving track congestion, managing train precedence, and preventing mainline stalls.
+* **Primary Target Audience:** Section Traffic Controllers (Train Dispatchers in Divisional Control Offices).
+* **Input Data Stream:** Spatio-temporal multigraph $\mathcal{G} = (\mathcal{V}, \mathcal{E}, \mathcal{W}_t)$, S&T relay logs, FOIS freight positions, and CMS crew sign-on hours.
+* **Key Decision Modules & Advisory Outputs:**
+  * **AI Loop-Line Overtake Advisor:** Automatically computes conflict graphs and recommends loop-line diversions (e.g. *"Divert freight BOXN-8422 into Loop Line 2 at Etawah; allow 12302 Rajdhani to overtake, recovering 19 min delay"*).
+  * **Loco Crew 10-Hour HOER Duty Watchdog:** Tracks pilot driving hours against the 10-hour statutory limit, alerting controllers 90 minutes early to position relief crews.
+  * **e-Caution Speed Restriction Parser:** Automatically injects civil engineering T/409 slow zones into sectional trajectory projections.
+* **Operational Impact:** Replaces high-stress manual telephone coordination with automated mathematical decision support, expanding line capacity by 12–15%.
 
-![Pan-India Live Radar Map](docs/screenshots/pan_india_live_map.png)
+---
+
+#### Surface 4: Government Audit & Technical Dossier (Governance & Accountability Surface)
+* **Functional Objective:** Provide tamper-proof verification of system punctuality, safety rule compliance, and national return on investment (ROI).
+* **Primary Target Audience:** Divisional Railway Managers (DRM), Principal Chief Operations Managers (PCOM), Comptroller and Auditor General (CAG) auditors, CRIS engineers.
+* **Input Data Stream:** Historical telemetry logs, actual vs predicted touchdown timestamps, and S&T relay state transitions.
+* **Key Audit Metrics & Reports:**
+  * **Punctuality Accuracy Verification:** Continuous evaluation of Mean Absolute Error (MAE) benchmarking GATI-SETU (6.2 min) against legacy NTES (42.6 min).
+  * **Relay Timestamp Verification:** Microsecond-level replay of track circuit and axle counter activations, preventing manual delay suppression in ICMS/COA.
+  * **Traction Energy Savings Analysis:** Quantifies electricity (kWh) and diesel fuel saved by preventing stop-and-go braking cycles at outer signals.
+* **Operational Impact:** Establishes institutional transparency and provides empirical data for targeted infrastructure investments.
+
+---
+
+#### Surface 5: Pan-India Live Railway Network & Weather Radar (National Strategic Surface)
+* **Functional Objective:** Provide a unified GIS digital twin of active rail operations across all 17 railway zones and 68 divisions.
+* **Primary Target Audience:** Railway Board Central Control Office, CRIS Operations Center, National Disaster Management Authority (NDMA).
+* **Input Data Stream:** Nationwide BEL RTIS GPS feeds (10,000+ locomotives), IMD Doppler weather radar, and regional congestion metrics.
+* **Key Strategic Visualizations:**
+  * **Live Network Topology:** Real-time visualization of high-density corridors (Golden Quadrilateral and Diagonals).
+  * **Adverse Weather Layer:** Real-time overlays of winter radiation fog zones, monsoon rainfall intensity, and temperature gradients.
+  * **Divisional Congestion Heatmaps:** Flags bottlenecks across inter-zonal interchange points (e.g. Ghaziabad, Mughalsarai/DDU, Itarsi).
+* **Operational Impact:** Enables proactive national rerouting and disaster mitigation hours before localized bottlenecks cascade nationwide.
 
 ---
 
