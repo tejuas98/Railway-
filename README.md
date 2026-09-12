@@ -622,45 +622,70 @@ For $\tau \in \{0.10, 0.50, 0.90\}$, yielding a reliable, non-parametric 90% con
 
 ---
 
-## 6. The 5 Interactive Surfaces (Screenshots & Interfaces)
+## 6. User Roles & Control Architecture: Who Controls What & What They Do
 
 GATI-SETU provides dedicated operational interfaces tailored for each key stakeholder in the railway ecosystem:
 
-### Surface 1: Passenger Experience Hub
+### 6.1 Master Role-Control-Action Matrix
+
+| Stakeholder / User Role | Dedicated Surface / Location | Specific Interactive Controls Available | Real-World Actions & Operational Decisions |
+| :--- | :--- | :--- | :--- |
+| **1. Train Passenger & Everyday Commuter** | Mobile Web & App (`/?tab=passenger`) | Train number/name search, destination selector, live GPS track view, weather radar toggle, calibrated [P10–P90] arrival window, plain-English causal badge, "Share Trip" link, "Book Sync Cab" button. | Views true arrival window; understands exact reason for delay (fog, platform occupied, maintenance); avoids rushing to door during outer signal holds; times cab pickup and family coordination. |
+| **2. Station Master & Ground Maintenance Crews (OBHS & Watering)** | Station Concourse Display (CIDS) & Terminal Master Console (`/?tab=station`) | Station selector, 45-minute high-precision countdown ($\pm 2$ min window), platform assignment board (PF 1, 2, 3), outer signal holding queue indicator, emergency platform re-routing toggle, CIDS & PA speaker sync switch. | **Station Master:** Resolves platform conflicts 45 min before arrival; directs crowd flow across Foot Overbridges (FOBs) to prevent stampedes. <br>**OBHS Cleaning Crew:** Pre-stages squads on platform before rake docks, finishing cleaning in 10 minutes. <br>**Watering Squads:** Pre-connects water hydrants, eliminating 35-min water detentions. <br>**Porters (Coolies):** Positions luggage trolleys at coach stopping marks. |
+| **3. Section Traffic Controller (Divisional Dispatcher)** | Section Controller AI Dispatch Cockpit (`/?tab=controller`) | Divisional section selector (e.g. NCR Prayagraj Division), interactive track schematic (main line, loop lines, signals), AI Loop-Line Overtake Advisory Card, **[Approve Overtake]** and **[Manual Override]** buttons, Loco Crew 10-Hour HOER Watchdog with **[Order Relief Crew]** alert, e-Caution T/409 speed parser. | Stops guessing which train to put in loop lines; approves AI-calculated overtakes in 5 seconds to minimize cascading delays; prevents train stalls on mainlines by dispatching relief loco pilots 90 minutes before the 10-hour statutory limit expires; enforces train precedence (Vande Bharat > Rajdhani > Freight). |
+| **4. Locomotive Pilot (Driver) & Assistant Loco Pilot (ALP)** | On-Board Cab Unit (BEL RTIS LDU & Fog Safe Device Display) | Audio-visual GPS speed & track chainage ($KM_t$) display, dynamic caution order (TSR) distance countdown with audible beep (e.g. "TSR 30 km/h in 1,200m"), statutory GR 3.61 fog speed ceiling warning (60 km/h), remaining running duty hours counter, emergency halt alert. | Regulates throttle and braking smoothly for upcoming 20–30 km/h caution zones without emergency braking; drives safely at 60 km/h in zero-visibility winter fog guided by audio signal distance beeps; prevents wheel slip on wet rails by matching acceleration to adhesion limits. |
+| **5. Railway Administrator, DRM & CRIS Audit Inspector** | Government Audit & Technical Dossier (`/?tab=dossier`) & Pan-India Radar (`/?tab=map`) | Division-wide punctuality dashboard (MAE error comparison: NTES 42.6 min vs GATI-SETU 6.2 min), real-time GIS map tracking 10,000+ trains, Doppler weather radar layers, S&T Relay Data Logger replay tool, CAG compliance audit generator, energy/fuel savings calculator. | Audits division-wide punctuality and eliminates manual ICMS delay tampering; identifies chronic physical bottlenecks (short loop lines, missing crossovers) for capital planning; monitors winter fog speed compliance; tracks traction energy saved from avoided stop-and-go braking. |
+| **6. Third-Party City Mobility & Parcel Logistics (Ola, Uber, Metro Rail)** | Developer REST & WebSocket API Gateway (`/api/v1/eta`, `/api/v1/stream`) | Train subscription webhook configuration, calibrated [P10–P90] confidence interval ingestion, station pickup bay dispatch triggers, parcel van (VP) touchdown countdown stream. | **Ride-Hailing (Ola/Uber):** Dispatches cabs to the station pickup bay at the exact minute passengers step off the platform, cutting driver cancellations. <br>**City Metro (DMRC/UPMRC):** Synchronizes connecting feeder buses and metro trains for late-night arrivals. <br>**Parcel Logistics:** Pre-stages cargo trucks at the parcel depot for immediate offloading from passenger luggage vans. |
+
+---
+
+### 6.2 Detailed Breakdown of the 5 Interactive Surfaces
+
+#### Surface 1: Passenger Experience Hub
 * **Direct Access:** `/?tab=passenger`
-* **Features:** Live train tracker, calibrated [P10–P90] confidence arrival windows, and plain-text root-cause delay badges.
+* **Target User:** Train passenger, family members, everyday commuter.
+* **Controls & Display:** Real-time train search, live GPS track view, calibrated [P10–P90] confidence arrival window, speed gauge, distance remaining, and human-readable causal delay badges.
+* **What the User Does:** Enters train number (e.g. 12302 Howrah Rajdhani); gets an honest arrival window; reads the exact reason for delay; books a synchronized cab; avoids standing in carriage vestibules during outer signal holds.
 
 ![Passenger Experience Hub](docs/screenshots/passenger_tracker.png)
 
 ---
 
-### Surface 2: Station Concourse Display (CIDS)
+#### Surface 2: Station Concourse Display (CIDS)
 * **Direct Access:** `/?tab=station`
-* **Features:** Public platform displays synchronized with live outer-signal queues, eliminating platform crowding and false arrival panics.
+* **Target User:** Station Master, Platform Superintendent, on-board housekeeping (OBHS) cleaners, watering crews, licensed porters (coolies), and waiting concourse passengers.
+* **Controls & Display:** Terminal station selector, 45-minute high-precision touchdown countdown ($\pm 2$ min), platform allocation status (PF 1, 2, 3), outer home signal holding queue status, automated public address (PA) feed.
+* **What the User Does:** Station staff pre-stages cleaning supplies and water hoses on the platform before the rake docks; passengers watch real-time touchdown countdowns on platform display boards without rushing.
 
 ![Station Concourse CIDS](docs/screenshots/station_cids.png)
 
 ---
 
-### Surface 3: Section Controller AI Dispatch Cockpit
+#### Surface 3: Section Controller AI Dispatch Cockpit
+* **Target User:** Section Traffic Controller (Train Dispatcher in Divisional Control Office).
 * **Direct Access:** `/?tab=controller`
-* **Features:** Recommends optimal loop-line overtakes, predicts platform conflicts 45 minutes ahead, and monitors loco crew 10-hour HOER limits.
+* **Controls & Display:** Active division selector, dynamic line schematic diagram (signals, block sections, mainline, loop lines), AI Loop-Line Overtake Advisory Card, One-Click **[Approve Overtake]** / **[Override]** buttons, Loco Crew 10-Hour HOER Duty-Hour countdown with **[Order Relief Crew]** alert.
+* **What the User Does:** Clicks **[Approve Overtake]** to route a slow coal freight into a loop siding, allowing a high-priority Rajdhani to pass and recovering 19 minutes of delay; clicks **[Order Relief Crew]** 90 minutes before a driver's shift expires to prevent a mainline stoppage.
 
 ![Section Controller Cockpit](docs/screenshots/controller_cockpit.png)
 
 ---
 
-### Surface 4: Government Audit & Technical Dossier
+#### Surface 4: Government Audit & Technical Dossier
+* **Target User:** Divisional Railway Manager (DRM), Principal Chief Operations Manager (PCOM), CAG Audit Officers, CRIS Data Scientists.
 * **Direct Access:** `/?tab=dossier`
-* **Features:** Complete audit trail comparing NTES vs GATI-SETU, S&T relay logs, and CAG punctuality compliance statistics.
+* **Controls & Display:** Comparative accuracy benchmark (NTES 42.6 min vs GATI-SETU 6.2 min MAE), S&T relay contact replay, e-Caution speed restriction logs, CAG compliance report export.
+* **What the User Does:** Verifies untamperable digital twin logs; audits punctuality without relying on manual station diary entries; evaluates traction energy savings.
 
 ![Government Audit Dossier](docs/screenshots/audit_dossier.png)
 
 ---
 
-### Surface 5: Pan-India Live Railway Network & Weather Radar Map
+#### Surface 5: Pan-India Live Railway Network & Weather Radar Map
+* **Target User:** Central Control Office (Railway Board), CRIS Operations, Disaster Management Teams.
 * **Direct Access:** `/?tab=map`
-* **Features:** Real-time nationwide GIS map displaying 10,000+ active trains, Doppler weather radar layers, and divisional bottleneck heatmaps.
+* **Controls & Display:** Real-time GIS map tracking 10,000+ trains, Doppler weather radar layers (fog, rain, storm), divisional congestion density heatmaps, corridor bottleneck filters.
+* **What the User Does:** Monitors high-density trunk routes (Golden Quadrilateral) nationwide; tracks adverse weather fronts moving across Northern railway divisions; coordinates inter-zonal traffic dispatch.
 
 ![Pan-India Live Radar Map](docs/screenshots/pan_india_live_map.png)
 
