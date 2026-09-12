@@ -3,33 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>GATI-SETU • Live Pan-India Railway ETA & Weather Radar</title>
+  <title>GATI-SETU • Live Train & Station Tracker</title>
   
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   
-  <!-- Leaflet CSS & JS for Interactive Map -->
+  <!-- Leaflet CSS & JS for Satellite Map -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
   <style>
     :root {
-      --bg-dark: #0B0F19;
-      --card-dark: #151D2E;
-      --card-subtle: #1E293B;
-      --border-color: rgba(255, 255, 255, 0.08);
-      --primary: #38BDF8;
-      --primary-glow: rgba(56, 189, 248, 0.25);
-      --accent-green: #10B981;
-      --accent-yellow: #F59E0B;
-      --accent-red: #EF4444;
-      --accent-purple: #A855F7;
-      --text-main: #F8FAFC;
-      --text-muted: #94A3B8;
-      --nav-height: 64px;
-      --header-height: 54px;
+      --wimt-blue: #0B60B0;
+      --wimt-blue-dark: #004080;
+      --wimt-bg: #F4F6F9;
+      --wimt-card: #FFFFFF;
+      --wimt-text: #1E293B;
+      --wimt-muted: #64748B;
+      --wimt-green: #108A00;
+      --wimt-red: #D32F2F;
+      --wimt-border: #E2E8F0;
+      --wimt-track-blue: #5AB2FF;
     }
 
     * {
@@ -40,8 +36,8 @@
     }
 
     body {
-      background-color: var(--bg-dark);
-      color: var(--text-main);
+      background-color: #000000;
+      color: var(--wimt-text);
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       overflow: hidden;
       width: 100vw;
@@ -51,1339 +47,1217 @@
       user-select: none;
     }
 
-    /* Mobile Header */
-    header {
-      height: var(--header-height);
-      padding: env(safe-area-inset-top, 8px) 16px 8px 16px;
-      background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+    /* App Container (Matches Mobile Screen) */
+    #app-container {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      background-color: var(--wimt-bg);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Top App Bar */
+    .app-topbar {
+      height: 52px;
+      background: var(--wimt-blue);
+      color: #FFFFFF;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid var(--border-color);
-      z-index: 1000;
+      padding: 0 14px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      z-index: 100;
       flex-shrink: 0;
     }
 
-    .brand-title {
+    .app-topbar .left-group {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 12px;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
     }
 
-    .brand-logo {
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      background: linear-gradient(135deg, #0284C7 0%, #38BDF8 100%);
+    .app-topbar .icon-btn {
+      background: none;
+      border: none;
+      color: #FFFFFF;
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #FFFFFF;
-      font-weight: 800;
-      font-size: 14px;
-      box-shadow: 0 0 10px var(--primary-glow);
     }
 
-    .brand-text h1 {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 15px;
-      font-weight: 800;
-      letter-spacing: -0.3px;
-      color: #FFFFFF;
-      line-height: 1.1;
-    }
-
-    .brand-text span {
-      font-size: 10px;
-      color: var(--primary);
-      font-weight: 600;
-      display: block;
-    }
-
-    .header-pills {
+    /* Sub-header Strip (For Express/Metro or Details) */
+    .top-sub-bar {
+      background: var(--wimt-blue-dark);
+      padding: 6px 14px;
       display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .live-status-pill {
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      color: #34D399;
-      font-size: 10px;
+      gap: 12px;
+      font-size: 11px;
       font-weight: 700;
-      padding: 4px 8px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .live-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #10B981;
-      animation: pulse 1.5s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.4); opacity: 0.5; }
-    }
-
-    /* Main Viewport Container */
-    #main-container {
-      flex: 1;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
+      color: #FFFFFF;
     }
 
     /* Screen Panels */
-    .screen-tab {
+    .screen-panel {
       display: none;
       width: 100%;
       height: 100%;
+      flex-direction: column;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       position: relative;
     }
 
-    .screen-tab.active {
+    .screen-panel.active {
       display: flex;
-      flex-direction: column;
     }
 
-    /* Leaflet Map Specific Styling */
-    #map-view {
-      padding: 0;
-      position: relative;
-    }
-
-    #leaflet-map {
-      width: 100%;
-      height: 100%;
-      background: #0B111E;
-      z-index: 1;
-    }
-
-    /* Floating Weather Controls On Map */
-    .map-floating-overlay {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      right: 12px;
-      z-index: 999;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      pointer-events: none;
-    }
-
-    .map-floating-overlay > * {
-      pointer-events: auto;
-    }
-
-    .weather-filter-row {
-      display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-      scrollbar-width: none;
-    }
-
-    .weather-filter-row::-webkit-scrollbar {
-      display: none;
-    }
-
-    .filter-btn {
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      color: var(--text-muted);
-      font-size: 11px;
-      font-weight: 700;
-      padding: 6px 12px;
-      border-radius: 20px;
-      white-space: nowrap;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
-
-    .filter-btn.active {
-      background: #0284C7;
-      color: #FFFFFF;
-      border-color: #38BDF8;
-      box-shadow: 0 0 12px var(--primary-glow);
-    }
-
-    /* Floating Train Quick Selector */
-    .train-selector-bar {
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(12px);
-      border-radius: 12px;
-      padding: 6px 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5);
-    }
-
-    .train-selector-select {
-      background: transparent;
-      border: none;
-      color: #F8FAFC;
-      font-family: 'Inter', sans-serif;
-      font-size: 12px;
-      font-weight: 700;
-      outline: none;
-      flex: 1;
-      cursor: pointer;
-    }
-
-    .train-selector-select option {
-      background: #0F172A;
-      color: #F8FAFC;
-    }
-
-    /* Bottom Train Info Drawer (Vaul-Inspired) */
-    .bottom-drawer {
-      position: absolute;
-      bottom: var(--nav-height);
-      left: 0;
-      right: 0;
-      background: rgba(15, 23, 42, 0.96);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-top: 1px solid rgba(255, 255, 255, 0.15);
-      border-top-left-radius: 24px;
-      border-top-right-radius: 24px;
-      padding: 10px 16px 14px 16px;
-      z-index: 999;
-      box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.6);
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .bottom-drawer.collapsed {
-      transform: translateY(calc(100% - 48px));
-    }
-
-    .drawer-handle {
-      width: 40px;
-      height: 4px;
-      background: rgba(255, 255, 255, 0.35);
-      border-radius: 2px;
-      margin: 0 auto 8px auto;
-      cursor: pointer;
-    }
-
-    .drawer-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 8px;
-    }
-
-    .train-name-tag {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 14px;
-      font-weight: 800;
-      color: #FFFFFF;
-    }
-
-    .train-route-sub {
-      font-size: 10px;
-      color: var(--text-muted);
-      margin-top: 1px;
-    }
-
-    .speed-badge {
-      background: rgba(56, 189, 248, 0.15);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      color: #38BDF8;
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    /* Calibrated ETA Card Inside Drawer */
-    .calibrated-eta-card {
-      background: linear-gradient(135deg, rgba(2, 132, 199, 0.25) 0%, rgba(30, 41, 59, 0.6) 100%);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      border-radius: 12px;
-      padding: 10px 12px;
-      margin-bottom: 8px;
-    }
-
-    .eta-label-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 9px;
-      color: #94A3B8;
-      text-transform: uppercase;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    }
-
-    .eta-value-main {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 20px;
-      font-weight: 800;
-      color: #38BDF8;
-      display: flex;
-      align-items: baseline;
-      gap: 6px;
-      margin: 2px 0;
-    }
-
-    .eta-window-pill {
-      font-size: 11px;
-      color: #A7F3D0;
-      font-weight: 600;
-      background: rgba(16, 185, 129, 0.2);
-      padding: 1px 6px;
-      border-radius: 4px;
-    }
-
-    /* Causal Reason Alert Box */
-    .reason-alert-box {
-      background: rgba(245, 158, 11, 0.12);
-      border-left: 3px solid var(--accent-yellow);
-      border-radius: 6px;
-      padding: 8px 10px;
-      font-size: 10px;
-      line-height: 1.35;
-      color: #FEF3C7;
-      margin-bottom: 10px;
-    }
-
-    /* Weather Impact Row */
-    .weather-impact-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(30, 41, 59, 0.5);
+    /* ================= SCREEN 1: HOME SEARCH ================= */
+    .home-card {
+      background: var(--wimt-card);
+      margin: 12px;
       border-radius: 8px;
-      padding: 6px 10px;
-      font-size: 10px;
-      color: var(--text-muted);
-      margin-bottom: 10px;
-    }
-
-    .weather-impact-row strong {
-      color: #F8FAFC;
-    }
-
-    /* Drawer Actions */
-    .drawer-actions {
-      display: flex;
-      gap: 8px;
-    }
-
-    .btn-action-primary {
-      flex: 1;
-      background: #0284C7;
-      border: none;
-      color: #FFFFFF;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 11px;
-      font-weight: 800;
-      padding: 9px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      box-shadow: 0 4px 12px var(--primary-glow);
-    }
-
-    .btn-action-secondary {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: #E2E8F0;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 9px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    /* Scrollable Tab Screens (Tracker, Corridors, Ops) */
-    .scroll-content {
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      padding-bottom: 80px;
-    }
-
-    .section-title {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 16px;
-      font-weight: 800;
-      color: #FFFFFF;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .card {
-      background: var(--card-dark);
-      border: 1px solid var(--border-color);
-      border-radius: 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      border: 1px solid var(--wimt-border);
       padding: 14px;
       display: flex;
       flex-direction: column;
+      gap: 12px;
+    }
+
+    .route-row {
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .station-select-box {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      background: #F8FAFC;
+      border: 1px solid #CBD5E1;
+      border-radius: 6px;
+      padding: 8px 10px;
+      gap: 8px;
+    }
+
+    .station-code-badge {
+      background: #0B60B0;
+      color: #FFFFFF;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .station-select {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 13px;
+      font-weight: 600;
+      color: #0F172A;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .btn-swap-stations {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      color: var(--wimt-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+      margin-left: 8px;
+    }
+
+    .btn-green-find {
+      width: 100%;
+      background: var(--wimt-green);
+      color: #FFFFFF;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 11px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(16, 138, 0, 0.3);
+      text-align: center;
+    }
+
+    /* Input Search Row */
+    .input-search-card {
+      background: var(--wimt-card);
+      margin: 0 12px 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--wimt-border);
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
       gap: 10px;
     }
 
-    /* Timeline Station Item */
-    .timeline-wrap {
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      padding-left: 24px;
-      gap: 16px;
-      margin-top: 6px;
+    .input-search-card input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 13px;
+      font-weight: 600;
+      color: #0F172A;
     }
 
-    .timeline-wrap::before {
-      content: "";
-      position: absolute;
-      left: 7px;
-      top: 6px;
-      bottom: 6px;
-      width: 2px;
-      background: rgba(255, 255, 255, 0.1);
-    }
-
-    .timeline-item {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .timeline-node {
-      position: absolute;
-      left: -24px;
-      top: 3px;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: var(--bg-dark);
-      border: 3px solid #64748B;
-      z-index: 2;
-    }
-
-    .timeline-node.passed {
-      border-color: #38BDF8;
-      background: #0284C7;
-    }
-
-    .timeline-node.current {
-      border-color: #10B981;
-      background: #059669;
-      box-shadow: 0 0 10px #10B981;
-    }
-
-    .timeline-node.pending {
-      border-color: #475569;
-    }
-
-    .stn-header {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .stn-meta {
-      font-size: 10px;
-      color: var(--text-muted);
-      display: flex;
-      gap: 8px;
-    }
-
-    /* Sonner Floating Toast */
-    .sonner-toast {
-      position: fixed;
-      top: 64px;
-      left: 50%;
-      transform: translateX(-50%) translateY(-20px);
-      background: #1E293B;
-      border: 1px solid var(--primary);
+    .btn-search-icon {
+      background: var(--wimt-green);
       color: #FFFFFF;
-      padding: 10px 16px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 700;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      z-index: 2000;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      border: none;
       display: flex;
       align-items: center;
-      gap: 8px;
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      justify-content: center;
+      cursor: pointer;
     }
 
-    .sonner-toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
+    /* Search History List */
+    .history-card {
+      background: var(--wimt-card);
+      margin: 0 12px 16px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--wimt-border);
+      overflow: hidden;
+    }
+
+    .history-title {
+      padding: 10px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--wimt-muted);
+      border-bottom: 1px solid var(--wimt-border);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .history-item {
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #F1F5F9;
+      cursor: pointer;
+    }
+
+    .history-item:active {
+      background: #F8FAFC;
+    }
+
+    .history-train-info {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .history-train-no {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--wimt-blue);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .history-train-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1E293B;
+    }
+
+    .history-route-tag {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--wimt-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ================= SCREEN 2: TRAIN LIST RESULTS ================= */
+    .results-filter-bar {
+      background: #FFFFFF;
+      padding: 8px 12px;
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--wimt-border);
+      overflow-x: auto;
+    }
+
+    .filter-chip {
+      background: #F1F5F9;
+      border: 1px solid #CBD5E1;
+      padding: 4px 10px;
+      border-radius: 16px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #334155;
+      white-space: nowrap;
+    }
+
+    .train-card {
+      background: var(--wimt-card);
+      margin: 8px 12px 0 12px;
+      border-radius: 8px;
+      border: 1px solid var(--wimt-border);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .train-card:active {
+      background: #F8FAFC;
+    }
+
+    .train-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .train-pill-no {
+      background: #0284C7;
+      color: #FFFFFF;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .train-card-time {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0F172A;
+    }
+
+    .train-card-fare {
+      font-size: 13px;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .train-card-sub {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: #475569;
+      font-weight: 600;
+    }
+
+    .live-delay-tag {
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .tag-red { color: var(--wimt-red); }
+    .tag-green { color: var(--wimt-green); }
+
+    /* ================= SCREEN 3: LIVE RUNNING STATUS TIMELINE ================= */
+    .timeline-header-strip {
+      background: #1E293B;
+      color: #FFFFFF;
+      padding: 6px 16px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .timeline-container {
+      flex: 1;
+      overflow-y: auto;
+      background: #F8FAFC;
+      padding: 16px 14px 90px 14px;
+      position: relative;
+    }
+
+    .track-line {
+      position: absolute;
+      top: 20px;
+      bottom: 20px;
+      left: 110px;
+      width: 6px;
+      background: var(--wimt-track-blue);
+      border-radius: 3px;
+      z-index: 1;
+    }
+
+    .station-timeline-row {
+      display: flex;
+      position: relative;
+      z-index: 2;
+      margin-bottom: 24px;
+      min-height: 48px;
+    }
+
+    .arr-col {
+      width: 90px;
+      text-align: right;
+      padding-right: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .track-node-col {
+      width: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .track-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #0284C7;
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 0 2px rgba(0,0,0,0.4);
+    }
+
+    /* Moving Train Icon On Track */
+    .train-loco-marker {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #0284C7;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 10px rgba(2, 132, 199, 0.8);
+      z-index: 10;
+      left: -6px;
+      top: 6px;
+      animation: locoBounce 1.5s infinite alternate ease-in-out;
+    }
+
+    @keyframes locoBounce {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.15); }
+    }
+
+    .info-col {
+      flex: 1;
+      padding-left: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .dep-col {
+      width: 80px;
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .time-sched {
+      font-size: 11px;
+      color: var(--wimt-muted);
+      font-weight: 600;
+    }
+
+    .time-actual {
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .stn-name {
+      font-size: 13px;
+      font-weight: 800;
+      color: #0F172A;
+    }
+
+    .stn-sub {
+      font-size: 10px;
+      color: var(--wimt-muted);
+      font-weight: 600;
+    }
+
+    .platform-pill {
+      font-size: 9px;
+      background: #E2E8F0;
+      color: #334155;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-weight: 700;
+    }
+
+    /* Live Floating Train Bottom Bar */
+    .live-status-floating-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #FFFFFF;
+      border-top: 1px solid var(--wimt-border);
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 -4px 12px rgba(0,0,0,0.08);
+      z-index: 50;
+    }
+
+    .floating-map-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.18);
+      border: 1px solid #CBD5E1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    /* ================= SCREEN 4: SATELLITE DEPTH MAP ================= */
+    #satellite-map-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    #sat-leaflet-map {
+      width: 100%;
+      height: 100%;
+      background: #000000;
+    }
+
+    .map-top-bar {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+    }
+
+    .map-top-bar > * {
       pointer-events: auto;
     }
 
-    /* Bottom Navigation Bar */
-    nav.bottom-nav {
-      height: var(--nav-height);
-      padding: 0 10px env(safe-area-inset-bottom, 8px) 10px;
-      background: rgba(15, 23, 42, 0.95);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-top: 1px solid var(--border-color);
+    .map-btn-pill {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #FFFFFF;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      backdrop-filter: blur(8px);
+      cursor: pointer;
       display: flex;
-      justify-content: space-around;
       align-items: center;
-      z-index: 1000;
-      flex-shrink: 0;
+      gap: 6px;
     }
 
-    .nav-btn {
+    .weather-legend-card {
+      position: absolute;
+      bottom: 74px;
+      left: 10px;
+      right: 10px;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(255,255,255,0.2);
+      backdrop-filter: blur(12px);
+      border-radius: 12px;
+      padding: 10px 14px;
+      color: #FFFFFF;
+      z-index: 1000;
+    }
+
+    /* ================= SCREEN 5: STATION LIVE BOARD ================= */
+    .station-board-card {
+      background: #FFFFFF;
+      margin: 10px 12px 0 12px;
+      border-radius: 8px;
+      border: 1px solid var(--wimt-border);
+      padding: 12px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      color: var(--text-muted);
-      font-size: 10px;
-      font-weight: 700;
-      background: none;
-      border: none;
+      gap: 6px;
       cursor: pointer;
-      padding: 6px 12px;
-      border-radius: 12px;
-      transition: all 0.2s ease;
-    }
-
-    .nav-btn.active {
-      color: var(--primary);
-    }
-
-    .nav-btn.active svg {
-      transform: scale(1.1);
-      stroke: var(--primary);
-    }
-
-    .nav-btn svg {
-      width: 20px;
-      height: 20px;
-      transition: transform 0.2s ease;
-    }
-
-    /* Pulse Rain Animation CSS on Leaflet Canvas */
-    .rain-overlay-active .leaflet-pane {
-      filter: contrast(110%);
-    }
-
-    /* Leaflet Dark Mode Tiles Tweaks */
-    .leaflet-tile {
-      filter: brightness(0.7) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);
     }
   </style>
 </head>
 <body>
 
-  <!-- Floating Toast Notification (Sonner Style) -->
-  <div id="toast" class="sonner-toast">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-    <span id="toast-message">Notification message</span>
-  </div>
+  <div id="app-container">
 
-  <!-- Header -->
-  <header>
-    <div class="brand-title">
-      <div class="brand-logo">G</div>
-      <div class="brand-text">
-        <h1>GATI-SETU</h1>
-        <span>Indian Railways Dynamic ETA</span>
+    <!-- ======================================================== -->
+    <!-- 1. HOME SEARCH SCREEN (Matches User Screenshot 3)        -->
+    <!-- ======================================================== -->
+    <div id="screen-home" class="screen-panel active">
+      <!-- Top Bar -->
+      <div class="app-topbar">
+        <div class="left-group">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          <span>Where is My Train</span>
+        </div>
+        <div class="icon-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+        </div>
       </div>
-    </div>
-    <div class="header-pills">
-      <div class="live-status-pill">
-        <div class="live-dot"></div>
-        <span>ISRO NavIC Live</span>
+
+      <!-- Express / Metro Tab -->
+      <div class="top-sub-bar" style="background:#0B60B0; justify-content:space-around; border-bottom:1px solid rgba(255,255,255,0.15);">
+        <span style="border-bottom:2px solid #FFFFFF; padding-bottom:2px; cursor:pointer;">EXPRESS</span>
+        <span style="color:rgba(255,255,255,0.7); cursor:pointer;">METRO</span>
       </div>
-    </div>
-  </header>
 
-  <!-- Main Viewport -->
-  <main id="main-container">
-
-    <!-- TAB 1: PAN-INDIA MAP WITH WEATHER RADAR -->
-    <div id="tab-map" class="screen-tab active">
-      <div id="map-view" style="width:100%; height:100%;">
-        <div id="leaflet-map"></div>
-
-        <!-- Floating Weather Filter Bar -->
-        <div class="map-floating-overlay">
-          <div class="weather-filter-row">
-            <button class="filter-btn" id="btn-zoom-india" onclick="zoomWholeIndia()" style="background:#0F172A; border-color:#38BDF8; color:#38BDF8;">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-              Whole India
-            </button>
-            <button class="filter-btn active" id="btn-layer-all" onclick="setWeatherFilter('all')">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m10 15 5-3-5-3v6Z"/></svg>
-              All Weather
-            </button>
-            <button class="filter-btn" id="btn-layer-rain" onclick="setWeatherFilter('rain')">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M16 14v6"/><path d="M8 14v6"/><path d="M12 16v6"/></svg>
-              Doppler Rain
-            </button>
-            <button class="filter-btn" id="btn-layer-fog" onclick="setWeatherFilter('fog')">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M7 16h10"/><path d="M9 20h6"/><path d="M3 8h18"/></svg>
-              Dense Fog
-            </button>
-            <button class="filter-btn" id="btn-layer-flood" onclick="setWeatherFilter('flood')">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-              Flood Alerts
-            </button>
-            <button class="filter-btn" id="btn-layer-heat" onclick="setWeatherFilter('heat')">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/></svg>
-              Heat & Sun-Kink
-            </button>
+      <!-- Station To Station Search Card -->
+      <div class="home-card">
+        <!-- From Station -->
+        <div class="route-row">
+          <div class="station-select-box">
+            <span class="station-code-badge" id="from-code-badge">PUNE</span>
+            <select class="station-select" id="from-station-select" onchange="updateFromStation(this.value)">
+              <option value="PUNE">Pune Junction</option>
+              <option value="NDLS">New Delhi</option>
+              <option value="BSL">Bhusaval Junction</option>
+              <option value="CNB">Kanpur Central</option>
+              <option value="BCT">Mumbai Central</option>
+              <option value="HD">Harda</option>
+            </select>
           </div>
+          <button class="btn-swap-stations" onclick="swapStations()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 16V4M7 4L3 8M7 4L11 8M17 8V20M17 20L21 16M17 20L13 16"/></svg>
+          </button>
+        </div>
 
-          <!-- Train Selector -->
-          <div class="train-selector-bar">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2.5"><rect width="16" height="16" x="4" y="4" rx="2"/><path d="M9 18v2"/><path d="M15 18v2"/><path d="M8 8h8"/><path d="M8 12h8"/></svg>
-            <select class="train-selector-select" id="map-train-dropdown" onchange="onSelectTrainFromDropdown(this.value)">
-              <option value="12302">#12302 Howrah Rajdhani (Delhi &rarr; Howrah)</option>
-              <option value="22436">#22436 Vande Bharat Exp (Delhi &rarr; Varanasi)</option>
-              <option value="12952">#12952 Mumbai Tejas Rajdhani (Delhi &rarr; Mumbai)</option>
-              <option value="12560">#12560 Shiv Ganga Exp (Delhi &rarr; Varanasi)</option>
-              <option value="12622">#12622 Tamil Nadu Exp (Delhi &rarr; Chennai)</option>
-              <option value="12245">#12245 Howrah–SMVB Duronto (Howrah &rarr; Bangalore)</option>
+        <!-- To Station -->
+        <div class="route-row">
+          <div class="station-select-box">
+            <span class="station-code-badge" id="to-code-badge">BSL</span>
+            <select class="station-select" id="to-station-select" onchange="updateToStation(this.value)">
+              <option value="BSL">Bhusaval Junction</option>
+              <option value="PUNE">Pune Junction</option>
+              <option value="CNB">Kanpur Central</option>
+              <option value="NDLS">New Delhi</option>
+              <option value="HWH">Howrah Junction</option>
+              <option value="HD">Harda</option>
             </select>
           </div>
         </div>
 
-        <!-- Bottom Sheet Drawer (Vaul Style) -->
-        <div class="bottom-drawer" id="train-drawer">
-          <div class="drawer-handle" onclick="toggleDrawer()"></div>
-          <div class="drawer-header">
-            <div>
-              <div class="train-name-tag" id="drawer-train-name">12302 Howrah Rajdhani Express</div>
-              <div class="train-route-sub" id="drawer-train-route">New Delhi &rarr; Kanpur Outer &rarr; Howrah</div>
-            </div>
-            <div style="display:flex; align-items:center; gap:8px;">
-              <div class="speed-badge" id="drawer-speed">104 km/h</div>
-              <button id="drawer-toggle-btn" onclick="toggleDrawer()" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:#CBD5E1; font-size:10px; font-weight:700; padding:4px 8px; border-radius:6px; cursor:pointer;">▼</button>
-            </div>
-          </div>
+        <!-- Big Green Find Trains Button -->
+        <button class="btn-green-find" onclick="showTrainResults()">
+          Find trains
+        </button>
+      </div>
 
-          <!-- Calibrated ETA Box -->
-          <div class="calibrated-eta-card">
-            <div class="eta-label-row">
-              <span>Dynamic Calibrated Arrival Forecast</span>
-              <span id="drawer-confidence" class="eta-window-pill">&plusmn;2 min (90% Confident)</span>
-            </div>
-            <div class="eta-value-main">
-              <span id="drawer-dynamic-eta">20:19</span>
-              <span style="font-size:12px; color:#94A3B8;" id="drawer-schedule-eta">Sched 20:15 (+4m)</span>
-            </div>
-            <div style="font-size:9.5px; color:#34D399; font-weight:600;">
-              Physics Kinematics: 6,350 HP WAP-7 hauling 22 LHB coaches (1,080 T)
-            </div>
-          </div>
+      <!-- Direct Search By Train No / Train Name -->
+      <div class="input-search-card">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0B60B0" stroke-width="2.5"><rect width="16" height="16" x="4" y="4" rx="2"/><path d="M9 18v2"/><path d="M15 18v2"/><path d="M8 8h8"/><path d="M8 12h8"/></svg>
+        <input type="text" id="input-train-no" placeholder="Train No. / Train Name (e.g. 12779, Goa Exp)" value="12779">
+        <button class="btn-search-icon" onclick="searchByTrainNo()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+      </div>
 
-          <!-- Causal Delay Reason -->
-          <div class="reason-alert-box" id="drawer-reason">
-            [HOLD] Outer Signal Delay: Platform 1 occupied by incoming rake #12452. True expected entry: 20:15.
-          </div>
+      <!-- Direct Search By Station No / Code (Live Station Board) -->
+      <div class="input-search-card">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0B60B0" stroke-width="2.5"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
+        <input type="text" id="input-station-code" placeholder="Station departure board (e.g. HD, Harda, PUNE)" value="HD">
+        <button class="btn-search-icon" onclick="searchByStationCode()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+      </div>
 
-          <!-- Weather Row -->
-          <div class="weather-impact-row">
-            <span>Weather Impact: <strong id="drawer-weather">Winter Radiation Fog (GR 3.61 60 km/h)</strong></span>
-            <span>Adhesion: <strong id="drawer-adhesion" style="color:#FBBF24;">&mu; = 0.22</strong></span>
-          </div>
+      <!-- Search History (Matches User Screenshot 3) -->
+      <div class="history-card">
+        <div class="history-title">SEARCH HISTORY</div>
 
-          <!-- Action Buttons -->
-          <div class="drawer-actions">
-            <button class="btn-action-primary" onclick="showToast('Ola Prime cab dispatched for 20:22 touchdown!')">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
-              Sync Cab Pickup (20:22)
-            </button>
-            <button class="btn-action-secondary" onclick="switchTab('tracker')">
-              Full Dossier &rarr;
-            </button>
+        <div class="history-item" onclick="openTrainDirect('11401')">
+          <div class="history-train-info">
+            <span class="history-train-no">11401</span>
+            <span class="history-train-name">Pune - Supaul Express</span>
+          </div>
+          <span class="history-route-tag">PUNE - BSL &rsaquo;</span>
+        </div>
+
+        <div class="history-item" onclick="openTrainDirect('12129')">
+          <div class="history-train-info">
+            <span class="history-train-no">12129</span>
+            <span class="history-train-name">Azad Hind Express</span>
+          </div>
+          <span class="history-route-tag">PUNE - BSL &rsaquo;</span>
+        </div>
+
+        <div class="history-item" onclick="openTrainDirect('12135')">
+          <div class="history-train-info">
+            <span class="history-train-no">12135</span>
+            <span class="history-train-name">Pune - Nagpur SF Express</span>
+          </div>
+          <span class="history-route-tag">PUNE - BSL &rsaquo;</span>
+        </div>
+
+        <div class="history-item" onclick="openTrainDirect('12779')">
+          <div class="history-train-info">
+            <span class="history-train-no">12779</span>
+            <span class="history-train-name">Goa Express</span>
+          </div>
+          <span class="history-route-tag">PUNE - BSL &rsaquo;</span>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ======================================================== -->
+    <!-- 2. SEARCH RESULTS SCREEN (Matches User Screenshot 1)     -->
+    <!-- ======================================================== -->
+    <div id="screen-results" class="screen-panel">
+      <!-- Top Bar -->
+      <div class="app-topbar">
+        <div class="left-group">
+          <button class="icon-btn" onclick="openScreen('screen-home')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+          </button>
+          <span>Search results</span>
+        </div>
+        <div style="display:flex; gap:12px;">
+          <div class="icon-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div>
+          <div class="icon-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg></div>
+        </div>
+      </div>
+
+      <!-- Filter Bar (Matches Screenshot 1) -->
+      <div class="results-filter-bar">
+        <div class="filter-chip">All Dates &#9662;</div>
+        <div class="filter-chip">GN - Unreserved &#9662;</div>
+        <div class="filter-chip">Sort by &#9662;</div>
+      </div>
+
+      <!-- Corridor Strip -->
+      <div style="background:#0284C7; color:#FFFFFF; padding:6px 14px; font-size:12px; font-weight:700;">
+        <span id="results-route-label">PUNE - Pune Junction &rarr; BSL - Bhusaval Junction</span>
+      </div>
+
+      <!-- Train List Container -->
+      <div id="trains-list-container" style="flex:1; overflow-y:auto; padding-bottom:20px;">
+        <!-- Train 1: Goa Express -->
+        <div class="train-card" onclick="openTrainDirect('12779')">
+          <div class="train-card-header">
+            <span class="train-pill-no">12779</span>
+            <span class="train-card-time">4:30 AM &mdash; 8h10m &mdash; 12:40 PM</span>
+            <span class="train-card-fare">&#8377;175</span>
+          </div>
+          <div class="train-card-sub">
+            <strong style="color:#0F172A; font-size:13px;">Goa Express</strong>
+            <span style="color:#0284C7; font-size:11px;">Runs Daily</span>
+          </div>
+          <div class="live-delay-tag tag-red">
+            &bull; Live: 2 km to Harda (Delayed by 22m &bull; True ETA 4:20 PM)
+          </div>
+        </div>
+
+        <!-- Train 2: Ajni Vande Bharat -->
+        <div class="train-card" onclick="openTrainDirect('26101')">
+          <div class="train-card-header">
+            <span class="train-pill-no" style="background:#059669;">26101</span>
+            <span class="train-card-time">6:25 AM &mdash; 6h25m &mdash; 12:50 PM</span>
+            <span class="train-card-fare">NA</span>
+          </div>
+          <div class="train-card-sub">
+            <strong style="color:#0F172A; font-size:13px;">Ajni Vande Bharat Express</strong>
+            <span style="font-size:10px; letter-spacing:2px; font-weight:700;">S M T W T F S</span>
+          </div>
+          <div class="live-delay-tag tag-green">
+            &bull; Live: Approaching Chalisgaon (On Time +2m)
+          </div>
+        </div>
+
+        <!-- Train 3: Jasidih Weekly -->
+        <div class="train-card" onclick="openTrainDirect('11427')">
+          <div class="train-card-header">
+            <span class="train-pill-no">11427</span>
+            <span class="train-card-time">6:40 AM &mdash; 7h30m &mdash; 2:10 PM</span>
+            <span class="train-card-fare">&#8377;160</span>
+          </div>
+          <div class="train-card-sub">
+            <strong style="color:#0F172A; font-size:13px;">Jasidih Weekly Express</strong>
+            <span style="font-size:10px; letter-spacing:2px; font-weight:700;">S M T W T F S</span>
+          </div>
+          <div class="live-delay-tag tag-green">
+            &bull; Running smoothly on schedule
+          </div>
+        </div>
+
+        <!-- Train 4: Yog Nagari Rishikesh -->
+        <div class="train-card" style="opacity:0.6;">
+          <div class="train-card-header">
+            <span class="train-pill-no" style="background:#64748B;">17363</span>
+            <span class="train-card-time">9:00 AM &mdash; 9h10m &mdash; 6:10 PM</span>
+            <span class="train-card-fare">&#8377;160</span>
+          </div>
+          <div class="train-card-sub">
+            <strong style="font-size:13px;">Yog Nagari Rishikesh Weekly Express</strong>
+            <span style="font-size:10px; letter-spacing:2px;">S M T W T F S</span>
+          </div>
+          <div style="font-size:11px; color:#64748B; font-weight:600;">
+            Not running today
+          </div>
+        </div>
+
+        <!-- Train 5: Karnataka Sampark Kranti -->
+        <div class="train-card" onclick="openTrainDirect('12629')">
+          <div class="train-card-header">
+            <span class="train-pill-no">12629</span>
+            <span class="train-card-time">9:00 AM &mdash; 8h45m &mdash; 5:45 PM</span>
+            <span class="train-card-fare">&#8377;160</span>
+          </div>
+          <div class="train-card-sub">
+            <strong style="color:#0F172A; font-size:13px;">Karnataka Sampark Kranti Express</strong>
+            <span style="font-size:10px; letter-spacing:2px; font-weight:700;">S M T W T F S</span>
+          </div>
+          <div class="live-delay-tag tag-red">
+            Left PUNE at 09:57 AM (Delayed 57m)
           </div>
         </div>
       </div>
     </div>
 
-    <!-- TAB 2: LIVE JOURNEY TRACKER -->
-    <div id="tab-tracker" class="screen-tab">
-      <div class="scroll-content">
-        <div class="section-title">
-          <span>Live Journey Shield</span>
-          <span style="font-size:10px; background:rgba(56,189,248,0.2); color:#38BDF8; padding:3px 8px; border-radius:6px;">GPS Kinematics</span>
+
+    <!-- ======================================================== -->
+    <!-- 3. LIVE RUNNING STATUS (Matches User Screenshot 2 & 4)   -->
+    <!-- ======================================================== -->
+    <div id="screen-timeline" class="screen-panel">
+      <!-- Top Bar -->
+      <div class="app-topbar">
+        <div class="left-group">
+          <button class="icon-btn" onclick="openScreen('screen-results')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+          </button>
+          <span id="timeline-train-title" style="font-size:14px;">12779 - Goa Express (PUNE-BSL)</span>
         </div>
-
-        <!-- Train Card -->
-        <div class="card" style="background:linear-gradient(135deg, rgba(2,132,199,0.2) 0%, rgba(21,29,46,1) 100%); border-color:rgba(56,189,248,0.3);">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <div style="font-size:16px; font-weight:800; color:#FFFFFF;">12302 Howrah Rajdhani</div>
-              <div style="font-size:11px; color:#94A3B8;">New Delhi (NDLS) &rarr; Howrah (HWH)</div>
-            </div>
-            <div class="speed-badge">104 km/h</div>
-          </div>
-
-          <!-- Forecast Display -->
-          <div style="background:rgba(15,23,42,0.85); padding:10px; border-radius:10px; border:1px solid rgba(255,255,255,0.06);">
-            <div style="font-size:9.5px; color:#94A3B8; text-transform:uppercase; font-weight:700;">Calibrated Touchdown Forecast</div>
-            <div style="font-family:'JetBrains Mono', monospace; font-size:24px; font-weight:800; color:#38BDF8; margin:2px 0;">
-              20:19 <span style="font-size:12px; color:#A7F3D0; font-weight:600;">[20:17 – 20:22]</span>
-            </div>
-            <div style="font-size:10px; color:#34D399; font-weight:600;">&bull; 90% Confidence Window &bull; 85.4% Error Reduction</div>
-          </div>
-
-          <!-- Causal Delay Badge -->
-          <div class="reason-alert-box" style="margin-bottom:0;">
-            <strong>[HOLD] Outer Signal Delay:</strong> Platform 1 occupied by rake #12452. True expected entry: 20:15. Please remain comfortably seated.
-          </div>
+        <div class="icon-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
         </div>
+      </div>
 
-        <!-- Sectional Headway Radar -->
-        <div class="card">
-          <div style="font-size:11px; font-weight:800; color:#94A3B8; text-transform:uppercase;">Ahead On Track: Block Headway</div>
-          <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(30,41,59,0.5); padding:8px 10px; border-radius:8px;">
-            <div style="display:flex; align-items:center; gap:8px;">
-              <div style="width:10px; height:10px; border-radius:50%; background:#F59E0B; box-shadow:0 0 8px #F59E0B;"></div>
-              <div>
-                <div style="font-size:11px; font-weight:700; color:#FFFFFF;">Preceding Freight: BOXN-8422</div>
-                <div style="font-size:9.5px; color:#94A3B8;">14.2 km ahead &bull; Speed: 38 km/h &bull; Double Yellow Block</div>
-              </div>
-            </div>
-            <span style="font-size:10px; color:#FBBF24; font-weight:700;">Overtake Ready</span>
+      <!-- Action Pill Bar (Matches Screenshot 2) -->
+      <div style="background:#0284C7; padding:8px 12px; display:flex; justify-content:space-between; align-items:center; color:#FFFFFF; font-size:12px; font-weight:700;">
+        <span style="background:rgba(255,255,255,0.2); padding:4px 10px; border-radius:14px; cursor:pointer;">Today &#9662;</span>
+        <span style="cursor:pointer; display:flex; align-items:center; gap:4px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="m5 3 2 2"/><path d="m19 3-2 2"/></svg> Alarm</span>
+        <span style="cursor:pointer; display:flex; align-items:center; gap:4px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h.01"/><path d="M17 7h.01"/></svg> Coach</span>
+        <span style="cursor:pointer; display:flex; align-items:center; gap:4px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share</span>
+      </div>
+
+      <!-- Header Strip -->
+      <div class="timeline-header-strip">
+        <span>Arrival</span>
+        <span>Day 1 &bull; Sep 11, Fri</span>
+        <span>Departure</span>
+      </div>
+
+      <!-- Vertical Station Timeline -->
+      <div class="timeline-container">
+        <!-- Blue Track Bar -->
+        <div class="track-line"></div>
+
+        <!-- Station 1: Khandwa Junction -->
+        <div class="station-timeline-row">
+          <div class="arr-col">
+            <span class="time-sched">2:52 PM</span>
+            <span class="time-actual tag-red">2:58 PM</span>
           </div>
-        </div>
-
-        <!-- Timeline -->
-        <div class="card">
-          <div style="font-size:11px; font-weight:800; color:#94A3B8; text-transform:uppercase;">Station Arrival Progress</div>
-          <div class="timeline-wrap">
-            <div class="timeline-item">
-              <div class="timeline-node passed"></div>
-              <div class="stn-header">
-                <span style="color:#94A3B8;">New Delhi (NDLS)</span>
-                <span style="color:#38BDF8;">Dep 16:50 (PF 16)</span>
-              </div>
-              <div class="stn-meta">Departed On Time &bull; Speed 130 km/h MPS</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-node current"></div>
-              <div class="stn-header">
-                <span style="color:#FFFFFF; font-weight:800;">Kanpur Central (CNB)</span>
-                <span style="color:#34D399; font-weight:800;">ETA 20:19 (PF 2)</span>
-              </div>
-              <div class="stn-meta">24.2 km remaining &bull; Approaching Outer Signal &bull; Pre-staged cleaning</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-node pending"></div>
-              <div class="stn-header">
-                <span style="color:#64748B;">Prayagraj Jn (PRYJ)</span>
-                <span style="color:#64748B;">ETA 22:38</span>
-              </div>
-              <div class="stn-meta">Scheduled 22:30 &bull; Projected recovery 8 min</div>
-            </div>
-
-            <div class="timeline-item">
-              <div class="timeline-node pending"></div>
-              <div class="stn-header">
-                <span style="color:#64748B;">Pt. Deen Dayal Upadhyay (DDU)</span>
-                <span style="color:#64748B;">ETA 00:52</span>
-              </div>
-              <div class="stn-meta">Crew change scheduled &bull; Relieving Loco Pilot notified</div>
-            </div>
+          <div class="track-node-col">
+            <div class="track-dot"></div>
+          </div>
+          <div class="info-col">
+            <span class="stn-name">Khandwa Junction</span>
+            <div class="stn-sub">615 km &bull; <span class="platform-pill">Platform 4</span></div>
+          </div>
+          <div class="dep-col">
+            <span class="time-sched">2:55 PM</span>
+            <span class="time-actual tag-red">3:05 PM</span>
           </div>
         </div>
 
-        <!-- Cab Booking -->
-        <button class="btn-action-primary" style="padding:12px;" onclick="showToast('Ola Cab booked for 20:22 pickup at Kanpur Central Bay 2!')">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
-          Book Synchronized Cab (Timed to Touchdown: 20:22)
+        <!-- Station 2: Harda (CURRENT ACTIVE POSITION WITH TRAIN ICON!) -->
+        <div class="station-timeline-row" style="background:rgba(2, 132, 199, 0.08); border-radius:8px; padding:6px 0;">
+          <div class="arr-col">
+            <span class="time-sched">3:58 PM</span>
+            <span class="time-actual tag-red">4:20 PM</span>
+          </div>
+          <div class="track-node-col">
+            <!-- Iconic Train Icon on Track -->
+            <div class="train-loco-marker">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="16" height="16" x="4" y="4" rx="2"/><path d="M9 18v2"/><path d="M15 18v2"/><path d="M8 8h8"/><path d="M8 12h8"/></svg>
+            </div>
+          </div>
+          <div class="info-col">
+            <span class="stn-name" style="color:#0284C7; font-size:15px;">Harda</span>
+            <div class="stn-sub">723 km &bull; <span class="platform-pill" style="background:#0284C7; color:#FFFFFF;">Platform 2</span></div>
+            <!-- Live Weather Pill at Harda -->
+            <div style="font-size:9.5px; color:#0369A1; font-weight:700; margin-top:2px; display:flex; align-items:center; gap:4px;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/></svg>
+              <span>Weather: 31.4°C • Humid • Adhesion μ=0.28</span>
+            </div>
+          </div>
+          <div class="dep-col">
+            <span class="time-sched">4:00 PM</span>
+            <span class="time-actual tag-red">4:22 PM</span>
+          </div>
+        </div>
+
+        <!-- Station 3: Itarsi Junction -->
+        <div class="station-timeline-row">
+          <div class="arr-col">
+            <span class="time-sched">5:15 PM</span>
+            <span class="time-actual tag-red">5:23 PM</span>
+          </div>
+          <div class="track-node-col">
+            <div class="track-dot" style="background:#64748B;"></div>
+          </div>
+          <div class="info-col">
+            <span class="stn-name">Itarsi Junction</span>
+            <div class="stn-sub">799 km &bull; <span class="platform-pill">Platform 1</span></div>
+          </div>
+          <div class="dep-col">
+            <span class="time-sched">5:20 PM</span>
+            <span class="time-actual tag-red">5:28 PM</span>
+          </div>
+        </div>
+
+        <!-- Station 4: Bhopal Junction -->
+        <div class="station-timeline-row">
+          <div class="arr-col">
+            <span class="time-sched">7:10 PM</span>
+            <span class="time-actual tag-red">7:18 PM</span>
+          </div>
+          <div class="track-node-col">
+            <div class="track-dot" style="background:#64748B;"></div>
+          </div>
+          <div class="info-col">
+            <span class="stn-name">Bhopal Junction</span>
+            <div class="stn-sub">891 km &bull; <span class="platform-pill">Platform 2</span></div>
+          </div>
+          <div class="dep-col">
+            <span class="time-sched">7:20 PM</span>
+            <span class="time-actual tag-red">7:28 PM</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Floating Bottom Status Bar (Matches User Screenshot 2) -->
+      <div class="live-status-floating-bar">
+        <!-- Floating Google Satellite Map Button -->
+        <button class="floating-map-btn" onclick="openSatelliteMap('12779')">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#EA4335" stroke-width="2.5"><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"/><circle cx="12" cy="10" r="3" fill="#4285F4"/></svg>
+        </button>
+
+        <div style="flex:1; padding-left:14px;">
+          <div style="font-size:13px; font-weight:800; color:var(--wimt-red);">
+            2 km to Harda
+          </div>
+          <div style="font-size:11px; color:var(--wimt-muted); font-weight:600;">
+            Updated few seconds ago (ISRO NavIC)
+          </div>
+        </div>
+
+        <!-- Circular Refresh Button -->
+        <button style="width:36px; height:36px; border-radius:50%; background:#0B60B0; color:#FFFFFF; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21h5v-5"/></svg>
         </button>
       </div>
     </div>
 
-    <!-- TAB 3: CORRIDORS SEARCH -->
-    <div id="tab-corridors" class="screen-tab">
-      <div class="scroll-content">
-        <div class="section-title">
-          <span>Corridor Train Fleet</span>
-          <span style="font-size:10px; background:rgba(16,185,129,0.2); color:#34D399; padding:3px 8px; border-radius:6px;">All Indian Railways</span>
-        </div>
 
-        <!-- Station Pair Card -->
-        <div class="card" style="background:rgba(30,41,59,0.8);">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <div style="font-size:9px; color:#94A3B8;">ORIGIN</div>
-              <div style="font-size:14px; font-weight:800; color:#FFFFFF;">NDLS &bull; New Delhi</div>
-            </div>
-            <div style="width:28px; height:28px; border-radius:50%; background:rgba(56,189,248,0.15); display:flex; align-items:center; justify-content:center; color:#38BDF8;">
-              &harr;
-            </div>
-            <div style="text-align:right;">
-              <div style="font-size:9px; color:#94A3B8;">DESTINATION</div>
-              <div style="font-size:14px; font-weight:800; color:#FFFFFF;">HWH &bull; Howrah</div>
-            </div>
-          </div>
-        </div>
+    <!-- ======================================================== -->
+    <!-- 4. LIVE SATELLITE DEPTH MAP WITH REAL TERRAIN & WEATHER  -->
+    <!-- ======================================================== -->
+    <div id="screen-satellite" class="screen-panel">
+      <div id="satellite-map-container">
+        <div id="sat-leaflet-map"></div>
 
-        <!-- Trains List -->
-        <div class="card" onclick="selectTrainOnMap('12302'); switchTab('map');" style="cursor:pointer;">
-          <div style="display:flex; justify-content:space-between;">
-            <span style="font-size:13px; font-weight:800; color:#FFFFFF;">12302 Howrah Rajdhani</span>
-            <span style="font-size:10px; background:#0284C7; color:#FFFFFF; padding:2px 6px; border-radius:4px; font-weight:700;">Superfast</span>
-          </div>
-          <div style="display:flex; justify-content:space-between; font-size:11px; color:#94A3B8;">
-            <span>Expected CNB: <strong style="color:#38BDF8;">20:19</strong> (&plusmn;2m)</span>
-            <span>Speed: <strong>104 km/h</strong></span>
-          </div>
-          <div style="font-size:9.5px; color:#F59E0B;">[HOLD] Outer signal platform queue active</div>
-        </div>
+        <!-- Map Floating Top Controls -->
+        <div class="map-top-bar">
+          <button class="map-btn-pill" onclick="openScreen('screen-timeline')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+            <span>Timeline</span>
+          </button>
 
-        <div class="card" onclick="selectTrainOnMap('22436'); switchTab('map');" style="cursor:pointer;">
-          <div style="display:flex; justify-content:space-between;">
-            <span style="font-size:13px; font-weight:800; color:#FFFFFF;">22436 Vande Bharat Exp</span>
-            <span style="font-size:10px; background:#10B981; color:#FFFFFF; padding:2px 6px; border-radius:4px; font-weight:700;">On Time (+2m)</span>
-          </div>
-          <div style="display:flex; justify-content:space-between; font-size:11px; color:#94A3B8;">
-            <span>Expected CNB: <strong style="color:#34D399;">14:02</strong></span>
-            <span>Speed: <strong>128 km/h</strong></span>
-          </div>
-          <div style="font-size:9.5px; color:#34D399;">Clear Route &bull; MPS 130 km/h maintained</div>
-        </div>
-
-        <div class="card" onclick="selectTrainOnMap('12952'); switchTab('map');" style="cursor:pointer;">
-          <div style="display:flex; justify-content:space-between;">
-            <span style="font-size:13px; font-weight:800; color:#FFFFFF;">12952 Mumbai Tejas Rajdhani</span>
-            <span style="font-size:10px; background:#10B981; color:#FFFFFF; padding:2px 6px; border-radius:4px; font-weight:700;">On Time (-4m)</span>
-          </div>
-          <div style="display:flex; justify-content:space-between; font-size:11px; color:#94A3B8;">
-            <span>Expected BCT: <strong style="color:#34D399;">08:31</strong></span>
-            <span>Speed: <strong>115 km/h</strong></span>
-          </div>
-          <div style="font-size:9.5px; color:#38BDF8;">Surat Rain Alert: Automatic Signalling Free</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 4: SECTION CONTROLLER & STATION OPS -->
-    <div id="tab-ops" class="screen-tab">
-      <div class="scroll-content">
-        <div class="section-title">
-          <span>Operations Cockpit</span>
-          <span style="font-size:10px; background:rgba(168,85,247,0.2); color:#C084FC; padding:3px 8px; border-radius:6px;">NCR Prayagraj Div</span>
-        </div>
-
-        <!-- AI Overtake Card -->
-        <div class="card" style="border:1px solid rgba(168,85,247,0.4); background:linear-gradient(135deg, rgba(168,85,247,0.15) 0%, rgba(21,29,46,1) 100%);">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-size:11px; font-weight:800; color:#E9D5FF; text-transform:uppercase;">AI Precedence Recommendation</span>
-            <span style="font-size:9px; background:#9333EA; color:#FFFFFF; padding:2px 6px; border-radius:4px; font-weight:700;">+19m Gain</span>
-          </div>
-          <div style="font-size:12px; font-weight:700; color:#FFFFFF;">
-            Divert Coal Freight BOXN-8422 into Loop Line 2 at Etawah Junction.
-          </div>
-          <div style="font-size:10px; color:#D8B4FE; line-height:1.35;">
-            Allows trailing 12302 Rajdhani to overtake on Mainline without braking, recovering 19 minutes of delay.
-          </div>
-          <div style="display:flex; gap:8px; margin-top:4px;">
-            <button class="btn-action-primary" style="background:#7E22CE;" onclick="showToast('Overtake Approved: Loop 2 Route interlocked at Etawah!')">
-              Approve Overtake
-            </button>
-            <button class="btn-action-secondary" onclick="showToast('Overtake Overridden by Section Controller.')">
-              Override
-            </button>
-          </div>
-        </div>
-
-        <!-- 10-Hour Loco Crew Watchdog -->
-        <div class="card" style="border-left:3px solid var(--accent-red); background:rgba(239,68,68,0.08);">
-          <div style="font-size:10px; font-weight:800; color:#FCA5A5; text-transform:uppercase;">
-            Loco Crew 10-Hour HOER Watchdog
-          </div>
-          <div style="font-size:12px; font-weight:700; color:#FEE2E2;">
-            Train #12876 Crew: 8.5 Hours on Duty
-          </div>
-          <div style="font-size:10px; color:#CBD5E1;">
-            Statutory duty expires at 18:30 (90 min remaining). Automatic relief crew ordered at Kanpur Junction depot.
-          </div>
-          <button class="btn-action-secondary" style="margin-top:4px;" onclick="showToast('Relief Loco Pilot dispatched to Kanpur PF 2!')">
-            Dispatch Relief Crew Now
+          <button class="map-btn-pill" style="background:#0284C7;" onclick="zoomSatWholeIndia()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            <span>Whole India</span>
           </button>
         </div>
 
-        <!-- Station Turnaround Console -->
-        <div class="card">
-          <div style="font-size:11px; font-weight:800; color:#94A3B8; text-transform:uppercase;">
-            Kanpur Central (CNB) Platform Reception
+        <!-- Weather Legend & Train Status Card Over Satellite -->
+        <div class="weather-legend-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <span style="font-size:13px; font-weight:800; color:#38BDF8;" id="sat-train-header">#12779 Goa Express &bull; Near Harda</span>
+            <span style="font-size:11px; background:#0284C7; color:#FFFFFF; padding:2px 6px; border-radius:4px; font-weight:700;">74 km/h</span>
           </div>
-          <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(30,41,59,0.5); padding:8px 10px; border-radius:8px;">
-            <div>
-              <div style="font-size:11px; font-weight:700; color:#FFFFFF;">PF 1: OCCUPIED (Shunting Rake)</div>
-              <div style="font-size:9.5px; color:#F87171;">Expected Clearance: 20:15 (T - 6 min)</div>
-            </div>
-            <span style="font-size:9px; background:#DC2626; color:#FFFFFF; padding:2px 6px; border-radius:4px; font-weight:700;">BLOCKED</span>
+          <div style="font-size:11px; color:#E2E8F0; margin-bottom:4px;">
+            Dynamic ETA Harda: <strong>4:20 PM</strong> (Sched 3:58 PM &bull; Delayed 22m)
           </div>
-
-          <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(6,78,59,0.2); border:1px solid rgba(16,185,129,0.3); padding:8px 10px; border-radius:8px;">
-            <div>
-              <div style="font-size:11px; font-weight:700; color:#FFFFFF;">PF 2: READY FOR RAJDHANI</div>
-              <div style="font-size:9.5px; color:#34D399;">OBHS Cleaning Squad & Watering pre-staged</div>
-            </div>
-            <span style="font-size:9px; background:#059669; color:#FFFFFF; padding:2px 6px; border-radius:4px; font-weight:700;">PRE-STAGED</span>
+          <div style="font-size:10px; color:#94A3B8; display:flex; justify-content:space-between;">
+            <span>Weather: <strong>31.4°C • Rain Threat</strong></span>
+            <span>Satellite Depth: <strong>Esri High-Res Imagery</strong></span>
           </div>
         </div>
       </div>
     </div>
 
-  </main>
 
-  <!-- Bottom Navigation Bar -->
-  <nav class="bottom-nav">
-    <button class="nav-btn active" id="nav-map" onclick="switchTab('map')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>
-      <span>Live Map</span>
-    </button>
-    <button class="nav-btn" id="nav-tracker" onclick="switchTab('tracker')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      <span>ETA Shield</span>
-    </button>
-    <button class="nav-btn" id="nav-corridors" onclick="switchTab('corridors')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="16" height="16" x="4" y="4" rx="2"/><path d="M9 18v2"/><path d="M15 18v2"/><path d="M8 8h8"/><path d="M8 12h8"/></svg>
-      <span>Corridors</span>
-    </button>
-    <button class="nav-btn" id="nav-ops" onclick="switchTab('ops')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h.01"/><path d="M17 7h.01"/><path d="M7 17h.01"/><path d="M17 17h.01"/></svg>
-      <span>Operations</span>
-    </button>
-  </nav>
+    <!-- ======================================================== -->
+    <!-- 5. STATION LIVE DEPARTURE BOARD ("Station No / Code")     -->
+    <!-- ======================================================== -->
+    <div id="screen-station-board" class="screen-panel">
+      <!-- Top Bar -->
+      <div class="app-topbar">
+        <div class="left-group">
+          <button class="icon-btn" onclick="openScreen('screen-home')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+          </button>
+          <span id="station-board-title">Harda (HD) • Live Station Board</span>
+        </div>
+      </div>
+
+      <!-- Station Weather Banner -->
+      <div style="background:#0F172A; color:#FFFFFF; padding:8px 14px; display:flex; justify-content:space-between; font-size:11px; font-weight:700; border-bottom:1px solid #334155;">
+        <span>Weather: 31.4°C • Humid • Rail Adhesion μ=0.28</span>
+        <span style="color:#38BDF8;">West Central Railway (WCR)</span>
+      </div>
+
+      <!-- List of Trains at this Station -->
+      <div style="flex:1; overflow-y:auto; padding-bottom:20px;">
+        <div class="station-board-card" onclick="openTrainDirect('12779')">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="train-pill-no">12779</span>
+            <span style="font-size:11px; background:#0284C7; color:#FFFFFF; padding:2px 6px; border-radius:4px; font-weight:700;">Platform 2</span>
+          </div>
+          <div style="font-size:13px; font-weight:800; color:#0F172A;">Goa Express (Vasco da Gama &rarr; Hazrat Nizamuddin)</div>
+          <div style="display:flex; justify-content:space-between; font-size:11px; color:#475569;">
+            <span>Sched: 3:58 PM</span>
+            <span style="color:var(--wimt-red); font-weight:800;">Dynamic ETA: 4:20 PM (+22m)</span>
+          </div>
+          <div style="font-size:10px; color:var(--wimt-red); font-weight:700;">
+            &bull; Status: 2 km to Harda (Arriving)
+          </div>
+        </div>
+
+        <div class="station-board-card" onclick="openTrainDirect('12137')">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="train-pill-no" style="background:#059669;">12137</span>
+            <span style="font-size:11px; background:#059669; color:#FFFFFF; padding:2px 6px; border-radius:4px; font-weight:700;">Platform 1</span>
+          </div>
+          <div style="font-size:13px; font-weight:800; color:#0F172A;">Punjab Mail (CSMT &rarr; Firozpur)</div>
+          <div style="display:flex; justify-content:space-between; font-size:11px; color:#475569;">
+            <span>Sched: 4:45 PM</span>
+            <span style="color:var(--wimt-green); font-weight:800;">Dynamic ETA: 4:45 PM (On Time)</span>
+          </div>
+          <div style="font-size:10px; color:var(--wimt-green); font-weight:700;">
+            &bull; Status: Cruising past Timarni (On Time)
+          </div>
+        </div>
+
+        <div class="station-board-card" onclick="openTrainDirect('11057')">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="train-pill-no">11057</span>
+            <span style="font-size:11px; background:#F59E0B; color:#FFFFFF; padding:2px 6px; border-radius:4px; font-weight:700;">Platform 2</span>
+          </div>
+          <div style="font-size:13px; font-weight:800; color:#0F172A;">Amritsar Express (CSMT &rarr; Amritsar)</div>
+          <div style="display:flex; justify-content:space-between; font-size:11px; color:#475569;">
+            <span>Sched: 5:10 PM</span>
+            <span style="color:var(--wimt-red); font-weight:800;">Dynamic ETA: 5:25 PM (+15m)</span>
+          </div>
+          <div style="font-size:10px; color:var(--wimt-red); font-weight:700;">
+            &bull; Status: Trailing local freight in Khandwa section
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 
   <script>
-    // Train Database
-    const TRAINS_DATA = {
-      '12302': {
-        id: '12302',
-        name: 'Howrah Rajdhani Express',
-        route: 'New Delhi (NDLS) → Kanpur Outer → Howrah',
-        speed: '104 km/h',
-        lat: 26.50,
-        lng: 80.25,
-        scheduleEta: 'Sched 20:15 (+4m)',
-        dynamicEta: '20:19',
-        confidence: '±2 min (90% Confident)',
-        reason: '[HOLD] Outer Signal Delay: Platform 1 occupied by incoming rake #12452. True expected entry: 20:15.',
-        weather: 'Winter Radiation Fog (GR 3.61 60 km/h)',
-        adhesion: 'μ = 0.22 (Low Friction)',
-        corridor: [[28.6139, 77.2090], [26.4499, 80.3319], [25.4358, 81.8463], [25.2798, 83.1197], [25.5941, 85.1376], [22.5858, 88.3426]],
-        color: '#38BDF8'
-      },
-      '22436': {
-        id: '22436',
-        name: 'Vande Bharat Express',
-        route: 'New Delhi (NDLS) → Etawah → Varanasi',
-        speed: '128 km/h',
-        lat: 26.85,
-        lng: 79.10,
-        scheduleEta: 'Sched 14:00 (+2m)',
-        dynamicEta: '14:02',
-        confidence: '±1 min (95% Confident)',
-        reason: '[CLEAR] Green High-Priority Dispatch Slot • Running at Maximum Permissible Speed (130 km/h)',
-        weather: 'Clear Visibility • Track Dry',
-        adhesion: 'μ = 0.35 (Optimal Railhead)',
-        corridor: [[28.6139, 77.2090], [27.1767, 78.0081], [26.7769, 79.0322], [26.4499, 80.3319], [25.3176, 82.9739]],
-        color: '#10B981'
-      },
-      '12952': {
-        id: '12952',
-        name: 'Mumbai Tejas Rajdhani',
-        route: 'New Delhi (NDLS) → Vadodara → Mumbai Central',
-        speed: '115 km/h',
-        lat: 21.70,
-        lng: 73.00,
-        scheduleEta: 'Sched 08:35 (-4m)',
-        dynamicEta: '08:31',
-        confidence: '±2 min (92% Confident)',
-        reason: '[CLEAR] Automatic Signalling Free • Western DFC Headway Cleared',
-        weather: 'Monsoon Rain Bands near Surat (38 mm/h)',
-        adhesion: 'μ = 0.24 (Wet Rail)',
-        corridor: [[28.6139, 77.2090], [25.1800, 75.8300], [23.1815, 75.7772], [22.3072, 73.1812], [21.1702, 72.8311], [18.9696, 72.8193]],
-        color: '#F59E0B'
-      },
-      '12560': {
-        id: '12560',
-        name: 'Shiv Ganga Express',
-        route: 'New Delhi (NDLS) → Tundla → Varanasi',
-        speed: '52 km/h',
-        lat: 27.50,
-        lng: 78.25,
-        scheduleEta: 'Sched 07:00 (+44m)',
-        dynamicEta: '07:44',
-        confidence: '±4 min (88% Confident)',
-        reason: '[SLOW] Trailing Coal Freight BOXN-8422 in Aligarh Section (Double Yellow Signal)',
-        weather: 'Light Radiation Haze',
-        adhesion: 'μ = 0.28 (Dry Track)',
-        corridor: [[28.6139, 77.2090], [27.8974, 78.0880], [27.1767, 78.0081], [26.4499, 80.3319], [25.3176, 82.9739]],
-        color: '#C084FC'
-      },
-      '12622': {
-        id: '12622',
-        name: 'Tamil Nadu Express',
-        route: 'New Delhi (NDLS) → Nagpur → Chennai Central',
-        speed: '98 km/h',
-        lat: 20.80,
-        lng: 79.20,
-        scheduleEta: 'Sched 06:15 (+18m)',
-        dynamicEta: '06:33',
-        confidence: '±3 min (90% Confident)',
-        reason: '[CAUTION] 30 km/h Track Maintenance Restriction near Sewagram Junction',
-        weather: 'High Heat (36°C Ambient)',
-        adhesion: 'μ = 0.32 (Thermal Track Expansion)',
-        corridor: [[28.6139, 77.2090], [23.2599, 77.4126], [21.1458, 79.0882], [17.3850, 78.4867], [13.0827, 80.2707]],
-        color: '#38BDF8'
-      },
-      '12245': {
-        id: '12245',
-        name: 'Howrah–SMVB Duronto',
-        route: 'Howrah (HWH) → Visakhapatnam → Bengaluru',
-        speed: '104 km/h',
-        lat: 16.50,
-        lng: 80.60,
-        scheduleEta: 'Sched 16:00 (+5m)',
-        dynamicEta: '16:05',
-        confidence: '±2 min (93% Confident)',
-        reason: '[CLEAR] Non-Stop High Priority Path on East Coast Mainline',
-        weather: 'Coastal Humidity',
-        adhesion: 'μ = 0.30 (Normal)',
-        corridor: [[22.5858, 88.3426], [20.2961, 85.8245], [17.6868, 83.2185], [16.5062, 80.6480], [12.9716, 77.5946]],
-        color: '#10B981'
+    // Screen Navigation
+    function openScreen(screenId) {
+      document.querySelectorAll('.screen-panel').forEach(p => p.classList.remove('active'));
+      const activeEl = document.getElementById(screenId);
+      if (activeEl) {
+        activeEl.classList.add('active');
       }
-    };
+    }
 
-    let map = null;
-    let trainMarkers = {};
-    let corridorPolyline = null;
-    let weatherLayerGroup = null;
-    let activeWeatherMode = 'all';
-    let selectedTrainId = '12302';
+    function updateFromStation(val) {
+      document.getElementById('from-code-badge').textContent = val;
+    }
 
-    // Initialize Leaflet Map
-    function initMap() {
-      // Centered on Central India to show entire subcontinent
-      map = L.map('leaflet-map', {
+    function updateToStation(val) {
+      document.getElementById('to-code-badge').textContent = val;
+    }
+
+    function swapStations() {
+      const fromEl = document.getElementById('from-station-select');
+      const toEl = document.getElementById('to-station-select');
+      const temp = fromEl.value;
+      fromEl.value = toEl.value;
+      toEl.value = temp;
+      updateFromStation(fromEl.value);
+      updateToStation(toEl.value);
+    }
+
+    function showTrainResults() {
+      const fromVal = document.getElementById('from-station-select').value;
+      const toVal = document.getElementById('to-station-select').value;
+      document.getElementById('results-route-label').textContent = `${fromVal} &rarr; ${toVal} Train Schedule & Live Status`;
+      openScreen('screen-results');
+    }
+
+    function searchByTrainNo() {
+      const query = document.getElementById('input-train-no').value.trim();
+      openTrainDirect(query || '12779');
+    }
+
+    function searchByStationCode() {
+      const code = document.getElementById('input-station-code').value.trim().toUpperCase() || 'HD';
+      document.getElementById('station-board-title').textContent = `${code} Live Station Board (All Trains)`;
+      openScreen('screen-station-board');
+    }
+
+    function openTrainDirect(trainNo) {
+      if (trainNo === '12779' || trainNo === 'Goa Express') {
+        document.getElementById('timeline-train-title').textContent = '12779 - Goa Express (PUNE-BSL)';
+      } else {
+        document.getElementById('timeline-train-title').textContent = `${trainNo} - Live Running Status`;
+      }
+      openScreen('screen-timeline');
+    }
+
+    // Satellite Depth Map Logic
+    let satMap = null;
+    let satTrainMarker = null;
+
+    function openSatelliteMap(trainNo) {
+      openScreen('screen-satellite');
+      setTimeout(() => {
+        if (!satMap) {
+          initSatelliteMap();
+        } else {
+          satMap.invalidateSize();
+          satMap.flyTo([22.3395, 77.0986], 12, { duration: 1.0 }); // Harda coordinates
+        }
+      }, 100);
+    }
+
+    function initSatelliteMap() {
+      // Harda Latitude/Longitude: 22.3395° N, 77.0986° E
+      satMap = L.map('sat-leaflet-map', {
         zoomControl: false,
         attributionControl: false
-      }).setView([22.5, 79.5], 5);
+      }).setView([22.3395, 77.0986], 12);
 
-      // Esri World Dark Gray Canvas (Free, No API Key, Clean Dark Base)
-      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
-        maxZoom: 16,
-        attribution: 'Esri, Indian Railways'
-      }).addTo(map);
+      // REAL PHOTOREALISTIC SATELLITE DEPTH LAYER (Esri World Imagery)
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        maxZoom: 18,
+        attribution: 'Esri, Maxar, Earthstar Geographics'
+      }).addTo(satMap);
 
-      weatherLayerGroup = L.layerGroup().addTo(map);
+      // High-Contrast Boundaries and Track Places Layer
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+        maxZoom: 18
+      }).addTo(satMap);
 
-      // Add Railway Corridors (Golden Quadrilateral)
-      const majorCorridors = [
-        [[28.6139, 77.2090], [26.4499, 80.3319], [25.4358, 81.8463], [25.2798, 83.1197], [25.5941, 85.1376], [22.5858, 88.3426]], // Delhi - Howrah
-        [[28.6139, 77.2090], [25.1800, 75.8300], [22.3072, 73.1812], [18.9696, 72.8193]], // Delhi - Mumbai
-        [[28.6139, 77.2090], [23.2599, 77.4126], [21.1458, 79.0882], [17.3850, 78.4867], [13.0827, 80.2707]], // Delhi - Chennai
-        [[18.9696, 72.8193], [12.9716, 77.5946], [13.0827, 80.2707]], // Mumbai - Chennai
-        [[22.5858, 88.3426], [20.2961, 85.8245], [17.6868, 83.2185], [13.0827, 80.2707]], // Howrah - Chennai
-        [[18.9696, 72.8193], [21.1458, 79.0882], [22.5858, 88.3426]] // Mumbai - Howrah
+      // Draw Rail Track Corridor in Harda Section
+      const hardaTrackCoords = [
+        [21.8200, 76.3500], // Khandwa
+        [22.1500, 76.8000],
+        [22.3395, 77.0986], // Harda Station
+        [22.6100, 77.7600], // Itarsi
+        [23.2599, 77.4126]  // Bhopal
       ];
 
-      majorCorridors.forEach(coords => {
-        L.polyline(coords, {
-          color: '#475569',
-          weight: 2.5,
-          opacity: 0.7,
-          dashArray: '4, 6'
-        }).addTo(map);
-      });
-
-      // Add Major Indian Hub Station Markers
-      const STATIONS = [
-        { name: 'Delhi (NDLS)', lat: 28.6139, lng: 77.2090 },
-        { name: 'Kanpur (CNB)', lat: 26.4499, lng: 80.3319 },
-        { name: 'Prayagraj (PRYJ)', lat: 25.4358, lng: 81.8463 },
-        { name: 'Howrah (HWH)', lat: 22.5858, lng: 88.3426 },
-        { name: 'Mumbai (BCT)', lat: 18.9696, lng: 72.8193 },
-        { name: 'Ahmedabad (ADI)', lat: 23.0225, lng: 72.5714 },
-        { name: 'Bhopal (BPL)', lat: 23.2599, lng: 77.4126 },
-        { name: 'Nagpur (NGP)', lat: 21.1458, lng: 79.0882 },
-        { name: 'Hyderabad (HYB)', lat: 17.3850, lng: 78.4867 },
-        { name: 'Chennai (MAS)', lat: 13.0827, lng: 80.2707 },
-        { name: 'Bengaluru (SBC)', lat: 12.9716, lng: 77.5946 },
-        { name: 'Patna (PNBE)', lat: 25.5941, lng: 85.1376 },
-        { name: 'Varanasi (BSB)', lat: 25.3176, lng: 82.9739 }
-      ];
-
-      STATIONS.forEach(stn => {
-        const dotIcon = L.divIcon({
-          className: 'station-marker',
-          html: `<div style="display:flex; align-items:center; gap:4px; pointer-events:none;">
-            <div style="width:6px; height:6px; border-radius:50%; background:#94A3B8; border:1px solid #F8FAFC;"></div>
-            <span style="font-size:9px; font-weight:700; color:#CBD5E1; text-shadow:0 1px 3px #000;">${stn.name}</span>
-          </div>`,
-          iconSize: [80, 14],
-          iconAnchor: [3, 7]
-        });
-        L.marker([stn.lat, stn.lng], { icon: dotIcon }).addTo(map);
-      });
-
-      // Render All Weather Layers
-      renderWeatherLayers();
-
-      // Render Train Markers
-      renderTrainMarkers();
-
-      // Select initial train
-      selectTrainOnMap('12302');
-    }
-
-    function zoomWholeIndia() {
-      if (map) {
-        map.flyTo([22.5, 80.0], 4.8, { duration: 1.0 });
-        showToast("Zoomed out to Pan-India Network");
-      }
-    }
-
-    // Render Weather Layers (Rain, Fog, Flood, Heat)
-    function renderWeatherLayers() {
-      weatherLayerGroup.clearLayers();
-
-      // 1. DENSE FOG ZONE (Gangetic Plains: Punjab to Bihar)
-      if (activeWeatherMode === 'all' || activeWeatherMode === 'fog') {
-        const fogPolygon = L.polygon([
-          [31.0, 74.5], [30.0, 77.5], [28.5, 80.0], [26.0, 85.5],
-          [24.5, 84.0], [26.5, 78.5], [28.0, 75.0]
-        ], {
-          color: '#CBD5E1',
-          fillColor: '#E2E8F0',
-          fillOpacity: 0.18,
-          weight: 1.5,
-          dashArray: '5, 5'
-        }).bindPopup("<b>Dense Winter Fog Zone</b><br>Visibility < 400m<br>Statutory GR 3.61: Max Speed 60 km/h");
-        weatherLayerGroup.addLayer(fogPolygon);
-      }
-
-      // 2. MONSOON RAIN RADAR (Western Ghats / Mumbai / Surat & Bengal)
-      if (activeWeatherMode === 'all' || activeWeatherMode === 'rain') {
-        // Mumbai / Surat Rain Cell
-        const rainCircle1 = L.circle([19.5, 73.2], {
-          radius: 140000,
-          color: '#0284C7',
-          fillColor: '#0EA5E9',
-          fillOpacity: 0.35,
-          weight: 1
-        }).bindPopup("<b>Doppler Radar: Heavy Rain</b><br>Precipitation: 42 mm/h<br>Track Adhesion μ = 0.22");
-        weatherLayerGroup.addLayer(rainCircle1);
-
-        // Kolkata / Coastal Bengal Rain Cell
-        const rainCircle2 = L.circle([22.8, 88.5], {
-          radius: 120000,
-          color: '#0284C7',
-          fillColor: '#0EA5E9',
-          fillOpacity: 0.3,
-          weight: 1
-        }).bindPopup("<b>Doppler Radar: Coastal Showers</b><br>Precipitation: 28 mm/h");
-        weatherLayerGroup.addLayer(rainCircle2);
-      }
-
-      // 3. FLOOD / WATERLOGGING ALERT (Coastal Andhra)
-      if (activeWeatherMode === 'all' || activeWeatherMode === 'flood') {
-        const floodAlert = L.circle([16.2, 81.0], {
-          radius: 90000,
-          color: '#EF4444',
-          fillColor: '#DC2626',
-          fillOpacity: 0.35,
-          weight: 2
-        }).bindPopup("<b>⚠️ Flash Flood Hazard Alert</b><br>Water level near rail bridge girder<br>Caution Speed Limit: 20 km/h");
-        weatherLayerGroup.addLayer(floodAlert);
-      }
-
-      // 4. EXTREME HEAT / SUN-KINK RISK (Rajasthan / Central)
-      if (activeWeatherMode === 'all' || activeWeatherMode === 'heat') {
-        const heatPolygon = L.polygon([
-          [27.5, 71.0], [28.0, 75.0], [25.0, 75.5], [24.0, 71.5]
-        ], {
-          color: '#F59E0B',
-          fillColor: '#D97706',
-          fillOpacity: 0.2,
-          weight: 1.5
-        }).bindPopup("<b>Extreme Ambient Heat: 44°C</b><br>Railhead Temp > 55°C<br>Sun-Kink Rail Patrol Active");
-        weatherLayerGroup.addLayer(heatPolygon);
-      }
-    }
-
-    // Render Trains on Map
-    function renderTrainMarkers() {
-      Object.values(TRAINS_DATA).forEach(train => {
-        const trainIcon = L.divIcon({
-          className: 'custom-train-marker',
-          html: `
-            <div style="
-              width: 32px; height: 32px; border-radius: 50%;
-              background: #0F172A; border: 2.5px solid ${train.color};
-              display: flex; align-items: center; justify-content: center;
-              box-shadow: 0 0 12px ${train.color}; color: #FFFFFF; font-weight: 800; font-size: 11px;
-            ">
-              🚂
-            </div>
-          `,
-          iconSize: [32, 32],
-          iconAnchor: [16, 16]
-        });
-
-        const marker = L.marker([train.lat, train.lng], { icon: trainIcon }).addTo(map);
-        marker.on('click', () => {
-          selectTrainOnMap(train.id);
-        });
-
-        trainMarkers[train.id] = marker;
-      });
-    }
-
-    // Select Train Logic
-    function selectTrainOnMap(trainId) {
-      selectedTrainId = trainId;
-      const train = TRAINS_DATA[trainId];
-      if (!train) return;
-
-      // Update Map Dropdown
-      document.getElementById('map-train-dropdown').value = trainId;
-
-      // Update Bottom Drawer UI
-      document.getElementById('drawer-train-name').textContent = `${train.id} ${train.name}`;
-      document.getElementById('drawer-train-route').textContent = train.route;
-      document.getElementById('drawer-speed').textContent = train.speed;
-      document.getElementById('drawer-dynamic-eta').textContent = train.dynamicEta;
-      document.getElementById('drawer-schedule-eta').textContent = train.scheduleEta;
-      document.getElementById('drawer-confidence').textContent = train.confidence;
-      document.getElementById('drawer-reason').textContent = train.reason;
-      document.getElementById('drawer-weather').textContent = train.weather;
-      document.getElementById('drawer-adhesion').textContent = train.adhesion;
-
-      // Highlight active corridor
-      if (corridorPolyline) {
-        map.removeLayer(corridorPolyline);
-      }
-      corridorPolyline = L.polyline(train.corridor, {
-        color: train.color,
-        weight: 4.5,
+      L.polyline(hardaTrackCoords, {
+        color: '#38BDF8',
+        weight: 5,
         opacity: 0.9,
-        shadowColor: train.color,
-        shadowBlur: 10
-      }).addTo(map);
+        dashArray: '8, 8'
+      }).addTo(satMap);
 
-      // Pan to train with smooth flyTo animation
-      map.flyTo([train.lat, train.lng], 7, {
-        duration: 1.2
+      // Live Train Marker on Satellite
+      const trainIcon = L.divIcon({
+        className: 'sat-train-marker',
+        html: `
+          <div style="
+            width: 36px; height: 36px; border-radius: 50%;
+            background: #0284C7; border: 3px solid #FFFFFF;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 16px rgba(56, 189, 248, 1);
+            color: #FFFFFF; font-size: 16px;
+          ">
+            🚂
+          </div>
+        `,
+        iconSize: [36, 36],
+        iconAnchor: [18, 18]
       });
 
-      showToast(`Selected #${train.id} ${train.name}`);
+      satTrainMarker = L.marker([22.3395, 77.0986], { icon: trainIcon }).addTo(satMap);
+      satTrainMarker.bindPopup("<b>12779 Goa Express</b><br>Speed: 74 km/h<br>Dynamic ETA Harda: 4:20 PM<br>Delayed: 22 mins").openPopup();
+
+      // Simulated Doppler Radar Weather Cell over Harda
+      L.circle([22.3800, 77.1500], {
+        radius: 25000,
+        color: '#0284C7',
+        fillColor: '#0EA5E9',
+        fillOpacity: 0.35,
+        weight: 1.5
+      }).addTo(satMap).bindPopup("<b>Live Weather Radar</b><br>Rainfall Threat: 18 mm/h<br>Track Adhesion μ = 0.28");
     }
 
-    function onSelectTrainFromDropdown(val) {
-      selectTrainOnMap(val);
-    }
-
-    // Weather Layer Filter Toggle
-    function setWeatherFilter(filterType) {
-      activeWeatherMode = filterType;
-      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-      document.getElementById(`btn-layer-${filterType}`).classList.add('active');
-      renderWeatherLayers();
-      showToast(`Active Layer: ${filterType.toUpperCase()} Weather Radar`);
-    }
-
-    // Bottom Drawer Collapse/Expand Toggle
-    let drawerExpanded = true;
-    function toggleDrawer() {
-      const drawer = document.getElementById('train-drawer');
-      const toggleBtn = document.getElementById('drawer-toggle-btn');
-      if (drawerExpanded) {
-        drawer.classList.add('collapsed');
-        if (toggleBtn) toggleBtn.textContent = '▲';
-        drawerExpanded = false;
-      } else {
-        drawer.classList.remove('collapsed');
-        if (toggleBtn) toggleBtn.textContent = '▼';
-        drawerExpanded = true;
+    function zoomSatWholeIndia() {
+      if (satMap) {
+        satMap.flyTo([22.5, 79.5], 5, { duration: 1.2 });
       }
     }
 
-    // Bottom Tab Switcher
-    function switchTab(tabKey) {
-      document.querySelectorAll('.screen-tab').forEach(tab => tab.classList.remove('active'));
-      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-
-      document.getElementById(`tab-${tabKey}`).classList.add('active');
-      document.getElementById(`nav-${tabKey}`).classList.add('active');
-
-      if (tabKey === 'map' && map) {
-        setTimeout(() => {
-          map.invalidateSize();
-        }, 100);
-      }
-    }
-
-    // Toast Notification (Sonner Inspired)
-    let toastTimeout = null;
-    function showToast(msg) {
-      const toastEl = document.getElementById('toast');
-      document.getElementById('toast-message').textContent = msg;
-      toastEl.classList.add('show');
-      if (toastTimeout) clearTimeout(toastTimeout);
-      toastTimeout = setTimeout(() => {
-        toastEl.classList.remove('show');
-      }, 3000);
-    }
-
-    // Boot up Leaflet on DOM load
+    // URL Query Handler for Direct Simulator Testing
     window.addEventListener('DOMContentLoaded', () => {
-      initMap();
       const params = new URLSearchParams(window.location.search);
-      if (params.get('zoom') === 'india') {
-        setTimeout(() => {
-          zoomWholeIndia();
-          toggleDrawer();
-        }, 600);
-      }
-      if (params.get('tab')) {
-        switchTab(params.get('tab'));
+      const screen = params.get('screen');
+      if (screen) {
+        openScreen(`screen-${screen}`);
+        if (screen === 'satellite') {
+          setTimeout(() => initSatelliteMap(), 200);
+        }
       }
     });
   </script>
