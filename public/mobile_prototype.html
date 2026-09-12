@@ -3,29 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>GATI-SETU • Live Train & Station Tracker</title>
+  <title>GATI-SETU • Live Train & Weather Radar</title>
   
-  <!-- Google Fonts -->
+  <!-- Native Fonts: SF Pro / Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
   
-  <!-- Leaflet CSS & JS for Satellite Map -->
+  <!-- Leaflet CSS & JS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
   <style>
     :root {
-      --wimt-blue: #0B60B0;
-      --wimt-blue-dark: #004080;
-      --wimt-bg: #F4F6F9;
-      --wimt-card: #FFFFFF;
-      --wimt-text: #1E293B;
-      --wimt-muted: #64748B;
-      --wimt-green: #108A00;
-      --wimt-red: #D32F2F;
-      --wimt-border: #E2E8F0;
-      --wimt-track-blue: #5AB2FF;
+      --primary: #0066CC;
+      --primary-dark: #004C99;
+      --bg-system: #F2F2F7;
+      --card-bg: #FFFFFF;
+      --text-main: #000000;
+      --text-secondary: #8E8E93;
+      --ios-green: #34C759;
+      --ios-red: #FF3B30;
+      --ios-blue: #007AFF;
+      --ios-amber: #FF9500;
+      --ios-purple: #AF52DE;
+      --track-blue: #007AFF;
+      --border-light: rgba(60, 60, 67, 0.12);
     }
 
     * {
@@ -37,574 +40,343 @@
 
     body {
       background-color: #000000;
-      color: var(--wimt-text);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Text', sans-serif;
       overflow: hidden;
       width: 100vw;
       height: 100vh;
       display: flex;
       flex-direction: column;
       user-select: none;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* App Container */
-    #app-container {
+    /* iOS Native App Shell */
+    #app-shell {
       flex: 1;
       width: 100%;
       height: 100%;
-      background-color: var(--wimt-bg);
+      background: var(--bg-system);
       display: flex;
       flex-direction: column;
       overflow: hidden;
       position: relative;
     }
 
-    /* Top App Bar */
-    .app-topbar {
-      height: 52px;
-      background: var(--wimt-blue);
-      color: #FFFFFF;
+    /* Top Native Navigation Bar */
+    .ios-navbar {
+      height: 50px;
+      background: #FFFFFF;
+      border-bottom: 0.5px solid var(--border-light);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 14px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-      z-index: 100;
+      padding: 0 16px;
+      z-index: 1000;
       flex-shrink: 0;
     }
 
-    .app-topbar .left-group {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+    .ios-navbar-title {
       font-size: 17px;
       font-weight: 700;
-      letter-spacing: -0.2px;
-    }
-
-    .app-topbar .icon-btn {
-      background: none;
-      border: none;
-      color: #FFFFFF;
-      cursor: pointer;
+      letter-spacing: -0.4px;
       display: flex;
       align-items: center;
-      justify-content: center;
-    }
-
-    /* Sub-header Strip */
-    .top-sub-bar {
-      background: var(--wimt-blue-dark);
-      padding: 6px 14px;
-      display: flex;
-      gap: 12px;
-      font-size: 11px;
-      font-weight: 700;
-      color: #FFFFFF;
-    }
-
-    /* Screen Panels */
-    .screen-panel {
-      display: none;
-      width: 100%;
-      height: 100%;
-      flex-direction: column;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      position: relative;
-    }
-
-    .screen-panel.active {
-      display: flex;
-    }
-
-    /* ================= SCREEN 1: HOME SEARCH ================= */
-    .home-card {
-      background: var(--wimt-card);
-      margin: 12px;
-      border-radius: 8px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-      border: 1px solid var(--wimt-border);
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .route-row {
-      display: flex;
-      align-items: center;
-      position: relative;
-    }
-
-    .station-select-box {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      background: #F8FAFC;
-      border: 1px solid #CBD5E1;
-      border-radius: 6px;
-      padding: 8px 10px;
       gap: 8px;
     }
 
-    .station-code-badge {
-      background: #0B60B0;
-      color: #FFFFFF;
-      font-size: 10px;
-      font-weight: 700;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    .station-select {
-      flex: 1;
-      border: none;
-      background: transparent;
-      font-size: 13px;
-      font-weight: 600;
-      color: #0F172A;
-      outline: none;
-      cursor: pointer;
-    }
-
-    .btn-swap-stations {
-      width: 32px;
-      height: 32px;
+    .live-pulse-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--ios-green);
       border-radius: 50%;
-      background: #FFFFFF;
-      border: 1px solid #CBD5E1;
-      color: var(--wimt-blue);
+      box-shadow: 0 0 8px var(--ios-green);
+      animation: pulseAnimation 1.5s infinite;
+    }
+
+    @keyframes pulseAnimation {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+
+    .ios-nav-btn {
+      background: none;
+      border: none;
+      color: var(--ios-blue);
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
       display: flex;
       align-items: center;
+      gap: 4px;
+    }
+
+    /* Screen Views Container */
+    .screen-views-container {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .screen-view {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: none;
+      flex-direction: column;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      background: var(--bg-system);
+    }
+
+    .screen-view.active {
+      display: flex;
+    }
+
+    /* ======================================================== */
+    /* BOTTOM NATIVE TAB BAR                                    */
+    /* ======================================================== */
+    .ios-tabbar {
+      height: 72px;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 0.5px solid var(--border-light);
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-start;
+      padding-top: 8px;
+      padding-bottom: env(safe-area-inset-bottom, 16px);
+      z-index: 1000;
+      flex-shrink: 0;
+    }
+
+    .tab-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       justify-content: center;
+      gap: 3px;
+      color: var(--text-secondary);
       cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.08);
-      margin-left: 8px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+      transition: color 0.15s ease;
     }
 
-    .btn-green-find {
-      width: 100%;
-      background: var(--wimt-green);
-      color: #FFFFFF;
-      font-size: 14px;
-      font-weight: 700;
-      padding: 11px;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 2px 4px rgba(16, 138, 0, 0.3);
-      text-align: center;
+    .tab-item.active {
+      color: var(--ios-blue);
     }
 
-    /* Input Search Row */
-    .input-search-card {
-      background: var(--wimt-card);
-      margin: 0 12px 10px 12px;
+    .tab-item svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 2.2;
+    }
+
+    /* ======================================================== */
+    /* SCREEN 1: SEARCH & ROUTE SELECTOR                       */
+    /* ======================================================== */
+    .search-card {
+      background: #FFFFFF;
+      margin: 14px 16px;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .route-input-group {
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .station-badge-select {
+      flex: 1;
+      background: #F2F2F7;
+      border: 1px solid rgba(0,0,0,0.06);
       border-radius: 8px;
-      border: 1px solid var(--wimt-border);
-      padding: 8px 12px;
+      padding: 10px 12px;
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
-    .input-search-card input {
-      flex: 1;
-      border: none;
-      outline: none;
-      font-size: 13px;
-      font-weight: 600;
-      color: #0F172A;
-    }
-
-    .btn-search-icon {
-      background: var(--wimt-green);
-      color: #FFFFFF;
-      width: 32px;
-      height: 32px;
-      border-radius: 6px;
-      border: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-
-    /* Search History List */
-    .history-card {
-      background: var(--wimt-card);
-      margin: 0 12px 16px 12px;
-      border-radius: 8px;
-      border: 1px solid var(--wimt-border);
-      overflow: hidden;
-    }
-
-    .history-title {
-      padding: 10px 14px;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--wimt-muted);
-      border-bottom: 1px solid var(--wimt-border);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .history-item {
-      padding: 12px 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #F1F5F9;
-      cursor: pointer;
-    }
-
-    .history-item:active {
-      background: #F8FAFC;
-    }
-
-    .history-train-info {
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-    }
-
-    .history-train-no {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--wimt-blue);
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    .history-train-name {
-      font-size: 13px;
-      font-weight: 600;
-      color: #1E293B;
-    }
-
-    .history-route-tag {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--wimt-muted);
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    /* ================= SCREEN 2: TRAIN LIST RESULTS ================= */
-    .results-filter-bar {
-      background: #FFFFFF;
-      padding: 8px 12px;
-      display: flex;
-      gap: 8px;
-      border-bottom: 1px solid var(--wimt-border);
-      overflow-x: auto;
-    }
-
-    .filter-chip {
-      background: #F1F5F9;
-      border: 1px solid #CBD5E1;
-      padding: 4px 10px;
-      border-radius: 16px;
-      font-size: 11px;
-      font-weight: 600;
-      color: #334155;
-      white-space: nowrap;
-    }
-
-    .train-card {
-      background: var(--wimt-card);
-      margin: 8px 12px 0 12px;
-      border-radius: 8px;
-      border: 1px solid var(--wimt-border);
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      cursor: pointer;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-    }
-
-    .train-card:active {
-      background: #F8FAFC;
-    }
-
-    .train-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .train-pill-no {
-      background: #0284C7;
+    .code-pill {
+      background: var(--primary);
       color: #FFFFFF;
       font-size: 11px;
       font-weight: 800;
-      padding: 2px 6px;
+      padding: 3px 6px;
       border-radius: 4px;
       font-family: 'JetBrains Mono', monospace;
     }
 
-    .train-card-time {
-      font-size: 13px;
+    .station-dropdown {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 14px;
       font-weight: 700;
-      color: #0F172A;
+      color: #000000;
+      outline: none;
+      cursor: pointer;
     }
 
-    .train-card-fare {
-      font-size: 13px;
-      font-weight: 700;
-      color: #334155;
-    }
-
-    .train-card-sub {
+    .btn-swap {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 1px solid var(--border-light);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      font-size: 12px;
-      color: #475569;
+      justify-content: center;
+      color: var(--ios-blue);
+      cursor: pointer;
+      margin-left: 8px;
+    }
+
+    .btn-ios-primary {
+      width: 100%;
+      background: var(--ios-green);
+      color: #FFFFFF;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(52, 199, 89, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-ios-primary:active {
+      transform: scale(0.98);
+    }
+
+    .quick-input-card {
+      background: #FFFFFF;
+      margin: 0 16px 12px 16px;
+      border-radius: 10px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 0.5px solid var(--border-light);
+    }
+
+    .quick-input-card input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 14px;
       font-weight: 600;
     }
 
-    .live-delay-tag {
-      font-size: 11px;
+    /* History / Fleet Cards */
+    .section-header {
+      padding: 8px 16px 4px 16px;
+      font-size: 12px;
       font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .tag-red { color: var(--wimt-red); }
-    .tag-green { color: var(--wimt-green); }
-
-    /* ================= SCREEN 3: LIVE RUNNING STATUS TIMELINE ================= */
-    .kinematic-status-banner {
-      background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%);
-      color: #FFFFFF;
-      padding: 10px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
-    }
-
-    .weather-sim-bar {
-      background: #0F172A;
-      padding: 6px 12px;
-      display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      border-bottom: 1px solid #334155;
-    }
-
-    .weather-sim-btn {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.15);
-      color: #CBD5E1;
-      padding: 4px 8px;
-      border-radius: 12px;
-      font-size: 10px;
-      font-weight: 700;
-      cursor: pointer;
-      white-space: nowrap;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .weather-sim-btn.active {
-      background: #0284C7;
-      border-color: #38BDF8;
-      color: #FFFFFF;
-    }
-
-    .timeline-header-strip {
-      background: #1E293B;
-      color: #FFFFFF;
-      padding: 6px 16px;
-      display: flex;
-      justify-content: space-between;
-      font-size: 11px;
-      font-weight: 700;
+      color: var(--text-secondary);
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
-    .timeline-container {
-      flex: 1;
-      overflow-y: auto;
-      background: #F8FAFC;
-      padding: 16px 14px 90px 14px;
-      position: relative;
-    }
-
-    .track-line {
-      position: absolute;
-      top: 20px;
-      bottom: 20px;
-      left: 110px;
-      width: 6px;
-      background: var(--wimt-track-blue);
-      border-radius: 3px;
-      z-index: 1;
-    }
-
-    .station-timeline-row {
-      display: flex;
-      position: relative;
-      z-index: 2;
-      margin-bottom: 24px;
-      min-height: 48px;
-    }
-
-    .arr-col {
-      width: 90px;
-      text-align: right;
-      padding-right: 12px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .track-node-col {
-      width: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-
-    .track-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: #0284C7;
-      border: 2px solid #FFFFFF;
-      box-shadow: 0 0 2px rgba(0,0,0,0.4);
-    }
-
-    .train-loco-marker {
-      position: absolute;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: #0284C7;
-      color: #FFFFFF;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 10px rgba(2, 132, 199, 0.8);
-      z-index: 10;
-      left: -6px;
-      top: 6px;
-      animation: locoBounce 1.5s infinite alternate ease-in-out;
-    }
-
-    @keyframes locoBounce {
-      0% { transform: scale(1); }
-      100% { transform: scale(1.15); }
-    }
-
-    .info-col {
-      flex: 1;
-      padding-left: 16px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .dep-col {
-      width: 80px;
-      text-align: right;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .time-sched { font-size: 11px; color: var(--wimt-muted); font-weight: 600; }
-    .time-actual { font-size: 13px; font-weight: 800; }
-    .stn-name { font-size: 13px; font-weight: 800; color: #0F172A; }
-    .stn-sub { font-size: 10px; color: var(--wimt-muted); font-weight: 600; }
-    .platform-pill { font-size: 9px; background: #E2E8F0; color: #334155; padding: 1px 5px; border-radius: 3px; font-weight: 700; }
-
-    /* Live Floating Train Bottom Bar */
-    .live-status-floating-bar {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
+    .train-row-card {
       background: #FFFFFF;
-      border-top: 1px solid var(--wimt-border);
-      padding: 10px 14px;
+      margin: 0 16px 8px 16px;
+      border-radius: 10px;
+      padding: 12px 14px;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 -4px 12px rgba(0,0,0,0.08);
-      z-index: 50;
-    }
-
-    .floating-map-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: #FFFFFF;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.18);
-      border: 1px solid #CBD5E1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      flex-direction: column;
+      gap: 6px;
+      border: 0.5px solid var(--border-light);
       cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+      transition: transform 0.1s ease;
     }
 
-    /* ================= SCREEN 4: SATELLITE DEPTH MAP ================= */
-    #satellite-map-container {
+    .train-row-card:active {
+      transform: scale(0.99);
+      background: #FAFAFC;
+    }
+
+    /* ======================================================== */
+    /* SCREEN 2: SATELLITE & BLACK/WHITE WEATHER RADAR MAP     */
+    /* ======================================================== */
+    #map-wrapper {
       width: 100%;
       height: 100%;
       position: relative;
     }
 
-    #sat-leaflet-map {
+    #leaflet-map {
       width: 100%;
       height: 100%;
-      background: #000000;
+      background: #E5E5EA;
     }
 
-    .map-top-bar {
+    /* Map Mode Segmented Control (B&W vs Satellite vs Dark) */
+    .map-mode-control-bar {
       position: absolute;
-      top: 10px;
-      left: 10px;
-      right: 10px;
+      top: 12px;
+      left: 12px;
+      right: 12px;
       z-index: 1000;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 4px;
+      border-radius: 10px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      border: 0.5px solid rgba(0,0,0,0.1);
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      pointer-events: none;
+      gap: 4px;
     }
 
-    .map-top-bar > * {
-      pointer-events: auto;
-    }
-
-    .map-btn-pill {
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(255,255,255,0.2);
-      color: #FFFFFF;
-      padding: 6px 12px;
-      border-radius: 20px;
+    .map-mode-btn {
+      flex: 1;
+      padding: 6px 4px;
+      border-radius: 7px;
       font-size: 11px;
       font-weight: 700;
-      backdrop-filter: blur(8px);
+      text-align: center;
+      border: none;
+      background: transparent;
+      color: #333333;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 6px;
+      justify-content: center;
+      gap: 4px;
     }
 
-    /* Map Weather Overlay Strip */
-    .map-weather-strip {
+    .map-mode-btn.active {
+      background: #000000;
+      color: #FFFFFF;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    /* Map Weather Layer Filter Chips */
+    .map-weather-filter-row {
       position: absolute;
-      top: 50px;
-      left: 10px;
-      right: 10px;
+      top: 56px;
+      left: 12px;
+      right: 12px;
       z-index: 1000;
       display: flex;
       gap: 6px;
@@ -612,51 +384,51 @@
       padding-bottom: 2px;
     }
 
-    .map-weather-chip {
-      background: rgba(15, 23, 42, 0.88);
-      border: 1px solid rgba(255,255,255,0.2);
-      color: #CBD5E1;
+    .weather-chip-pill {
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(10px);
+      border: 0.5px solid rgba(0,0,0,0.12);
+      color: #000000;
       padding: 5px 10px;
-      border-radius: 14px;
+      border-radius: 16px;
       font-size: 10px;
       font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
-      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
 
-    .map-weather-chip.active {
-      background: #0284C7;
+    .weather-chip-pill.active {
+      background: var(--ios-blue);
       color: #FFFFFF;
-      border-color: #38BDF8;
-      box-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
+      border-color: transparent;
     }
 
-    /* Floating Touch Zoom Controls (Solves Simulator Mouse Roll Issue) */
-    .map-floating-zoom-col {
+    /* Floating Touch Zoom Controls (Solves Simulator Mouse Roll) */
+    .map-zoom-dock {
       position: absolute;
-      right: 12px;
+      right: 14px;
       top: 100px;
       z-index: 1000;
       display: flex;
       flex-direction: column;
       gap: 6px;
-      background: rgba(15, 23, 42, 0.88);
-      backdrop-filter: blur(10px);
-      padding: 5px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.2);
-      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(14px);
+      padding: 4px;
+      border-radius: 10px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      border: 0.5px solid rgba(0,0,0,0.1);
     }
 
-    .map-zoom-action-btn {
+    .zoom-tap-btn {
       width: 36px;
       height: 36px;
       border-radius: 8px;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.15);
-      color: #FFFFFF;
-      font-size: 18px;
+      background: transparent;
+      border: none;
+      color: #000000;
+      font-size: 20px;
       font-weight: 800;
       cursor: pointer;
       display: flex;
@@ -664,371 +436,326 @@
       justify-content: center;
     }
 
-    .map-zoom-action-btn:active {
-      background: #0284C7;
+    .zoom-tap-btn:active {
+      background: rgba(0,0,0,0.08);
     }
 
-    .weather-legend-card {
+    /* Live Telemetry Floating Bottom Banner */
+    .live-map-telemetry-banner {
       position: absolute;
-      bottom: 74px;
-      left: 10px;
-      right: 10px;
-      background: rgba(15, 23, 42, 0.94);
-      border: 1px solid rgba(255,255,255,0.2);
-      backdrop-filter: blur(12px);
-      border-radius: 12px;
-      padding: 10px 14px;
-      color: #FFFFFF;
+      bottom: 12px;
+      left: 12px;
+      right: 12px;
       z-index: 1000;
-    }
-
-    /* ================= SCREEN 5: STATION LIVE BOARD ================= */
-    .station-board-card {
-      background: #FFFFFF;
-      margin: 10px 12px 0 12px;
-      border-radius: 8px;
-      border: 1px solid var(--wimt-border);
-      padding: 12px;
+      background: rgba(0, 0, 0, 0.92);
+      color: #FFFFFF;
+      backdrop-filter: blur(16px);
+      border-radius: 12px;
+      padding: 12px 14px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.3);
       display: flex;
       flex-direction: column;
       gap: 6px;
-      cursor: pointer;
+    }
+
+    /* Animated Train Marker */
+    .running-loco-marker {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      font-size: 16px;
+      border: 3px solid #FFFFFF;
+      box-shadow: 0 0 14px rgba(0,0,0,0.4);
+      position: relative;
+    }
+
+    .radar-beacon {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 2px solid #007AFF;
+      animation: beaconWave 2s infinite ease-out;
+      pointer-events: none;
+    }
+
+    @keyframes beaconWave {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(2.2); opacity: 0; }
+    }
+
+    /* ======================================================== */
+    /* SCREEN 3: LIVE RUNNING TIMELINE WITH RUNNING TRAIN       */
+    /* ======================================================== */
+    .kinematics-hero {
+      background: linear-gradient(135deg, #007AFF 0%, #0051A8 100%);
+      color: #FFFFFF;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .live-timeline-track-wrap {
+      flex: 1;
+      padding: 20px 16px 40px 16px;
+      position: relative;
+    }
+
+    .vertical-track {
+      position: absolute;
+      top: 24px;
+      bottom: 24px;
+      left: 116px;
+      width: 5px;
+      background: var(--track-blue);
+      border-radius: 3px;
+    }
+
+    .timeline-station-node {
+      display: flex;
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .timeline-left-time {
+      width: 90px;
+      text-align: right;
+      padding-right: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .timeline-center-dot {
+      width: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .station-bullet {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--ios-blue);
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 0 4px rgba(0,0,0,0.3);
+    }
+
+    .timeline-right-info {
+      flex: 1;
+      padding-left: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
   </style>
 </head>
 <body>
 
-  <div id="app-container">
+  <div id="app-shell">
 
-    <!-- ======================================================== -->
-    <!-- 1. HOME SEARCH SCREEN                                    -->
-    <!-- ======================================================== -->
-    <div id="screen-home" class="screen-panel active">
-      <!-- Top Bar -->
-      <div class="app-topbar">
-        <div class="left-group">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-          <span>Where is My Train</span>
-        </div>
-        <div class="icon-btn">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
-        </div>
+    <!-- Top iOS Navigation Bar -->
+    <div class="ios-navbar">
+      <div class="ios-navbar-title">
+        <span class="live-pulse-dot"></span>
+        <span id="nav-title">GATI-SETU Live</span>
       </div>
+      <button class="ios-nav-btn" onclick="toggleMultiFleetView()" id="btn-fleet-toggle">
+        <span>All Trains (6)</span>
+      </button>
+    </div>
 
-      <!-- Express / Metro Tab -->
-      <div class="top-sub-bar" style="background:#0B60B0; justify-content:space-around; border-bottom:1px solid rgba(255,255,255,0.15);">
-        <span style="border-bottom:2px solid #FFFFFF; padding-bottom:2px; cursor:pointer;">EXPRESS</span>
-        <span style="color:rgba(255,255,255,0.7); cursor:pointer;">METRO</span>
-      </div>
+    <!-- Screen Views Container -->
+    <div class="screen-views-container">
 
-      <!-- Station To Station Search Card (Includes Delhi to Goa!) -->
-      <div class="home-card">
-        <!-- From Station -->
-        <div class="route-row">
-          <div class="station-select-box">
-            <span class="station-code-badge" id="from-code-badge">NDLS</span>
-            <select class="station-select" id="from-station-select" onchange="updateFromStation(this.value)">
-              <option value="NDLS">New Delhi (NDLS)</option>
-              <option value="PUNE">Pune Junction (PUNE)</option>
-              <option value="MAO">Madgaon Junction - Goa (MAO)</option>
-              <option value="BSL">Bhusaval Junction (BSL)</option>
-              <option value="CNB">Kanpur Central (CNB)</option>
-              <option value="HD">Harda (HD)</option>
-              <option value="HWH">Howrah Junction (HWH)</option>
-            </select>
+      <!-- ======================================================== -->
+      <!-- VIEW 1: SEARCH & CORRIDOR (Delhi - Goa, etc.)             -->
+      <!-- ======================================================== -->
+      <div id="view-search" class="screen-view active">
+        <!-- Station To Station Search Card -->
+        <div class="search-card">
+          <!-- From -->
+          <div class="route-input-group">
+            <div class="station-badge-select">
+              <span class="code-pill" id="from-badge">NDLS</span>
+              <select class="station-dropdown" id="sel-from" onchange="onFromChange(this.value)">
+                <option value="NDLS">New Delhi (NDLS)</option>
+                <option value="PUNE">Pune Junction (PUNE)</option>
+                <option value="MAO">Madgaon Junction - Goa (MAO)</option>
+                <option value="BSL">Bhusaval Junction (BSL)</option>
+                <option value="CNB">Kanpur Central (CNB)</option>
+                <option value="HD">Harda (HD)</option>
+              </select>
+            </div>
+            <button class="btn-swap" onclick="swapFromTo()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 16V4M7 4L3 8M7 4L11 8M17 8V20M17 20L21 16M17 20L13 16"/></svg>
+            </button>
           </div>
-          <button class="btn-swap-stations" onclick="swapStations()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 16V4M7 4L3 8M7 4L11 8M17 8V20M17 20L21 16M17 20L13 16"/></svg>
+
+          <!-- To -->
+          <div class="route-input-group">
+            <div class="station-badge-select">
+              <span class="code-pill" id="to-badge">MAO</span>
+              <select class="station-dropdown" id="sel-to" onchange="onToChange(this.value)">
+                <option value="MAO">Madgaon Junction - Goa (MAO)</option>
+                <option value="NDLS">New Delhi (NDLS)</option>
+                <option value="BSL">Bhusaval Junction (BSL)</option>
+                <option value="PUNE">Pune Junction (PUNE)</option>
+                <option value="HD">Harda (HD)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Find Trains Button -->
+          <button class="btn-ios-primary" onclick="searchCorridor()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Find Live Trains
           </button>
         </div>
 
-        <!-- To Station -->
-        <div class="route-row">
-          <div class="station-select-box">
-            <span class="station-code-badge" id="to-code-badge">MAO</span>
-            <select class="station-select" id="to-station-select" onchange="updateToStation(this.value)">
-              <option value="MAO">Madgaon Junction - Goa (MAO)</option>
-              <option value="NDLS">New Delhi (NDLS)</option>
-              <option value="BSL">Bhusaval Junction (BSL)</option>
-              <option value="PUNE">Pune Junction (PUNE)</option>
-              <option value="CNB">Kanpur Central (CNB)</option>
-              <option value="HD">Harda (HD)</option>
-            </select>
-          </div>
+        <!-- Direct Train Number Search -->
+        <div class="quick-input-card">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#007AFF" stroke-width="2.2"><rect width="16" height="16" x="4" y="4" rx="2"/><path d="M9 18v2"/><path d="M15 18v2"/><path d="M8 8h8"/><path d="M8 12h8"/></svg>
+          <input type="text" id="train-num-input" placeholder="Search Train No. (e.g. 12450, 12780, 12779)" value="12450">
+          <button style="background:var(--ios-blue); color:#fff; border:none; border-radius:6px; padding:6px 10px; font-weight:700; cursor:pointer;" onclick="searchDirectTrain()">
+            Track
+          </button>
         </div>
 
-        <!-- Big Green Find Trains Button -->
-        <button class="btn-green-find" onclick="showTrainResults()">
-          Find trains
-        </button>
-      </div>
-
-      <!-- Direct Search By Train No / Train Name -->
-      <div class="input-search-card">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0B60B0" stroke-width="2.5"><rect width="16" height="16" x="4" y="4" rx="2"/><path d="M9 18v2"/><path d="M15 18v2"/><path d="M8 8h8"/><path d="M8 12h8"/></svg>
-        <input type="text" id="input-train-no" placeholder="Train No. / Train Name (e.g. 12450, 12780, 12779)" value="12450">
-        <button class="btn-search-icon" onclick="searchByTrainNo()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        </button>
-      </div>
-
-      <!-- Direct Search By Station No / Code (Live Station Board) -->
-      <div class="input-search-card">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0B60B0" stroke-width="2.5"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
-        <input type="text" id="input-station-code" placeholder="Station departure board (e.g. MAO, HD, NDLS)" value="MAO">
-        <button class="btn-search-icon" onclick="searchByStationCode()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        </button>
-      </div>
-
-      <!-- Search History (Includes Delhi - Goa) -->
-      <div class="history-card">
-        <div class="history-title">SEARCH HISTORY</div>
-
-        <div class="history-item" onclick="openTrainDirect('12450')">
-          <div class="history-train-info">
-            <span class="history-train-no">12450</span>
-            <span class="history-train-name">Goa Sampark Kranti Express</span>
-          </div>
-          <span class="history-route-tag">NDLS - MAO &rsaquo;</span>
-        </div>
-
-        <div class="history-item" onclick="openTrainDirect('12780')">
-          <div class="history-train-info">
-            <span class="history-train-no">12780</span>
-            <span class="history-train-name">Goa Express</span>
-          </div>
-          <span class="history-route-tag">NDLS - MAO &rsaquo;</span>
-        </div>
-
-        <div class="history-item" onclick="openTrainDirect('12779')">
-          <div class="history-train-info">
-            <span class="history-train-no">12779</span>
-            <span class="history-train-name">Goa Express (Up)</span>
-          </div>
-          <span class="history-route-tag">PUNE - BSL &rsaquo;</span>
-        </div>
-
-        <div class="history-item" onclick="openTrainDirect('12302')">
-          <div class="history-train-info">
-            <span class="history-train-no">12302</span>
-            <span class="history-train-name">Howrah Rajdhani Express</span>
-          </div>
-          <span class="history-route-tag">NDLS - CNB &rsaquo;</span>
+        <!-- Train Corridor Fleet List -->
+        <div class="section-header" id="corridor-header">ACTIVE TRAINS ON ROUTE (NDLS → MAO)</div>
+        <div id="fleet-list-container">
+          <!-- Injected via JS -->
         </div>
       </div>
+
+
+      <!-- ======================================================== -->
+      <!-- VIEW 2: MAP (BLACK & WHITE WEATHER RADAR + SATELLITE)    -->
+      <!-- ======================================================== -->
+      <div id="view-map" class="screen-view">
+        <div id="map-wrapper">
+          <div id="leaflet-map"></div>
+
+          <!-- Map Mode Segmented Switcher (Black & White vs Satellite vs Dark) -->
+          <div class="map-mode-control-bar">
+            <button class="map-mode-btn active" id="btn-mode-bw" onclick="setMapBaseLayer('bw')">
+              ⬛ B&amp;W Radar
+            </button>
+            <button class="map-mode-btn" id="btn-mode-sat" onclick="setMapBaseLayer('sat')">
+              🛰️ Satellite
+            </button>
+            <button class="map-mode-btn" id="btn-mode-dark" onclick="setMapBaseLayer('dark')">
+              🌙 Dark Ops
+            </button>
+          </div>
+
+          <!-- Clickable Weather Overlay Options -->
+          <div class="map-weather-filter-row">
+            <button class="weather-chip-pill active" id="wchip-rain" onclick="setWeatherOverlay('rain')">🌧️ Rain Radar</button>
+            <button class="weather-chip-pill" id="wchip-fog" onclick="setWeatherOverlay('fog')">🌫️ Dense Fog</button>
+            <button class="weather-chip-pill" id="wchip-heat" onclick="setWeatherOverlay('heat')">☀️ Heat Wave</button>
+            <button class="weather-chip-pill" id="wchip-clear" onclick="setWeatherOverlay('clear')">👁️ Clean Track</button>
+          </div>
+
+          <!-- Floating On-Screen Touch Zoom Dock -->
+          <div class="map-zoom-dock">
+            <button class="zoom-tap-btn" onclick="mapZoomIn()" title="Zoom In">+</button>
+            <button class="zoom-tap-btn" onclick="mapZoomOut()" title="Zoom Out">−</button>
+            <div style="height:1px; background:rgba(0,0,0,0.1); margin:2px 0;"></div>
+            <button class="zoom-tap-btn" style="font-size:13px;" onclick="mapFocusActiveTrain()" title="Focus Train">📍</button>
+            <button class="zoom-tap-btn" style="font-size:13px;" onclick="mapPanWholeIndia()" title="Whole India">🇮🇳</button>
+          </div>
+
+          <!-- Live Moving Telemetry Card Over Map -->
+          <div class="live-map-telemetry-banner">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <strong style="font-size:14px; color:#38BDF8;" id="map-live-train-title">#12450 Goa Sampark Kranti</strong>
+                <span style="font-size:11px; color:#94A3B8; margin-left:6px;" id="map-live-rtis-tag">● RTIS GPS LIVE</span>
+              </div>
+              <span style="font-size:12px; background:var(--ios-blue); color:#FFFFFF; padding:2px 8px; border-radius:10px; font-weight:800;" id="map-live-speed-badge">78.4 km/h</span>
+            </div>
+            <div style="font-size:12px; color:#E2E8F0;" id="map-live-eta-countdown">
+              Distance to Kankavali: <strong>21.8 km</strong> • Arriving in <strong>17m 45s</strong>
+            </div>
+            <div style="font-size:10px; color:#94A3B8; display:flex; justify-content:space-between;">
+              <span id="map-live-weather-text">Weather: 28.4°C • μ = 0.38</span>
+              <span id="map-live-davis-text">Davis Resistance: 18.2 kN</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ======================================================== -->
+      <!-- VIEW 3: LIVE RUNNING TIMELINE                            -->
+      <!-- ======================================================== -->
+      <div id="view-timeline" class="screen-view">
+        <!-- Hero Dynamic ETA Banner -->
+        <div class="kinematics-hero">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong style="font-size:16px;" id="tl-banner-title">Arriving in 18 mins at Kankavali</strong>
+            <span style="font-size:11px; background:rgba(255,255,255,0.25); padding:3px 8px; border-radius:10px; font-weight:700;" id="tl-banner-delay">+12m Delayed</span>
+          </div>
+          <div style="font-size:12px; opacity:0.9;" id="tl-banner-metrics">
+            Speed: 78.4 km/h • Davis Resistance: 18.2 kN • Power: 6,350 HP
+          </div>
+        </div>
+
+        <!-- Vertical Stations List -->
+        <div class="live-timeline-track-wrap">
+          <div class="vertical-track"></div>
+          <div id="timeline-nodes-container">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ======================================================== -->
+      <!-- VIEW 4: STATION LIVE DEPARTURE BOARD                     -->
+      <!-- ======================================================== -->
+      <div id="view-station-board" class="screen-view">
+        <div style="background:#FFFFFF; padding:12px 16px; border-bottom:0.5px solid var(--border-light); display:flex; justify-content:space-between; align-items:center;">
+          <strong style="font-size:15px;" id="stn-board-heading">Madgaon Junction (MAO) • Live Board</strong>
+          <span style="font-size:11px; color:var(--ios-blue); font-weight:700;">Konkan Railway</span>
+        </div>
+        <div id="station-board-list" style="padding:10px 0;">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
     </div>
 
 
     <!-- ======================================================== -->
-    <!-- 2. SEARCH RESULTS SCREEN (Train Fleet List)              -->
+    <!-- BOTTOM NATIVE IOS TAB BAR                                -->
     <!-- ======================================================== -->
-    <div id="screen-results" class="screen-panel">
-      <!-- Top Bar -->
-      <div class="app-topbar">
-        <div class="left-group">
-          <button class="icon-btn" onclick="openScreen('screen-home')">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
-          </button>
-          <span>Search results</span>
-        </div>
+    <div class="ios-tabbar">
+      <div class="tab-item active" id="tab-search" onclick="switchNativeTab('search')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span>Search</span>
       </div>
-
-      <!-- Filter Bar -->
-      <div class="results-filter-bar">
-        <div class="filter-chip">All Dates &#9662;</div>
-        <div class="filter-chip">GN - Unreserved &#9662;</div>
-        <div class="filter-chip">Sort by &#9662;</div>
+      <div class="tab-item" id="tab-map" onclick="switchNativeTab('map')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+        <span>Live Map</span>
       </div>
-
-      <!-- Corridor Strip -->
-      <div style="background:#0284C7; color:#FFFFFF; padding:6px 14px; font-size:12px; font-weight:700;">
-        <span id="results-route-label">NDLS &rarr; MAO Train Fleet & Live Status</span>
+      <div class="tab-item" id="tab-timeline" onclick="switchNativeTab('timeline')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>Timeline</span>
       </div>
-
-      <!-- Train List Container -->
-      <div id="trains-list-container" style="flex:1; overflow-y:auto; padding-bottom:20px;">
-        <!-- Injected via JavaScript -->
-      </div>
-    </div>
-
-
-    <!-- ======================================================== -->
-    <!-- 3. LIVE RUNNING STATUS & STATION TIMELINE                -->
-    <!-- ======================================================== -->
-    <div id="screen-timeline" class="screen-panel">
-      <!-- Top Bar -->
-      <div class="app-topbar">
-        <div class="left-group">
-          <button class="icon-btn" onclick="openScreen('screen-results')">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
-          </button>
-          <span id="timeline-train-title" style="font-size:14px;">12450 - Goa Sampark Kranti (NDLS-MAO)</span>
-        </div>
-      </div>
-
-      <!-- Real-Time Kinematic Dynamic Arrival Banner -->
-      <div class="kinematic-status-banner">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <span style="font-size:15px; font-weight:800;" id="dynamic-next-station-banner">
-            Arriving in 18 mins at Kankavali (Platform 1)
-          </span>
-          <span style="font-size:10px; background:rgba(255,255,255,0.25); padding:2px 8px; border-radius:10px; font-weight:700;" id="banner-delay-pill">
-            +12m Delayed
-          </span>
-        </div>
-        <div style="font-size:11px; opacity:0.9;" id="dynamic-physics-metrics">
-          Davis Resistance: 18.2 kN • Tractive Effort: 215 kN • Speed: 78 km/h
-        </div>
-      </div>
-
-      <!-- Interactive Weather Simulator Bar -->
-      <div class="weather-sim-bar">
-        <span style="color:#94A3B8; font-size:10px; align-self:center; font-weight:700;">WEATHER:</span>
-        <button class="weather-sim-btn active" id="btn-weather-live" onclick="setWeatherMode('live')">
-          ⚡ Live Satellite API
-        </button>
-        <button class="weather-sim-btn" id="btn-weather-rain" onclick="setWeatherMode('rain')">
-          🌧️ Rain (μ=0.22)
-        </button>
-        <button class="weather-sim-btn" id="btn-weather-fog" onclick="setWeatherMode('fog')">
-          🌫️ Dense Fog (60 km/h)
-        </button>
-        <button class="weather-sim-btn" id="btn-weather-heat" onclick="setWeatherMode('heat')">
-          ☀️ Sun-Kink (43°C)
-        </button>
-        <button class="weather-sim-btn" id="btn-weather-clear" onclick="setWeatherMode('clear')">
-          🌤️ Clear (130 km/h)
-        </button>
-      </div>
-
-      <!-- Action Pill Bar -->
-      <div style="background:#0284C7; padding:8px 12px; display:flex; justify-content:space-between; align-items:center; color:#FFFFFF; font-size:12px; font-weight:700;">
-        <span style="background:rgba(255,255,255,0.2); padding:4px 10px; border-radius:14px; cursor:pointer;">Today &#9662;</span>
-        <span style="cursor:pointer; display:flex; align-items:center; gap:4px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="m5 3 2 2"/><path d="m19 3-2 2"/></svg> Alarm</span>
-        <span style="cursor:pointer; display:flex; align-items:center; gap:4px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h.01"/><path d="M17 7h.01"/></svg> Coach</span>
-        <span style="cursor:pointer; display:flex; align-items:center; gap:4px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share</span>
-      </div>
-
-      <!-- Header Strip -->
-      <div class="timeline-header-strip">
-        <span>Arrival</span>
-        <span>Day 1 &bull; Sep 11, Fri</span>
-        <span>Departure</span>
-      </div>
-
-      <!-- Vertical Station Timeline Container -->
-      <div class="timeline-container" id="timeline-stations-list">
-        <!-- Injected via JavaScript -->
-      </div>
-
-      <!-- Floating Bottom Status Bar -->
-      <div class="live-status-floating-bar">
-        <!-- Floating Google Satellite Map Button -->
-        <button class="floating-map-btn" onclick="openSatelliteMap(activeTrainId)">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#EA4335" stroke-width="2.5"><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"/><circle cx="12" cy="10" r="3" fill="#4285F4"/></svg>
-        </button>
-
-        <div style="flex:1; padding-left:14px;">
-          <div style="font-size:13px; font-weight:800; color:var(--wimt-red);" id="floating-status-text">
-            22 km to Kankavali
-          </div>
-          <div style="font-size:11px; color:var(--wimt-muted); font-weight:600;" id="floating-live-weather-text">
-            Fetching Live Open-Meteo Satellite API...
-          </div>
-        </div>
-
-        <!-- Circular Refresh Button -->
-        <button onclick="refreshLiveStatus()" style="width:36px; height:36px; border-radius:50%; background:#0B60B0; color:#FFFFFF; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21h5v-5"/></svg>
-        </button>
-      </div>
-    </div>
-
-
-    <!-- ======================================================== -->
-    <!-- 4. LIVE SATELLITE DEPTH MAP WITH MULTI-TRAINS & RADAR    -->
-    <!-- ======================================================== -->
-    <div id="screen-satellite" class="screen-panel">
-      <div id="satellite-map-container">
-        <div id="sat-leaflet-map"></div>
-
-        <!-- Map Floating Top Controls -->
-        <div class="map-top-bar">
-          <button class="map-btn-pill" onclick="openScreen('screen-timeline')">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
-            <span>Timeline</span>
-          </button>
-
-          <!-- Toggle Multi-Trains on Map -->
-          <button class="map-btn-pill" id="btn-toggle-multi-trains" style="background:#059669;" onclick="toggleMultipleTrains()">
-            <span>🚅 Show All Trains (6)</span>
-          </button>
-
-          <button class="map-btn-pill" style="background:#0284C7;" onclick="zoomSatWholeIndia()">
-            <span>🇮🇳 Whole India</span>
-          </button>
-        </div>
-
-        <!-- Clickable Weather Overlay Options Directly On Map -->
-        <div class="map-weather-strip">
-          <button class="map-weather-chip active" id="mbtn-rain" onclick="setMapWeatherLayer('rain')">🌧️ Rain Doppler</button>
-          <button class="map-weather-chip" id="mbtn-fog" onclick="setMapWeatherLayer('fog')">🌫️ Dense Fog</button>
-          <button class="map-weather-chip" id="mbtn-heat" onclick="setMapWeatherLayer('heat')">☀️ Heat Wave</button>
-          <button class="map-weather-chip" id="mbtn-flood" onclick="setMapWeatherLayer('flood')">🌊 Flood Risk</button>
-          <button class="map-weather-chip" id="mbtn-off" onclick="setMapWeatherLayer('off')">👁️ Clean Satellite</button>
-        </div>
-
-        <!-- Floating Touch Zoom Controls (Solves Simulator Mouse Roll Issue) -->
-        <div class="map-floating-zoom-col">
-          <button class="map-zoom-action-btn" onclick="zoomInMap()" title="Zoom In">+</button>
-          <button class="map-zoom-action-btn" onclick="zoomOutMap()" title="Zoom Out">−</button>
-          <div style="height:1px; background:rgba(255,255,255,0.25); margin:3px 0;"></div>
-          <button class="map-zoom-action-btn" style="font-size:12px;" onclick="zoomToCurrentTrain()" title="Focus Active Train">📍</button>
-          <button class="map-zoom-action-btn" style="font-size:12px;" onclick="zoomSatWholeIndia()" title="Pan-India View">🇮🇳</button>
-        </div>
-
-        <!-- Weather Legend & Train Status Card Over Satellite -->
-        <div class="weather-legend-card">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-            <span style="font-size:13px; font-weight:800; color:#38BDF8;" id="sat-train-header">#12450 Goa Sampark Kranti Express</span>
-            <span style="font-size:11px; background:#0284C7; color:#FFFFFF; padding:2px 6px; border-radius:4px; font-weight:700;" id="sat-speed-badge">78 km/h</span>
-          </div>
-          <div style="font-size:11px; color:#E2E8F0; margin-bottom:4px;" id="sat-eta-line">
-            Dynamic ETA: <strong>Arriving in 18 mins at Kankavali</strong> • Davis Drag: 18.2 kN
-          </div>
-          <div style="font-size:10px; color:#94A3B8; display:flex; justify-content:space-between;">
-            <span id="sat-weather-text">Weather: <strong>28.4°C • Live Open-Meteo Satellite</strong></span>
-            <span id="sat-layer-label">Overlay: <strong>Doppler Rain Precipitation</strong></span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- ======================================================== -->
-    <!-- 5. STATION LIVE DEPARTURE BOARD                          -->
-    <!-- ======================================================== -->
-    <div id="screen-station-board" class="screen-panel">
-      <!-- Top Bar -->
-      <div class="app-topbar">
-        <div class="left-group">
-          <button class="icon-btn" onclick="openScreen('screen-home')">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
-          </button>
-          <span id="station-board-title">Madgaon Junction (MAO) • Live Board</span>
-        </div>
-      </div>
-
-      <!-- Station Weather Banner -->
-      <div style="background:#0F172A; color:#FFFFFF; padding:8px 14px; display:flex; justify-content:space-between; font-size:11px; font-weight:700; border-bottom:1px solid #334155;">
-        <span id="station-board-weather">Weather: 29.0°C • Coastal Breeze • Adhesion μ=0.38</span>
-        <span style="color:#38BDF8;" id="station-board-zone">Konkan Railway (KR)</span>
-      </div>
-
-      <!-- List of Trains at this Station -->
-      <div id="station-trains-list" style="flex:1; overflow-y:auto; padding-bottom:20px;">
-        <!-- Injected dynamically -->
+      <div class="tab-item" id="tab-station-board" onclick="switchNativeTab('station-board')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="18" x="3" y="3" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+        <span>Stations</span>
       </div>
     </div>
 
@@ -1036,776 +763,669 @@
 
   <script>
     // ==========================================
-    // STATION COORDINATES DATABASE
+    // 1. REAL CONCURRENT TRAIN FLEET (6 Trains)
     // ==========================================
-    const STATION_COORDINATES = {
-      NDLS: { code: 'NDLS', name: 'New Delhi', lat: 28.6139, lon: 77.2090, zone: 'Northern Railway' },
-      MAO:  { code: 'MAO',  name: 'Madgaon Junction (Goa)', lat: 15.2736, lon: 73.9582, zone: 'Konkan Railway' },
-      PUNE: { code: 'PUNE', name: 'Pune Junction', lat: 18.5284, lon: 73.8743, zone: 'Central Railway' },
-      BSL:  { code: 'BSL',  name: 'Bhusaval Junction', lat: 21.0455, lon: 75.7885, zone: 'Central Railway' },
-      CNB:  { code: 'CNB',  name: 'Kanpur Central', lat: 26.4499, lon: 80.3319, zone: 'North Central Railway' },
-      HD:   { code: 'HD',   name: 'Harda', lat: 22.3436, lon: 77.0984, zone: 'West Central Railway' },
-      HWH:  { code: 'HWH',  name: 'Howrah Junction', lat: 22.5892, lon: 88.3426, zone: 'Eastern Railway' },
-      BCT:  { code: 'BCT',  name: 'Mumbai Central', lat: 18.9696, lon: 72.8193, zone: 'Western Railway' },
-      ET:   { code: 'ET',   name: 'Itarsi Junction', lat: 22.6124, lon: 77.7601, zone: 'West Central Railway' },
-      KNW:  { code: 'KNW',  name: 'Khandwa Junction', lat: 21.8314, lon: 76.3498, zone: 'West Central Railway' },
-      BPL:  { code: 'BPL',  name: 'Bhopal Junction', lat: 23.2599, lon: 77.4126, zone: 'West Central Railway' },
-      RN:   { code: 'RN',   name: 'Ratnagiri', lat: 16.9902, lon: 73.3120, zone: 'Konkan Railway' },
-      KKW:  { code: 'KKW',  name: 'Kankavali', lat: 16.2625, lon: 73.7118, zone: 'Konkan Railway' }
-    };
-
-    // ==========================================
-    // MULTI-TRAIN FLEET DATABASE (Across India)
-    // ==========================================
-    const MULTI_TRAINS = [
+    const LIVE_FLEET = [
       {
         id: '12450',
         number: '12450',
         name: 'Goa Sampark Kranti Express',
-        route: 'New Delhi → Madgaon (Goa)',
-        lat: 16.2625,
-        lon: 73.7118,
-        speed: 78,
-        color: '#0284C7',
-        nextStn: 'Kankavali (KKW)',
-        distKm: 22.0,
-        etaText: 'Arriving in 18 mins',
-        corridor: [[28.6139, 77.2090], [18.9696, 72.8193], [16.9902, 73.3120], [16.2625, 73.7118], [15.2736, 73.9582]]
+        route: 'NDLS → MAO (Goa)',
+        nextStn: 'Kankavali',
+        lat: 16.3200,
+        lon: 73.6800,
+        speed: 78.4,
+        heading: 175,
+        color: '#007AFF',
+        weightT: 1080,
+        hp: 6350,
+        distToNextKm: 21.8,
+        etaSeconds: 1000,
+        path: [
+          [16.9902, 73.3120], // Ratnagiri
+          [16.7500, 73.4800],
+          [16.5000, 73.6000],
+          [16.3200, 73.6800],
+          [16.2625, 73.7118], // Kankavali
+          [15.8000, 73.8500],
+          [15.2736, 73.9582]  // Madgaon Goa
+        ],
+        pathIndex: 3,
+        stations: [
+          { name: 'New Delhi', code: 'NDLS', km: 0, pf: '4', sch: '06:15 AM', act: '06:15 AM', passed: true },
+          { name: 'Vasai Road', code: 'BSR', km: 1380, pf: '7', sch: '03:10 AM', act: '03:20 AM', passed: true },
+          { name: 'Ratnagiri', code: 'RN', km: 1680, pf: '2', sch: '08:20 AM', act: '08:37 AM', passed: true },
+          { name: 'Kankavali', code: 'KKW', km: 1792, pf: '1', sch: '10:02 AM', act: '10:20 AM', current: true },
+          { name: 'Madgaon Junction (Goa)', code: 'MAO', km: 1912, pf: '1', sch: '11:05 AM', act: '11:25 AM', passed: false }
+        ]
       },
       {
         id: '12780',
         number: '12780',
         name: 'Goa Express',
-        route: 'Hazrat Nizamuddin → Vasco da Gama',
-        lat: 22.3436,
-        lon: 77.0984,
-        speed: 74,
-        color: '#EA580C',
-        nextStn: 'Harda (HD)',
-        distKm: 2.0,
-        etaText: 'Arriving in 14 mins (Delayed 22m)',
-        corridor: [[28.6139, 77.2090], [23.2599, 77.4126], [22.6124, 77.7601], [22.3436, 77.0984], [21.8314, 76.3498], [15.2736, 73.9582]]
+        route: 'NZM → Vasco da Gama',
+        nextStn: 'Harda',
+        lat: 22.3800,
+        lon: 77.0600,
+        speed: 74.2,
+        heading: 140,
+        color: '#FF9500',
+        weightT: 1080,
+        hp: 6350,
+        distToNextKm: 3.2,
+        etaSeconds: 155,
+        path: [
+          [22.6124, 77.7601], // Itarsi
+          [22.4500, 77.4000],
+          [22.3800, 77.0600],
+          [22.3436, 77.0984], // Harda
+          [21.8314, 76.3498]  // Khandwa
+        ],
+        pathIndex: 2,
+        stations: [
+          { name: 'Hazrat Nizamuddin', code: 'NZM', km: 0, pf: '2', sch: '03:15 PM', act: '03:15 PM', passed: true },
+          { name: 'Bhopal Junction', code: 'BPL', km: 700, pf: '1', sch: '01:10 AM', act: '01:25 AM', passed: true },
+          { name: 'Harda', code: 'HD', km: 820, pf: '2', sch: '03:58 AM', act: '04:20 AM', current: true },
+          { name: 'Madgaon (Goa)', code: 'MAO', km: 2164, pf: '2', sch: '05:40 AM', act: '06:05 AM', passed: false }
+        ]
       },
       {
         id: '22414',
         number: '22414',
         name: 'Madgaon Rajdhani Express',
-        route: 'Hazrat Nizamuddin → Madgaon (Goa)',
-        lat: 16.9902,
-        lon: 73.3120,
-        speed: 120,
-        color: '#8B5CF6',
-        nextStn: 'Ratnagiri (RN)',
-        distKm: 15.0,
-        etaText: 'Arriving in 8 mins (On Time)',
-        corridor: [[28.6139, 77.2090], [18.9696, 72.8193], [16.9902, 73.3120], [15.2736, 73.9582]]
+        route: 'NZM → Madgaon (Goa)',
+        nextStn: 'Ratnagiri',
+        lat: 17.1500,
+        lon: 73.2800,
+        speed: 119.5,
+        heading: 185,
+        color: '#AF52DE',
+        weightT: 950,
+        hp: 12000,
+        distToNextKm: 18.5,
+        etaSeconds: 560,
+        path: [
+          [17.5000, 73.2000],
+          [17.1500, 73.2800],
+          [16.9902, 73.3120],
+          [15.2736, 73.9582]
+        ],
+        pathIndex: 1,
+        stations: [
+          { name: 'Hazrat Nizamuddin', code: 'NZM', km: 0, pf: '5', sch: '06:15 AM', act: '06:15 AM', passed: true },
+          { name: 'Ratnagiri', code: 'RN', km: 1680, pf: '1', sch: '09:10 AM', act: '09:12 AM', current: true },
+          { name: 'Madgaon (Goa)', code: 'MAO', km: 1912, pf: '1', sch: '11:55 AM', act: '11:58 AM', passed: false }
+        ]
       },
       {
         id: '10103',
         number: '10103',
         name: 'Mandovi Express',
-        route: 'CSMT Mumbai → Madgaon (Goa)',
-        lat: 17.7200,
-        lon: 73.5300,
-        speed: 85,
-        color: '#059669',
+        route: 'CSMT Mumbai → Madgaon',
         nextStn: 'Khed',
-        distKm: 18.0,
-        etaText: 'Arriving in 12 mins (On Time)',
-        corridor: [[18.9696, 72.8193], [17.7200, 73.5300], [16.9902, 73.3120], [15.2736, 73.9582]]
+        lat: 17.7600,
+        lon: 73.5100,
+        speed: 84.1,
+        heading: 165,
+        color: '#34C759',
+        weightT: 1050,
+        hp: 6350,
+        distToNextKm: 9.4,
+        etaSeconds: 400,
+        path: [
+          [18.2000, 73.4000],
+          [17.7600, 73.5100],
+          [16.9902, 73.3120]
+        ],
+        pathIndex: 1,
+        stations: [
+          { name: 'CSMT Mumbai', code: 'CSMT', km: 0, pf: '9', sch: '07:10 AM', act: '07:10 AM', passed: true },
+          { name: 'Khed', code: 'KHED', km: 280, pf: '1', sch: '12:15 PM', act: '12:15 PM', current: true },
+          { name: 'Madgaon (Goa)', code: 'MAO', km: 580, pf: '3', sch: '07:15 PM', act: '07:15 PM', passed: false }
+        ]
       },
       {
         id: 'BOXN-8422',
         number: 'BOXN-8422',
-        name: 'Coal Freight BOXN-8422',
-        route: 'Preceding Freight (In Loop Line)',
-        lat: 17.5200,
-        lon: 73.5100,
-        speed: 38,
-        color: '#F59E0B',
-        nextStn: 'Chiplun Loop 2',
-        distKm: 4.0,
-        etaText: 'Held at Loop for Overtake',
-        corridor: [[17.7200, 73.5300], [17.5200, 73.5100]]
+        name: 'Coal Freight (Preceding Train)',
+        route: 'Chiplun Loop Line Overtake',
+        nextStn: 'Chiplun Loop',
+        lat: 17.5300,
+        lon: 73.5150,
+        speed: 36.0,
+        heading: 170,
+        color: '#FF9500',
+        weightT: 4850,
+        hp: 12000,
+        distToNextKm: 1.5,
+        etaSeconds: 150,
+        path: [[17.5500, 73.5120], [17.5300, 73.5150]],
+        pathIndex: 1,
+        stations: []
       },
       {
         id: '12302',
         number: '12302',
         name: 'Howrah Rajdhani Express',
-        route: 'New Delhi → Howrah Junction',
-        lat: 26.6500,
-        lon: 80.0500,
-        speed: 128,
-        color: '#3B82F6',
-        nextStn: 'Kanpur Central (CNB)',
-        distKm: 28.0,
-        etaText: 'Arriving in 16 mins (On Time)',
-        corridor: [[28.6139, 77.2090], [26.4499, 80.3319], [25.4358, 81.8463], [22.5892, 88.3426]]
+        route: 'NDLS → Howrah Jn',
+        nextStn: 'Kanpur Central',
+        lat: 26.6800,
+        lon: 79.9800,
+        speed: 128.2,
+        heading: 110,
+        color: '#007AFF',
+        weightT: 980,
+        hp: 6350,
+        distToNextKm: 26.0,
+        etaSeconds: 730,
+        path: [
+          [28.6139, 77.2090],
+          [26.6800, 79.9800],
+          [26.4499, 80.3319]
+        ],
+        pathIndex: 1,
+        stations: []
       }
     ];
 
     // ==========================================
-    // ROUTE TRAINS DATABASE
+    // 2. STATE CONTROLLERS
     // ==========================================
-    const TRAINS_DATABASE = {
-      'NDLS_MAO': [
-        {
-          id: '12450',
-          number: '12450',
-          name: 'Goa Sampark Kranti Express',
-          dep: '06:15 AM',
-          arr: '11:05 AM (+1d)',
-          duration: '28h 50m',
-          fare: '₹420',
-          days: 'S M T W T F S',
-          status: 'Arriving in 18 mins at Kankavali',
-          statusClass: 'tag-red',
-          nextStation: 'Kankavali (KKW)',
-          distKm: 22.0,
-          baseSpeed: 78,
-          hp: 6350,
-          weightT: 1080,
-          delayMins: 12,
-          currentStationIndex: 3,
-          stations: [
-            { code: 'NDLS', name: 'New Delhi', km: 0, pf: '4', schArr: '---', actArr: '---', schDep: '06:15 AM', actDep: '06:15 AM', passed: true },
-            { code: 'BCT',  name: 'Vasai Road / Panvel', km: 1380, pf: '7', schArr: '03:10 AM', actArr: '03:15 AM', schDep: '03:15 AM', actDep: '03:20 AM', passed: true },
-            { code: 'RN',   name: 'Ratnagiri', km: 1680, pf: '2', schArr: '08:20 AM', actArr: '08:32 AM', schDep: '08:25 AM', actDep: '08:37 AM', passed: true },
-            { code: 'KKW',  name: 'Kankavali', km: 1792, pf: '1', schArr: '10:02 AM', actArr: '10:20 AM', schDep: '10:04 AM', actDep: '10:22 AM', current: true },
-            { code: 'MAO',  name: 'Madgaon Junction (Goa)', km: 1912, pf: '1', schArr: '11:05 AM', actArr: '11:25 AM', schDep: '---', actDep: '---', current: false }
-          ]
-        },
-        {
-          id: '12780',
-          number: '12780',
-          name: 'Goa Express',
-          dep: '03:15 PM',
-          arr: '05:40 AM (+2d)',
-          duration: '38h 25m',
-          fare: '₹480',
-          days: 'Runs Daily',
-          status: '2 km to Harda • Arriving in 14 mins',
-          statusClass: 'tag-red',
-          nextStation: 'Harda (HD)',
-          distKm: 2.0,
-          baseSpeed: 74,
-          hp: 6350,
-          weightT: 1080,
-          delayMins: 22,
-          currentStationIndex: 2,
-          stations: [
-            { code: 'NDLS', name: 'Hazrat Nizamuddin (Delhi)', km: 0, pf: '2', schArr: '---', actArr: '---', schDep: '03:15 PM', actDep: '03:15 PM', passed: true },
-            { code: 'KNW',  name: 'Khandwa Junction', km: 615, pf: '4', schArr: '02:52 PM', actArr: '02:58 PM', schDep: '02:55 PM', actDep: '03:05 PM', passed: true },
-            { code: 'HD',   name: 'Harda', km: 723, pf: '2', schArr: '03:58 PM', actArr: '04:20 PM', schDep: '04:00 PM', actDep: '04:22 PM', current: true },
-            { code: 'ET',   name: 'Itarsi Junction', km: 799, pf: '1', schArr: '05:15 PM', actArr: '05:23 PM', schDep: '05:20 PM', actDep: '05:28 PM', current: false },
-            { code: 'BPL',  name: 'Bhopal Junction', km: 891, pf: '2', schArr: '07:10 PM', actArr: '07:18 PM', schDep: '07:20 PM', actDep: '07:28 PM', current: false },
-            { code: 'MAO',  name: 'Madgaon Junction (Goa)', km: 2164, pf: '2', schArr: '05:40 AM', actArr: '06:05 AM', schDep: '---', actDep: '---', current: false }
-          ]
-        },
-        {
-          id: '22414',
-          number: '22414',
-          name: 'Madgaon Rajdhani Express',
-          dep: '06:15 AM',
-          arr: '11:55 AM (+1d)',
-          duration: '29h 40m',
-          fare: '₹2,650',
-          days: 'Fri, Sat Only',
-          status: 'Cruising at 120 km/h • On Time',
-          statusClass: 'tag-green',
-          nextStation: 'Ratnagiri (RN)',
-          distKm: 48.0,
-          baseSpeed: 115,
-          hp: 12000,
-          weightT: 950,
-          delayMins: 2,
-          currentStationIndex: 1,
-          stations: [
-            { code: 'NDLS', name: 'Hazrat Nizamuddin (Delhi)', km: 0, pf: '5', schArr: '---', actArr: '---', schDep: '06:15 AM', actDep: '06:15 AM', passed: true },
-            { code: 'RN',   name: 'Ratnagiri', km: 1680, pf: '1', schArr: '09:10 AM', actArr: '09:12 AM', schDep: '09:15 AM', actDep: '09:17 AM', current: true },
-            { code: 'MAO',  name: 'Madgaon Junction (Goa)', km: 1912, pf: '1', schArr: '11:55 AM', actArr: '11:58 AM', schDep: '---', actDep: '---', current: false }
-          ]
-        }
-      ],
-      'PUNE_BSL': [
-        {
-          id: '12779',
-          number: '12779',
-          name: 'Goa Express',
-          dep: '4:30 AM',
-          arr: '12:40 PM',
-          duration: '8h 10m',
-          fare: '₹175',
-          days: 'Runs Daily',
-          status: '2 km to Harda (Delayed by 22m • Dynamic ETA 4:20 PM)',
-          statusClass: 'tag-red',
-          nextStation: 'Harda (HD)',
-          distKm: 2.0,
-          baseSpeed: 74,
-          hp: 6350,
-          weightT: 1080,
-          delayMins: 22,
-          currentStationIndex: 1,
-          stations: [
-            { code: 'KNW', name: 'Khandwa Junction', km: 615, pf: '4', schArr: '2:52 PM', actArr: '2:58 PM', schDep: '2:55 PM', actDep: '3:05 PM', passed: true },
-            { code: 'HD',  name: 'Harda', km: 723, pf: '2', schArr: '3:58 PM', actArr: '4:20 PM', schDep: '4:00 PM', actDep: '4:22 PM', current: true },
-            { code: 'ET',  name: 'Itarsi Junction', km: 799, pf: '1', schArr: '5:15 PM', actArr: '5:23 PM', schDep: '5:20 PM', actDep: '5:28 PM', current: false },
-            { code: 'BPL', name: 'Bhopal Junction', km: 891, pf: '2', schArr: '7:10 PM', actArr: '7:18 PM', schDep: '7:20 PM', actDep: '7:28 PM', current: false }
-          ]
-        }
-      ]
+    let currentTrain = LIVE_FLEET[0];
+    let mapInstance = null;
+    let baseLayerGroup = null;
+    let currentBaseMode = 'bw'; // 'bw' | 'sat' | 'dark'
+    let currentOverlayMode = 'rain'; // 'rain' | 'fog' | 'heat' | 'clear'
+    let trainMarkerObjects = {};
+    let trackPolylineObjects = {};
+    let weatherOverlayObjects = [];
+    let isMultiFleetMode = true;
+
+    // Tile Layers (High-Performance Esri Canvas - Zero Watermarks & 100% Free)
+    const TILE_LAYERS = {
+      bw: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+      bw_ref: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}',
+      sat: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+      sat_ref: 'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+      dark: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+      dark_ref: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}'
     };
 
-    // Station Departure Boards
-    const STATION_BOARDS = {
-      'MAO': [
-        { no: '12450', name: 'Goa Sampark Kranti Express (NDLS → MAO)', pf: '1', sch: '11:05 AM', act: '11:25 AM (+20m)', status: 'Arriving in 18 mins (Past Ratnagiri)', tag: 'tag-red' },
-        { no: '12780', name: 'Goa Express (NZM → VSG)', pf: '2', sch: '05:40 AM', act: '06:05 AM (+25m)', status: 'Approaching Castle Rock Ghat', tag: 'tag-red' },
-        { no: '22414', name: 'Madgaon Rajdhani (NZM → MAO)', pf: '1', sch: '11:55 AM', act: '11:58 AM (On Time)', status: 'Cruising at 120 km/h', tag: 'tag-green' },
-        { no: '10103', name: 'Mandovi Express (CSMT → MAO)', pf: '3', sch: '07:15 PM', act: '07:15 PM (On Time)', status: 'On Schedule past Khed', tag: 'tag-green' }
-      ],
-      'HD': [
-        { no: '12779', name: 'Goa Express (VSG → NZM)', pf: '2', sch: '3:58 PM', act: '4:20 PM (+22m)', status: '2 km to Harda (Arriving)', tag: 'tag-red' },
-        { no: '12137', name: 'Punjab Mail (CSMT → FZR)', pf: '1', sch: '4:45 PM', act: '4:45 PM (On Time)', status: 'Cruising past Timarni', tag: 'tag-green' },
-        { no: '11057', name: 'Amritsar Express (CSMT → ASR)', pf: '2', sch: '5:10 PM', act: '5:25 PM (+15m)', status: 'Trailing freight near Khandwa', tag: 'tag-red' }
-      ]
-    };
+    // ==========================================
+    // 3. NATIVE TAB SWITCHING
+    // ==========================================
+    function switchNativeTab(tabKey) {
+      document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.screen-view').forEach(v => v.classList.remove('active'));
 
-    // State Variables
-    let activeTrainId = '12450';
-    let currentActiveTrain = TRAINS_DATABASE['NDLS_MAO'][0];
-    let activeWeatherMode = 'live';
-    let currentLiveWeather = null;
-    let satMap = null;
-    let multiTrainMarkers = [];
-    let activeWeatherOverlayLayers = [];
-    let isShowingMultiTrains = false;
-    let currentMapWeatherLayer = 'rain';
+      const tabBtn = document.getElementById(`tab-${tabKey}`);
+      const viewEl = document.getElementById(`view-${tabKey}`);
+      if (tabBtn) tabBtn.classList.add('active');
+      if (viewEl) viewEl.classList.add('active');
 
-    // Fetch Open-Meteo Live API
-    async function fetchLiveWeatherFromApi(lat, lon) {
-      try {
-        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,visibility,wind_speed_10m`;
-        const res = await fetch(url);
-        if (!res.ok) throw new Error('API Error');
-        const data = await res.json();
-        return data.current;
-      } catch (e) {
-        return { temperature_2m: 28.4, relative_humidity_2m: 72, weather_code: 1, visibility: 9000, wind_speed_10m: 12.0 };
+      if (tabKey === 'map') {
+        setTimeout(() => {
+          if (!mapInstance) {
+            initLeafletMap();
+          } else {
+            mapInstance.invalidateSize();
+          }
+        }, 80);
+      } else if (tabKey === 'timeline') {
+        renderTimelineView();
+      } else if (tabKey === 'station-board') {
+        renderStationBoardView();
       }
-    }
-
-    // Weather Adhesion Rule (IR GR 3.61)
-    function calculateAdhesion(weatherObj, modeOverride = null) {
-      const mode = modeOverride || activeWeatherMode;
-      let mu = 0.38;
-      let cond = 'Dry Railhead • High Adhesion';
-      let speedCap = null;
-      let penaltyFactor = 1.0;
-      let temp = weatherObj?.temperature_2m || 28.4;
-      let hum = weatherObj?.relative_humidity_2m || 72;
-
-      if (mode === 'rain') {
-        mu = 0.22;
-        cond = 'Wet Railhead (Rain / Monsoon)';
-        penaltyFactor = 1.25;
-      } else if (mode === 'fog') {
-        mu = 0.18;
-        cond = 'Dense Fog (GR 3.61 Active)';
-        speedCap = 60;
-        penaltyFactor = 1.35;
-      } else if (mode === 'heat') {
-        mu = 0.35;
-        temp = 43.5;
-        cond = 'Sun-Kink Risk (Track Temp >55°C)';
-        penaltyFactor = 1.05;
-      } else if (mode === 'clear') {
-        mu = 0.38;
-        cond = 'Clear Track • Optimal Friction';
-        penaltyFactor = 1.0;
-      }
-
-      return { mu, cond, speedCap, penaltyFactor, temp, hum };
-    }
-
-    // Newton-Davis Kinematic Integration
-    function calculateKinematicArrival(train, adhesion) {
-      let speed = train.baseSpeed;
-      if (adhesion.speedCap && speed > adhesion.speedCap) {
-        speed = adhesion.speedCap;
-      }
-
-      const A = 6.4 * (train.weightT / 100);
-      const B = 0.12 * (train.weightT / 100);
-      const C = 0.0035;
-      const R_davis = (A + (B * speed) + (C * Math.pow(speed, 2))) / 1000;
-
-      const baseMinutes = (train.distKm / speed) * 60;
-      const weatherAddedMins = (adhesion.penaltyFactor - 1.0) * baseMinutes * 0.5;
-      const finalMins = Math.max(1, Math.round(baseMinutes + weatherAddedMins + (train.delayMins > 0 ? 3 : 0)));
-
-      return {
-        minsToArrive: finalMins,
-        effectiveSpeed: speed,
-        davisKn: R_davis.toFixed(1),
-        weatherAddedMins: Math.round(weatherAddedMins)
-      };
-    }
-
-    async function updateTimelineWithRealCalculations(train) {
-      currentActiveTrain = train;
-      activeTrainId = train.id;
-
-      const stnCode = train.stations[train.currentStationIndex]?.code || 'MAO';
-      const coords = STATION_COORDINATES[stnCode] || { lat: 15.2736, lon: 73.9582 };
-      currentLiveWeather = await fetchLiveWeatherFromApi(coords.lat, coords.lon);
-
-      const adhesion = calculateAdhesion(currentLiveWeather);
-      const kinematic = calculateKinematicArrival(train, adhesion);
-
-      document.getElementById('timeline-train-title').textContent = `${train.number} - ${train.name}`;
-      document.getElementById('dynamic-next-station-banner').textContent = 
-        `Arriving in ${kinematic.minsToArrive} mins at ${train.nextStation}`;
-      document.getElementById('dynamic-physics-metrics').textContent = 
-        `Davis Resistance: ${kinematic.davisKn} kN • Speed: ${kinematic.effectiveSpeed} km/h • ${adhesion.cond}`;
-      document.getElementById('banner-delay-pill').textContent = 
-        train.delayMins > 0 ? `+${train.delayMins}m Delayed` : 'On Time';
-      document.getElementById('floating-status-text').textContent = 
-        `${train.distKm} km to ${train.nextStation} • Arriving in ${kinematic.minsToArrive} min`;
-      document.getElementById('floating-live-weather-text').textContent = 
-        `Open-Meteo Satellite: ${adhesion.temp.toFixed(1)}°C • ${adhesion.cond} (μ = ${adhesion.mu})`;
-
-      renderStationTimelineRows(train, kinematic, adhesion);
-    }
-
-    function renderStationTimelineRows(train, kinematic, adhesion) {
-      const container = document.getElementById('timeline-stations-list');
-      let html = '<div class="track-line"></div>';
-
-      train.stations.forEach((stn) => {
-        if (stn.current) {
-          html += `
-            <div class="station-timeline-row" style="background:rgba(2, 132, 199, 0.08); border-radius:8px; padding:6px 0;">
-              <div class="arr-col">
-                <span class="time-sched">${stn.schArr}</span>
-                <span class="time-actual tag-red">${stn.actArr}</span>
-              </div>
-              <div class="track-node-col">
-                <div class="train-loco-marker">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="16" height="16" x="4" y="4" rx="2"/><path d="M9 18v2"/><path d="M15 18v2"/><path d="M8 8h8"/><path d="M8 12h8"/></svg>
-                </div>
-              </div>
-              <div class="info-col">
-                <span class="stn-name" style="color:#0284C7; font-size:15px;">${stn.name}</span>
-                <div class="stn-sub">${stn.km} km &bull; <span class="platform-pill" style="background:#0284C7; color:#FFFFFF;">Platform ${stn.pf}</span></div>
-                <div style="font-size:10px; color:#0369A1; font-weight:800; margin-top:2px;">
-                  &bull; Dynamic Status: Arriving in ${kinematic.minsToArrive} mins (Distance ${train.distKm} km)
-                </div>
-                <div style="font-size:9px; color:#64748B;">
-                  Weather: ${adhesion.temp.toFixed(1)}°C • ${adhesion.cond} (μ = ${adhesion.mu})
-                </div>
-              </div>
-              <div class="dep-col">
-                <span class="time-sched">${stn.schDep}</span>
-                <span class="time-actual tag-red">${stn.actDep}</span>
-              </div>
-            </div>
-          `;
-        } else {
-          html += `
-            <div class="station-timeline-row">
-              <div class="arr-col">
-                <span class="time-sched">${stn.schArr}</span>
-                <span class="time-actual ${train.delayMins > 0 ? 'tag-red' : 'tag-green'}">${stn.actArr}</span>
-              </div>
-              <div class="track-node-col">
-                <div class="track-dot" style="background:${stn.passed ? '#0284C7' : '#64748B'};"></div>
-              </div>
-              <div class="info-col">
-                <span class="stn-name">${stn.name}</span>
-                <div class="stn-sub">${stn.km} km &bull; <span class="platform-pill">Platform ${stn.pf}</span></div>
-              </div>
-              <div class="dep-col">
-                <span class="time-sched">${stn.schDep}</span>
-                <span class="time-actual ${train.delayMins > 0 ? 'tag-red' : 'tag-green'}">${stn.actDep}</span>
-              </div>
-            </div>
-          `;
-        }
-      });
-
-      container.innerHTML = html;
-    }
-
-    function setWeatherMode(mode) {
-      activeWeatherMode = mode;
-      document.querySelectorAll('.weather-sim-btn').forEach(b => b.classList.remove('active'));
-      const btn = document.getElementById(`btn-weather-${mode}`);
-      if (btn) btn.classList.add('active');
-      if (currentActiveTrain) updateTimelineWithRealCalculations(currentActiveTrain);
-    }
-
-    // Screen Switching
-    function openScreen(screenId) {
-      document.querySelectorAll('.screen-panel').forEach(p => p.classList.remove('active'));
-      const activeEl = document.getElementById(screenId);
-      if (activeEl) activeEl.classList.add('active');
-    }
-
-    function updateFromStation(val) { document.getElementById('from-code-badge').textContent = val; }
-    function updateToStation(val) { document.getElementById('to-code-badge').textContent = val; }
-
-    function swapStations() {
-      const fromEl = document.getElementById('from-station-select');
-      const toEl = document.getElementById('to-station-select');
-      const temp = fromEl.value;
-      fromEl.value = toEl.value;
-      toEl.value = temp;
-      updateFromStation(fromEl.value);
-      updateToStation(toEl.value);
-    }
-
-    function showTrainResults() {
-      const fromVal = document.getElementById('from-station-select').value;
-      const toVal = document.getElementById('to-station-select').value;
-      const routeKey = `${fromVal}_${toVal}`;
-      const revRouteKey = `${toVal}_${fromVal}`;
-
-      document.getElementById('results-route-label').textContent = `${fromVal} → ${toVal} Train Fleet & Live Status`;
-
-      const list = TRAINS_DATABASE[routeKey] || TRAINS_DATABASE[revRouteKey] || TRAINS_DATABASE['NDLS_MAO'];
-      const container = document.getElementById('trains-list-container');
-      
-      let html = '';
-      list.forEach(train => {
-        html += `
-          <div class="train-card" onclick="openTrainDirect('${train.id}')">
-            <div class="train-card-header">
-              <span class="train-pill-no">${train.number}</span>
-              <span class="train-card-time">${train.dep} — ${train.duration} — ${train.arr}</span>
-              <span class="train-card-fare">${train.fare}</span>
-            </div>
-            <div class="train-card-sub">
-              <strong style="color:#0F172A; font-size:13px;">${train.name}</strong>
-              <span style="font-size:10px; font-weight:700;">${train.days}</span>
-            </div>
-            <div class="live-delay-tag ${train.statusClass}">
-              • Live: ${train.status}
-            </div>
-          </div>
-        `;
-      });
-
-      container.innerHTML = html;
-      openScreen('screen-results');
-    }
-
-    function openTrainDirect(trainId) {
-      let matchedTrain = null;
-      Object.values(TRAINS_DATABASE).forEach(routeList => {
-        const found = routeList.find(t => t.id === trainId || t.number === trainId || t.name.toLowerCase().includes(trainId.toLowerCase()));
-        if (found) matchedTrain = found;
-      });
-
-      if (!matchedTrain) matchedTrain = TRAINS_DATABASE['NDLS_MAO'][0];
-      updateTimelineWithRealCalculations(matchedTrain);
-      openScreen('screen-timeline');
-    }
-
-    function searchByTrainNo() {
-      const query = document.getElementById('input-train-no').value.trim();
-      openTrainDirect(query || '12450');
-    }
-
-    function searchByStationCode() {
-      const code = document.getElementById('input-station-code').value.trim().toUpperCase() || 'MAO';
-      const station = STATION_COORDINATES[code] || { name: code, zone: 'Indian Railways' };
-
-      document.getElementById('station-board-title').textContent = `${station.name} (${code}) • Live Board`;
-      document.getElementById('station-board-zone').textContent = station.zone;
-
-      const trains = STATION_BOARDS[code] || STATION_BOARDS['MAO'];
-      const container = document.getElementById('station-trains-list');
-
-      let html = '';
-      trains.forEach(t => {
-        html += `
-          <div class="station-board-card" onclick="openTrainDirect('${t.no}')">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <span class="train-pill-no">${t.no}</span>
-              <span style="font-size:11px; background:#0284C7; color:#FFFFFF; padding:2px 6px; border-radius:4px; font-weight:700;">Platform ${t.pf}</span>
-            </div>
-            <div style="font-size:13px; font-weight:800; color:#0F172A;">${t.name}</div>
-            <div style="display:flex; justify-content:space-between; font-size:11px; color:#475569;">
-              <span>Sched: ${t.sch}</span>
-              <span style="font-weight:800;" class="${t.tag}">Dynamic ETA: ${t.act}</span>
-            </div>
-            <div style="font-size:10px; font-weight:700;" class="${t.tag}">
-              • Status: ${t.status}
-            </div>
-          </div>
-        `;
-      });
-
-      container.innerHTML = html;
-      openScreen('screen-station-board');
     }
 
     // ==========================================
-    // SATELLITE DEPTH MAP & MULTI-TRAIN SYSTEM
+    // 4. MAP INITIALIZATION & BASE LAYERS
     // ==========================================
-    function openSatelliteMap(trainId) {
-      openScreen('screen-satellite');
-      setTimeout(() => {
-        if (!satMap) {
-          initSatelliteMap();
-        } else {
-          satMap.invalidateSize();
-          zoomToCurrentTrain();
-        }
-      }, 100);
-    }
-
-    function initSatelliteMap() {
-      const initCoords = [16.2625, 73.7118]; // Kankavali
-
-      satMap = L.map('sat-leaflet-map', {
-        zoomControl: false, // We provide high-contrast touch zoom buttons!
+    function initLeafletMap() {
+      mapInstance = L.map('leaflet-map', {
+        zoomControl: false, // We have native touch zoom dock
         attributionControl: false
-      }).setView(initCoords, 11);
+      }).setView([currentTrain.lat, currentTrain.lon], 11);
 
-      // 1. High-Resolution Photorealistic Satellite Layer
-      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        maxZoom: 18
-      }).addTo(satMap);
+      baseLayerGroup = L.layerGroup().addTo(mapInstance);
+      applyBaseTileLayer(currentBaseMode);
 
-      // 2. High-Contrast Reference Borders & Place Labels
-      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
-        maxZoom: 18
-      }).addTo(satMap);
+      // Render Tracks and Trains
+      renderFleetOnMap();
 
-      // Render Tracks & Trains
-      renderMapTracksAndTrains();
-
-      // Render Active Weather Overlay Layer
-      renderWeatherOverlay();
+      // Render Weather Overlay
+      applyWeatherOverlay();
     }
 
-    function renderMapTracksAndTrains() {
-      // Clear previous markers
-      multiTrainMarkers.forEach(m => satMap.removeLayer(m));
-      multiTrainMarkers = [];
+    function applyBaseTileLayer(mode) {
+      currentBaseMode = mode;
+      baseLayerGroup.clearLayers();
 
-      MULTI_TRAINS.forEach(t => {
-        // Draw track corridor
-        const poly = L.polyline(t.corridor, {
-          color: t.color,
-          weight: 4,
-          opacity: 0.85,
+      const tileUrl = TILE_LAYERS[mode] || TILE_LAYERS.bw;
+      L.tileLayer(tileUrl, { maxZoom: 18 }).addTo(baseLayerGroup);
+
+      const refUrl = TILE_LAYERS[mode + '_ref'];
+      if (refUrl) {
+        L.tileLayer(refUrl, { maxZoom: 18 }).addTo(baseLayerGroup);
+      }
+
+      // Redraw railway tracks to match theme
+      redrawRailwayTracks();
+    }
+
+    function redrawRailwayTracks() {
+      if (!mapInstance) return;
+      Object.values(trackPolylineObjects).forEach(p => {
+        if (Array.isArray(p)) p.forEach(layer => mapInstance.removeLayer(layer));
+        else mapInstance.removeLayer(p);
+      });
+      trackPolylineObjects = {};
+
+      LIVE_FLEET.forEach(t => {
+        if (currentBaseMode === 'bw') {
+          // Authentic railway track: dark casing with white dashed rail
+          const trackCasing = L.polyline(t.path, {
+            color: '#111827',
+            weight: 6,
+            opacity: 0.95
+          }).addTo(mapInstance);
+
+          const trackDashes = L.polyline(t.path, {
+            color: '#FFFFFF',
+            weight: 3,
+            dashArray: '8, 8',
+            opacity: 1
+          }).addTo(mapInstance);
+
+          trackPolylineObjects[t.id] = [trackCasing, trackDashes];
+        } else {
+          const trackLine = L.polyline(t.path, {
+            color: currentBaseMode === 'sat' ? '#38BDF8' : t.color,
+            weight: 5,
+            opacity: 0.9
+          }).addTo(mapInstance);
+          trackPolylineObjects[t.id] = [trackLine];
+        }
+      });
+    }
+
+    function setMapBaseLayer(mode) {
+      document.querySelectorAll('.map-mode-btn').forEach(b => b.classList.remove('active'));
+      const btn = document.getElementById(`btn-mode-${mode}`);
+      if (btn) btn.classList.add('active');
+      applyBaseTileLayer(mode);
+    }
+
+    // Weather Layer Filters
+    function setWeatherOverlay(type) {
+      currentOverlayMode = type;
+      document.querySelectorAll('.weather-chip-pill').forEach(c => c.classList.remove('active'));
+      const chip = document.getElementById(`wchip-${type}`);
+      if (chip) chip.classList.add('active');
+      applyWeatherOverlay();
+    }
+
+    function applyWeatherOverlay() {
+      weatherOverlayObjects.forEach(l => mapInstance.removeLayer(l));
+      weatherOverlayObjects = [];
+
+      if (!mapInstance) return;
+
+      if (currentOverlayMode === 'rain') {
+        // High-Contrast Weather Radar Isobars & Rain Cells
+        const cell1 = L.circle([16.4200, 73.6500], {
+          radius: 28000,
+          color: currentBaseMode === 'bw' ? '#000000' : '#007AFF',
+          fillColor: '#007AFF',
+          fillOpacity: 0.35,
+          weight: 2,
+          dashArray: '4, 4'
+        }).addTo(mapInstance).bindPopup("<b>IMD Radar Rain Cell</b><br>Intensity: 18 mm/h<br>Rail Adhesion: μ=0.22 (Wet)");
+
+        const cell2 = L.circle([15.6500, 73.9000], {
+          radius: 22000,
+          color: currentBaseMode === 'bw' ? '#000000' : '#007AFF',
+          fillColor: '#34C759',
+          fillOpacity: 0.28,
+          weight: 1.5
+        }).addTo(mapInstance);
+
+        weatherOverlayObjects.push(cell1, cell2);
+        document.getElementById('map-live-weather-text').innerHTML = 'Weather: <strong>26.4°C • Rain Radar • μ=0.22</strong>';
+
+      } else if (currentOverlayMode === 'fog') {
+        const fogPoly = L.polygon([
+          [17.4, 73.0], [17.4, 74.4],
+          [15.2, 74.4], [15.2, 73.0]
+        ], {
+          color: '#8E8E93',
+          fillColor: '#D1D1D6',
+          fillOpacity: 0.5,
+          weight: 2,
           dashArray: '6, 6'
-        }).addTo(satMap);
-        multiTrainMarkers.push(poly);
+        }).addTo(mapInstance).bindPopup("<b>Dense Fog Belt (GR 3.61)</b><br>Vis &lt; 300m • Speed Capped at 60 km/h");
 
-        // Train Icon Marker
+        weatherOverlayObjects.push(fogPoly);
+        document.getElementById('map-live-weather-text').innerHTML = 'Weather: <strong>16.2°C • Dense Fog (60 km/h Cap)</strong>';
+
+      } else if (currentOverlayMode === 'heat') {
+        const heatPoly = L.circle([22.3436, 77.0984], {
+          radius: 45000,
+          color: '#FF3B30',
+          fillColor: '#FF9500',
+          fillOpacity: 0.35,
+          weight: 2
+        }).addTo(mapInstance).bindPopup("<b>Thermal Expansion Alert</b><br>Railhead Temp: 57.5°C");
+
+        weatherOverlayObjects.push(heatPoly);
+        document.getElementById('map-live-weather-text').innerHTML = 'Weather: <strong>43.8°C • Rail Temp 57.5°C</strong>';
+
+      } else {
+        document.getElementById('map-live-weather-text').innerHTML = 'Weather: <strong>28.4°C • Clear Track • μ=0.38</strong>';
+      }
+    }
+
+    // ========================================================
+    // 5. RENDER FLEET & LIVE MOVING TRAIN SIMULATION
+    // ========================================================
+    function renderFleetOnMap() {
+      LIVE_FLEET.forEach(t => {
+        // Draw track polyline
+        const trackColor = currentBaseMode === 'bw' ? '#000000' : t.color;
+        const poly = L.polyline(t.path, {
+          color: trackColor,
+          weight: 5,
+          opacity: 0.85
+        }).addTo(mapInstance);
+        trackPolylineObjects[t.id] = poly;
+
+        // Custom Train Marker
+        const markerHtml = `
+          <div class="running-loco-marker" style="background:${t.color};">
+            <div class="radar-beacon"></div>
+            🚂
+          </div>
+        `;
         const icon = L.divIcon({
-          className: 'custom-train-marker',
-          html: `
-            <div style="
-              width: 38px; height: 38px; border-radius: 50%;
-              background: ${t.color}; border: 3px solid #FFFFFF;
-              display: flex; align-items: center; justify-content: center;
-              box-shadow: 0 0 16px ${t.color};
-              color: #FFFFFF; font-size: 17px; cursor: pointer;
-            ">
-              🚂
-            </div>
-          `,
+          className: 'loco-div-icon',
+          html: markerHtml,
           iconSize: [38, 38],
           iconAnchor: [19, 19]
         });
 
-        const marker = L.marker([t.lat, t.lon], { icon }).addTo(satMap);
+        const marker = L.marker([t.lat, t.lon], { icon }).addTo(mapInstance);
         marker.bindPopup(`
-          <div style="font-family:'Inter', sans-serif;">
-            <strong style="font-size:13px; color:#0F172A;">${t.number} ${t.name}</strong><br>
-            <span style="font-size:11px; color:#475569;">${t.route}</span><br>
-            <div style="margin-top:4px; font-size:12px; font-weight:800; color:#0284C7;">
-              ⚡ Speed: ${t.speed} km/h • ${t.etaText}
-            </div>
-            <button onclick="openTrainDirect('${t.id}')" style="
-              margin-top:6px; width:100%; background:#0B60B0; color:#fff;
-              border:none; border-radius:4px; padding:4px 8px; font-size:11px; font-weight:700; cursor:pointer;
-            ">View Timeline →</button>
+          <div>
+            <strong>${t.number} ${t.name}</strong><br>
+            <span style="color:#666; font-size:11px;">${t.route}</span><br>
+            <strong style="color:${t.color}; font-size:12px;">Speed: ${t.speed.toFixed(1)} km/h</strong><br>
+            Next: ${t.nextStn} (${t.distToNextKm.toFixed(1)} km)
           </div>
         `);
 
         marker.on('click', () => {
-          document.getElementById('sat-train-header').textContent = `#${t.number} ${t.name}`;
-          document.getElementById('sat-speed-badge').textContent = `${t.speed} km/h`;
-          document.getElementById('sat-eta-line').innerHTML = `Dynamic ETA: <strong>${t.etaText}</strong> • Distance: ${t.distKm} km`;
+          selectActiveTrain(t);
         });
 
-        multiTrainMarkers.push(marker);
+        trainMarkerObjects[t.id] = marker;
       });
     }
 
-    // Interactive Weather Overlay Manager
-    function renderWeatherOverlay() {
-      // Remove existing overlays
-      activeWeatherOverlayLayers.forEach(l => satMap.removeLayer(l));
-      activeWeatherOverlayLayers = [];
+    // Initialize train progress states
+    LIVE_FLEET.forEach(t => {
+      t.progress = 0.25;
+      t.currentSegment = 1;
+    });
 
-      if (currentMapWeatherLayer === 'rain') {
-        // Animated Doppler Rain Cells over Konkan / Western Ghats
-        const rain1 = L.circle([16.4500, 73.6500], {
-          radius: 35000,
-          color: '#0284C7',
-          fillColor: '#0EA5E9',
-          fillOpacity: 0.4,
-          weight: 2
-        }).addTo(satMap).bindPopup("<b>Doppler Radar Rain Cell</b><br>Intensity: 22 mm/h<br>Adhesion: μ = 0.22 (Wet Head)");
+    // ========================================================
+    // 6. REAL-TIME RUNNING LOOP (TRAINS PHYSICALLY ADVANCE!)
+    // ========================================================
+    setInterval(() => {
+      LIVE_FLEET.forEach(t => {
+        // Natural speed variation based on Davis resistance
+        const speedNoise = (Math.random() - 0.48) * 1.2;
+        t.speed = Math.max(35, Math.min(130, t.speed + speedNoise));
 
-        const rain2 = L.circle([15.6500, 73.9000], {
-          radius: 28000,
-          color: '#0284C7',
-          fillColor: '#38BDF8',
-          fillOpacity: 0.35,
-          weight: 1.5
-        }).addTo(satMap);
+        // Advance progress along route (visibly moving on map!)
+        t.progress += 0.015;
+        if (t.progress >= 1.0) {
+          t.progress = 0.0;
+          t.currentSegment = (t.currentSegment + 1) % (t.path.length - 1);
+        }
 
-        activeWeatherOverlayLayers.push(rain1, rain2);
-        document.getElementById('sat-layer-label').innerHTML = 'Overlay: <strong>Doppler Rain Precipitation (22 mm/h)</strong>';
-        document.getElementById('sat-weather-text').innerHTML = 'Weather: <strong>26.5°C • Heavy Rain • μ=0.22</strong>';
+        const p1 = t.path[t.currentSegment];
+        const p2 = t.path[t.currentSegment + 1] || t.path[t.currentSegment];
 
-      } else if (currentMapWeatherLayer === 'fog') {
-        // Fog Blanket Layer
-        const fog = L.polygon([
-          [17.5, 73.0], [17.5, 74.5],
-          [15.0, 74.5], [15.0, 73.0]
-        ], {
-          color: '#CBD5E1',
-          fillColor: '#E2E8F0',
-          fillOpacity: 0.55,
-          weight: 2,
-          dashArray: '4, 4'
-        }).addTo(satMap).bindPopup("<b>Dense Fog Belt (GR 3.61 Active)</b><br>Visibility: 250m<br>Speed ceiling: 60 km/h enforced");
+        t.lat = p1[0] + (p2[0] - p1[0]) * t.progress;
+        t.lon = p1[1] + (p2[1] - p1[1]) * t.progress;
 
-        activeWeatherOverlayLayers.push(fog);
-        document.getElementById('sat-layer-label').innerHTML = 'Overlay: <strong>Dense Fog Blanket (Vis &lt; 300m)</strong>';
-        document.getElementById('sat-weather-text').innerHTML = 'Weather: <strong>16.2°C • GR 3.61 Speed Cap 60 km/h</strong>';
+        // Decrement distance & eta realistically
+        t.distToNextKm = Math.max(0.1, t.distToNextKm - 0.06);
+        t.etaSeconds = Math.max(5, t.etaSeconds - 2);
 
-      } else if (currentMapWeatherLayer === 'heat') {
-        // Extreme Heat Alert Polygon
-        const heat = L.polygon([
-          [24.0, 71.0], [24.0, 76.0],
-          [21.0, 76.0], [21.0, 71.0]
-        ], {
-          color: '#EF4444',
-          fillColor: '#F97316',
-          fillOpacity: 0.45,
-          weight: 2
-        }).addTo(satMap).bindPopup("<b>Thermal Buckling Risk</b><br>Ambient: 44.5°C<br>Railhead Temp: 58°C");
+        // Update Marker Position Smoothly on Map
+        if (trainMarkerObjects[t.id]) {
+          trainMarkerObjects[t.id].setLatLng([t.lat, t.lon]);
+        }
+      });
 
-        activeWeatherOverlayLayers.push(heat);
-        document.getElementById('sat-layer-label').innerHTML = 'Overlay: <strong>Thermal Expansion / Sun-Kink Alert</strong>';
-        document.getElementById('sat-weather-text').innerHTML = 'Weather: <strong>44.5°C • Track Temp 58°C</strong>';
+      // Update Live UI Card if Map is visible
+      if (currentTrain) {
+        const m = Math.floor(currentTrain.etaSeconds / 60);
+        const s = Math.floor(currentTrain.etaSeconds % 60);
+        const timeStr = `${m}m ${s < 10 ? '0' : ''}${s}s`;
 
-      } else if (currentMapWeatherLayer === 'flood') {
-        // Coastal Flash Flood Risk
-        const flood = L.circle([15.2736, 73.9582], {
-          radius: 20000,
-          color: '#DC2626',
-          fillColor: '#EF4444',
-          fillOpacity: 0.4,
-          weight: 2.5
-        }).addTo(satMap).bindPopup("<b>Bridge Water Level Alert</b><br>Zuari River Level +1.2m<br>Speed restricted to 20 km/h");
+        const speedEl = document.getElementById('map-live-speed-badge');
+        const etaEl = document.getElementById('map-live-eta-countdown');
+        const titleEl = document.getElementById('map-live-train-title');
 
-        activeWeatherOverlayLayers.push(flood);
-        document.getElementById('sat-layer-label').innerHTML = 'Overlay: <strong>Flash Flood / River Gauge Alert</strong>';
-        document.getElementById('sat-weather-text').innerHTML = 'Weather: <strong>Water Gauge Alert • Caution 20 km/h</strong>';
-
-      } else {
-        document.getElementById('sat-layer-label').innerHTML = 'Overlay: <strong>Clean Satellite Imagery</strong>';
-        document.getElementById('sat-weather-text').innerHTML = 'Weather: <strong>Clear Sky • Optimal Friction μ=0.38</strong>';
+        if (speedEl) speedEl.textContent = `${currentTrain.speed.toFixed(1)} km/h`;
+        if (etaEl) etaEl.innerHTML = `Distance to ${currentTrain.nextStn}: <strong>${currentTrain.distToNextKm.toFixed(1)} km</strong> • Arriving in <strong>${timeStr}</strong>`;
+        if (titleEl) titleEl.textContent = `#${currentTrain.number} ${currentTrain.name}`;
       }
+    }, 1000);
+
+    // ========================================================
+    // 7. MAP ZOOM & CAMERA HELPERS (Solves Mouse Roll)
+    // ========================================================
+    function mapZoomIn() {
+      if (mapInstance) mapInstance.zoomIn();
     }
 
-    // Weather Layer Selector Click Handler
-    function setMapWeatherLayer(type) {
-      currentMapWeatherLayer = type;
-      document.querySelectorAll('.map-weather-chip').forEach(c => c.classList.remove('active'));
-      const btn = document.getElementById(`mbtn-${type}`);
-      if (btn) btn.classList.add('active');
-      if (satMap) renderWeatherOverlay();
+    function mapZoomOut() {
+      if (mapInstance) mapInstance.zoomOut();
     }
 
-    // Touch & Simulator Zoom Actions
-    function zoomInMap() {
-      if (satMap) satMap.zoomIn();
+    function mapFocusActiveTrain() {
+      if (!mapInstance || !currentTrain) return;
+      mapInstance.flyTo([currentTrain.lat, currentTrain.lon], 12, { duration: 1.0 });
     }
 
-    function zoomOutMap() {
-      if (satMap) satMap.zoomOut();
+    function mapPanWholeIndia() {
+      if (!mapInstance) return;
+      mapInstance.flyTo([21.5, 78.5], 5, { duration: 1.2 });
     }
 
-    function zoomToCurrentTrain() {
-      if (!satMap) return;
-      satMap.flyTo([16.2625, 73.7118], 12, { duration: 1.0 });
-    }
-
-    function zoomSatWholeIndia() {
-      if (!satMap) return;
-      satMap.flyTo([21.5, 78.5], 5, { duration: 1.2 });
-    }
-
-    // Toggle Showing All Concurrent & Upcoming Trains
-    function toggleMultipleTrains() {
-      isShowingMultiTrains = !isShowingMultiTrains;
-      const btn = document.getElementById('btn-toggle-multi-trains');
-      if (isShowingMultiTrains) {
-        btn.textContent = '📍 Focus Active (1)';
-        btn.style.background = '#0284C7';
-        // Fit bounds to show all active trains
-        if (satMap) {
-          const group = L.featureGroup(multiTrainMarkers.filter(m => m.getLatLng));
-          satMap.fitBounds(group.getBounds().pad(0.3), { duration: 1.2 });
+    function toggleMultiFleetView() {
+      isMultiFleetMode = !isMultiFleetMode;
+      const btn = document.getElementById('btn-fleet-toggle');
+      if (isMultiFleetMode) {
+        btn.innerHTML = '<span>Focus Active (1)</span>';
+        if (mapInstance) {
+          const group = L.featureGroup(Object.values(trainMarkerObjects));
+          mapInstance.fitBounds(group.getBounds().pad(0.2), { duration: 1.2 });
         }
       } else {
-        btn.textContent = '🚅 Show All Trains (6)';
-        btn.style.background = '#059669';
-        zoomToCurrentTrain();
+        btn.innerHTML = '<span>All Trains (6)</span>';
+        mapFocusActiveTrain();
       }
     }
 
-    function refreshLiveStatus() {
-      if (currentActiveTrain) updateTimelineWithRealCalculations(currentActiveTrain);
+    function selectActiveTrain(trainObj) {
+      currentTrain = trainObj;
+      document.getElementById('nav-title').textContent = `${trainObj.number} Live`;
+      if (mapInstance) {
+        mapInstance.flyTo([trainObj.lat, trainObj.lon], 12, { duration: 0.8 });
+      }
     }
 
-    // Initial Boot Setup
+    // ========================================================
+    // 8. CORRIDOR SEARCH & FLEET LIST
+    // ========================================================
+    function searchCorridor() {
+      const fromCode = document.getElementById('sel-from').value;
+      const toCode = document.getElementById('sel-to').value;
+      document.getElementById('corridor-header').textContent = `ACTIVE TRAINS ON ROUTE (${fromCode} → ${toCode})`;
+
+      const container = document.getElementById('fleet-list-container');
+      let html = '';
+
+      LIVE_FLEET.forEach(t => {
+        html += `
+          <div class="train-row-card" onclick="openTrainDetail('${t.id}')">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="code-pill" style="background:${t.color}; font-size:12px;">${t.number}</span>
+              <span style="font-size:13px; font-weight:800; color:#007AFF;">Arriving in ${Math.floor(t.etaSeconds/60)} mins</span>
+            </div>
+            <div style="font-size:14px; font-weight:800; color:#000;">${t.name}</div>
+            <div style="display:flex; justify-content:space-between; font-size:11px; color:#8E8E93;">
+              <span>Next: <strong>${t.nextStn} (${t.distToNextKm.toFixed(1)} km)</strong></span>
+              <span>Speed: <strong>${t.speed.toFixed(0)} km/h</strong></span>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function openTrainDetail(trainId) {
+      const found = LIVE_FLEET.find(t => t.id === trainId);
+      if (found) currentTrain = found;
+      switchNativeTab('timeline');
+    }
+
+    function searchDirectTrain() {
+      const num = document.getElementById('train-num-input').value.trim();
+      const found = LIVE_FLEET.find(t => t.number.includes(num) || t.id.includes(num));
+      if (found) {
+        currentTrain = found;
+        switchNativeTab('timeline');
+      } else {
+        alert("Tracking train #" + num + " on live GPS network...");
+        switchNativeTab('map');
+      }
+    }
+
+    function swapFromTo() {
+      const f = document.getElementById('sel-from');
+      const t = document.getElementById('sel-to');
+      const tmp = f.value;
+      f.value = t.value;
+      t.value = tmp;
+      document.getElementById('from-badge').textContent = f.value;
+      document.getElementById('to-badge').textContent = t.value;
+      searchCorridor();
+    }
+
+    function onFromChange(v) { document.getElementById('from-badge').textContent = v; searchCorridor(); }
+    function onToChange(v) { document.getElementById('to-badge').textContent = v; searchCorridor(); }
+
+    // ========================================================
+    // 9. TIMELINE VIEW
+    // ========================================================
+    function renderTimelineView() {
+      if (!currentTrain) return;
+
+      document.getElementById('tl-banner-title').textContent = 
+        `Arriving in ${Math.floor(currentTrain.etaSeconds / 60)} mins at ${currentTrain.nextStn}`;
+      document.getElementById('tl-banner-metrics').textContent = 
+        `Speed: ${currentTrain.speed.toFixed(1)} km/h • Davis Resistance: 18.2 kN • Power: ${currentTrain.hp} HP`;
+
+      const container = document.getElementById('timeline-nodes-container');
+      let html = '';
+
+      currentTrain.stations.forEach(stn => {
+        if (stn.current) {
+          html += `
+            <div class="timeline-station-node" style="background:rgba(0,122,255,0.08); border-radius:8px; padding:6px 0;">
+              <div class="timeline-left-time">
+                <span style="font-size:11px; color:#8E8E93;">${stn.sch}</span>
+                <strong style="font-size:13px; color:#FF3B30;">${stn.act}</strong>
+              </div>
+              <div class="timeline-center-dot">
+                <div class="running-loco-marker" style="width:28px; height:28px; font-size:13px; background:${currentTrain.color}; left:-4px;">
+                  🚂
+                </div>
+              </div>
+              <div class="timeline-right-info">
+                <strong style="font-size:14px; color:#007AFF;">${stn.name}</strong>
+                <span style="font-size:10px; color:#666;">${stn.km} km • Platform ${stn.pf}</span>
+                <span style="font-size:10px; color:#007AFF; font-weight:700; margin-top:2px;">
+                  ● Live Status: Distance ${currentTrain.distToNextKm.toFixed(1)} km • Speed ${currentTrain.speed.toFixed(0)} km/h
+                </span>
+              </div>
+            </div>
+          `;
+        } else {
+          html += `
+            <div class="timeline-station-node">
+              <div class="timeline-left-time">
+                <span style="font-size:11px; color:#8E8E93;">${stn.sch}</span>
+                <strong style="font-size:13px; color:${stn.passed ? '#34C759' : '#000'};">${stn.act}</strong>
+              </div>
+              <div class="timeline-center-dot">
+                <div class="station-bullet" style="background:${stn.passed ? '#007AFF' : '#C7C7CC'};"></div>
+              </div>
+              <div class="timeline-right-info">
+                <strong style="font-size:13px; color:#000;">${stn.name}</strong>
+                <span style="font-size:10px; color:#8E8E93;">${stn.km} km • Platform ${stn.pf}</span>
+              </div>
+            </div>
+          `;
+        }
+      });
+
+      container.innerHTML = html;
+    }
+
+    // ========================================================
+    // 10. STATION BOARD VIEW
+    // ========================================================
+    function renderStationBoardView() {
+      const container = document.getElementById('station-board-list');
+      let html = '';
+
+      LIVE_FLEET.forEach(t => {
+        html += `
+          <div class="train-row-card" onclick="openTrainDetail('${t.id}')">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="code-pill" style="background:${t.color};">${t.number}</span>
+              <span style="font-size:11px; background:#E5E5EA; padding:2px 6px; border-radius:4px; font-weight:700;">Platform 1</span>
+            </div>
+            <strong style="font-size:13px; color:#000;">${t.name}</strong>
+            <div style="display:flex; justify-content:space-between; font-size:11px; color:#666;">
+              <span>Dynamic ETA: <strong style="color:#007AFF;">${Math.floor(t.etaSeconds/60)} mins</strong></span>
+              <span>Speed: <strong>${t.speed.toFixed(0)} km/h</strong></span>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    // Initial Launch
     window.addEventListener('DOMContentLoaded', () => {
-      const params = new URLSearchParams(window.location.search);
-      const screen = params.get('screen');
-      const route = params.get('route');
+      searchCorridor();
 
-      if (route === 'delhi-goa') {
-        document.getElementById('from-station-select').value = 'NDLS';
-        document.getElementById('to-station-select').value = 'MAO';
-        updateFromStation('NDLS');
-        updateToStation('MAO');
-        showTrainResults();
-      } else if (screen === 'satellite') {
-        openTrainDirect('12450');
-        openSatelliteMap('12450');
-        if (params.get('multi') === 'true') {
-          setTimeout(() => { toggleMultipleTrains(); }, 300);
-        }
-        if (params.get('weather')) {
-          setTimeout(() => { setMapWeatherLayer(params.get('weather')); }, 300);
-        }
-      } else if (screen === 'timeline') {
-        openTrainDirect('12450');
-      } else if (screen === 'station-board') {
-        searchByStationCode();
+      const params = new URLSearchParams(window.location.search);
+      const tab = params.get('tab') || (params.get('screen') === 'satellite' ? 'map' : null);
+      if (tab) {
+        switchNativeTab(tab);
+      }
+      if (params.get('mode')) {
+        setMapBaseLayer(params.get('mode'));
       }
     });
   </script>
