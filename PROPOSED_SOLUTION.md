@@ -40,31 +40,31 @@
 
 </div>
 
-#### 1. Telemetry & Route Input
+#### 1. Live Train & Signal Tracking (Telemetry & Route Input)
 * **Railway Operations (Technical):** Ingests high-frequency real-time data feeds: 30-second ISRO NavIC satellite GPS pings from BEL RTIS locomotive transceivers, station electronic interlocking relay logs (S&T data loggers), and freight train positions from CRIS FOIS.
 * **Plain English (What You See):** The system connects directly to satellite receivers on top of the train engine, checking where the train physically is, which track signals are active, and what freight trains are sharing the corridor ahead.
 
-#### 2. Track Map-Matching & Jitter Filter
+#### 2. Pinpoint Track Alignment (Map-Matching & Jitter Filter)
 * **Railway Operations (Technical):** Raw 2D GPS coordinates are projected onto a 1D linear railway track coordinate chainage ($KM_t$) using an Extended Kalman Filter, eliminating GPS multipath drift, tunnel signal loss, and phantom jumps.
 * **Plain English (What You See):** Eliminates erratic GPS errors so your train never appears to drift onto parallel highways or teleport 15 kilometers forward and backward on your mobile screen.
 
-#### 3. Dynamic e-Caution & TSR Parser
+#### 3. Track Repair & Slowdown Zones (Dynamic e-Caution & TSR)
 * **Railway Operations (Technical):** The engine parses divisional civil engineering T/409 electronic caution orders, dynamically calculating kinematic deceleration, 20–30 km/h slow zones, and full rake-length (576m) acceleration recovery penalties.
 * **Plain English (What You See):** Detects active track maintenance and slow zones ahead, calculating the exact minutes lost instead of pretending the train can rush through repair sections at top speed.
 
-#### 4. Weather & Fog Safety Governor
+#### 4. Fog & Weather Safety Limits (Statutory Speed Governor)
 * **Railway Operations (Technical):** Live satellite weather grids and IMD radar feeds automatically enforce statutory railway safety limits—specifically capping running speed at 60 km/h under Indian Railways General Rule 3.61 during dense winter fog conditions and adjusting for wet rail adhesion.
 * **Plain English (What You See):** When thick winter fog or heavy monsoon rain strikes, the system automatically respects official railway safety speed limits so your arrival estimate stays realistic instead of giving false hope.
 
-#### 5. Preceding Headway & Kinematics
+#### 5. Preceding Trains & Engine Power (Headway & Kinematics)
 * **Railway Operations (Technical):** Instead of assuming an empty track or static timetable, the engine simulates 4-aspect signal progression and trailing friction behind slower preceding freight trains, factoring in locomotive tractive horsepower (WAP-7 vs WAG-9) and 24-coach rake tonnage.
 * **Plain English (What You See):** Understands when a heavy, slow goods train is crawling in front of your express, adjusting your arrival time before your train actually hits the red signal.
 
-#### 6. Platform Clearance & Outer Queue
+#### 6. Station Platform Availability (Platform Clearance & Outer Queue)
 * **Railway Operations (Technical):** The terminal yard state machine tracks actual platform vacancy and preceding train turnaround times at destination stations, accurately calculating outer home signal stabling delays and ending the "outer signal trap".
 * **Plain English (What You See):** Ends the dreaded surprise where the train stops 2 km outside the station; tells you upfront if your platform is still occupied and counts down the true wait time before you reach the station.
 
-#### 7. Display & Dynamic ETA Output
+#### 7. Honest Arrival Time & Delay Reason (Dynamic ETA Output)
 * **Railway Operations (Technical):** The dissemination engine delivers calibrated probabilistic arrival windows [P10–P90] (e.g. `20:19 [20:18 – 20:21, 90% Confidence]`) alongside plain-text root-cause delay explanations directly to passenger mobile apps, station CIDS displays, and section controllers.
 * **Plain English (What You See):** You get an honest arrival time on your phone or station platform board, plus an easy-to-read explanation (such as *"Waiting for Platform 1 to clear"* or *"Held for Vande Bharat overtake"*) so you are never left guessing in the dark.
 

@@ -14,7 +14,7 @@
       padding: 0;
     }
     body {
-      width: 520px;
+      width: 530px;
       padding: 24px 20px 28px 20px;
       background-color: #FFFFFF;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -48,7 +48,7 @@
     /* Step Card Base */
     .step-card {
       width: 100%;
-      border-radius: 5px;
+      border-radius: 6px;
       padding: 10px 16px;
       text-align: center;
       display: flex;
@@ -58,15 +58,19 @@
     }
 
     .step-title {
-      font-size: 15px;
+      font-size: 15.5px;
       font-weight: 800;
       letter-spacing: -0.2px;
     }
 
     .step-sub {
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 500;
       line-height: 1.35;
+    }
+
+    .step-sub strong {
+      font-weight: 700;
     }
 
     /* Downward Flow Arrow */
@@ -88,23 +92,26 @@
       border: 1.5px solid #FDBA74;
     }
     .box-peach .step-title { color: #000000; }
-    .box-peach .step-sub { color: #C2410C; font-weight: 600; }
+    .box-peach .step-sub { color: #9A3412; }
+    .box-peach .step-sub strong { color: #C2410C; }
 
-    /* 2. Soft Mint (Map Matching) */
+    /* 2. Soft Mint (Track Alignment) */
     .box-mint {
       background-color: #E2F0D9;
       border: 1.5px solid #86EFAC;
     }
     .box-mint .step-title { color: #000000; }
-    .box-mint .step-sub { color: #15803D; font-weight: 600; }
+    .box-mint .step-sub { color: #166534; }
+    .box-mint .step-sub strong { color: #15803D; }
 
-    /* 3. Soft Sage (e-Caution) */
+    /* 3. Soft Sage (Slow Zones) */
     .box-sage {
       background-color: #E6F4EA;
       border: 1.5px solid #A7F3D0;
     }
     .box-sage .step-title { color: #000000; }
-    .box-sage .step-sub { color: #047857; font-weight: 600; }
+    .box-sage .step-sub { color: #065F46; }
+    .box-sage .step-sub strong { color: #047857; }
 
     /* 4. Sky Blue (Weather) */
     .box-blue {
@@ -112,7 +119,8 @@
       border: 1.5px solid #7DD3FC;
     }
     .box-blue .step-title { color: #000000; }
-    .box-blue .step-sub { color: #0369A1; font-weight: 600; }
+    .box-blue .step-sub { color: #075985; }
+    .box-blue .step-sub strong { color: #0284C7; }
 
     /* 5. Soft Lavender (Headway & Kinematics) */
     .box-lavender {
@@ -120,7 +128,8 @@
       border: 1.5px solid #C4B5FD;
     }
     .box-lavender .step-title { color: #000000; }
-    .box-lavender .step-sub { color: #6D28D9; font-weight: 600; }
+    .box-lavender .step-sub { color: #5B21B6; }
+    .box-lavender .step-sub strong { color: #6D28D9; }
 
     /* 6. Warm Amber (Terminal Platform) */
     .box-amber {
@@ -128,7 +137,8 @@
       border: 1.5px solid #FCD34D;
     }
     .box-amber .step-title { color: #000000; }
-    .box-amber .step-sub { color: #B45309; font-weight: 600; }
+    .box-amber .step-sub { color: #92400E; }
+    .box-amber .step-sub strong { color: #B45309; }
 
     /* 7. Clean White Box (Output) */
     .box-white {
@@ -137,7 +147,8 @@
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     }
     .box-white .step-title { color: #000000; font-size: 15.5px; }
-    .box-white .step-sub { color: #334155; font-weight: 600; }
+    .box-white .step-sub { color: #334155; }
+    .box-white .step-sub strong { color: #0F172A; }
   </style>
 </head>
 <body>
@@ -150,8 +161,8 @@
 
     <!-- Step 1 -->
     <div class="step-card box-peach">
-      <div class="step-title">Telemetry &amp; Route Input</div>
-      <div class="step-sub">30s ISRO NavIC GPS pings, station S&amp;T relays &amp; FOIS freight positions</div>
+      <div class="step-title">1. Live Train &amp; Signal Tracking</div>
+      <div class="step-sub">Pulls <strong>30s ISRO NavIC satellite GPS</strong>, track signals &amp; freight feeds</div>
     </div>
 
     <!-- Arrow -->
@@ -161,8 +172,8 @@
 
     <!-- Step 2 -->
     <div class="step-card box-mint">
-      <div class="step-title">Track Map-Matching &amp; Jitter Filter</div>
-      <div class="step-sub">Snaps 2D coordinates to 1D rail chainage, removing GPS drift &amp; phantom jumps</div>
+      <div class="step-title">2. Pinpoint Track Alignment</div>
+      <div class="step-sub">Snaps GPS to <strong>exact 1D railway track chainage</strong> to stop jumping &amp; drift</div>
     </div>
 
     <!-- Arrow -->
@@ -172,8 +183,8 @@
 
     <!-- Step 3 -->
     <div class="step-card box-sage">
-      <div class="step-title">Dynamic e-Caution &amp; TSR Parser</div>
-      <div class="step-sub">Reads civil T/409 speed cautions (20-30 km/h) &amp; calculates rake deceleration</div>
+      <div class="step-title">3. Track Repair &amp; Slowdown Zones</div>
+      <div class="step-sub">Reads <strong>civil caution orders (T/409 TSR)</strong> &amp; calculates exact deceleration delay</div>
     </div>
 
     <!-- Arrow -->
@@ -183,8 +194,8 @@
 
     <!-- Step 4 -->
     <div class="step-card box-blue">
-      <div class="step-title">Weather &amp; Fog Safety Governor</div>
-      <div class="step-sub">Enforces statutory GR 3.61 60 km/h fog speed ceiling &amp; wet rail adhesion</div>
+      <div class="step-title">4. Fog &amp; Weather Safety Limits</div>
+      <div class="step-sub">Enforces <strong>mandatory 60 km/h fog speed limit (GR 3.61)</strong> &amp; wet rail grip</div>
     </div>
 
     <!-- Arrow -->
@@ -194,8 +205,8 @@
 
     <!-- Step 5 -->
     <div class="step-card box-lavender">
-      <div class="step-title">Preceding Headway &amp; Kinematics</div>
-      <div class="step-sub">Models preceding freight train friction, locomotive HP &amp; 24-coach rake weight</div>
+      <div class="step-title">5. Preceding Trains &amp; Engine Power</div>
+      <div class="step-sub">Accounts for <strong>slower freight trains ahead</strong>, engine horsepower &amp; coach weight</div>
     </div>
 
     <!-- Arrow -->
@@ -205,8 +216,8 @@
 
     <!-- Step 6 -->
     <div class="step-card box-amber">
-      <div class="step-title">Platform Clearance &amp; Outer Queue</div>
-      <div class="step-sub">Tracks platform vacancy at junction terminal, calculating exact outer signal hold</div>
+      <div class="step-title">6. Station Platform Availability</div>
+      <div class="step-sub">Checks <strong>if platform is free</strong> to calculate exact outer signal hold countdown</div>
     </div>
 
     <!-- Arrow -->
@@ -216,8 +227,8 @@
 
     <!-- Step 7 -->
     <div class="step-card box-white">
-      <div class="step-title">Display &amp; Dynamic ETA Output</div>
-      <div class="step-sub">Delivers calibrated arrival window [P10-P90] &amp; plain-text delay reason</div>
+      <div class="step-title">7. Honest Arrival Time &amp; Delay Reason</div>
+      <div class="step-sub">Delivers <strong>calibrated arrival window (P10-P90)</strong> &amp; plain-English delay cause</div>
     </div>
 
   </div>
