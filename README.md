@@ -639,7 +639,106 @@ GATI-SETU provides dedicated operational interfaces tailored for each key stakeh
 
 ---
 
-### 6.2 Detailed Breakdown of the 5 Interactive Surfaces
+### 6.2 In-Depth Operational Walkthrough by User Role
+
+#### User 1: Train Passenger & Everyday Commuter
+* **Where He Accesses It:** Native Mobile App or Responsive Web Tracker at `/?tab=passenger`.
+* **Which Controls He Sees:**
+  * Search bar for train number (e.g. `12302 Howrah Rajdhani`) or train name.
+  * Boarding station and destination station selection dropdowns.
+  * Live dynamic map toggle showing train coordinate track-matching.
+  * "Live Weather & Fog Radar" toggle.
+  * Action button: **[Set Arrival Notification]** (calibrated audio alarm 15 mins prior).
+  * Action button: **[Share Live Status]** (generates real-time tracking link for family).
+  * Action button: **[Book Synchronized Cab]** (links directly to ride-hailing app timed to platform touchdown).
+* **What He Will Do:**
+  1. Opens the app to check when to leave home or meet arriving family members.
+  2. Instead of seeing a fake single minute ("Arriving in 5 mins") while sitting 2 km outside Kanpur, he sees:  
+     `20:19 [20:17 – 20:22, 90% Confidence Window]`  
+     `[HOLD] Stabled at Kanpur Outer: Platform 1 occupied by incoming rake #12452. True expected entry: 20:15.`
+  3. Stays comfortably seated rather than rushing into the crowded carriage corridor with heavy luggage during an outer signal hold.
+
+---
+
+#### User 2: Station Master & Ground Maintenance Crews (OBHS & Watering)
+* **Where They Access It:** Station Concourse Coach Indication Display System (CIDS) & Terminal Master Console at `/?tab=station`.
+* **Which Controls They See:**
+  * Terminal Station Selector (e.g. New Delhi, Kanpur Central, Prayagraj Junction).
+  * Live inbound trains queue with high-precision **T - 45 minute countdowns** ($\pm 2$ minute accuracy).
+  * Platform Reception Lines status (PF 1, 2, 3, etc.) with occupancy flags.
+  * Outer Home Signal Holding Queue Indicator.
+  * Emergency Platform Re-allocation broadcast toggle.
+* **What They Will Do:**
+  1. **Station Master:** Sees that incoming Train A is heading for Platform 2, but Platform 2's outgoing train is delayed. 45 minutes before arrival, he safely re-routes Train A to Platform 4 and triggers automated CIDS and PA announcements, completely preventing last-minute passenger stampedes across Foot Overbridges (FOBs).
+  2. **OBHS Housekeeping Squads:** Receive a reliable countdown 45 minutes ahead. Cleaning staff are lined up on the platform with supplies *before* the train halts, completing deep carriage cleaning within the scheduled 10-minute stoppage.
+  3. **Watering Hydrant Operators:** Pre-position water hoses at coach inlet positions, eliminating the 35-minute watering detentions that frequently delay long-distance trains.
+  4. **Porters (Coolies):** Position luggage trolleys directly at the designated coach halting marks indicated on the synchronized platform display.
+
+---
+
+#### User 3: Section Traffic Controller (Divisional Dispatcher)
+* **Where He Accesses It:** Section Controller AI Dispatch Cockpit at `/?tab=controller`.
+* **Which Controls He Sees:**
+  * Active Railway Division selector (e.g. NCR Prayagraj Division, DDU Division).
+  * Interactive Dynamic Track Schematic Diagram displaying continuous block sections, signal aspects (Red, Yellow, Double Yellow, Green), mainline tracks, and loop siding lines.
+  * **AI Overtake & Precedence Advisory Card:**  
+    `"Advisory: Divert Coal Freight BOXN-8422 into Loop Line 2 at Etawah Junction. This allows 12302 Howrah Rajdhani to overtake, recovering 19 minutes of passenger delay."`
+  * Action button: **[Approve Overtake]** (automatically updates signal route locking).
+  * Action button: **[Manual Override / Reject]** (allows controller to prioritize specific emergency moves).
+  * **Loco Crew 10-Hour HOER Duty-Hour Watchdog Alert:**  
+    `"Warning: Crew on Train #12876 has operated for 8.5 hours. Projected arrival at scheduled crew change terminal is 10.4 hours (statutory violation). Recommended action: Position relief crew at intermediate junction."`
+  * Action button: **[Order Relief Crew at Next Junction]**.
+* **What He Will Do:**
+  1. Eliminates mental guesswork during high-pressure dispatch shifts.
+  2. Reviews the AI-simulated delay propagation and approves the optimal loop-line overtake with a single click.
+  3. Prevents catastrophic mainline train stalls by ordering relief loco pilots 90 minutes before a crew hits their legal 10-hour duty limit.
+
+---
+
+#### User 4: Locomotive Pilot (Driver) & Assistant Loco Pilot (ALP)
+* **Where They Access It:** In-Cab Locomotive Device Unit (LDU) & Fog Safe Device (FSD) display console.
+* **Which Controls They See:**
+  * Digital Speedometer and Rail Chainage kilometer marker ($KM_t$).
+  * Dynamic Caution Order (TSR) Alert with audio beep (e.g. *"Caution: 30 km/h speed restriction in 1,200 meters at KM 412.3"*).
+  * Statutory Fog Speed Governor Indicator (prompts *"General Rule 3.61 Fog Safe Speed Active: Max 60 km/h"* with audio distance beeps to upcoming signals).
+  * Remaining Continuous Driving Duty Time countdown clock.
+  * Emergency Track Obstruction Broadcast Button.
+* **What They Will Do:**
+  1. Decelerates gradually and smoothly for upcoming civil maintenance work zones without harsh emergency braking.
+  2. Operates with complete situational awareness at 60 km/h during dense winter fog when trackside signals are visually obscured beyond 50 meters.
+  3. Prevents wheel slip on slippery, dew-covered morning rails by matching throttle power to calculated tractive adhesion limits.
+
+---
+
+#### User 5: Railway Administrator, DRM & CRIS Audit Inspector
+* **Where They Access It:** Government Audit & Technical Dossier at `/?tab=dossier` and Pan-India GIS Radar at `/?tab=map`.
+* **Which Controls They See:**
+  * Comparative Division-Wide Accuracy Benchmark (MAE comparison: Legacy NTES 42.6 min vs GATI-SETU 6.2 min).
+  * Real-Time Nationwide GIS Map tracking 10,000+ passenger and freight trains simultaneously.
+  * S&T Relay Data Logger Replay Tool (replays exact relay pickup/drop timestamps for accident/delay inquiries).
+  * CAG Audit Punctuality Compliance Report Generator.
+  * Traction Energy & Diesel Savings Estimator (kWh and liters saved from avoided outer signal stop-and-go idling).
+* **What They Will Do:**
+  1. Evaluates authentic divisional punctuality using untamperable digital twin logs, eliminating manual delay suppression in ICMS/COA.
+  2. Identifies chronic physical line bottlenecks (e.g. insufficient loop line clear standing room or terminal yard throat conflicts) to justify capital budget allocations.
+  3. Audits winter fog operations and ensures statutory safety rules are followed across all 17 railway zones.
+
+---
+
+#### User 6: Third-Party City Mobility & Parcel Logistics (Ola, Uber, Metro Rail)
+* **Where They Access It:** High-Throughput Developer REST & WebSocket API Gateway at `/api/v1/eta` and `/api/v1/stream`.
+* **Which Controls They See:**
+  * Train Webhook Subscription Dashboard.
+  * Calibrated [P10–P90] Confidence Interval Ingestion Endpoints.
+  * Station Pickup Bay Dispatch Webhook Triggers.
+* **What They Will Do:**
+  1. **Ride-Hailing Aggregators (Ola/Uber):** Dispatch driver cabs to the station pickup bay at the exact minute passengers walk off the platform, cutting passenger wait times and driver cancellation rates.
+  2. **Municipal Metros & Bus Transport (DMRC/UPMRC/SRTC):** Dynamically adjust night bus and metro headway frequencies when high-capacity trains (1,200+ passengers) dock late.
+  3. **Parcel Logistics (India Post & Express Freight):** Pre-stage delivery vans at station parcel depots for immediate unloading from passenger parcel vans (VPs).
+
+---
+
+### 6.3 The 5 Interactive Surfaces (Screenshots & Interfaces)
 
 #### Surface 1: Passenger Experience Hub
 * **Direct Access:** `/?tab=passenger`
