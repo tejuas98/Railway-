@@ -30,30 +30,36 @@
 
 ---
 
-### How It Works: Simple 5-Step Resolution for Every Passenger
+### How It Works: End-to-End Processing Pipeline
 
-> Below is the simple step-by-step workflow showing how a passenger's everyday delay uncertainty is completely resolved from search to arrival.
+> Below is the step-by-step system processing pipeline showing how raw railway telemetry and ground operational constraints are transformed into accurate, transparent arrival forecasts.
 
 <div align="center">
 
-![How It Works Flowchart](docs/screenshots/how_it_works_flowchart.png)
+![How It Works Pipeline](docs/screenshots/how_it_works_flowchart.png)
 
 </div>
 
-#### Step 1: User Input (Train or Station)
-The passenger opens the mobile app, web tracker, or views the station display and enters their train number (e.g. 12301) or selects their upcoming journey.
+#### 1. Telemetry & Route Input
+The system ingests high-frequency real-time data feeds: 30-second ISRO NavIC satellite GPS pings from BEL RTIS locomotive transceivers, station electronic interlocking relay logs (S&T data loggers), and freight train positions from CRIS FOIS.
 
-#### Step 2: Live Track & Signal Scan
-In the background, GATI-SETU performs an instant operational scan of the corridor: querying satellite GPS positions, checking if a heavy freight train is crawling in the block section ahead, and monitoring active track signals.
+#### 2. Track Map-Matching & Jitter Filter
+Raw 2D GPS coordinates are projected onto a 1D linear railway track coordinate chainage ($KM_t$) using an Extended Kalman Filter, eliminating GPS multipath drift, tunnel signal loss, and phantom jumps.
 
-#### Step 3: Ground Realities Check
-The system factors in real-world friction: active civil engineering speed limits (e.g. 30 km/h caution orders), weather visibility limits (e.g. winter fog safety rules), and checks whether the destination platform is currently occupied by another rake.
+#### 3. Dynamic e-Caution & TSR Parser
+The engine parses divisional civil engineering T/409 electronic caution orders, dynamically calculating the kinematic deceleration, 20–30 km/h slow zones, and full rake-length acceleration recovery penalties.
 
-#### Step 4: Dynamic ETA Calculation
-Instead of using static timetable subtraction, the engine calculates the realistic travel time, incorporating locomotive pulling power, train weight, and exact outer signal hold countdowns.
+#### 4. Weather & Fog Safety Governor
+Live satellite weather grids and IMD radar feeds automatically enforce statutory railway safety limits—specifically capping running speed at 60 km/h under Indian Railways General Rule 3.61 during dense winter fog conditions and adjusting for wet rail adhesion.
 
-#### Step 5: Transparent Output on App & Display
-The passenger sees an honest, reliable arrival time, a calm countdown for outer signal waiting, and a plain-English explanation for any delay (such as waiting for platform clearance or an overtake).
+#### 5. Preceding Headway & Kinematics
+Instead of assuming an empty track or static timetable, the engine simulates 4-aspect signal progression and trailing friction behind slower preceding freight trains, factoring in locomotive tractive horsepower (WAP-7 vs WAG-9) and 24-coach rake tonnage.
+
+#### 6. Platform Clearance & Outer Queue
+The terminal yard state machine tracks actual platform vacancy and preceding train turnaround times at destination stations, accurately calculating outer home signal stabling delays and ending the "outer signal trap".
+
+#### 7. Display & Dynamic ETA Output
+The dissemination engine delivers calibrated probabilistic arrival windows [P10–P90] (e.g. `20:19 [20:18 – 20:21, 90% Confidence]`) alongside plain-text root-cause delay explanations directly to passenger mobile apps, station CIDS displays, and section controllers.
 
 ---
 
