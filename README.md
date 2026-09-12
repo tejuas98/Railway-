@@ -445,6 +445,20 @@ Follows the exact layout of the official Smart India Hackathon presentation temp
 
 ## 5. Deep Engineering & Mathematical Architecture
 
+### 5.0 Technical Approach Master Presentation Slide (SIH Official Template)
+
+Follows the official Smart India Hackathon presentation template for **Slide 3: Technical Approach**. In a single high-impact screen, it details the **React Native cross-platform technology stack** (iOS & Android native builds), the **100% Zero-Hardware** deployment footprint, **Powered By** enterprise frameworks, and the **Unified Event Loop** connecting all 4 railway operational actors (Passenger, Loco Pilot / RTIS, Section Controller, Station Master) through the multi-stage system architecture:
+
+<div align="center">
+
+![GATI-SETU Technical Approach Slide](docs/screenshots/technical_approach_slide.png)
+
+</div>
+
+*Slide 3 Resources:* [View 1080p Technical Approach Slide (HTML)](file:///Users/toru/.gemini/antigravity-ide/scratch/Railway-repo/docs/technical_approach_slide.html) • [Technical Approach Specifications (Markdown)](file:///Users/toru/.gemini/antigravity-ide/scratch/Railway-repo/docs/TECHNICAL_APPROACH_SLIDE.md)
+
+---
+
 ### 5.1 Spatio-Temporal Multigraph Formulation: G = (V, E, W)
 
 GATI-SETU models the railway network as a dynamic directed multigraph $\mathcal{G} = (\mathcal{V}, \mathcal{E}, \mathcal{W}_t)$:
