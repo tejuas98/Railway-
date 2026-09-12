@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How Dynamic ETA Forecasting Works - GATI-SETU</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      width: 1600px;
+      height: 900px;
+      background: #0B0F19;
+      color: #F8FAFC;
+      font-family: 'Inter', sans-serif;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 24px 32px;
+      position: relative;
+    }
+
+    /* Subtle background engineering grid */
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Glow blobs */
+    .glow-red {
+      position: absolute;
+      top: 15%;
+      left: 8%;
+      width: 380px;
+      height: 380px;
+      background: radial-gradient(circle, rgba(239, 68, 68, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .glow-blue {
+      position: absolute;
+      top: 25%;
+      left: 45%;
+      width: 480px;
+      height: 480px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.14) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .glow-green {
+      position: absolute;
+      top: 15%;
+      right: 8%;
+      width: 380px;
+      height: 380px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Header */
+    header {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 14px;
+      margin-bottom: 18px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .ir-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #94A3B8;
+      text-transform: uppercase;
+    }
+
+    .title-group h1 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .title-group h1 span.highlight {
+      background: linear-gradient(135deg, #38BDF8 0%, #818CF8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .title-group p {
+      font-size: 12px;
+      color: #94A3B8;
+      margin-top: 2px;
+    }
+
+    .header-right {
+      display: flex;
+      gap: 12px;
+    }
+
+    .pill-metric {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #34D399;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .pill-zero-hw {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38BDF8;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    /* Main Container (3 Panels) */
+    .main-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1.35fr 1fr;
+      gap: 18px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    /* Card Panels */
+    .panel {
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(12px);
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      padding: 16px 18px;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .panel-legacy {
+      border-color: rgba(239, 68, 68, 0.3);
+      background: linear-gradient(180deg, rgba(239, 68, 68, 0.05) 0%, rgba(15, 23, 42, 0.7) 100%);
+    }
+
+    .panel-center {
+      border-color: rgba(99, 102, 241, 0.4);
+      background: linear-gradient(180deg, rgba(99, 102, 241, 0.08) 0%, rgba(15, 23, 42, 0.8) 100%);
+      box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.2);
+    }
+
+    .panel-solved {
+      border-color: rgba(16, 185, 129, 0.35);
+      background: linear-gradient(180deg, rgba(16, 185, 129, 0.06) 0%, rgba(15, 23, 42, 0.7) 100%);
+    }
+
+    /* Panel Header */
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .panel-badge {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .badge-legacy {
+      background: rgba(239, 68, 68, 0.2);
+      color: #F87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .badge-center {
+      background: rgba(99, 102, 241, 0.25);
+      color: #A5B4FC;
+      border: 1px solid rgba(99, 102, 241, 0.4);
+    }
+
+    .badge-solved {
+      background: rgba(16, 185, 129, 0.2);
+      color: #34D399;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+
+    .panel-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #F8FAFC;
+    }
+
+    /* Schematics / Diagram Areas */
+    .schematic-box {
+      background: rgba(2, 6, 23, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+
+    /* Rail Track Vector Graphics */
+    .rail-track-wrap {
+      width: 100%;
+      height: 105px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* UI Card Previews */
+    .ui-mock-card {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .mock-card-legacy {
+      border-left: 3px solid #EF4444;
+    }
+
+    .mock-card-solved {
+      border-left: 3px solid #10B981;
+      background: rgba(6, 78, 59, 0.2);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .ui-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #94A3B8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .time-display-legacy {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 20px;
+      font-weight: 700;
+      color: #F87171;
+    }
+
+    .time-display-solved {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 18px;
+      font-weight: 700;
+      color: #34D399;
+    }
+
+    .status-pill-legacy {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(239, 68, 68, 0.2);
+      color: #FCA5A5;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-top: 4px;
+    }
+
+    .status-pill-solved {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(16, 185, 129, 0.2);
+      color: #6EE7B7;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-top: 4px;
+    }
+
+    /* Human Callout Quote */
+    .human-quote {
+      background: rgba(30, 41, 59, 0.5);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 11px;
+      line-height: 1.4;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .human-quote.negative {
+      border-left: 2px solid #EF4444;
+      color: #FECACA;
+    }
+
+    .human-quote.positive {
+      border-left: 2px solid #10B981;
+      color: #D1FAE5;
+    }
+
+    .avatar-circle {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 10px;
+      flex-shrink: 0;
+    }
+
+    .avatar-red {
+      background: #991B1B;
+      color: #FCA5A5;
+    }
+
+    .avatar-green {
+      background: #065F46;
+      color: #6EE7B7;
+    }
+
+    /* Bullet List Features */
+    .feature-list {
+      list-style: none;
+      font-size: 11px;
+      line-height: 1.45;
+      color: #CBD5E1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: auto;
+    }
+
+    .feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .bullet-icon {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .bullet-red {
+      color: #EF4444;
+    }
+
+    .bullet-green {
+      color: #10B981;
+    }
+
+    /* Center Panel Styles */
+    .input-sources-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .source-chip {
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
+      padding: 6px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .source-chip strong {
+      font-size: 10px;
+      color: #38BDF8;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .source-chip span {
+      font-size: 9px;
+      color: #94A3B8;
+      line-height: 1.2;
+    }
+
+    .pipeline-core {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .core-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: rgba(30, 41, 59, 0.4);
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .core-name {
+      font-size: 11px;
+      font-weight: 700;
+      color: #E2E8F0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .core-formula {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: #818CF8;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .flow-connector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 4px 0;
+      color: #818CF8;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .flow-connector svg {
+      animation: pulseArrow 1.5s infinite;
+    }
+
+    @keyframes pulseArrow {
+      0%, 100% { transform: translateY(0); opacity: 0.6; }
+      50% { transform: translateY(3px); opacity: 1; }
+    }
+
+    /* Footer Banner */
+    footer {
+      position: relative;
+      z-index: 1;
+      margin-top: 14px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 10px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: #94A3B8;
+    }
+
+    .footer-highlight {
+      color: #F8FAFC;
+      font-weight: 600;
+    }
+
+    .footer-pills {
+      display: flex;
+      gap: 12px;
+    }
+
+    .footer-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #CBD5E1;
+    }
+
+    .dot-green {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 6px #10B981;
+    }
+
+    .dot-blue {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #38BDF8;
+      box-shadow: 0 0 6px #38BDF8;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Glow Effects -->
+  <div class="glow-red"></div>
+  <div class="glow-blue"></div>
+  <div class="glow-green"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="header-left">
+      <div class="ir-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/><circle cx="12" cy="12" r="4"/></svg>
+        CRIS / Indian Railways
+      </div>
+      <div class="title-group">
+        <h1>HOW DYNAMIC ETA FORECASTING WORKS <span class="highlight">(GATI-SETU)</span></h1>
+        <p>The Operational Paradigm Shift: From Static Linear Guesswork to Real-Time Physics-Informed Digital Twin Fusion</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="pill-metric">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        85.4% Error Reduction (42.6m &rarr; 6.2m MAE)
+      </div>
+      <div class="pill-zero-hw">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h.01"/><path d="M17 7h.01"/><path d="M7 17h.01"/><path d="M17 17h.01"/></svg>
+        100% Zero New Hardware
+      </div>
+    </div>
+  </header>
+
+  <!-- Main 3-Column Grid -->
+  <div class="main-grid">
+
+    <!-- PANEL 1: LEGACY FAILURE -->
+    <div class="panel panel-legacy">
+      <div class="panel-header">
+        <span class="panel-title">1. Current Legacy System</span>
+        <span class="panel-badge badge-legacy">Static Arithmetic</span>
+      </div>
+
+      <!-- Vector Track Schematic (Red Signal & Obstruction) -->
+      <div class="schematic-box">
+        <div class="rail-track-wrap">
+          <svg width="100%" height="100%" viewBox="0 0 380 95" fill="none">
+            <!-- Steel Rails -->
+            <line x1="10" y1="52" x2="370" y2="52" stroke="#475569" stroke-width="3"/>
+            <line x1="10" y1="62" x2="370" y2="62" stroke="#475569" stroke-width="3"/>
+            <!-- Sleepers -->
+            <g stroke="#334155" stroke-width="2">
+              <line x1="30" y1="48" x2="30" y2="66"/>
+              <line x1="60" y1="48" x2="60" y2="66"/>
+              <line x1="90" y1="48" x2="90" y2="66"/>
+              <line x1="120" y1="48" x2="120" y2="66"/>
+              <line x1="150" y1="48" x2="150" y2="66"/>
+              <line x1="180" y1="48" x2="180" y2="66"/>
+              <line x1="210" y1="48" x2="210" y2="66"/>
+              <line x1="240" y1="48" x2="240" y2="66"/>
+              <line x1="270" y1="48" x2="270" y2="66"/>
+              <line x1="300" y1="48" x2="300" y2="66"/>
+              <line x1="330" y1="48" x2="330" y2="66"/>
+              <line x1="360" y1="48" x2="360" y2="66"/>
+            </g>
+            <!-- Red Signal Post -->
+            <rect x="230" y="10" width="4" height="42" fill="#94A3B8"/>
+            <rect x="222" y="8" width="20" height="24" rx="4" fill="#0F172A" stroke="#475569" stroke-width="1.5"/>
+            <circle cx="232" cy="15" r="4.5" fill="#EF4444" filter="drop-shadow(0 0 4px #EF4444)"/>
+            <circle cx="232" cy="25" r="3" fill="#1E293B"/>
+            <text x="250" y="20" fill="#EF4444" font-size="9" font-family="'JetBrains Mono', monospace" font-weight="700">RED SIGNAL</text>
+            <text x="250" y="30" fill="#94A3B8" font-size="8" font-family="'Inter', sans-serif">Outer Home Signal</text>
+
+            <!-- Train Silhouette (Stalled Passenger Express with Pantograph) -->
+            <path d="M 55 30 L 65 18 L 80 18 L 90 30 M 65 18 L 72 13 L 80 18" stroke="#EF4444" stroke-width="1.5" fill="none"/>
+            <rect x="25" y="30" width="120" height="22" rx="4" fill="#991B1B" stroke="#DC2626" stroke-width="1.5"/>
+            <rect x="30" y="34" width="15" height="12" rx="2" fill="#FCA5A5" opacity="0.8"/>
+            <rect x="52" y="35" width="20" height="8" rx="1" fill="#F87171" opacity="0.6"/>
+            <rect x="78" y="35" width="20" height="8" rx="1" fill="#F87171" opacity="0.6"/>
+            <rect x="104" y="35" width="20" height="8" rx="1" fill="#F87171" opacity="0.6"/>
+            <circle cx="45" cy="54" r="3.5" fill="#CBD5E1"/>
+            <circle cx="125" cy="54" r="3.5" fill="#CBD5E1"/>
+            <text x="25" y="16" fill="#FCA5A5" font-size="9" font-family="'Inter', sans-serif" font-weight="700">12302 Rajdhani (Stalled at Outer)</text>
+
+            <!-- Destination Platform Blocked Warning -->
+            <rect x="240" y="58" width="130" height="22" rx="4" fill="rgba(239, 68, 68, 0.2)" stroke="#EF4444" stroke-width="1"/>
+            <text x="246" y="72" fill="#FCA5A5" font-size="8.5" font-weight="700">PF 1: OCCUPIED BY RAKE</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Old App Display Mockup -->
+      <div class="ui-mock-card mock-card-legacy">
+        <div class="ui-title">
+          <span>NTES / Legacy Mobile Screen</span>
+          <span style="color:#EF4444;">Blind Guesswork</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:baseline;">
+          <div class="time-display-legacy">20:15 (On Time)</div>
+          <span class="status-pill-legacy">False Promise</span>
+        </div>
+        <div style="font-size:10px; color:#94A3B8; margin-top:4px;">
+          Calculated by: <code style="color:#FCA5A5;">Distance &divide; Speed</code> (Static Subtraction)
+        </div>
+      </div>
+
+      <!-- Passenger Human Experience -->
+      <div class="human-quote negative">
+        <div class="avatar-circle avatar-red">P1</div>
+        <div>
+          <strong>Passenger on Train (Stabled 2 km outside station):</strong><br>
+          <em>"The app said arriving in 5 mins, but we have been stuck motionless in the dark for 45 minutes because the platform is full!"</em>
+        </div>
+      </div>
+
+      <!-- Failure Reasons List -->
+      <ul class="feature-list">
+        <li>
+          <svg class="bullet-icon bullet-red" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          <span><strong>Blind to Preceding Goods Trains:</strong> Assumes empty track ahead.</span>
+        </li>
+        <li>
+          <svg class="bullet-icon bullet-red" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          <span><strong>Outer Signal Trap:</strong> Unaware of platform occupancy at terminal.</span>
+        </li>
+        <li>
+          <svg class="bullet-icon bullet-red" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          <span><strong>Weather & Speed Blind:</strong> Ignores 30 km/h cautions & fog safety rules.</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- PANEL 2: GATI-SETU FUSION CORE -->
+    <div class="panel panel-center">
+      <div class="panel-header">
+        <span class="panel-title">2. GATI-SETU Digital Twin Fusion Brain</span>
+        <span class="panel-badge badge-center">Real-Time Sovereign AI</span>
+      </div>
+
+      <!-- 6 Ingestion Data Sources -->
+      <div style="font-size:10px; font-weight:700; color:#94A3B8; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">
+        Multi-Source Real-Time Ingestion (100% Existing Government Assets)
+      </div>
+      <div class="input-sources-grid">
+        <div class="source-chip">
+          <strong>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/></svg>
+            BEL RTIS
+          </strong>
+          <span>ISRO NavIC 30s locomotive satellite telemetry</span>
+        </div>
+        <div class="source-chip">
+          <strong>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+            S&T Relays
+          </strong>
+          <span>Track circuits, axle counters & signals</span>
+        </div>
+        <div class="source-chip">
+          <strong>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
+            CRIS FOIS
+          </strong>
+          <span>Preceding freight radar & gross tonnage</span>
+        </div>
+        <div class="source-chip">
+          <strong>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/></svg>
+            e-Caution T/409
+          </strong>
+          <span>Civil 20-30 km/h maintenance slow zones</span>
+        </div>
+        <div class="source-chip">
+          <strong>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+            IMD Weather Grid
+          </strong>
+          <span>Visibility radar & GR 3.61 fog safety limit</span>
+        </div>
+        <div class="source-chip">
+          <strong>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            CRIS CMS & COA
+          </strong>
+          <span>Pilot 10h duty hours & station interlocking</span>
+        </div>
+      </div>
+
+      <!-- Flow Connector -->
+      <div class="flow-connector">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+        Apache Kafka Bus &bull; Extended Kalman Filter Map-Matching (1D Rail Chainage KM)
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+      </div>
+
+      <!-- Core Predictive Engines -->
+      <div class="pipeline-core">
+        <div class="core-row">
+          <div class="core-name">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m10 15 5-3-5-3v6Z"/></svg>
+            Kinematic Physics Engine
+          </div>
+          <div class="core-formula">F_net = F_traction - (R_davis + R_grad)</div>
+        </div>
+        <div style="font-size:10px; color:#94A3B8; margin-top:-6px; padding-left:22px;">
+          Calculates real train acceleration by locomotive horsepower (WAP-7 vs WAG-9), 24-coach weight, and track gradient.
+        </div>
+
+        <div class="core-row">
+          <div class="core-name">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#818CF8" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Spatio-Temporal Graph Attention (ST-GAT)
+          </div>
+          <div class="core-formula">G = (V, E, W) &bull; Attention &alpha;_ij</div>
+        </div>
+        <div style="font-size:10px; color:#94A3B8; margin-top:-6px; padding-left:22px;">
+          Simulates 4-aspect signal progression and models trailing slowdown behind slow freight trains 25 km in advance.
+        </div>
+
+        <div class="core-row">
+          <div class="core-name">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+            Platform Clearance Queue & Conformal Bayes
+          </div>
+          <div class="core-formula">&Delta;T_outer = max(0, T_clear - T_arr) &bull; [P10-P90]</div>
+        </div>
+        <div style="font-size:10px; color:#94A3B8; margin-top:-6px; padding-left:22px;">
+          Tracks destination platform clearance, counts down outer signal holds, and outputs 90% confidence windows.
+        </div>
+      </div>
+
+      <!-- Flow Connector Out -->
+      <div class="flow-connector" style="color:#34D399; margin-top:auto;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        Outputs Calibrated Arrival Windows & Plain-English Reason Badges
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </div>
+    </div>
+
+    <!-- PANEL 3: SOLVED REALITY -->
+    <div class="panel panel-solved">
+      <div class="panel-header">
+        <span class="panel-title">3. GATI-SETU Solved Reality</span>
+        <span class="panel-badge badge-solved">Dynamic Twin</span>
+      </div>
+
+      <!-- Vector Track Schematic (Green Signal & Smooth Clearance) -->
+      <div class="schematic-box">
+        <div class="rail-track-wrap">
+          <svg width="100%" height="100%" viewBox="0 0 380 95" fill="none">
+            <!-- Steel Rails -->
+            <line x1="10" y1="52" x2="370" y2="52" stroke="#475569" stroke-width="3"/>
+            <line x1="10" y1="62" x2="370" y2="62" stroke="#475569" stroke-width="3"/>
+            <!-- Sleepers -->
+            <g stroke="#334155" stroke-width="2">
+              <line x1="30" y1="48" x2="30" y2="66"/>
+              <line x1="60" y1="48" x2="60" y2="66"/>
+              <line x1="90" y1="48" x2="90" y2="66"/>
+              <line x1="120" y1="48" x2="120" y2="66"/>
+              <line x1="150" y1="48" x2="150" y2="66"/>
+              <line x1="180" y1="48" x2="180" y2="66"/>
+              <line x1="210" y1="48" x2="210" y2="66"/>
+              <line x1="240" y1="48" x2="240" y2="66"/>
+              <line x1="270" y1="48" x2="270" y2="66"/>
+              <line x1="300" y1="48" x2="300" y2="66"/>
+              <line x1="330" y1="48" x2="330" y2="66"/>
+              <line x1="360" y1="48" x2="360" y2="66"/>
+            </g>
+            <!-- Green Signal Post -->
+            <rect x="230" y="10" width="4" height="42" fill="#94A3B8"/>
+            <rect x="222" y="8" width="20" height="24" rx="4" fill="#0F172A" stroke="#475569" stroke-width="1.5"/>
+            <circle cx="232" cy="15" r="3" fill="#1E293B"/>
+            <circle cx="232" cy="25" r="4.5" fill="#10B981" filter="drop-shadow(0 0 6px #10B981)"/>
+            <text x="250" y="20" fill="#34D399" font-size="9" font-family="'JetBrains Mono', monospace" font-weight="700">GREEN SIGNAL</text>
+            <text x="250" y="30" fill="#94A3B8" font-size="8" font-family="'Inter', sans-serif">Route Interlocked & Cleared</text>
+
+            <!-- Train Silhouette (Aerodynamic Vande Bharat / Express Moving with Pantograph) -->
+            <path d="M 65 32 L 75 20 L 90 20 L 100 32 M 75 20 L 82 14 L 90 20" stroke="#38BDF8" stroke-width="1.5" fill="none"/>
+            <path d="M 25 50 L 38 32 L 140 32 L 145 50 Z" fill="#0284C7" stroke="#38BDF8" stroke-width="1.5"/>
+            <!-- Aerodynamic Windows -->
+            <rect x="44" y="35" width="16" height="9" rx="2" fill="#BAE6FD" opacity="0.9"/>
+            <rect x="68" y="36" width="20" height="7" rx="1" fill="#7DD3FC" opacity="0.8"/>
+            <rect x="94" y="36" width="20" height="7" rx="1" fill="#7DD3FC" opacity="0.8"/>
+            <rect x="120" y="36" width="18" height="7" rx="1" fill="#7DD3FC" opacity="0.8"/>
+            <!-- Indian Railways Orange/White/Green Accent -->
+            <rect x="42" y="46" width="95" height="1.5" fill="#F97316"/>
+            <rect x="42" y="47.5" width="95" height="1.5" fill="#FFFFFF"/>
+            <rect x="42" y="49" width="95" height="1.5" fill="#10B981"/>
+            <circle cx="45" cy="54" r="3.5" fill="#CBD5E1"/>
+            <circle cx="125" cy="54" r="3.5" fill="#CBD5E1"/>
+            <text x="25" y="16" fill="#38BDF8" font-size="9" font-family="'Inter', sans-serif" font-weight="700">22436 Vande Bharat (Active Cruising)</text>
+
+            <!-- Destination Platform Ready Tag -->
+            <rect x="235" y="58" width="135" height="22" rx="4" fill="rgba(16, 185, 129, 0.2)" stroke="#10B981" stroke-width="1"/>
+            <text x="242" y="72" fill="#6EE7B7" font-size="8.5" font-weight="700">PF 2: READY &bull; OBHS STAGED</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Solved Modern App Display Mockup -->
+      <div class="ui-mock-card mock-card-solved">
+        <div class="ui-title">
+          <span>GATI-SETU Mobile & Station Display</span>
+          <span style="color:#10B981;">90% Confident Window</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:baseline;">
+          <div class="time-display-solved">20:19 [20:17 – 20:22]</div>
+          <span class="status-pill-solved">&plusmn;2 Min Window</span>
+        </div>
+        <div style="font-size:10px; color:#A7F3D0; margin-top:4px; font-weight:600;">
+          [HOLD] Outer Signal Delay: PF 2 clearing in 8m &bull; Please remain seated
+        </div>
+      </div>
+
+      <!-- Passenger Human Experience -->
+      <div class="human-quote positive">
+        <div class="avatar-circle avatar-green">P1</div>
+        <div>
+          <strong>Passenger on Train (Approaching Kanpur):</strong><br>
+          <em>"The app told me the platform was busy 20 minutes ago. I stayed relaxed, and my cab was timed to the exact minute I walked out!"</em>
+        </div>
+      </div>
+
+      <!-- Solved Features List -->
+      <ul class="feature-list">
+        <li>
+          <svg class="bullet-icon bullet-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <span><strong>Preceding Freight Radar:</strong> Overtakes scheduled at loop lines.</span>
+        </li>
+        <li>
+          <svg class="bullet-icon bullet-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <span><strong>Zero Mystery Halts:</strong> Plain-English delay reasons for every stop.</span>
+        </li>
+        <li>
+          <svg class="bullet-icon bullet-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <span><strong>Pre-Staged Servicing:</strong> Cleaning & watering teams ready on arrival.</span>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- Footer Banner -->
+  <footer>
+    <div class="footer-highlight">
+      GATI-SETU: Graph-Augmented Transit Intelligence for Indian Railways
+    </div>
+    <div class="footer-pills">
+      <div class="footer-pill">
+        <div class="dot-green"></div>
+        <span>6.2 Min MAE Verified</span>
+      </div>
+      <div class="footer-pill">
+        <div class="dot-blue"></div>
+        <span>100% Zero New Hardware (Pure Software Layer on BEL RTIS & FOIS)</span>
+      </div>
+      <div class="footer-pill">
+        <div class="dot-green"></div>
+        <span>Pan-India Golden Quadrilateral Ready</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
