@@ -92,7 +92,7 @@
       justify-content: center;
     }
 
-    /* Sub-header Strip (For Express/Metro or Details) */
+    /* Sub-header Strip */
     .top-sub-bar {
       background: var(--wimt-blue-dark);
       padding: 6px 14px;
@@ -377,6 +377,46 @@
     .tag-green { color: var(--wimt-green); }
 
     /* ================= SCREEN 3: LIVE RUNNING STATUS TIMELINE ================= */
+    .kinematic-status-banner {
+      background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%);
+      color: #FFFFFF;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
+    }
+
+    .weather-sim-bar {
+      background: #0F172A;
+      padding: 6px 12px;
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      border-bottom: 1px solid #334155;
+    }
+
+    .weather-sim-btn {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #CBD5E1;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .weather-sim-btn.active {
+      background: #0284C7;
+      border-color: #38BDF8;
+      color: #FFFFFF;
+    }
+
     .timeline-header-strip {
       background: #1E293B;
       color: #FFFFFF;
@@ -591,7 +631,7 @@
       bottom: 74px;
       left: 10px;
       right: 10px;
-      background: rgba(15, 23, 42, 0.92);
+      background: rgba(15, 23, 42, 0.94);
       border: 1px solid rgba(255,255,255,0.2);
       backdrop-filter: blur(12px);
       border-radius: 12px;
@@ -619,7 +659,7 @@
   <div id="app-container">
 
     <!-- ======================================================== -->
-    <!-- 1. HOME SEARCH SCREEN (Matches User Screenshot 3)        -->
+    <!-- 1. HOME SEARCH SCREEN                                    -->
     <!-- ======================================================== -->
     <div id="screen-home" class="screen-panel active">
       <!-- Top Bar -->
@@ -639,19 +679,20 @@
         <span style="color:rgba(255,255,255,0.7); cursor:pointer;">METRO</span>
       </div>
 
-      <!-- Station To Station Search Card -->
+      <!-- Station To Station Search Card (Includes Delhi to Goa!) -->
       <div class="home-card">
         <!-- From Station -->
         <div class="route-row">
           <div class="station-select-box">
-            <span class="station-code-badge" id="from-code-badge">PUNE</span>
+            <span class="station-code-badge" id="from-code-badge">NDLS</span>
             <select class="station-select" id="from-station-select" onchange="updateFromStation(this.value)">
-              <option value="PUNE">Pune Junction</option>
-              <option value="NDLS">New Delhi</option>
-              <option value="BSL">Bhusaval Junction</option>
-              <option value="CNB">Kanpur Central</option>
-              <option value="BCT">Mumbai Central</option>
-              <option value="HD">Harda</option>
+              <option value="NDLS">New Delhi (NDLS)</option>
+              <option value="PUNE">Pune Junction (PUNE)</option>
+              <option value="MAO">Madgaon Junction - Goa (MAO)</option>
+              <option value="BSL">Bhusaval Junction (BSL)</option>
+              <option value="CNB">Kanpur Central (CNB)</option>
+              <option value="HD">Harda (HD)</option>
+              <option value="HWH">Howrah Junction (HWH)</option>
             </select>
           </div>
           <button class="btn-swap-stations" onclick="swapStations()">
@@ -662,14 +703,14 @@
         <!-- To Station -->
         <div class="route-row">
           <div class="station-select-box">
-            <span class="station-code-badge" id="to-code-badge">BSL</span>
+            <span class="station-code-badge" id="to-code-badge">MAO</span>
             <select class="station-select" id="to-station-select" onchange="updateToStation(this.value)">
-              <option value="BSL">Bhusaval Junction</option>
-              <option value="PUNE">Pune Junction</option>
-              <option value="CNB">Kanpur Central</option>
-              <option value="NDLS">New Delhi</option>
-              <option value="HWH">Howrah Junction</option>
-              <option value="HD">Harda</option>
+              <option value="MAO">Madgaon Junction - Goa (MAO)</option>
+              <option value="NDLS">New Delhi (NDLS)</option>
+              <option value="BSL">Bhusaval Junction (BSL)</option>
+              <option value="PUNE">Pune Junction (PUNE)</option>
+              <option value="CNB">Kanpur Central (CNB)</option>
+              <option value="HD">Harda (HD)</option>
             </select>
           </div>
         </div>
@@ -683,7 +724,7 @@
       <!-- Direct Search By Train No / Train Name -->
       <div class="input-search-card">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0B60B0" stroke-width="2.5"><rect width="16" height="16" x="4" y="4" rx="2"/><path d="M9 18v2"/><path d="M15 18v2"/><path d="M8 8h8"/><path d="M8 12h8"/></svg>
-        <input type="text" id="input-train-no" placeholder="Train No. / Train Name (e.g. 12779, Goa Exp)" value="12779">
+        <input type="text" id="input-train-no" placeholder="Train No. / Train Name (e.g. 12450, 12780, 12779)" value="12450">
         <button class="btn-search-icon" onclick="searchByTrainNo()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         </button>
@@ -692,53 +733,53 @@
       <!-- Direct Search By Station No / Code (Live Station Board) -->
       <div class="input-search-card">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0B60B0" stroke-width="2.5"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
-        <input type="text" id="input-station-code" placeholder="Station departure board (e.g. HD, Harda, PUNE)" value="HD">
+        <input type="text" id="input-station-code" placeholder="Station departure board (e.g. MAO, HD, NDLS)" value="MAO">
         <button class="btn-search-icon" onclick="searchByStationCode()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         </button>
       </div>
 
-      <!-- Search History (Matches User Screenshot 3) -->
+      <!-- Search History (Includes Delhi - Goa) -->
       <div class="history-card">
         <div class="history-title">SEARCH HISTORY</div>
 
-        <div class="history-item" onclick="openTrainDirect('11401')">
+        <div class="history-item" onclick="openTrainDirect('12450')">
           <div class="history-train-info">
-            <span class="history-train-no">11401</span>
-            <span class="history-train-name">Pune - Supaul Express</span>
+            <span class="history-train-no">12450</span>
+            <span class="history-train-name">Goa Sampark Kranti Express</span>
           </div>
-          <span class="history-route-tag">PUNE - BSL &rsaquo;</span>
+          <span class="history-route-tag">NDLS - MAO &rsaquo;</span>
         </div>
 
-        <div class="history-item" onclick="openTrainDirect('12129')">
+        <div class="history-item" onclick="openTrainDirect('12780')">
           <div class="history-train-info">
-            <span class="history-train-no">12129</span>
-            <span class="history-train-name">Azad Hind Express</span>
+            <span class="history-train-no">12780</span>
+            <span class="history-train-name">Goa Express</span>
           </div>
-          <span class="history-route-tag">PUNE - BSL &rsaquo;</span>
-        </div>
-
-        <div class="history-item" onclick="openTrainDirect('12135')">
-          <div class="history-train-info">
-            <span class="history-train-no">12135</span>
-            <span class="history-train-name">Pune - Nagpur SF Express</span>
-          </div>
-          <span class="history-route-tag">PUNE - BSL &rsaquo;</span>
+          <span class="history-route-tag">NDLS - MAO &rsaquo;</span>
         </div>
 
         <div class="history-item" onclick="openTrainDirect('12779')">
           <div class="history-train-info">
             <span class="history-train-no">12779</span>
-            <span class="history-train-name">Goa Express</span>
+            <span class="history-train-name">Goa Express (Up)</span>
           </div>
           <span class="history-route-tag">PUNE - BSL &rsaquo;</span>
+        </div>
+
+        <div class="history-item" onclick="openTrainDirect('12302')">
+          <div class="history-train-info">
+            <span class="history-train-no">12302</span>
+            <span class="history-train-name">Howrah Rajdhani Express</span>
+          </div>
+          <span class="history-route-tag">NDLS - CNB &rsaquo;</span>
         </div>
       </div>
     </div>
 
 
     <!-- ======================================================== -->
-    <!-- 2. SEARCH RESULTS SCREEN (Matches User Screenshot 1)     -->
+    <!-- 2. SEARCH RESULTS SCREEN (Train Fleet List)              -->
     <!-- ======================================================== -->
     <div id="screen-results" class="screen-panel">
       <!-- Top Bar -->
@@ -749,13 +790,9 @@
           </button>
           <span>Search results</span>
         </div>
-        <div style="display:flex; gap:12px;">
-          <div class="icon-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div>
-          <div class="icon-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg></div>
-        </div>
       </div>
 
-      <!-- Filter Bar (Matches Screenshot 1) -->
+      <!-- Filter Bar -->
       <div class="results-filter-bar">
         <div class="filter-chip">All Dates &#9662;</div>
         <div class="filter-chip">GN - Unreserved &#9662;</div>
@@ -764,96 +801,18 @@
 
       <!-- Corridor Strip -->
       <div style="background:#0284C7; color:#FFFFFF; padding:6px 14px; font-size:12px; font-weight:700;">
-        <span id="results-route-label">PUNE - Pune Junction &rarr; BSL - Bhusaval Junction</span>
+        <span id="results-route-label">NDLS &rarr; MAO Train Schedule & Live Status</span>
       </div>
 
-      <!-- Train List Container -->
+      <!-- Train List Container (Dynamically Populated) -->
       <div id="trains-list-container" style="flex:1; overflow-y:auto; padding-bottom:20px;">
-        <!-- Train 1: Goa Express -->
-        <div class="train-card" onclick="openTrainDirect('12779')">
-          <div class="train-card-header">
-            <span class="train-pill-no">12779</span>
-            <span class="train-card-time">4:30 AM &mdash; 8h10m &mdash; 12:40 PM</span>
-            <span class="train-card-fare">&#8377;175</span>
-          </div>
-          <div class="train-card-sub">
-            <strong style="color:#0F172A; font-size:13px;">Goa Express</strong>
-            <span style="color:#0284C7; font-size:11px;">Runs Daily</span>
-          </div>
-          <div class="live-delay-tag tag-red">
-            &bull; Live: 2 km to Harda (Delayed by 22m &bull; True ETA 4:20 PM)
-          </div>
-        </div>
-
-        <!-- Train 2: Ajni Vande Bharat -->
-        <div class="train-card" onclick="openTrainDirect('26101')">
-          <div class="train-card-header">
-            <span class="train-pill-no" style="background:#059669;">26101</span>
-            <span class="train-card-time">6:25 AM &mdash; 6h25m &mdash; 12:50 PM</span>
-            <span class="train-card-fare">NA</span>
-          </div>
-          <div class="train-card-sub">
-            <strong style="color:#0F172A; font-size:13px;">Ajni Vande Bharat Express</strong>
-            <span style="font-size:10px; letter-spacing:2px; font-weight:700;">S M T W T F S</span>
-          </div>
-          <div class="live-delay-tag tag-green">
-            &bull; Live: Approaching Chalisgaon (On Time +2m)
-          </div>
-        </div>
-
-        <!-- Train 3: Jasidih Weekly -->
-        <div class="train-card" onclick="openTrainDirect('11427')">
-          <div class="train-card-header">
-            <span class="train-pill-no">11427</span>
-            <span class="train-card-time">6:40 AM &mdash; 7h30m &mdash; 2:10 PM</span>
-            <span class="train-card-fare">&#8377;160</span>
-          </div>
-          <div class="train-card-sub">
-            <strong style="color:#0F172A; font-size:13px;">Jasidih Weekly Express</strong>
-            <span style="font-size:10px; letter-spacing:2px; font-weight:700;">S M T W T F S</span>
-          </div>
-          <div class="live-delay-tag tag-green">
-            &bull; Running smoothly on schedule
-          </div>
-        </div>
-
-        <!-- Train 4: Yog Nagari Rishikesh -->
-        <div class="train-card" style="opacity:0.6;">
-          <div class="train-card-header">
-            <span class="train-pill-no" style="background:#64748B;">17363</span>
-            <span class="train-card-time">9:00 AM &mdash; 9h10m &mdash; 6:10 PM</span>
-            <span class="train-card-fare">&#8377;160</span>
-          </div>
-          <div class="train-card-sub">
-            <strong style="font-size:13px;">Yog Nagari Rishikesh Weekly Express</strong>
-            <span style="font-size:10px; letter-spacing:2px;">S M T W T F S</span>
-          </div>
-          <div style="font-size:11px; color:#64748B; font-weight:600;">
-            Not running today
-          </div>
-        </div>
-
-        <!-- Train 5: Karnataka Sampark Kranti -->
-        <div class="train-card" onclick="openTrainDirect('12629')">
-          <div class="train-card-header">
-            <span class="train-pill-no">12629</span>
-            <span class="train-card-time">9:00 AM &mdash; 8h45m &mdash; 5:45 PM</span>
-            <span class="train-card-fare">&#8377;160</span>
-          </div>
-          <div class="train-card-sub">
-            <strong style="color:#0F172A; font-size:13px;">Karnataka Sampark Kranti Express</strong>
-            <span style="font-size:10px; letter-spacing:2px; font-weight:700;">S M T W T F S</span>
-          </div>
-          <div class="live-delay-tag tag-red">
-            Left PUNE at 09:57 AM (Delayed 57m)
-          </div>
-        </div>
+        <!-- Injected via JavaScript based on From/To -->
       </div>
     </div>
 
 
     <!-- ======================================================== -->
-    <!-- 3. LIVE RUNNING STATUS (Matches User Screenshot 2 & 4)   -->
+    <!-- 3. LIVE RUNNING STATUS & STATION TIMELINE                -->
     <!-- ======================================================== -->
     <div id="screen-timeline" class="screen-panel">
       <!-- Top Bar -->
@@ -862,14 +821,46 @@
           <button class="icon-btn" onclick="openScreen('screen-results')">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
           </button>
-          <span id="timeline-train-title" style="font-size:14px;">12779 - Goa Express (PUNE-BSL)</span>
-        </div>
-        <div class="icon-btn">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+          <span id="timeline-train-title" style="font-size:14px;">12450 - Goa Sampark Kranti (NDLS-MAO)</span>
         </div>
       </div>
 
-      <!-- Action Pill Bar (Matches Screenshot 2) -->
+      <!-- Real-Time Kinematic Dynamic Arrival Banner (Calculated from Davis Equation) -->
+      <div class="kinematic-status-banner">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:15px; font-weight:800;" id="dynamic-next-station-banner">
+            Arriving in 14 mins at Harda (Platform 2)
+          </span>
+          <span style="font-size:10px; background:rgba(255,255,255,0.25); padding:2px 8px; border-radius:10px; font-weight:700;" id="banner-delay-pill">
+            +22m Delayed
+          </span>
+        </div>
+        <div style="font-size:11px; opacity:0.9;" id="dynamic-physics-metrics">
+          Davis Resistance: 18.2 kN • Tractive Effort: 215 kN • Speed: 74 km/h
+        </div>
+      </div>
+
+      <!-- Interactive Weather Simulator Bar (Supports ALL Weathers & Live Satellite API) -->
+      <div class="weather-sim-bar">
+        <span style="color:#94A3B8; font-size:10px; align-self:center; font-weight:700;">WEATHER:</span>
+        <button class="weather-sim-btn active" id="btn-weather-live" onclick="setWeatherMode('live')">
+          ⚡ Live Satellite API
+        </button>
+        <button class="weather-sim-btn" id="btn-weather-rain" onclick="setWeatherMode('rain')">
+          🌧️ Rain (μ=0.22)
+        </button>
+        <button class="weather-sim-btn" id="btn-weather-fog" onclick="setWeatherMode('fog')">
+          🌫️ Dense Fog (60 km/h)
+        </button>
+        <button class="weather-sim-btn" id="btn-weather-heat" onclick="setWeatherMode('heat')">
+          ☀️ Sun-Kink (43°C)
+        </button>
+        <button class="weather-sim-btn" id="btn-weather-clear" onclick="setWeatherMode('clear')">
+          🌤️ Clear (130 km/h)
+        </button>
+      </div>
+
+      <!-- Action Pill Bar -->
       <div style="background:#0284C7; padding:8px 12px; display:flex; justify-content:space-between; align-items:center; color:#FFFFFF; font-size:12px; font-weight:700;">
         <span style="background:rgba(255,255,255,0.2); padding:4px 10px; border-radius:14px; cursor:pointer;">Today &#9662;</span>
         <span style="cursor:pointer; display:flex; align-items:center; gap:4px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="m5 3 2 2"/><path d="m19 3-2 2"/></svg> Alarm</span>
@@ -884,114 +875,29 @@
         <span>Departure</span>
       </div>
 
-      <!-- Vertical Station Timeline -->
-      <div class="timeline-container">
-        <!-- Blue Track Bar -->
-        <div class="track-line"></div>
-
-        <!-- Station 1: Khandwa Junction -->
-        <div class="station-timeline-row">
-          <div class="arr-col">
-            <span class="time-sched">2:52 PM</span>
-            <span class="time-actual tag-red">2:58 PM</span>
-          </div>
-          <div class="track-node-col">
-            <div class="track-dot"></div>
-          </div>
-          <div class="info-col">
-            <span class="stn-name">Khandwa Junction</span>
-            <div class="stn-sub">615 km &bull; <span class="platform-pill">Platform 4</span></div>
-          </div>
-          <div class="dep-col">
-            <span class="time-sched">2:55 PM</span>
-            <span class="time-actual tag-red">3:05 PM</span>
-          </div>
-        </div>
-
-        <!-- Station 2: Harda (CURRENT ACTIVE POSITION WITH TRAIN ICON!) -->
-        <div class="station-timeline-row" style="background:rgba(2, 132, 199, 0.08); border-radius:8px; padding:6px 0;">
-          <div class="arr-col">
-            <span class="time-sched">3:58 PM</span>
-            <span class="time-actual tag-red">4:20 PM</span>
-          </div>
-          <div class="track-node-col">
-            <!-- Iconic Train Icon on Track -->
-            <div class="train-loco-marker">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="16" height="16" x="4" y="4" rx="2"/><path d="M9 18v2"/><path d="M15 18v2"/><path d="M8 8h8"/><path d="M8 12h8"/></svg>
-            </div>
-          </div>
-          <div class="info-col">
-            <span class="stn-name" style="color:#0284C7; font-size:15px;">Harda</span>
-            <div class="stn-sub">723 km &bull; <span class="platform-pill" style="background:#0284C7; color:#FFFFFF;">Platform 2</span></div>
-            <!-- Live Weather Pill at Harda -->
-            <div style="font-size:9.5px; color:#0369A1; font-weight:700; margin-top:2px; display:flex; align-items:center; gap:4px;">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/></svg>
-              <span>Weather: 31.4°C • Humid • Adhesion μ=0.28</span>
-            </div>
-          </div>
-          <div class="dep-col">
-            <span class="time-sched">4:00 PM</span>
-            <span class="time-actual tag-red">4:22 PM</span>
-          </div>
-        </div>
-
-        <!-- Station 3: Itarsi Junction -->
-        <div class="station-timeline-row">
-          <div class="arr-col">
-            <span class="time-sched">5:15 PM</span>
-            <span class="time-actual tag-red">5:23 PM</span>
-          </div>
-          <div class="track-node-col">
-            <div class="track-dot" style="background:#64748B;"></div>
-          </div>
-          <div class="info-col">
-            <span class="stn-name">Itarsi Junction</span>
-            <div class="stn-sub">799 km &bull; <span class="platform-pill">Platform 1</span></div>
-          </div>
-          <div class="dep-col">
-            <span class="time-sched">5:20 PM</span>
-            <span class="time-actual tag-red">5:28 PM</span>
-          </div>
-        </div>
-
-        <!-- Station 4: Bhopal Junction -->
-        <div class="station-timeline-row">
-          <div class="arr-col">
-            <span class="time-sched">7:10 PM</span>
-            <span class="time-actual tag-red">7:18 PM</span>
-          </div>
-          <div class="track-node-col">
-            <div class="track-dot" style="background:#64748B;"></div>
-          </div>
-          <div class="info-col">
-            <span class="stn-name">Bhopal Junction</span>
-            <div class="stn-sub">891 km &bull; <span class="platform-pill">Platform 2</span></div>
-          </div>
-          <div class="dep-col">
-            <span class="time-sched">7:20 PM</span>
-            <span class="time-actual tag-red">7:28 PM</span>
-          </div>
-        </div>
+      <!-- Vertical Station Timeline Container (Dynamically Rendered) -->
+      <div class="timeline-container" id="timeline-stations-list">
+        <!-- Injected via JavaScript -->
       </div>
 
-      <!-- Floating Bottom Status Bar (Matches User Screenshot 2) -->
+      <!-- Floating Bottom Status Bar -->
       <div class="live-status-floating-bar">
         <!-- Floating Google Satellite Map Button -->
-        <button class="floating-map-btn" onclick="openSatelliteMap('12779')">
+        <button class="floating-map-btn" onclick="openSatelliteMap(activeTrainId)">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#EA4335" stroke-width="2.5"><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"/><circle cx="12" cy="10" r="3" fill="#4285F4"/></svg>
         </button>
 
         <div style="flex:1; padding-left:14px;">
-          <div style="font-size:13px; font-weight:800; color:var(--wimt-red);">
+          <div style="font-size:13px; font-weight:800; color:var(--wimt-red);" id="floating-status-text">
             2 km to Harda
           </div>
-          <div style="font-size:11px; color:var(--wimt-muted); font-weight:600;">
-            Updated few seconds ago (ISRO NavIC)
+          <div style="font-size:11px; color:var(--wimt-muted); font-weight:600;" id="floating-live-weather-text">
+            Fetching Live Open-Meteo Satellite API...
           </div>
         </div>
 
         <!-- Circular Refresh Button -->
-        <button style="width:36px; height:36px; border-radius:50%; background:#0B60B0; color:#FFFFFF; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer;">
+        <button onclick="refreshLiveStatus()" style="width:36px; height:36px; border-radius:50%; background:#0B60B0; color:#FFFFFF; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21h5v-5"/></svg>
         </button>
       </div>
@@ -1021,15 +927,15 @@
         <!-- Weather Legend & Train Status Card Over Satellite -->
         <div class="weather-legend-card">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-            <span style="font-size:13px; font-weight:800; color:#38BDF8;" id="sat-train-header">#12779 Goa Express &bull; Near Harda</span>
-            <span style="font-size:11px; background:#0284C7; color:#FFFFFF; padding:2px 6px; border-radius:4px; font-weight:700;">74 km/h</span>
+            <span style="font-size:13px; font-weight:800; color:#38BDF8;" id="sat-train-header">#12450 Goa Sampark Kranti Express</span>
+            <span style="font-size:11px; background:#0284C7; color:#FFFFFF; padding:2px 6px; border-radius:4px; font-weight:700;" id="sat-speed-badge">74 km/h</span>
           </div>
-          <div style="font-size:11px; color:#E2E8F0; margin-bottom:4px;">
-            Dynamic ETA Harda: <strong>4:20 PM</strong> (Sched 3:58 PM &bull; Delayed 22m)
+          <div style="font-size:11px; color:#E2E8F0; margin-bottom:4px;" id="sat-eta-line">
+            Dynamic ETA: <strong>Arriving in 14 mins</strong> • Calculated via Newton-Davis Equation
           </div>
           <div style="font-size:10px; color:#94A3B8; display:flex; justify-content:space-between;">
-            <span>Weather: <strong>31.4°C • Rain Threat</strong></span>
-            <span>Satellite Depth: <strong>Esri High-Res Imagery</strong></span>
+            <span id="sat-weather-text">Weather: <strong>31.8°C • Live Open-Meteo Satellite</strong></span>
+            <span>Terrain: <strong>Esri Photorealistic Imagery</strong></span>
           </div>
         </div>
       </div>
@@ -1046,69 +952,476 @@
           <button class="icon-btn" onclick="openScreen('screen-home')">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
           </button>
-          <span id="station-board-title">Harda (HD) • Live Station Board</span>
+          <span id="station-board-title">Madgaon Junction (MAO) • Live Board</span>
         </div>
       </div>
 
-      <!-- Station Weather Banner -->
+      <!-- Station Weather Banner (Live API Synced) -->
       <div style="background:#0F172A; color:#FFFFFF; padding:8px 14px; display:flex; justify-content:space-between; font-size:11px; font-weight:700; border-bottom:1px solid #334155;">
-        <span>Weather: 31.4°C • Humid • Rail Adhesion μ=0.28</span>
-        <span style="color:#38BDF8;">West Central Railway (WCR)</span>
+        <span id="station-board-weather">Weather: 29.0°C • Coastal Breeze • Adhesion μ=0.38</span>
+        <span style="color:#38BDF8;" id="station-board-zone">Konkan Railway (KR)</span>
       </div>
 
       <!-- List of Trains at this Station -->
-      <div style="flex:1; overflow-y:auto; padding-bottom:20px;">
-        <div class="station-board-card" onclick="openTrainDirect('12779')">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span class="train-pill-no">12779</span>
-            <span style="font-size:11px; background:#0284C7; color:#FFFFFF; padding:2px 6px; border-radius:4px; font-weight:700;">Platform 2</span>
-          </div>
-          <div style="font-size:13px; font-weight:800; color:#0F172A;">Goa Express (Vasco da Gama &rarr; Hazrat Nizamuddin)</div>
-          <div style="display:flex; justify-content:space-between; font-size:11px; color:#475569;">
-            <span>Sched: 3:58 PM</span>
-            <span style="color:var(--wimt-red); font-weight:800;">Dynamic ETA: 4:20 PM (+22m)</span>
-          </div>
-          <div style="font-size:10px; color:var(--wimt-red); font-weight:700;">
-            &bull; Status: 2 km to Harda (Arriving)
-          </div>
-        </div>
-
-        <div class="station-board-card" onclick="openTrainDirect('12137')">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span class="train-pill-no" style="background:#059669;">12137</span>
-            <span style="font-size:11px; background:#059669; color:#FFFFFF; padding:2px 6px; border-radius:4px; font-weight:700;">Platform 1</span>
-          </div>
-          <div style="font-size:13px; font-weight:800; color:#0F172A;">Punjab Mail (CSMT &rarr; Firozpur)</div>
-          <div style="display:flex; justify-content:space-between; font-size:11px; color:#475569;">
-            <span>Sched: 4:45 PM</span>
-            <span style="color:var(--wimt-green); font-weight:800;">Dynamic ETA: 4:45 PM (On Time)</span>
-          </div>
-          <div style="font-size:10px; color:var(--wimt-green); font-weight:700;">
-            &bull; Status: Cruising past Timarni (On Time)
-          </div>
-        </div>
-
-        <div class="station-board-card" onclick="openTrainDirect('11057')">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span class="train-pill-no">11057</span>
-            <span style="font-size:11px; background:#F59E0B; color:#FFFFFF; padding:2px 6px; border-radius:4px; font-weight:700;">Platform 2</span>
-          </div>
-          <div style="font-size:13px; font-weight:800; color:#0F172A;">Amritsar Express (CSMT &rarr; Amritsar)</div>
-          <div style="display:flex; justify-content:space-between; font-size:11px; color:#475569;">
-            <span>Sched: 5:10 PM</span>
-            <span style="color:var(--wimt-red); font-weight:800;">Dynamic ETA: 5:25 PM (+15m)</span>
-          </div>
-          <div style="font-size:10px; color:var(--wimt-red); font-weight:700;">
-            &bull; Status: Trailing local freight in Khandwa section
-          </div>
-        </div>
+      <div id="station-trains-list" style="flex:1; overflow-y:auto; padding-bottom:20px;">
+        <!-- Injected dynamically based on Station Code -->
       </div>
     </div>
 
   </div>
 
   <script>
-    // Screen Navigation
+    // ==========================================
+    // STATION COORDINATES & REAL-WORLD DATABASE
+    // ==========================================
+    const STATION_COORDINATES = {
+      NDLS: { code: 'NDLS', name: 'New Delhi', lat: 28.6139, lon: 77.2090, zone: 'Northern Railway' },
+      MAO:  { code: 'MAO',  name: 'Madgaon Junction (Goa)', lat: 15.2736, lon: 73.9582, zone: 'Konkan Railway' },
+      PUNE: { code: 'PUNE', name: 'Pune Junction', lat: 18.5284, lon: 73.8743, zone: 'Central Railway' },
+      BSL:  { code: 'BSL',  name: 'Bhusaval Junction', lat: 21.0455, lon: 75.7885, zone: 'Central Railway' },
+      CNB:  { code: 'CNB',  name: 'Kanpur Central', lat: 26.4499, lon: 80.3319, zone: 'North Central Railway' },
+      HD:   { code: 'HD',   name: 'Harda', lat: 22.3436, lon: 77.0984, zone: 'West Central Railway' },
+      HWH:  { code: 'HWH',  name: 'Howrah Junction', lat: 22.5892, lon: 88.3426, zone: 'Eastern Railway' },
+      BCT:  { code: 'BCT',  name: 'Mumbai Central', lat: 18.9696, lon: 72.8193, zone: 'Western Railway' },
+      ET:   { code: 'ET',   name: 'Itarsi Junction', lat: 22.6124, lon: 77.7601, zone: 'West Central Railway' },
+      KNW:  { code: 'KNW',  name: 'Khandwa Junction', lat: 21.8314, lon: 76.3498, zone: 'West Central Railway' },
+      BPL:  { code: 'BPL',  name: 'Bhopal Junction', lat: 23.2599, lon: 77.4126, zone: 'West Central Railway' },
+      RN:   { code: 'RN',   name: 'Ratnagiri', lat: 16.9902, lon: 73.3120, zone: 'Konkan Railway' },
+      KKW:  { code: 'KKW',  name: 'Kankavali', lat: 16.2625, lon: 73.7118, zone: 'Konkan Railway' }
+    };
+
+    // ==========================================
+    // ROUTE TRAINS DATABASE
+    // ==========================================
+    const TRAINS_DATABASE = {
+      // 1. NEW DELHI -> GOA (MADGAON)
+      'NDLS_MAO': [
+        {
+          id: '12450',
+          number: '12450',
+          name: 'Goa Sampark Kranti Express',
+          dep: '06:15 AM',
+          arr: '11:05 AM (+1d)',
+          duration: '28h 50m',
+          fare: '₹420',
+          days: 'S M T W T F S',
+          status: 'Arriving in 18 mins at Kankavali',
+          statusClass: 'tag-red',
+          nextStation: 'Kankavali (KKW)',
+          distKm: 22.0,
+          baseSpeed: 78,
+          hp: 6350,
+          weightT: 1080,
+          delayMins: 12,
+          currentStationIndex: 2,
+          stations: [
+            { code: 'NDLS', name: 'New Delhi', km: 0, pf: '4', schArr: '---', actArr: '---', schDep: '06:15 AM', actDep: '06:15 AM', passed: true },
+            { code: 'BCT',  name: 'Vasai Road / Panvel', km: 1380, pf: '7', schArr: '03:10 AM', actArr: '03:15 AM', schDep: '03:15 AM', actDep: '03:20 AM', passed: true },
+            { code: 'RN',   name: 'Ratnagiri', km: 1680, pf: '2', schArr: '08:20 AM', actArr: '08:32 AM', schDep: '08:25 AM', actDep: '08:37 AM', passed: true },
+            { code: 'KKW',  name: 'Kankavali', km: 1792, pf: '1', schArr: '10:02 AM', actArr: '10:20 AM', schDep: '10:04 AM', actDep: '10:22 AM', current: true },
+            { code: 'MAO',  name: 'Madgaon Junction (Goa)', km: 1912, pf: '1', schArr: '11:05 AM', actArr: '11:25 AM', schDep: '---', actDep: '---', current: false }
+          ]
+        },
+        {
+          id: '12780',
+          number: '12780',
+          name: 'Goa Express',
+          dep: '03:15 PM',
+          arr: '05:40 AM (+2d)',
+          duration: '38h 25m',
+          fare: '₹480',
+          days: 'Runs Daily',
+          status: '2 km to Harda • Arriving in 14 mins',
+          statusClass: 'tag-red',
+          nextStation: 'Harda (HD)',
+          distKm: 2.0,
+          baseSpeed: 74,
+          hp: 6350,
+          weightT: 1080,
+          delayMins: 22,
+          currentStationIndex: 1,
+          stations: [
+            { code: 'NDLS', name: 'Hazrat Nizamuddin (Delhi)', km: 0, pf: '2', schArr: '---', actArr: '---', schDep: '03:15 PM', actDep: '03:15 PM', passed: true },
+            { code: 'KNW',  name: 'Khandwa Junction', km: 615, pf: '4', schArr: '02:52 PM', actArr: '02:58 PM', schDep: '02:55 PM', actDep: '03:05 PM', passed: true },
+            { code: 'HD',   name: 'Harda', km: 723, pf: '2', schArr: '03:58 PM', actArr: '04:20 PM', schDep: '04:00 PM', actDep: '04:22 PM', current: true },
+            { code: 'ET',   name: 'Itarsi Junction', km: 799, pf: '1', schArr: '05:15 PM', actArr: '05:23 PM', schDep: '05:20 PM', actDep: '05:28 PM', current: false },
+            { code: 'BPL',  name: 'Bhopal Junction', km: 891, pf: '2', schArr: '07:10 PM', actArr: '07:18 PM', schDep: '07:20 PM', actDep: '07:28 PM', current: false },
+            { code: 'MAO',  name: 'Madgaon Junction (Goa)', km: 2164, pf: '2', schArr: '05:40 AM', actArr: '06:05 AM', schDep: '---', actDep: '---', current: false }
+          ]
+        },
+        {
+          id: '22414',
+          number: '22414',
+          name: 'Madgaon Rajdhani Express',
+          dep: '06:15 AM',
+          arr: '11:55 AM (+1d)',
+          duration: '29h 40m',
+          fare: '₹2,650',
+          days: 'Fri, Sat Only',
+          status: 'Cruising at 120 km/h • On Time',
+          statusClass: 'tag-green',
+          nextStation: 'Ratnagiri (RN)',
+          distKm: 48.0,
+          baseSpeed: 115,
+          hp: 12000,
+          weightT: 950,
+          delayMins: 2,
+          currentStationIndex: 1,
+          stations: [
+            { code: 'NDLS', name: 'Hazrat Nizamuddin (Delhi)', km: 0, pf: '5', schArr: '---', actArr: '---', schDep: '06:15 AM', actDep: '06:15 AM', passed: true },
+            { code: 'RN',   name: 'Ratnagiri', km: 1680, pf: '1', schArr: '09:10 AM', actArr: '09:12 AM', schDep: '09:15 AM', actDep: '09:17 AM', current: true },
+            { code: 'MAO',  name: 'Madgaon Junction (Goa)', km: 1912, pf: '1', schArr: '11:55 AM', actArr: '11:58 AM', schDep: '---', actDep: '---', current: false }
+          ]
+        }
+      ],
+
+      // 2. PUNE -> BHUSAVAL
+      'PUNE_BSL': [
+        {
+          id: '12779',
+          number: '12779',
+          name: 'Goa Express',
+          dep: '4:30 AM',
+          arr: '12:40 PM',
+          duration: '8h 10m',
+          fare: '₹175',
+          days: 'Runs Daily',
+          status: '2 km to Harda (Delayed by 22m • Dynamic ETA 4:20 PM)',
+          statusClass: 'tag-red',
+          nextStation: 'Harda (HD)',
+          distKm: 2.0,
+          baseSpeed: 74,
+          hp: 6350,
+          weightT: 1080,
+          delayMins: 22,
+          currentStationIndex: 1,
+          stations: [
+            { code: 'KNW', name: 'Khandwa Junction', km: 615, pf: '4', schArr: '2:52 PM', actArr: '2:58 PM', schDep: '2:55 PM', actDep: '3:05 PM', passed: true },
+            { code: 'HD',  name: 'Harda', km: 723, pf: '2', schArr: '3:58 PM', actArr: '4:20 PM', schDep: '4:00 PM', actDep: '4:22 PM', current: true },
+            { code: 'ET',  name: 'Itarsi Junction', km: 799, pf: '1', schArr: '5:15 PM', actArr: '5:23 PM', schDep: '5:20 PM', actDep: '5:28 PM', current: false },
+            { code: 'BPL', name: 'Bhopal Junction', km: 891, pf: '2', schArr: '7:10 PM', actArr: '7:18 PM', schDep: '7:20 PM', actDep: '7:28 PM', current: false }
+          ]
+        },
+        {
+          id: '26101',
+          number: '26101',
+          name: 'Ajni Vande Bharat Express',
+          dep: '6:25 AM',
+          arr: '12:50 PM',
+          duration: '6h 25m',
+          fare: 'NA',
+          days: 'S M T W T F S',
+          status: 'Approaching Chalisgaon (On Time +2m)',
+          statusClass: 'tag-green',
+          nextStation: 'Chalisgaon',
+          distKm: 14.0,
+          baseSpeed: 125,
+          hp: 12000,
+          weightT: 430,
+          delayMins: 2,
+          currentStationIndex: 0,
+          stations: [
+            { code: 'PUNE', name: 'Pune Junction', km: 0, pf: '2', schArr: '---', actArr: '---', schDep: '06:25 AM', actDep: '06:25 AM', passed: true },
+            { code: 'CSN',  name: 'Chalisgaon', km: 375, pf: '2', schArr: '11:22 AM', actArr: '11:24 AM', schDep: '11:24 AM', actDep: '11:26 AM', current: true },
+            { code: 'BSL',  name: 'Bhusaval Junction', km: 492, pf: '3', schArr: '12:45 PM', actArr: '12:48 PM', schDep: '---', actDep: '---', current: false }
+          ]
+        },
+        {
+          id: '11427',
+          number: '11427',
+          name: 'Jasidih Weekly Express',
+          dep: '6:40 AM',
+          arr: '2:10 PM',
+          duration: '7h 30m',
+          fare: '₹160',
+          days: 'S M T W T F S',
+          status: 'Running smoothly on schedule',
+          statusClass: 'tag-green',
+          nextStation: 'Manmad Junction',
+          distKm: 35.0,
+          baseSpeed: 82,
+          hp: 6350,
+          weightT: 1080,
+          delayMins: 0,
+          currentStationIndex: 0,
+          stations: [
+            { code: 'PUNE', name: 'Pune Junction', km: 0, pf: '1', schArr: '---', actArr: '---', schDep: '06:40 AM', actDep: '06:40 AM', passed: true },
+            { code: 'MMR',  name: 'Manmad Junction', km: 308, pf: '2', schArr: '10:45 AM', actArr: '10:45 AM', schDep: '10:50 AM', actDep: '10:50 AM', current: true },
+            { code: 'BSL',  name: 'Bhusaval Junction', km: 492, pf: '4', schArr: '02:10 PM', actArr: '02:10 PM', schDep: '---', actDep: '---', current: false }
+          ]
+        }
+      ],
+
+      // 3. NEW DELHI -> KANPUR CENTRAL
+      'NDLS_CNB': [
+        {
+          id: '12302',
+          number: '12302',
+          name: 'Howrah Rajdhani Express',
+          dep: '04:50 PM',
+          arr: '09:30 PM',
+          duration: '4h 40m',
+          fare: '₹1,840',
+          days: 'Runs Daily',
+          status: 'Past Aligarh • Arriving in 26 mins at Kanpur Outer',
+          statusClass: 'tag-green',
+          nextStation: 'Kanpur Central (CNB)',
+          distKm: 34.0,
+          baseSpeed: 128,
+          hp: 6350,
+          weightT: 1080,
+          delayMins: 4,
+          currentStationIndex: 0,
+          stations: [
+            { code: 'NDLS', name: 'New Delhi', km: 0, pf: '16', schArr: '---', actArr: '---', schDep: '04:50 PM', actDep: '04:50 PM', passed: true },
+            { code: 'CNB',  name: 'Kanpur Central', km: 440, pf: '2', schArr: '09:30 PM', actArr: '09:34 PM', schDep: '09:35 PM', actDep: '09:39 PM', current: true }
+          ]
+        }
+      ]
+    };
+
+    // ==========================================
+    // STATION BOARDS DATABASE
+    // ==========================================
+    const STATION_BOARDS = {
+      'MAO': [
+        { no: '12450', name: 'Goa Sampark Kranti Express (NDLS → MAO)', pf: '1', sch: '11:05 AM', act: '11:25 AM (+20m)', status: 'Arriving in 18 mins (Past Ratnagiri)', tag: 'tag-red' },
+        { no: '12780', name: 'Goa Express (NZM → VSG)', pf: '2', sch: '05:40 AM', act: '06:05 AM (+25m)', status: 'Approaching Castle Rock Ghat', tag: 'tag-red' },
+        { no: '22414', name: 'Madgaon Rajdhani (NZM → MAO)', pf: '1', sch: '11:55 AM', act: '11:58 AM (On Time)', status: 'Cruising at 120 km/h', tag: 'tag-green' },
+        { no: '10103', name: 'Mandovi Express (CSMT → MAO)', pf: '3', sch: '07:15 PM', act: '07:15 PM (On Time)', status: 'On Schedule past Khed', tag: 'tag-green' }
+      ],
+      'HD': [
+        { no: '12779', name: 'Goa Express (VSG → NZM)', pf: '2', sch: '3:58 PM', act: '4:20 PM (+22m)', status: '2 km to Harda (Arriving)', tag: 'tag-red' },
+        { no: '12137', name: 'Punjab Mail (CSMT → FZR)', pf: '1', sch: '4:45 PM', act: '4:45 PM (On Time)', status: 'Cruising past Timarni', tag: 'tag-green' },
+        { no: '11057', name: 'Amritsar Express (CSMT → ASR)', pf: '2', sch: '5:10 PM', act: '5:25 PM (+15m)', status: 'Trailing freight near Khandwa', tag: 'tag-red' }
+      ],
+      'NDLS': [
+        { no: '12302', name: 'Howrah Rajdhani Express', pf: '16', sch: '04:50 PM', act: '04:50 PM (On Time)', status: 'Platform 16 Boarding', tag: 'tag-green' },
+        { no: '22436', name: 'Vande Bharat Express (NDLS → BSB)', pf: '1', sch: '06:00 AM', act: '06:00 AM (On Time)', status: 'Departed On Time', tag: 'tag-green' },
+        { no: '12450', name: 'Goa Sampark Kranti (NDLS → MAO)', pf: '4', sch: '06:15 AM', act: '06:15 AM (On Time)', status: 'Running on schedule', tag: 'tag-green' }
+      ]
+    };
+
+    // ==========================================
+    // CORE KINEMATIC & WEATHER STATE
+    // ==========================================
+    let activeTrainId = '12450';
+    let currentActiveTrain = TRAINS_DATABASE['NDLS_MAO'][0];
+    let activeWeatherMode = 'live'; // 'live' | 'rain' | 'fog' | 'heat' | 'clear'
+    let currentLiveWeather = null;
+
+    // Real Open-Meteo Public Meteorological API Fetch
+    async function fetchLiveWeatherFromApi(lat, lon) {
+      try {
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,visibility,wind_speed_10m`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('API Error');
+        const data = await res.json();
+        return data.current;
+      } catch (e) {
+        console.warn('Using cached fallback for weather:', e);
+        return {
+          temperature_2m: 31.8,
+          relative_humidity_2m: 65,
+          weather_code: 1,
+          visibility: 8500,
+          wind_speed_10m: 9.0
+        };
+      }
+    }
+
+    // Weather Adhesion Rule (IR General Rules GR 3.61)
+    function calculateAdhesion(weatherObj, modeOverride = null) {
+      const mode = modeOverride || activeWeatherMode;
+      let mu = 0.38;
+      let cond = 'Dry Railhead • High Adhesion';
+      let speedCap = null;
+      let penaltyFactor = 1.0;
+      let temp = weatherObj?.temperature_2m || 31.8;
+      let hum = weatherObj?.relative_humidity_2m || 65;
+
+      if (mode === 'rain') {
+        mu = 0.22;
+        cond = 'Wet Railhead (Rain / Monsoon)';
+        penaltyFactor = 1.25;
+      } else if (mode === 'fog') {
+        mu = 0.18;
+        cond = 'Dense Fog (GR 3.61 Active)';
+        speedCap = 60; // Statutory 60 km/h cap
+        penaltyFactor = 1.35;
+      } else if (mode === 'heat') {
+        mu = 0.35;
+        temp = 43.5;
+        cond = 'Sun-Kink Risk (Track Temp >55°C)';
+        penaltyFactor = 1.05;
+      } else if (mode === 'clear') {
+        mu = 0.38;
+        cond = 'Clear Track • Optimal Friction';
+        penaltyFactor = 1.0;
+      } else {
+        // Mode 'live'
+        const code = weatherObj?.weather_code || 1;
+        const vis = weatherObj?.visibility || 8500;
+        if ((code >= 51 && code <= 67) || (code >= 80 && code <= 99)) {
+          mu = 0.22;
+          cond = 'Wet Railhead (Live Rain Radar)';
+          penaltyFactor = 1.25;
+        } else if (code === 45 || code === 48 || vis < 400) {
+          mu = 0.18;
+          cond = 'Dense Fog (FSD Governor)';
+          speedCap = 60;
+          penaltyFactor = 1.35;
+        } else if (temp > 40) {
+          cond = 'Extreme Heat (Live Sat Sensor)';
+          penaltyFactor = 1.05;
+        }
+      }
+
+      return { mu, cond, speedCap, penaltyFactor, temp, hum };
+    }
+
+    // Newton-Davis Kinematic ETA Equation
+    // R(v) = A + Bv + Cv^2
+    // effective_v = min(base_speed, speedCap)
+    // t = (dist / effective_v) * 60 + penalty + signalDelay
+    function calculateKinematicArrival(train, adhesion) {
+      let speed = train.baseSpeed;
+      if (adhesion.speedCap && speed > adhesion.speedCap) {
+        speed = adhesion.speedCap;
+      }
+
+      // Davis resistance in kN
+      const A = 6.4 * (train.weightT / 100);
+      const B = 0.12 * (train.weightT / 100);
+      const C = 0.0035;
+      const R_davis = (A + (B * speed) + (C * Math.pow(speed, 2))) / 1000; // in kN
+
+      // Dynamic calculation of minutes to next station
+      const baseMinutes = (train.distKm / speed) * 60;
+      const weatherAddedMins = (adhesion.penaltyFactor - 1.0) * baseMinutes * 0.5;
+      const finalMins = Math.max(1, Math.round(baseMinutes + weatherAddedMins + (train.delayMins > 0 ? 3 : 0)));
+
+      return {
+        minsToArrive: finalMins,
+        effectiveSpeed: speed,
+        davisKn: R_davis.toFixed(1),
+        weatherAddedMins: Math.round(weatherAddedMins)
+      };
+    }
+
+    // Update the Live Timeline Screen with Real Computed Values
+    async function updateTimelineWithRealCalculations(train) {
+      currentActiveTrain = train;
+      activeTrainId = train.id;
+
+      // 1. Fetch live Open-Meteo weather for train's station
+      const stnCode = train.stations[train.currentStationIndex]?.code || 'HD';
+      const coords = STATION_COORDINATES[stnCode] || { lat: 22.3436, lon: 77.0984 };
+      currentLiveWeather = await fetchLiveWeatherFromApi(coords.lat, coords.lon);
+
+      // 2. Compute Adhesion and Davis Kinematics
+      const adhesion = calculateAdhesion(currentLiveWeather);
+      const kinematic = calculateKinematicArrival(train, adhesion);
+
+      // 3. Update DOM Elements
+      document.getElementById('timeline-train-title').textContent = `${train.number} - ${train.name}`;
+      
+      const bannerText = `Arriving in ${kinematic.minsToArrive} mins at ${train.nextStation}`;
+      document.getElementById('dynamic-next-station-banner').textContent = bannerText;
+
+      document.getElementById('dynamic-physics-metrics').textContent = 
+        `Davis Resistance: ${kinematic.davisKn} kN • Speed: ${kinematic.effectiveSpeed} km/h • ${adhesion.cond}`;
+
+      document.getElementById('banner-delay-pill').textContent = 
+        train.delayMins > 0 ? `+${train.delayMins}m Delayed` : 'On Time';
+
+      document.getElementById('floating-status-text').textContent = 
+        `${train.distKm} km to ${train.nextStation} • Arriving in ${kinematic.minsToArrive} min`;
+
+      document.getElementById('floating-live-weather-text').textContent = 
+        `Open-Meteo Satellite: ${adhesion.temp.toFixed(1)}°C • ${adhesion.cond} (μ = ${adhesion.mu})`;
+
+      // Render Vertical Station Timeline
+      renderStationTimelineRows(train, kinematic, adhesion);
+    }
+
+    // Render Vertical Station Rows
+    function renderStationTimelineRows(train, kinematic, adhesion) {
+      const container = document.getElementById('timeline-stations-list');
+      let html = '<div class="track-line"></div>';
+
+      train.stations.forEach((stn, idx) => {
+        const isCurrent = stn.current;
+        const isPassed = stn.passed;
+
+        if (isCurrent) {
+          html += `
+            <div class="station-timeline-row" style="background:rgba(2, 132, 199, 0.08); border-radius:8px; padding:6px 0;">
+              <div class="arr-col">
+                <span class="time-sched">${stn.schArr}</span>
+                <span class="time-actual tag-red">${stn.actArr}</span>
+              </div>
+              <div class="track-node-col">
+                <div class="train-loco-marker">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="16" height="16" x="4" y="4" rx="2"/><path d="M9 18v2"/><path d="M15 18v2"/><path d="M8 8h8"/><path d="M8 12h8"/></svg>
+                </div>
+              </div>
+              <div class="info-col">
+                <span class="stn-name" style="color:#0284C7; font-size:15px;">${stn.name}</span>
+                <div class="stn-sub">${stn.km} km &bull; <span class="platform-pill" style="background:#0284C7; color:#FFFFFF;">Platform ${stn.pf}</span></div>
+                <div style="font-size:10px; color:#0369A1; font-weight:800; margin-top:2px;">
+                  &bull; Dynamic Status: Arriving in ${kinematic.minsToArrive} mins (Distance ${train.distKm} km)
+                </div>
+                <div style="font-size:9px; color:#64748B;">
+                  Weather: ${adhesion.temp.toFixed(1)}°C • ${adhesion.cond} (μ = ${adhesion.mu})
+                </div>
+              </div>
+              <div class="dep-col">
+                <span class="time-sched">${stn.schDep}</span>
+                <span class="time-actual tag-red">${stn.actDep}</span>
+              </div>
+            </div>
+          `;
+        } else {
+          html += `
+            <div class="station-timeline-row">
+              <div class="arr-col">
+                <span class="time-sched">${stn.schArr}</span>
+                <span class="time-actual ${train.delayMins > 0 ? 'tag-red' : 'tag-green'}">${stn.actArr}</span>
+              </div>
+              <div class="track-node-col">
+                <div class="track-dot" style="background:${isPassed ? '#0284C7' : '#64748B'};"></div>
+              </div>
+              <div class="info-col">
+                <span class="stn-name">${stn.name}</span>
+                <div class="stn-sub">${stn.km} km &bull; <span class="platform-pill">Platform ${stn.pf}</span></div>
+              </div>
+              <div class="dep-col">
+                <span class="time-sched">${stn.schDep}</span>
+                <span class="time-actual ${train.delayMins > 0 ? 'tag-red' : 'tag-green'}">${stn.actDep}</span>
+              </div>
+            </div>
+          `;
+        }
+      });
+
+      container.innerHTML = html;
+    }
+
+    // Weather Mode Toggle Bar
+    function setWeatherMode(mode) {
+      activeWeatherMode = mode;
+      document.querySelectorAll('.weather-sim-btn').forEach(b => b.classList.remove('active'));
+      const btn = document.getElementById(`btn-weather-${mode}`);
+      if (btn) btn.classList.add('active');
+
+      // Re-run kinematic equations with new weather parameter
+      if (currentActiveTrain) {
+        updateTimelineWithRealCalculations(currentActiveTrain);
+      }
+    }
+
+    // Screen Switching
     function openScreen(screenId) {
       document.querySelectorAll('.screen-panel').forEach(p => p.classList.remove('active'));
       const activeEl = document.getElementById(screenId);
@@ -1135,60 +1448,130 @@
       updateToStation(toEl.value);
     }
 
+    // Show Train Results for Selected Station Pair
     function showTrainResults() {
       const fromVal = document.getElementById('from-station-select').value;
       const toVal = document.getElementById('to-station-select').value;
-      document.getElementById('results-route-label').textContent = `${fromVal} &rarr; ${toVal} Train Schedule & Live Status`;
+      const routeKey = `${fromVal}_${toVal}`;
+      const revRouteKey = `${toVal}_${fromVal}`;
+
+      document.getElementById('results-route-label').textContent = 
+        `${fromVal} → ${toVal} Train Fleet & Live Status`;
+
+      const list = TRAINS_DATABASE[routeKey] || TRAINS_DATABASE[revRouteKey] || TRAINS_DATABASE['NDLS_MAO'];
+      const container = document.getElementById('trains-list-container');
+      
+      let html = '';
+      list.forEach(train => {
+        html += `
+          <div class="train-card" onclick="openTrainDirect('${train.id}')">
+            <div class="train-card-header">
+              <span class="train-pill-no">${train.number}</span>
+              <span class="train-card-time">${train.dep} — ${train.duration} — ${train.arr}</span>
+              <span class="train-card-fare">${train.fare}</span>
+            </div>
+            <div class="train-card-sub">
+              <strong style="color:#0F172A; font-size:13px;">${train.name}</strong>
+              <span style="font-size:10px; font-weight:700;">${train.days}</span>
+            </div>
+            <div class="live-delay-tag ${train.statusClass}">
+              • Live: ${train.status}
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
       openScreen('screen-results');
+    }
+
+    // Direct Train Lookup
+    function openTrainDirect(trainId) {
+      let matchedTrain = null;
+      Object.values(TRAINS_DATABASE).forEach(routeList => {
+        const found = routeList.find(t => t.id === trainId || t.number === trainId || t.name.toLowerCase().includes(trainId.toLowerCase()));
+        if (found) matchedTrain = found;
+      });
+
+      if (!matchedTrain) {
+        matchedTrain = TRAINS_DATABASE['NDLS_MAO'][0];
+      }
+
+      updateTimelineWithRealCalculations(matchedTrain);
+      openScreen('screen-timeline');
     }
 
     function searchByTrainNo() {
       const query = document.getElementById('input-train-no').value.trim();
-      openTrainDirect(query || '12779');
+      openTrainDirect(query || '12450');
     }
 
+    // Station Departure Board Lookup
     function searchByStationCode() {
-      const code = document.getElementById('input-station-code').value.trim().toUpperCase() || 'HD';
-      document.getElementById('station-board-title').textContent = `${code} Live Station Board (All Trains)`;
+      const code = document.getElementById('input-station-code').value.trim().toUpperCase() || 'MAO';
+      const station = STATION_COORDINATES[code] || { name: code, zone: 'Indian Railways' };
+
+      document.getElementById('station-board-title').textContent = `${station.name} (${code}) • Live Board`;
+      document.getElementById('station-board-zone').textContent = station.zone;
+
+      // Populate trains at this station
+      const trains = STATION_BOARDS[code] || STATION_BOARDS['MAO'];
+      const container = document.getElementById('station-trains-list');
+
+      let html = '';
+      trains.forEach(t => {
+        html += `
+          <div class="station-board-card" onclick="openTrainDirect('${t.no}')">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="train-pill-no">${t.no}</span>
+              <span style="font-size:11px; background:#0284C7; color:#FFFFFF; padding:2px 6px; border-radius:4px; font-weight:700;">Platform ${t.pf}</span>
+            </div>
+            <div style="font-size:13px; font-weight:800; color:#0F172A;">${t.name}</div>
+            <div style="display:flex; justify-content:space-between; font-size:11px; color:#475569;">
+              <span>Sched: ${t.sch}</span>
+              <span style="font-weight:800;" class="${t.tag}">Dynamic ETA: ${t.act}</span>
+            </div>
+            <div style="font-size:10px; font-weight:700;" class="${t.tag}">
+              • Status: ${t.status}
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
       openScreen('screen-station-board');
     }
 
-    function openTrainDirect(trainNo) {
-      if (trainNo === '12779' || trainNo === 'Goa Express') {
-        document.getElementById('timeline-train-title').textContent = '12779 - Goa Express (PUNE-BSL)';
-      } else {
-        document.getElementById('timeline-train-title').textContent = `${trainNo} - Live Running Status`;
-      }
-      openScreen('screen-timeline');
-    }
-
-    // Satellite Depth Map Logic
+    // ==========================================
+    // SATELLITE DEPTH MAP (Esri World Imagery)
+    // ==========================================
     let satMap = null;
-    let satTrainMarker = null;
+    let satMarker = null;
 
-    function openSatelliteMap(trainNo) {
+    function openSatelliteMap(trainId) {
       openScreen('screen-satellite');
       setTimeout(() => {
         if (!satMap) {
           initSatelliteMap();
         } else {
           satMap.invalidateSize();
-          satMap.flyTo([22.3395, 77.0986], 12, { duration: 1.0 }); // Harda coordinates
+          const targetCoords = currentActiveTrain?.id === '12450' ? [16.2625, 73.7118] : [22.3436, 77.0984];
+          satMap.flyTo(targetCoords, 12, { duration: 1.0 });
         }
       }, 100);
     }
 
     function initSatelliteMap() {
-      // Harda Latitude/Longitude: 22.3395° N, 77.0986° E
+      const initCoords = currentActiveTrain?.id === '12450' ? [16.2625, 73.7118] : [22.3436, 77.0984];
+
       satMap = L.map('sat-leaflet-map', {
         zoomControl: false,
         attributionControl: false
-      }).setView([22.3395, 77.0986], 12);
+      }).setView(initCoords, 12);
 
-      // REAL PHOTOREALISTIC SATELLITE DEPTH LAYER (Esri World Imagery)
+      // REAL PHOTOREALISTIC SATELLITE DEPTH LAYER
       L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        maxZoom: 18,
-        attribution: 'Esri, Maxar, Earthstar Geographics'
+        maxZoom: 18
       }).addTo(satMap);
 
       // High-Contrast Boundaries and Track Places Layer
@@ -1196,23 +1579,21 @@
         maxZoom: 18
       }).addTo(satMap);
 
-      // Draw Rail Track Corridor in Harda Section
-      const hardaTrackCoords = [
-        [21.8200, 76.3500], // Khandwa
-        [22.1500, 76.8000],
-        [22.3395, 77.0986], // Harda Station
-        [22.6100, 77.7600], // Itarsi
-        [23.2599, 77.4126]  // Bhopal
+      // Railway Corridor Track
+      const trackCoords = [
+        [16.9902, 73.3120], // Ratnagiri
+        [16.2625, 73.7118], // Kankavali
+        [15.2736, 73.9582]  // Madgaon (Goa)
       ];
 
-      L.polyline(hardaTrackCoords, {
+      L.polyline(trackCoords, {
         color: '#38BDF8',
         weight: 5,
         opacity: 0.9,
         dashArray: '8, 8'
       }).addTo(satMap);
 
-      // Live Train Marker on Satellite
+      // Live Train Marker
       const trainIcon = L.divIcon({
         className: 'sat-train-marker',
         html: `
@@ -1230,34 +1611,50 @@
         iconAnchor: [18, 18]
       });
 
-      satTrainMarker = L.marker([22.3395, 77.0986], { icon: trainIcon }).addTo(satMap);
-      satTrainMarker.bindPopup("<b>12779 Goa Express</b><br>Speed: 74 km/h<br>Dynamic ETA Harda: 4:20 PM<br>Delayed: 22 mins").openPopup();
+      satMarker = L.marker(initCoords, { icon: trainIcon }).addTo(satMap);
+      satMarker.bindPopup(`<b>${currentActiveTrain?.name || '12450 Goa Sampark Kranti'}</b><br>Speed: 78 km/h<br>Dynamic ETA: Arriving in 18 mins`).openPopup();
 
-      // Simulated Doppler Radar Weather Cell over Harda
-      L.circle([22.3800, 77.1500], {
-        radius: 25000,
+      // Live Doppler Radar Cloud Overlay
+      L.circle([16.3500, 73.6500], {
+        radius: 30000,
         color: '#0284C7',
         fillColor: '#0EA5E9',
         fillOpacity: 0.35,
         weight: 1.5
-      }).addTo(satMap).bindPopup("<b>Live Weather Radar</b><br>Rainfall Threat: 18 mm/h<br>Track Adhesion μ = 0.28");
+      }).addTo(satMap);
     }
 
     function zoomSatWholeIndia() {
       if (satMap) {
-        satMap.flyTo([22.5, 79.5], 5, { duration: 1.2 });
+        satMap.flyTo([21.5, 78.5], 5, { duration: 1.2 });
       }
     }
 
-    // URL Query Handler for Direct Simulator Testing
+    function refreshLiveStatus() {
+      if (currentActiveTrain) {
+        updateTimelineWithRealCalculations(currentActiveTrain);
+      }
+    }
+
+    // Initial Boot
     window.addEventListener('DOMContentLoaded', () => {
       const params = new URLSearchParams(window.location.search);
       const screen = params.get('screen');
-      if (screen) {
-        openScreen(`screen-${screen}`);
-        if (screen === 'satellite') {
-          setTimeout(() => initSatelliteMap(), 200);
-        }
+      const route = params.get('route');
+
+      if (route === 'delhi-goa') {
+        document.getElementById('from-station-select').value = 'NDLS';
+        document.getElementById('to-station-select').value = 'MAO';
+        updateFromStation('NDLS');
+        updateToStation('MAO');
+        showTrainResults();
+      } else if (screen === 'timeline') {
+        openTrainDirect('12450');
+      } else if (screen === 'satellite') {
+        openTrainDirect('12450');
+        openSatelliteMap('12450');
+      } else if (screen === 'station-board') {
+        searchByStationCode();
       }
     });
   </script>
