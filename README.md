@@ -532,6 +532,14 @@ GATI-SETU models the railway network as a dynamic directed multigraph $\mathcal{
 
 ---
 
+<div align="center">
+
+![GATI-SETU Operational Architecture & Decision Logic Flowchart](docs/screenshots/gati_setu_detailed_flowchart.png)
+
+</div>
+
+---
+
 ### 5.3 Locomotive Traction Physics & Kinematics (Why GPS Alone Fails)
 
 #### The "GPS Speed Illusion": Three Trains at the Same 50 km/h

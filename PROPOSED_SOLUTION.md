@@ -1,4 +1,4 @@
-# ❖ Proposed Solution: GATI-SETU (Graph-Augmented Transit Intelligence for Indian Railways)
+# Proposed Solution: GATI-SETU (Graph-Augmented Transit Intelligence for Indian Railways)
 
 > **Smart India Hackathon (SIH 2026) | Problem Statement SIH26028**  
 > **Ministry / Organization:** Ministry of Railways (Government of India) / Centre for Railway Information Systems (CRIS)  
@@ -137,6 +137,14 @@ Current railway ETA forecasting in India fails because trains are evaluated in *
 
 ---
 
+<div align="center">
+
+![GATI-SETU Operational Architecture & Decision Logic Flowchart](docs/screenshots/gati_setu_detailed_flowchart.png)
+
+</div>
+
+---
+
 ### The 4 Multi-Tier Architectural Components
 
 #### Tier 1: Real-Time Multi-Source Ingestion Engine
@@ -177,7 +185,7 @@ Unlike "black-box" models that predict physical impossibilities, GATI-SETU bound
 
 Every operational requirement and pain point highlighted in Problem Statement SIH26028 is directly addressed by a dedicated architectural subsystem in GATI-SETU:
 
-### ❖ Proposed Solution Slide (Master SIH Presentation View)
+### Proposed Solution Slide (Master SIH Presentation View)
 
 > **Single-Slide Jury Solution Visual**: Follows the exact layout of the official Smart India Hackathon presentation template. In just one slide, it cleanly communicates the entire solution: **7 Core Functional Modules** (yellow pill + green sub-box stack), **How It Works 5-Stage Processing Pipeline**, **3-Branch Innovation & Uniqueness Tree**, **3 Native iOS Mobile App Mockups**, and the **Kinematic ETA Calculation Flow**.
 
