@@ -259,408 +259,406 @@
     }
 
     /* ======================================================== */
-    /* RIGHT COLUMN: RICH 2D FLOWCHART + 3 CORE STAGES          */
+    /* RIGHT COLUMN: 3-STAGE MASTER OPERATIONAL FLOWCHART       */
     /* ======================================================== */
     .right-col {
       display: flex;
       flex-direction: column;
-      gap: 8px;
       height: 100%;
     }
 
-    /* -------------------------------------------------------- */
-    /* UPPER SECTION: DETAILED OPERATIONAL FLOWCHART CANVAS     */
-    /* -------------------------------------------------------- */
-    .flowchart-wrapper {
+    .flowchart-master-card {
       background: #FFFFFF;
       border: 1.8px solid #0F172A;
       border-radius: 12px;
-      padding: 8px 12px 6px 12px;
+      padding: 10px 14px 12px 14px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.03);
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      height: 615px;
-      position: relative;
+      height: 100%;
     }
 
-    .flowchart-header {
+    .flow-top-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1.2px solid #E2E8F0;
-      padding-bottom: 4px;
+      border-bottom: 1.5px solid #E2E8F0;
+      padding-bottom: 6px;
+      margin-bottom: 8px;
     }
 
-    .flowchart-title {
-      font-size: 14.5px;
-      font-weight: 900;
-      color: #0F172A;
+    .flow-top-title-group {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
-    .flowchart-badge {
+    .flow-main-heading {
+      font-size: 15.5px;
+      font-weight: 900;
+      color: #0F172A;
+      letter-spacing: 0.2px;
+    }
+
+    .flow-engine-badge {
       background: #E0F2FE;
       color: #0369A1;
       font-size: 10.5px;
       font-weight: 800;
-      padding: 2px 8px;
+      padding: 2px 9px;
       border-radius: 9999px;
-      border: 1px solid #BAE6FD;
+      border: 1.2px solid #BAE6FD;
     }
 
-    /* 2D Canvas */
-    .canvas-2d {
-      position: relative;
+    .flow-subtitle {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748B;
+    }
+
+    /* 3-Stage Connected Canvas */
+    .flow-stages-grid {
+      display: grid;
+      grid-template-columns: 1fr 34px 1.08fr 34px 1.34fr;
+      align-items: stretch;
       flex: 1;
-      width: 100%;
-      height: 540px;
+      height: calc(100% - 36px);
+      gap: 0;
     }
 
-    /* Flow Nodes */
-    .node {
-      position: absolute;
-      border-radius: 8px;
-      padding: 4px 8px;
+    .stage-col {
+      border-radius: 12px;
+      border: 1.8px solid #E2E8F0;
+      padding: 10px 12px;
+      height: 100%;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-      z-index: 2;
+      gap: 8px;
     }
 
-    .node-title {
-      font-size: 10.5px;
-      font-weight: 800;
-      line-height: 1.2;
+    .col-ingest {
+      border-color: #BAE6FD;
+      background: #F8FAFC;
+    }
+
+    .col-process {
+      border-color: #DDD6FE;
+      background: #FAF5FF;
+    }
+
+    .col-output {
+      border-color: #E2E8F0;
+      background: #F8FAFC;
+    }
+
+    .stage-col-header {
       display: flex;
       align-items: center;
-      gap: 4px;
-      white-space: nowrap;
+      gap: 9px;
+      padding-bottom: 7px;
+      border-bottom: 1.5px solid;
     }
 
-    .node-sub {
-      font-size: 8.5px;
-      font-weight: 600;
-      margin-top: 1px;
-      line-height: 1.2;
+    .header-blue {
+      border-color: #BAE6FD;
     }
 
-    /* Themes */
-    .n-blue { background: #EFF6FF; border: 1.5px solid #3B82F6; color: #1D4ED8; }
-    .n-green { background: #ECFDF5; border: 1.5px solid #10B981; color: #047857; }
-    .n-amber { background: #FFFBEB; border: 1.5px solid #F59E0B; color: #B45309; }
-    .n-rose { background: #FFF1F2; border: 1.5px solid #F43F5E; color: #BE123C; }
-    .n-purple { background: #FAF5FF; border: 1.5px solid #8B5CF6; color: #6D28D9; }
-    .n-orange { background: #FFF7ED; border: 1.5px solid #EA580C; color: #C2410C; }
-
-    /* Decision Diamond / Hexagon */
-    .decision-diamond {
-      position: absolute;
-      background: #FEF3C7;
-      border: 1.6px solid #D97706;
-      color: #92400E;
-      border-radius: 9px;
-      padding: 4px 6px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      box-shadow: 0 2px 6px rgba(217, 119, 6, 0.15);
-      z-index: 2;
+    .header-purple {
+      border-color: #DDD6FE;
     }
 
-    .dia-title {
-      font-size: 10px;
+    .header-slate {
+      border-color: #E2E8F0;
+    }
+
+    .stage-num-badge {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      color: #FFFFFF;
       font-weight: 900;
+      font-size: 12.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.12);
+    }
+
+    .badge-blue { background: #0284C7; }
+    .badge-purple { background: #7C3AED; }
+    .badge-slate { background: #0F172A; }
+
+    .stage-title-wrap {
+      display: flex;
+      flex-direction: column;
       line-height: 1.15;
     }
 
-    .dia-sub {
-      font-size: 8px;
-      font-weight: 700;
-      opacity: 0.9;
-      margin-top: 1px;
-    }
-
-    /* Tags for YES / NO */
-    .tag-yes {
-      position: absolute;
-      background: #DCFCE7;
-      color: #15803D;
-      border: 1px solid #86EFAC;
-      border-radius: 4px;
-      font-size: 8.5px;
+    .stage-col-title {
+      font-size: 13.5px;
       font-weight: 900;
-      padding: 1px 4px;
-      z-index: 3;
+      color: #0F172A;
     }
 
-    .tag-no {
-      position: absolute;
+    .stage-col-sub {
+      font-size: 10px;
+      font-weight: 700;
+      color: #64748B;
+    }
+
+    /* Cards Stack */
+    .stage-cards-flow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      flex: 1;
+      justify-content: space-evenly;
+      width: 100%;
+    }
+
+    .flow-card {
+      border-radius: 9px;
+      border: 1.6px solid #CBD5E1;
+      padding: 7px 11px;
+      width: 100%;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 2.5px;
+      background: #FFFFFF;
+    }
+
+    .card-blue { border-color: #38BDF8; background: #F0F9FF; }
+    .card-blue-dark { border-color: #0284C7; background: #E0F2FE; }
+    .card-purple { border-color: #C084FC; background: #FAF5FF; }
+    .card-purple-dark { border-color: #7C3AED; background: #EDE9FE; }
+    .card-amber { border-color: #F59E0B; background: #FFFBEB; }
+    .card-green { border-color: #10B981; background: #ECFDF5; }
+
+    .mini-card {
+      padding: 5px 7px;
+      height: 100%;
+    }
+
+    .card-icon-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 800;
+      font-size: 12.2px;
+      color: #0F172A;
+    }
+
+    .c-emoji {
+      font-size: 14.5px;
+      flex-shrink: 0;
+    }
+
+    .c-title {
+      white-space: nowrap;
+    }
+
+    .c-desc {
+      font-size: 10.2px;
+      font-weight: 600;
+      color: #334155;
+      line-height: 1.3;
+    }
+
+    .c-math-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9.8px;
+      font-weight: 700;
+      color: #0369A1;
+      background: #FFFFFF;
+      padding: 2.5px 7px;
+      border-radius: 4px;
+      border: 1px solid #E2E8F0;
+      margin: 1.5px 0;
+      letter-spacing: -0.2px;
+    }
+
+    .flow-down-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 18px;
+    }
+
+    .stage-inter-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stage-inter-arrow-split {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Hexagons */
+    .hex-decision-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 2px 0;
+      width: 100%;
+    }
+
+    .hex-svg {
+      width: 100%;
+      height: auto;
+      max-width: 255px;
+    }
+
+    .branch-fork-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+      width: 100%;
+    }
+
+    .branch-sub-col {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .tag-branch-no {
       background: #FFE4E6;
       color: #BE123C;
       border: 1px solid #FDA4AF;
       border-radius: 4px;
       font-size: 8.5px;
       font-weight: 900;
-      padding: 1px 4px;
-      z-index: 3;
+      padding: 1.5px 4px;
+      text-align: center;
+      display: block;
     }
 
-    /* SVG Overlay Wire Network */
-    .svg-wires {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    .wire-std { stroke: #64748B; stroke-width: 2; fill: none; }
-    .wire-green { stroke: #10B981; stroke-width: 2; fill: none; }
-    .wire-red { stroke: #EF4444; stroke-width: 2; fill: none; }
-    .wire-blue { stroke: #0284C7; stroke-width: 2; fill: none; }
-    .wire-amber { stroke: #D97706; stroke-width: 2; fill: none; }
-
-    /* Bottom Multi-User Resolution Strip */
-    .resolution-strip {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 8px;
-      width: 100%;
-      padding-top: 4px;
-      border-top: 1.2px dashed #CBD5E1;
-    }
-
-    .res-card {
-      background: #F8FAFC;
-      border-radius: 7px;
-      padding: 4px 7px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      border: 1.2px solid #CBD5E1;
-    }
-
-    .res-card.c-pass { border-color: #0284C7; background: #F0F9FF; }
-    .res-card.c-ctrl { border-color: #7C3AED; background: #FAF5FF; }
-    .res-card.c-stn  { border-color: #059669; background: #ECFDF5; }
-
-    .res-icon { font-size: 14px; flex-shrink: 0; }
-    .res-col { display: flex; flex-direction: column; line-height: 1.15; }
-    .res-title { font-size: 9.5px; font-weight: 900; color: #0F172A; }
-    .res-desc { font-size: 8px; font-weight: 600; color: #475569; }
-
-    /* -------------------------------------------------------- */
-    /* LOWER SECTION: 3 CONNECTED CORE STAGES (INPUT/PROC/OUT)  */
-    /* -------------------------------------------------------- */
-    .stages-wrapper {
-      display: grid;
-      grid-template-columns: 1.1fr 30px 1.45fr 30px 1.1fr;
-      align-items: center;
-      height: 295px;
-    }
-
-    .stage-card {
-      background: #FFFFFF;
-      border: 1.8px solid #0F172A;
-      border-radius: 12px;
-      padding: 8px 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .stage-badge-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-bottom: 4px;
-      border-bottom: 1.5px solid #E2E8F0;
-    }
-
-    .stage-title {
-      font-size: 13px;
-      font-weight: 900;
-      color: #0F172A;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .stage-tag {
-      font-size: 9px;
-      font-weight: 800;
-      padding: 2px 6px;
+    .tag-branch-yes {
+      background: #DCFCE7;
+      color: #15803D;
+      border: 1px solid #86EFAC;
       border-radius: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-    }
-
-    .tag-blue { background: #E0F2FE; color: #0284C7; }
-    .tag-purple { background: #F3E8FF; color: #7E22CE; }
-    .tag-green { background: #DCFCE7; color: #15803D; }
-
-    .stage-arrow-connector {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .stage-arrow-svg {
-      width: 26px;
-      height: 26px;
-      stroke: #0284C7;
-      fill: #0284C7;
-    }
-
-    /* Stage 1: Input Ingestion items */
-    .input-stream-list {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      flex: 1;
-      justify-content: space-around;
-    }
-
-    .stream-row {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      background: #F8FAFC;
-      border: 1px solid #E2E8F0;
-      border-radius: 6px;
-      padding: 3.5px 7px;
-    }
-
-    .stream-icon-badge {
-      font-size: 13px;
-      flex-shrink: 0;
-    }
-
-    .stream-text-col {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.2;
-    }
-
-    .stream-name {
-      font-size: 10.5px;
-      font-weight: 800;
-      color: #0F172A;
-    }
-
-    .stream-spec {
       font-size: 8.5px;
-      font-weight: 600;
-      color: #64748B;
+      font-weight: 900;
+      padding: 1.5px 4px;
+      text-align: center;
+      display: block;
     }
 
-    /* Stage 2: Processing Core & Physics Equations */
-    .physics-formula-container {
+    .hex-exit-labels {
       display: flex;
-      flex-direction: column;
-      gap: 4px;
-      flex: 1;
-      justify-content: space-around;
-    }
-
-    .formula-pill-box {
-      background: #F8FAFC;
-      border: 1.2px solid #CBD5E1;
-      border-radius: 7px;
-      padding: 4px 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5px;
-    }
-
-    .formula-header {
+      justify-content: space-between;
+      width: 100%;
       font-size: 10px;
       font-weight: 800;
-      color: #0F172A;
+      padding: 1px 4px;
+    }
+
+    .exit-no {
+      color: #15803D;
+    }
+
+    .exit-yes {
+      color: #BE123C;
+    }
+
+    /* Output Stage Sub-Panels */
+    .stage-output-blocks {
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    .output-sub-panel {
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
       justify-content: space-between;
     }
 
-    .formula-tag {
-      font-size: 8px;
-      font-weight: 800;
-      color: #6D28D9;
-      background: #EDE9FE;
-      padding: 1px 4px;
-      border-radius: 3px;
+    .panel-on-time {
+      background: #F0FDF4;
+      border: 2px solid #16A34A;
+      box-shadow: 0 4px 10px rgba(22, 163, 74, 0.09);
     }
 
-    .formula-math {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9.5px;
-      font-weight: 700;
-      color: #0369A1;
-      background: #FFFFFF;
-      padding: 2px 6px;
-      border-radius: 4px;
-      border: 1px solid #E2E8F0;
-      letter-spacing: -0.2px;
+    .panel-delayed {
+      background: #FFF1F2;
+      border: 2px solid #E11D48;
+      box-shadow: 0 4px 10px rgba(225, 29, 72, 0.09);
     }
 
-    /* Stage 3: Output Delivery */
-    .output-device-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      flex: 1;
-      justify-content: space-around;
-    }
-
-    .output-item-box {
-      background: #F8FAFC;
-      border: 1.2px solid #CBD5E1;
-      border-radius: 7px;
-      padding: 4px 7px;
+    .output-sub-header {
       display: flex;
       align-items: center;
       gap: 7px;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.3px;
+      padding-bottom: 5px;
+      border-bottom: 1.2px dashed;
     }
 
-    .output-icon-box {
-      width: 26px;
-      height: 26px;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      flex-shrink: 0;
-      background: #FFFFFF;
-      border: 1px solid #E2E8F0;
-    }
+    .text-green { color: #15803D; border-color: #86EFAC; }
+    .text-rose { color: #BE123C; border-color: #FDA4AF; }
 
-    .output-detail-col {
+    .output-user-cards {
       display: flex;
       flex-direction: column;
-      line-height: 1.2;
+      gap: 8px;
+      flex: 1;
+      justify-content: space-evenly;
     }
 
-    .output-heading {
-      font-size: 10.5px;
+    .user-action-card {
+      background: #FFFFFF;
+      border-radius: 8px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1.4px solid #CBD5E1;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+    }
+
+    .card-user-pass { border-color: #BAE6FD; }
+    .card-user-ctrl { border-color: #BBF7D0; }
+    .card-user-stn  { border-color: #86EFAC; }
+    .card-user-pass-delay { border-color: #FECDD3; }
+    .card-user-ctrl-delay { border-color: #DDD6FE; }
+    .card-user-stn-delay  { border-color: #FED7AA; }
+
+    .u-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .u-content {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.25;
+    }
+
+    .u-title {
+      font-size: 11.8px;
       font-weight: 800;
       color: #0F172A;
     }
 
-    .output-desc-text {
-      font-size: 8.5px;
+    .u-desc {
+      font-size: 10px;
       font-weight: 600;
       color: #475569;
     }
@@ -897,453 +895,312 @@
     </aside>
 
     <!-- ------------------------------------------------------ -->
-    <!-- RIGHT COLUMN: DETAILED 2D BRANCHING FLOWCHART & STAGES -->
+    <!-- RIGHT COLUMN: MASTER OPERATIONAL FLOWCHART (STAGES 1-3) -->
     <!-- ------------------------------------------------------ -->
     <section class="right-col">
-
-      <!-- ==================================================== -->
-      <!-- UPPER: COMPREHENSIVE 2D FLOWCHART CANVAS             -->
-      <!-- ==================================================== -->
-      <div class="flowchart-wrapper" style="height: 644px;">
-        <div class="flowchart-header">
-          <div class="flowchart-title">
-            <span>Dynamic Operational &amp; Multi-Stakeholder Forecasting Flowchart</span>
-            <span class="flowchart-badge">Closed-Loop Ground Reality Engine</span>
+      <div class="flowchart-master-card">
+        
+        <!-- Flowchart Top Bar -->
+        <div class="flow-top-bar">
+          <div class="flow-top-title-group">
+            <span class="flow-main-heading">⚡ GATI-SETU: End-to-End Operational Decision Architecture</span>
+            <span class="flow-engine-badge">Closed-Loop Ground Reality Engine</span>
           </div>
-          <div style="font-size: 11px; font-weight: 700; color: #64748B;">
-            Sequential Railway Decision Gates • Dead-Reckoning Fallback • Rule 401 Siding Precedence • Platform Queuing
+          <div class="flow-subtitle">
+            30s NavIC Satellite Ingestion • Newton-Davis Kinematics + ST-GAT AI • 3 Primary User Action Outcomes
           </div>
         </div>
 
-        <!-- 2D Canvas with Absolute Positioned Nodes and Clean SVG Wires -->
-        <div class="canvas-2d" style="height: 602px;">
+        <!-- 3-Stage Connected Canvas -->
+        <div class="flow-stages-grid">
 
-          <!-- SVG WIRING OVERLAY (Strict Symmetric 3-Column Grid) -->
-          <svg class="svg-wires" viewBox="0 0 1356 602">
-            <defs>
-              <marker id="m-arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 1 L 10 5 L 0 9 z" fill="#64748B"/>
-              </marker>
-              <marker id="m-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 1 L 10 5 L 0 9 z" fill="#10B981"/>
-              </marker>
-              <marker id="m-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 1 L 10 5 L 0 9 z" fill="#EF4444"/>
-              </marker>
-              <marker id="m-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 1 L 10 5 L 0 9 z" fill="#0284C7"/>
-              </marker>
-              <marker id="m-amber" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 1 L 10 5 L 0 9 z" fill="#D97706"/>
-              </marker>
-            </defs>
-
-            <!-- ROW 1 WIRES: User Entry -> Select Train -> Ingest Telemetry -> Dia 1 -->
-            <path d="M 238 29 L 265 29" class="wire-blue" marker-end="url(#m-blue)"/>
-            <path d="M 495 29 L 522 29" class="wire-blue" marker-end="url(#m-blue)"/>
-            <path d="M 767 29 L 795 29" class="wire-std" marker-end="url(#m-arrow)"/>
-
-            <!-- Dia 1 [NO] -> Dead-Reckoning (Right) -->
-            <path d="M 995 29 L 1045 29" class="wire-red" marker-end="url(#m-red)"/>
-            <!-- Dia 1 [YES] -> Node 4 (Down & Left at Y=59px to Center Axis) -->
-            <path d="M 895 52 L 895 55 Q 895 59 875 59 L 695 59 Q 685 59 685 63 L 685 68" class="wire-green" marker-end="url(#m-green)"/>
-
-            <!-- Dead-Reckoning Loop back into Node 4 (Down & Left at Y=64px) -->
-            <path d="M 1195 50 L 1195 58 Q 1195 64 1175 64 L 835 64 Q 825 64 825 66 L 825 68" class="wire-amber" marker-end="url(#m-amber)"/>
-
-            <!-- Node 4 (Rail-Snap) -> Dia 2 (Straight Down on Center Axis 678px) -->
-            <path d="M 678 110 L 678 128" class="wire-std" marker-end="url(#m-arrow)"/>
-
-            <!-- ROW 3: Dia 2 [YES] -> Node 5A (Left) & Dia 2 [NO] -> Node 5B (Right) -->
-            <path d="M 528 151 L 460 151" class="wire-red" marker-end="url(#m-red)"/>
-            <path d="M 828 151 L 896 151" class="wire-green" marker-end="url(#m-green)"/>
-
-            <!-- Row 3 Convergence down to Dia 3 (Center Axis 678px) -->
-            <path d="M 270 172 L 270 180 Q 270 186 290 186 L 660 186 Q 670 186 670 188 L 670 190" class="wire-std" marker-end="url(#m-arrow)"/>
-            <path d="M 1086 172 L 1086 180 Q 1086 186 1066 186 L 696 186 Q 686 186 686 188 L 686 190" class="wire-std" marker-end="url(#m-arrow)"/>
-
-            <!-- ROW 4: Dia 3 [YES] -> Node 6A (Left) & Dia 3 [NO] -> Node 6B (Right) -->
-            <path d="M 528 213 L 460 213" class="wire-red" marker-end="url(#m-red)"/>
-            <path d="M 828 213 L 896 213" class="wire-green" marker-end="url(#m-green)"/>
-
-            <!-- Row 4 Convergence down to Dia 4 (Center Axis 678px) -->
-            <path d="M 270 234 L 270 242 Q 270 248 290 248 L 660 248 Q 670 248 670 250 L 670 252" class="wire-std" marker-end="url(#m-arrow)"/>
-            <path d="M 1086 234 L 1086 242 Q 1086 248 1066 248 L 696 248 Q 686 248 686 250 L 686 252" class="wire-std" marker-end="url(#m-arrow)"/>
-
-            <!-- ROW 5: Dia 4 [NO] -> Node 7A (Left) & Dia 4 [YES] -> Dia 4B (Right) -->
-            <path d="M 528 275 L 460 275" class="wire-std" marker-end="url(#m-arrow)"/>
-            <path d="M 828 275 L 880 275" class="wire-green" marker-end="url(#m-green)"/>
-
-            <!-- Dia 4B [NO] -> Node 7B-1 (Right) & Dia 4B [YES] -> Node 7B-2 (Down) -->
-            <path d="M 1080 275 L 1120 275" class="wire-red" marker-end="url(#m-red)"/>
-            <path d="M 980 298 L 980 318" class="wire-green" marker-end="url(#m-green)"/>
-
-            <!-- ROW 5 Convergence into Node 8 (Conformal Engine at Y=366px) -->
-            <path d="M 270 296 L 270 376 Q 270 388 290 388 L 338 388" class="wire-std" marker-end="url(#m-arrow)"/>
-            <path d="M 678 298 L 678 366" class="wire-std" marker-end="url(#m-arrow)"/>
-            <path d="M 980 354 L 980 366" class="wire-std" marker-end="url(#m-arrow)"/>
-            <path d="M 1232 296 L 1232 376 Q 1232 388 1210 388 L 1018 388" class="wire-std" marker-end="url(#m-arrow)"/>
-
-            <!-- Node 8 -> Dia 5 (Straight Down on Center Axis 678px) -->
-            <path d="M 678 410 L 678 424" class="wire-std" marker-end="url(#m-arrow)"/>
-
-            <!-- Dia 5 [YES] -> Left Delay Mitigation Box & Dia 5 [NO] -> Right Green Wave Box -->
-            <path d="M 528 445 L 460 445" class="wire-red" marker-end="url(#m-red)"/>
-            <path d="M 828 445 L 896 445" class="wire-green" marker-end="url(#m-green)"/>
-
-            <!-- Downward Feeders to Stakeholder Consoles (Zero Crossed Wires!) -->
-            <path d="M 225 466 L 225 486" class="wire-red" marker-end="url(#m-red)"/>
-            <path d="M 430 466 L 430 476 Q 430 486 450 486 L 500 486" class="wire-red" marker-end="url(#m-red)"/>
-            <path d="M 926 466 L 926 476 Q 926 486 906 486 L 856 486" class="wire-green" marker-end="url(#m-green)"/>
-            <path d="M 1130 466 L 1130 486" class="wire-green" marker-end="url(#m-green)"/>
-
-            <!-- 30-Second Perimeter Telemetry Loop: Card 3 -> Right Edge -> Top Perimeter -> Node 3 -->
-            <path d="M 1348 539 L 1354 539 Q 1355 539 1355 520 L 1355 12 Q 1355 2 1335 2 L 644 2 Q 644 2 644 5 L 644 8" class="wire-blue" stroke-dasharray="5,5" marker-end="url(#m-blue)"/>
-          </svg>
-
-          <!-- ---------------- ROW 1: USER ENTRY & TELEMETRY INGESTION ---------------- -->
-          <!-- Node 1: User Entry -->
-          <div class="node n-blue" style="top: 8px; left: 8px; width: 230px; height: 42px;">
-            <div class="node-title">📱 1. User Opens App / Console</div>
-            <div class="node-sub">Passenger Mobile • Section COA • Station Terminal</div>
-          </div>
-
-          <!-- Node 2: Select Train / Section -->
-          <div class="node n-blue" style="top: 8px; left: 265px; width: 230px; height: 42px;">
-            <div class="node-title">🔍 2. Select Train / Corridor</div>
-            <div class="node-sub">e.g. #12301 Rajdhani or NDLS-CNB 440km Trunk</div>
-          </div>
-
-          <!-- Node 3: Ingest Telemetry Stream -->
-          <div class="node n-green" style="top: 8px; left: 522px; width: 245px; height: 42px;">
-            <div class="node-title">🛰️ 3. Ingest Live Telemetry</div>
-            <div class="node-sub">BEL RTIS NavIC 30s GPS + CRIS FOIS + COA</div>
-          </div>
-
-          <!-- Decision 1: RTIS GPS Valid? -->
-          <div class="decision-diamond" style="top: 6px; left: 795px; width: 200px; height: 46px;">
-            <div class="dia-title">RTIS NavIC GPS Valid?</div>
-            <div class="dia-sub">Satellite Handshake Check</div>
-          </div>
-          <span class="tag-no" style="top: 18px; left: 1004px;">NO</span>
-          <span class="tag-yes" style="top: 52px; left: 898px;">YES</span>
-
-          <!-- Fallback Node 1D: Dead-Reckoning Physics -->
-          <div class="node n-amber" style="top: 8px; left: 1045px; width: 300px; height: 42px;">
-            <div class="node-title">⚠️ Dead-Reckoning Kinematic Predictor</div>
-            <div class="node-sub">Newton-Davis forward integration in GPS shadow / tunnels</div>
-          </div>
-
-          <!-- Continuous 30s Loop Tag (Top-right perimeter with zero overlap) -->
-          <div style="position: absolute; top: -1px; left: 1055px; background: #E0F2FE; border: 1px solid #38BDF8; color: #0284C7; font-size: 8px; font-weight: 800; padding: 1px 7px; border-radius: 4px; z-index: 4;">
-            🔄 30-Second Closed-Loop Telemetry Refresh Event Loop
-          </div>
-
-          <!-- ---------------- ROW 2: TRACK-SNAP ON CENTER AXIS (678px) ---------------- -->
-          <div class="node n-green" style="top: 68px; left: 508px; width: 340px; height: 42px;">
-            <div class="node-title">📍 4. 1D Track-Snap &amp; Kalman Filtering Engine</div>
-            <div class="node-sub">PostGIS LRS strictly snaps GPS coordinates to track chainage KM</div>
-          </div>
-
-          <!-- ---------------- ROW 3: GROUND REALITY GATE 1 (TSR & FOG) ---------------- -->
-          <!-- Decision 2 (Center Axis) -->
-          <div class="decision-diamond" style="top: 128px; left: 528px; width: 300px; height: 46px;">
-            <div class="dia-title">TSR Caution Order / Fog Ahead?</div>
-            <div class="dia-sub">Civil Engg e-Caution T/409 or IMD Fog &lt; 300m</div>
-          </div>
-          <span class="tag-yes" style="top: 140px; left: 488px;">YES</span>
-          <span class="tag-no" style="top: 140px; left: 846px;">NO</span>
-
-          <!-- Node 5A: 3-Phase Caution Delay (Left Column) -->
-          <div class="node n-rose" style="top: 130px; left: 80px; width: 380px; height: 42px;">
-            <div class="node-title">🛑 3-Phase Caution Delay Penalty (&Delta;T<sub>tsr</sub>)</div>
-            <div class="node-sub">Deceleration Loss + Restricted Zone Run + Tractive Recovery</div>
-          </div>
-
-          <!-- Node 5B: Cruise at Section MPS (Right Column) -->
-          <div class="node n-green" style="top: 130px; left: 896px; width: 380px; height: 42px;">
-            <div class="node-title">🟢 Cruise at Section MPS (130 km/h)</div>
-            <div class="node-sub">WAP-7 locomotive operates at maximum permissible section rating</div>
-          </div>
-
-          <!-- ---------------- ROW 4: GROUND REALITY GATE 2 (PRECEDENCE & FREIGHT) ---------------- -->
-          <!-- Decision 3 (Center Axis) -->
-          <div class="decision-diamond" style="top: 190px; left: 528px; width: 300px; height: 46px;">
-            <div class="dia-title">Preceding Freight Conflict Ahead?</div>
-            <div class="dia-sub">Slow Freight Detected in Ahead Block Section</div>
-          </div>
-          <span class="tag-yes" style="top: 202px; left: 488px;">YES</span>
-          <span class="tag-no" style="top: 202px; left: 846px;">NO</span>
-
-          <!-- Node 6A: ST-GAT Precedence Optimization (Left Column) -->
-          <div class="node n-purple" style="top: 192px; left: 80px; width: 380px; height: 42px;">
-            <div class="node-title">🔄 ST-GAT Precedence Optimization Engine</div>
-            <div class="node-sub">Rule 401 Advisory: Loop slow freight #BOXN to siding at KM 142</div>
-          </div>
-
-          <!-- Node 6B: Unobstructed Block Clear Wave (Right Column) -->
-          <div class="node n-green" style="top: 192px; left: 896px; width: 380px; height: 42px;">
-            <div class="node-title">⚡ Unobstructed Block Clear Wave</div>
-            <div class="node-sub">Continuous Green 4-Aspect automatic block signaling ahead</div>
-          </div>
-
-          <!-- ---------------- ROW 5: GROUND REALITY GATE 3 (TERMINAL & PLATFORMS) ---------------- -->
-          <!-- Decision 4 (Center Axis) -->
-          <div class="decision-diamond" style="top: 252px; left: 528px; width: 300px; height: 46px;">
-            <div class="dia-title">Terminal Ingress Zone (&lt; 30 KM)?</div>
-            <div class="dia-sub">Approaching Junction Outer Signal Boundary</div>
-          </div>
-          <span class="tag-no" style="top: 264px; left: 488px;">NO</span>
-          <span class="tag-yes" style="top: 264px; left: 840px;">YES</span>
-
-          <!-- Node 7A: Corridor Trajectory Cruise (Left Column) -->
-          <div class="node n-blue" style="top: 254px; left: 80px; width: 380px; height: 42px;">
-            <div class="node-title">🛰️ Inter-Station Corridor Trajectory Cruise</div>
-            <div class="node-sub">Continuous open section kinematic profile simulation</div>
-          </div>
-
-          <!-- Sub-Decision 4B: Platform Slot Free? (Right Column) -->
-          <div class="decision-diamond" style="top: 252px; left: 880px; width: 200px; height: 46px;">
-            <div class="dia-title">Platform Slot Free?</div>
-            <div class="dia-sub">T<sub>dep</sub><sup>prev</sup> + T<sub>clear</sub> &lt; T<sub>arr</sub></div>
-          </div>
-          <span class="tag-no" style="top: 264px; left: 1088px;">NO</span>
-          <span class="tag-yes" style="top: 300px; left: 990px;">YES</span>
-
-          <!-- Node 7B-1: Outer Signal Hold (Far Right) -->
-          <div class="node n-orange" style="top: 254px; left: 1120px; width: 225px; height: 42px;">
-            <div class="node-title">🚉 Outer Signal Hold (&Delta;T<sub>outer</sub>)</div>
-            <div class="node-sub">Train held at outer home awaiting PF berth</div>
-          </div>
-
-          <!-- Node 7B-2: Direct Platform Reception (Directly under 4B) -->
-          <div class="node n-green" style="top: 318px; left: 880px; width: 200px; height: 36px;">
-            <div class="node-title" style="font-size: 9.5px;">🟢 Direct Route Locked</div>
-            <div class="node-sub">Cleared to Platform 2</div>
-          </div>
-
-          <!-- ---------------- ROW 6: CORE CONFORMAL SYNTHESIS (CENTER AXIS 678px) ---------------- -->
-          <div class="node n-purple" style="top: 366px; left: 338px; width: 680px; height: 44px; border-width: 2.2px; background: #F5F3FF;">
-            <div class="node-title" style="font-size: 12px;">🎯 Bayesian Conformal Dynamic ETA Synthesis Engine</div>
-            <div class="node-sub" style="font-size: 9.5px;">Synthesizes Newton-Davis Kinematics + Corridor Graph Attention &rarr; Guaranteed Calibrated [P10, P50, P90] ETA Window</div>
-          </div>
-
-          <!-- ---------------- ROW 7: DELAY EVALUATION & PROTOCOL SWITCH ---------------- -->
-          <!-- Decision 5 (Center Axis) -->
-          <div class="decision-diamond" style="top: 424px; left: 528px; width: 300px; height: 42px;">
-            <div class="dia-title">Significant Delay &gt; 5 Mins Detected?</div>
-            <div class="dia-sub">Dynamic Schedule Deviation Threshold Check</div>
-          </div>
-          <span class="tag-yes" style="top: 434px; left: 488px;">YES</span>
-          <span class="tag-no" style="top: 434px; left: 846px;">NO</span>
-
-          <!-- Left Protocol Box: Proactive Delay Mitigation -->
-          <div class="node n-rose" style="top: 424px; left: 80px; width: 380px; height: 42px; text-align: left; padding: 4px 10px;">
-            <div class="node-title" style="color: #BE123C; font-size: 10.5px;">🚨 Proactive Delay Mitigation Protocol</div>
-            <div class="node-sub" style="color: #9F1239; font-size: 8.5px;">Dispatches automated root-cause alerts &amp; siding/platform workarounds to all 3 consoles</div>
-          </div>
-
-          <!-- Right Protocol Box: Nominal Green Wave Protocol -->
-          <div class="node n-green" style="top: 424px; left: 896px; width: 380px; height: 42px; text-align: left; padding: 4px 10px;">
-            <div class="node-title" style="color: #047857; font-size: 10.5px;">🟢 Nominal High-Speed Green Wave Protocol</div>
-            <div class="node-sub" style="color: #065F46; font-size: 8.5px;">Maintains verified section cruise at 130 km/h with automated on-time resource locks</div>
-          </div>
-
-          <!-- ---------------- ROW 8: MULTI-STAKEHOLDER ACTION CONSOLES ---------------- -->
-          <!-- CARD 1: PASSENGER MOBILE EXPERIENCE -->
-          <div class="node c-pass" style="top: 486px; left: 8px; width: 435px; height: 106px; text-align: left; padding: 6px 9px; border: 1.8px solid #0284C7; background: #F0F9FF;">
-            <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1.2px solid #BAE6FD; padding-bottom: 3px;">
-              <span style="font-size: 11px; font-weight: 900; color: #0369A1;">📱 Primary User 1: Passenger Mobile App</span>
-              <span style="font-size: 8.5px; font-weight: 800; background: #E0F2FE; color: #0284C7; padding: 1px 6px; border-radius: 4px;">React Native</span>
-            </div>
-            <div style="font-size: 8.8px; font-weight: 700; color: #BE123C; margin-top: 5px; line-height: 1.3;">
-              🛑 <strong>If Delay &gt; 5m:</strong> Plain root-cause push notification ("Delayed 18m: Held at Outer Signal for PF-4 rake shunting") + 1-Tap Metro &amp; Uber/Ola auto-reschedule.
-            </div>
-            <div style="font-size: 8.8px; font-weight: 700; color: #15803D; margin-top: 4px; line-height: 1.3;">
-              🟢 <strong>If On-Time:</strong> Calibrated [P10-P50-P90] ETA window (e.g. 17:42 - 17:48) + Live MapLibre speed radar &amp; next stop countdown.
-            </div>
-          </div>
-
-          <!-- CARD 2: SECTION CONTROLLER COCKPIT -->
-          <div class="node c-ctrl" style="top: 486px; left: 458px; width: 440px; height: 106px; text-align: left; padding: 6px 9px; border: 1.8px solid #7C3AED; background: #FAF5FF;">
-            <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1.2px solid #DDD6FE; padding-bottom: 3px;">
-              <span style="font-size: 11px; font-weight: 900; color: #6D28D9;">🚦 Primary User 2: Section Controller Cockpit</span>
-              <span style="font-size: 8.5px; font-weight: 800; background: #EDE9FE; color: #6D28D9; padding: 1px 6px; border-radius: 4px;">COA / ST-GAT</span>
-            </div>
-            <div style="font-size: 8.8px; font-weight: 700; color: #6D28D9; margin-top: 5px; line-height: 1.3;">
-              🛑 <strong>If Delay &gt; 5m:</strong> Automated Rule 401 Siding Precedence Advisory: "Loop freight #BOXN to siding at KM 142 &rarr; eliminates 22m passenger delay".
-            </div>
-            <div style="font-size: 8.8px; font-weight: 700; color: #15803D; margin-top: 4px; line-height: 1.3;">
-              🟢 <strong>If On-Time:</strong> Green wave corridor trajectory verification &amp; dynamic sectional throughput capacity optimization.
-            </div>
-          </div>
-
-          <!-- CARD 3: STATION MASTER & PLATFORM CONSOLE -->
-          <div class="node c-stn" style="top: 486px; left: 913px; width: 435px; height: 106px; text-align: left; padding: 6px 9px; border: 1.8px solid #059669; background: #ECFDF5;">
-            <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1.2px solid #A7F3D0; padding-bottom: 3px;">
-              <span style="font-size: 11px; font-weight: 900; color: #047857;">🏢 Primary User 3: Station Master &amp; Display Console</span>
-              <span style="font-size: 8.5px; font-weight: 800; background: #D1FAE5; color: #047857; padding: 1px 6px; border-radius: 4px;">PIDS / Yard Sync</span>
-            </div>
-            <div style="font-size: 8.8px; font-weight: 700; color: #C2410C; margin-top: 5px; line-height: 1.3;">
-              🛑 <strong>If Delay &gt; 5m:</strong> Dynamic Platform Re-allocation (Reassign PF-4 to PF-2 to clear outer hold) + Automated PIDS multilingual LED/audio broadcast.
-            </div>
-            <div style="font-size: 8.8px; font-weight: 700; color: #15803D; margin-top: 4px; line-height: 1.3;">
-              🟢 <strong>If On-Time:</strong> Turnaround depot coaching rake cleaning schedule lock &amp; Loco Pilot HOER statutory shift rest handover ready.
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- ==================================================== -->
-      <!-- BOTTOM: 3 CONNECTED CORE STAGES (INPUT / PROC / OUT) -->
-      <!-- ==================================================== -->
-      <div class="stages-wrapper">
-
-        <!-- STAGE 1: INPUT INGESTION -->
-        <div class="stage-card">
-          <div class="stage-badge-header">
-            <div class="stage-title">
-              <span>1. Ingestion Stage</span>
-            </div>
-            <span class="stage-tag tag-blue">Zero Hardware</span>
-          </div>
-          <div class="input-stream-list">
-            <div class="stream-row">
-              <span class="stream-icon-badge">🛰️</span>
-              <div class="stream-text-col">
-                <span class="stream-name">BEL RTIS NavIC GPS</span>
-                <span class="stream-spec">30s live coordinates across 8,000+ locomotives</span>
+          <!-- ==================================================== -->
+          <!-- STAGE 1: INGESTION STAGE                             -->
+          <!-- ==================================================== -->
+          <div class="stage-col col-ingest">
+            <div class="stage-col-header header-blue">
+              <div class="stage-num-badge badge-blue">1</div>
+              <div class="stage-title-wrap">
+                <span class="stage-col-title">Ingestion Stage</span>
+                <span class="stage-col-sub">100% Zero-Hardware Telemetry</span>
               </div>
             </div>
-            <div class="stream-row">
-              <span class="stream-icon-badge">🚂</span>
-              <div class="stream-text-col">
-                <span class="stream-name">CRIS FOIS Freight Telemetry</span>
-                <span class="stream-spec">Preceding freight rake tonnage, speed &amp; section status</span>
+
+            <!-- Stage 1 Flow Elements -->
+            <div class="stage-cards-flow">
+              <!-- Node 1: User / Search Trigger -->
+              <div class="flow-card card-blue">
+                <div class="card-icon-title">
+                  <span class="c-emoji">📱</span>
+                  <span class="c-title">User / Station Ingress</span>
+                </div>
+                <div class="c-desc">Passenger enters Train #12301 or GPS auto-detects boarding point</div>
+              </div>
+
+              <!-- Down Arrow -->
+              <div class="flow-down-arrow">
+                <svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 0 L9 13 M4 8 L9 14 L14 8" stroke="#0284C7" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+
+              <!-- Node 2: BEL RTIS Ingestion -->
+              <div class="flow-card card-blue">
+                <div class="card-icon-title">
+                  <span class="c-emoji">🛰️</span>
+                  <span class="c-title">BEL RTIS NavIC Feed</span>
+                </div>
+                <div class="c-desc">30s GPS coordinates &amp; velocity streamed via ISRO GSAT-15</div>
+              </div>
+
+              <!-- Down Arrow -->
+              <div class="flow-down-arrow">
+                <svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 0 L9 13 M4 8 L9 14 L14 8" stroke="#0284C7" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+
+              <!-- DECISION HEXAGON 1: RTIS GPS Valid? -->
+              <div class="hex-decision-wrap">
+                <svg class="hex-svg" viewBox="0 0 240 54" width="240" height="54">
+                  <polygon points="28,2 212,2 238,27 212,52 28,52 2,27" fill="#FEF3C7" stroke="#D97706" stroke-width="2.2" filter="drop-shadow(0 2px 4px rgba(217,119,6,0.15))"/>
+                  <text x="120" y="24" text-anchor="middle" font-size="12" font-weight="900" fill="#92400E" font-family="'Inter', sans-serif">RTIS GPS Fix Valid?</text>
+                  <text x="120" y="40" text-anchor="middle" font-size="9" font-weight="700" fill="#B45309" font-family="'Inter', sans-serif">Satellite Handshake Check</text>
+                </svg>
+              </div>
+
+              <!-- Branch Fork (YES / NO) -->
+              <div class="branch-fork-row">
+                <!-- Branch Left: NO (Dead Reckoning) -->
+                <div class="branch-sub-col">
+                  <span class="tag-branch-no">NO / Shadow</span>
+                  <div class="flow-card card-amber mini-card">
+                    <div class="card-icon-title">
+                      <span class="c-emoji">⚠️</span>
+                      <span class="c-title" style="font-size: 11px;">Dead-Reckoning</span>
+                    </div>
+                    <div class="c-desc" style="font-size: 9px;">Newton-Davis kinematics in tunnels/gorges</div>
+                  </div>
+                </div>
+
+                <!-- Branch Right: YES (Track-Snap) -->
+                <div class="branch-sub-col">
+                  <span class="tag-branch-yes">YES / Fix</span>
+                  <div class="flow-card card-green mini-card">
+                    <div class="card-icon-title">
+                      <span class="c-emoji">📍</span>
+                      <span class="c-title" style="font-size: 11px;">1D Track-Snap</span>
+                    </div>
+                    <div class="c-desc" style="font-size: 9px;">PostGIS LRS snaps to track chainage KM</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Down Arrow -->
+              <div class="flow-down-arrow">
+                <svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 0 L9 13 M4 8 L9 14 L14 8" stroke="#0284C7" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+
+              <!-- Node 4: Event Streaming Bus -->
+              <div class="flow-card card-blue-dark">
+                <div class="card-icon-title">
+                  <span class="c-emoji">📡</span>
+                  <span class="c-title">Apache Kafka &amp; Redis Bus</span>
+                </div>
+                <div class="c-desc">100k+ events/sec distributed telemetry ingest across 14,000+ trains</div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- CONNECTOR 1 -> 2 -->
+          <div class="stage-inter-arrow">
+            <svg width="30" height="50" viewBox="0 0 30 50">
+              <defs>
+                <linearGradient id="g-arrow-1" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#0284C7"/>
+                  <stop offset="100%" stop-color="#7C3AED"/>
+                </linearGradient>
+              </defs>
+              <path d="M 3 25 L 20 25 M 14 17 L 22 25 L 14 33" stroke="url(#g-arrow-1)" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+
+          <!-- ==================================================== -->
+          <!-- STAGE 2: PROCESSING & AI ENGINE                      -->
+          <!-- ==================================================== -->
+          <div class="stage-col col-process">
+            <div class="stage-col-header header-purple">
+              <div class="stage-num-badge badge-purple">2</div>
+              <div class="stage-title-wrap">
+                <span class="stage-col-title">Processing Stage</span>
+                <span class="stage-col-sub">Physics Kinematics &amp; AI Core</span>
               </div>
             </div>
-            <div class="stream-row">
-              <span class="stream-icon-badge">📋</span>
-              <div class="stream-text-col">
-                <span class="stream-name">COA Dispatch Records</span>
-                <span class="stream-spec">Section Controller line clearance, loops &amp; crossovers</span>
+
+            <!-- Stage 2 Flow Elements -->
+            <div class="stage-cards-flow">
+              <!-- Node 1: Physics Kinematics -->
+              <div class="flow-card card-purple">
+                <div class="card-icon-title">
+                  <span class="c-emoji">⚙️</span>
+                  <span class="c-title">Dynamic Kinematics Solver</span>
+                </div>
+                <div class="c-math-pill">a(t) = [F_trac(v) - R_davis(v) - F_grade] / M_eff</div>
+                <div class="c-desc">WAP-7 tractive effort, trailing tonnage inertia &amp; gradient resistance</div>
               </div>
-            </div>
-            <div class="stream-row">
-              <span class="stream-icon-badge">⚠️</span>
-              <div class="stream-text-col">
-                <span class="stream-name">e-Caution TSR Form T/409</span>
-                <span class="stream-spec">Civil Engineering temporary speed restriction slow-orders</span>
+
+              <!-- Down Arrow -->
+              <div class="flow-down-arrow">
+                <svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 0 L9 13 M4 8 L9 14 L14 8" stroke="#7C3AED" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </div>
-            </div>
-            <div class="stream-row">
-              <span class="stream-icon-badge">🌧️</span>
-              <div class="stream-text-col">
-                <span class="stream-name">IMD Doppler Radar</span>
-                <span class="stream-spec">Real-time fog visibility &lt;300m (GR 3.61 60km/h speed cap)</span>
+
+              <!-- Node 2: Spatio-Temporal GNN & Conformal Engine -->
+              <div class="flow-card card-purple">
+                <div class="card-icon-title">
+                  <span class="c-emoji">🧠</span>
+                  <span class="c-title">ST-GAT AI &amp; Conformal Engine</span>
+                </div>
+                <div class="c-math-pill">&alpha;_ij = Softmax(LeakyReLU(a^T [Wh_i || Wh_j]))</div>
+                <div class="c-desc">Predicts cascading network delays &amp; computes calibrated <strong>[P10, P50, P90]</strong> ETA</div>
+              </div>
+
+              <!-- Down Arrow -->
+              <div class="flow-down-arrow">
+                <svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 0 L9 13 M4 8 L9 14 L14 8" stroke="#7C3AED" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+
+              <!-- DECISION HEXAGON 2: Schedule Delay > 5 Mins? (Centered) -->
+              <div class="hex-decision-wrap">
+                <svg class="hex-svg" viewBox="0 0 250 54" width="250" height="54">
+                  <polygon points="30,2 220,2 248,27 220,52 30,52 2,27" fill="#FEF3C7" stroke="#D97706" stroke-width="2.2" filter="drop-shadow(0 2px 4px rgba(217,119,6,0.15))"/>
+                  <text x="125" y="24" text-anchor="middle" font-size="12" font-weight="900" fill="#92400E" font-family="'Inter', sans-serif">Delay &gt; 5 Mins Detected?</text>
+                  <text x="125" y="40" text-anchor="middle" font-size="9" font-weight="700" fill="#B45309" font-family="'Inter', sans-serif">Schedule Deviation &amp; Precedence Gate</text>
+                </svg>
+              </div>
+
+              <!-- Exit Route Labels -->
+              <div class="hex-exit-labels">
+                <span class="exit-no">↗ [NO: &le; 5m] Nominal</span>
+                <span class="exit-yes">↘ [YES: &gt; 5m] Mitigation</span>
+              </div>
+
+              <!-- Down Arrow -->
+              <div class="flow-down-arrow">
+                <svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 0 L9 13 M4 8 L9 14 L14 8" stroke="#7C3AED" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+
+              <!-- Node 3: Operational Action Dispatcher -->
+              <div class="flow-card card-purple-dark">
+                <div class="card-icon-title">
+                  <span class="c-emoji">⚡</span>
+                  <span class="c-title">Real-Time Operational Dispatcher</span>
+                </div>
+                <div class="c-desc">Sub-10ms WebSocket &amp; gRPC broadcast to all 3 stakeholder cockpits</div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- ARROW 1 -> 2 -->
-        <div class="stage-arrow-connector">
-          <svg class="stage-arrow-svg" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="#0284C7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-        </div>
+          <!-- CONNECTOR 2 -> 3 (SPLIT ARROWS) -->
+          <div class="stage-inter-arrow-split">
+            <svg width="30" height="260" viewBox="0 0 30 260">
+              <!-- Top Green Branch -->
+              <path d="M 2 130 C 12 130, 16 45, 24 45 M 18 39 L 25 45 L 18 51" stroke="#16A34A" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- Bottom Red Branch -->
+              <path d="M 2 130 C 12 130, 16 215, 24 215 M 18 209 L 25 215 L 18 221" stroke="#E11D48" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
 
-        <!-- STAGE 2: PROCESSING & PHYSICS CORE -->
-        <div class="stage-card">
-          <div class="stage-badge-header">
-            <div class="stage-title">
-              <span>2. Processing Stage (Physics Kinematics &amp; AI)</span>
-            </div>
-            <span class="stage-tag tag-purple">Core Engine</span>
-          </div>
-          <div class="physics-formula-container">
-            <!-- Formula 1: Newton-Davis -->
-            <div class="formula-pill-box">
-              <div class="formula-header">
-                <span>Newton-Davis Dynamic Acceleration Engine</span>
-                <span class="formula-tag">Kinematics</span>
+          <!-- ==================================================== -->
+          <!-- STAGE 3: MULTI-STAKEHOLDER ACTION DELIVERY           -->
+          <!-- ==================================================== -->
+          <div class="stage-col col-output">
+            <div class="stage-col-header header-slate">
+              <div class="stage-num-badge badge-slate">3</div>
+              <div class="stage-title-wrap">
+                <span class="stage-col-title">Output Delivery Stage</span>
+                <span class="stage-col-sub">3 Mandated Primary User Cockpits</span>
               </div>
-              <div class="formula-math">a(t) = [ F_trac(v) - R_davis(v) - F_grade(&theta;) - F_curve(D) ] / M_effective</div>
             </div>
-            <!-- Formula 2: Tractive & Air Resistance -->
-            <div class="formula-pill-box">
-              <div class="formula-header">
-                <span>WAP-7 Tractive Effort &amp; Modified Atmospheric Drag</span>
-                <span class="formula-tag">Aerodynamics</span>
-              </div>
-              <div class="formula-math">F_trac = min(&mu;Mg, P_rated&eta;/v) &nbsp;|&nbsp; R(v) = A + Bv + C&middot;[&rho;(T,H)/&rho;0]&middot;v&sup2;</div>
-            </div>
-            <!-- Formula 3: ST-GAT & Rule 401 -->
-            <div class="formula-pill-box">
-              <div class="formula-header">
-                <span>ST-GAT Spatial Graph Attention &amp; Operating Rule 401</span>
-                <span class="formula-tag">Network Graph</span>
-              </div>
-              <div class="formula-math">&alpha;_ij = Softmax(LeakyReLU(a^T [Wh_i || Wh_j])) &nbsp;|&nbsp; Loop Siding Delay</div>
-            </div>
-            <!-- Formula 4: Outer Signal Queue -->
-            <div class="formula-pill-box">
-              <div class="formula-header">
-                <span>Outer Signal Queuing &amp; Platform Clearance Solver</span>
-                <span class="formula-tag">Station Model</span>
-              </div>
-              <div class="formula-math">&Delta;T_outer = max( 0, &nbsp;T_dep^preceding + T_clearance - T_arr^approaching )</div>
-            </div>
-          </div>
-        </div>
 
-        <!-- ARROW 2 -> 3 -->
-        <div class="stage-arrow-connector">
-          <svg class="stage-arrow-svg" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="#0284C7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-        </div>
+            <div class="stage-output-blocks">
+              
+              <!-- SUB-BLOCK A: NOMINAL ON-TIME GREEN WAVE -->
+              <div class="output-sub-panel panel-on-time">
+                <div class="output-sub-header text-green">
+                  <span class="sub-dot dot-green"></span>
+                  <span class="sub-heading-text">🟢 NOMINAL FLOW (Deviation &le; 5 Mins)</span>
+                </div>
+                
+                <div class="output-user-cards">
+                  <!-- User 1: Passenger -->
+                  <div class="user-action-card card-user-pass">
+                    <span class="u-icon">📱</span>
+                    <div class="u-content">
+                      <div class="u-title">Passenger Mobile App</div>
+                      <div class="u-desc">Live [P10–P90] arrival window, station radar &amp; platform walk guide</div>
+                    </div>
+                  </div>
 
-        <!-- STAGE 3: OUTPUT DELIVERY -->
-        <div class="stage-card">
-          <div class="stage-badge-header">
-            <div class="stage-title">
-              <span>3. Output Stage</span>
+                  <!-- User 2: Controller -->
+                  <div class="user-action-card card-user-ctrl">
+                    <span class="u-icon">🚦</span>
+                    <div class="u-content">
+                      <div class="u-title">Section Controller Cockpit</div>
+                      <div class="u-desc">130 km/h MPS clear corridor; automatic 4-aspect green wave headway</div>
+                    </div>
+                  </div>
+
+                  <!-- User 3: Station Master -->
+                  <div class="user-action-card card-user-stn">
+                    <span class="u-icon">🏢</span>
+                    <div class="u-content">
+                      <div class="u-title">Station Master &amp; PIDS</div>
+                      <div class="u-desc">Direct route relay lock confirmed &amp; multilingual audio/LED sync</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SUB-BLOCK B: HIGH DELAY & BOTTLENECK RESOLUTION -->
+              <div class="output-sub-panel panel-delayed">
+                <div class="output-sub-header text-rose">
+                  <span class="sub-dot dot-rose"></span>
+                  <span class="sub-heading-text">🔴 DELAY MITIGATION (Deviation &gt; 5 Mins)</span>
+                </div>
+                
+                <div class="output-user-cards">
+                  <!-- User 1: Passenger -->
+                  <div class="user-action-card card-user-pass-delay">
+                    <span class="u-icon">📢</span>
+                    <div class="u-content">
+                      <div class="u-title">Passenger: Root-Cause &amp; City Sync</div>
+                      <div class="u-desc">"Held at Outer Signal for PF-4" + 1-tap auto Metro/Cab re-booking</div>
+                    </div>
+                  </div>
+
+                  <!-- User 2: Controller -->
+                  <div class="user-action-card card-user-ctrl-delay">
+                    <span class="u-icon">🔄</span>
+                    <div class="u-content">
+                      <div class="u-title">Controller: Rule 401 Siding Advisory</div>
+                      <div class="u-desc">Loops slow freight to siding at KM 142 to save 22m coaching delay</div>
+                    </div>
+                  </div>
+
+                  <!-- User 3: Station Master -->
+                  <div class="user-action-card card-user-stn-delay">
+                    <span class="u-icon">⚠️</span>
+                    <div class="u-content">
+                      <div class="u-title">Station: Outer Hold &amp; Berth Shift</div>
+                      <div class="u-desc">Predicts &Delta;T_outer &amp; dynamically shifts rake to PF-2 to clear outer hold</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
-            <span class="stage-tag tag-green">Multi-User Delivery</span>
           </div>
-          <div class="output-device-grid">
-            <div class="output-item-box">
-              <div class="output-icon-box">📱</div>
-              <div class="output-detail-col">
-                <span class="output-heading">Passenger Mobile Radar App</span>
-                <span class="output-desc-text">Dynamic [P10-P50-P90] arrival window, station radar &amp; plain delay root cause</span>
-              </div>
-            </div>
-            <div class="output-item-box">
-              <div class="output-icon-box">🚦</div>
-              <div class="output-detail-col">
-                <span class="output-heading">Section Controller Cockpit</span>
-                <span class="output-desc-text">Real-time headway warnings, automatic block clearance &amp; loop line overtake advisor</span>
-              </div>
-            </div>
-            <div class="output-item-box">
-              <div class="output-icon-box">🏢</div>
-              <div class="output-detail-col">
-                <span class="output-heading">Station Master Berthing Console</span>
-                <span class="output-desc-text">Platform occupancy turnover scheduler, shunting engine &amp; crew rostering sync</span>
-              </div>
-            </div>
-            <div class="output-item-box">
-              <div class="output-icon-box">🚕</div>
-              <div class="output-detail-col">
-                <span class="output-heading">Urban Feeder Transport APIs</span>
-                <span class="output-desc-text">Automated metro, city bus &amp; ride-hailing sync triggered by high-precision P50 ETA</span>
-              </div>
-            </div>
-          </div>
+
         </div>
 
       </div>
-
     </section>
 
   </main>
