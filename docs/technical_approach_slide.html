@@ -6,7 +6,7 @@
   <title>GATI-SETU - Technical Approach (Slide 3)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cinzel:wght@700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cinzel:wght@700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     * {
       box-sizing: border-box;
@@ -29,1047 +29,1259 @@
     }
 
     /* ======================================================== */
-    /* 1. TOP HEADER                                            */
+    /* 1. TOP HEADER (SIH Official Template Alignment)          */
     /* ======================================================== */
     .slide-header {
-      height: 80px;
-      padding: 10px 48px 6px 48px;
+      height: 68px;
+      padding: 6px 44px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       border-bottom: 1.5px solid #E2E8F0;
-      position: relative;
+      background: #FFFFFF;
     }
 
     .team-pill {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 6px 28px;
+      padding: 5px 24px;
       border: 2px solid #334155;
       border-radius: 9999px;
-      font-size: 20px;
-      font-weight: 700;
-      color: #0F172A;
-      letter-spacing: 0.3px;
-      background: #FFFFFF;
-    }
-
-    .header-title-block {
-      text-align: center;
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    .main-title {
-      font-family: 'Cinzel', serif;
-      font-size: 38px;
+      font-size: 15px;
       font-weight: 800;
-      letter-spacing: 2.5px;
       color: #0F172A;
-      line-height: 1.1;
+      letter-spacing: 0.5px;
+      background: #F8FAFC;
+      box-shadow: inset 0 0 0 1.5px #FFFFFF, 0 2px 4px rgba(0,0,0,0.04);
     }
 
-    .sih-branding {
+    .slide-title {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 33px;
+      font-weight: 900;
+      letter-spacing: 2.5px;
+      color: #0B192C;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .sih-badge-wrap {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
     }
 
-    .sih-text {
-      text-align: right;
+    .sih-logo-img {
+      height: 48px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .sih-text-block {
+      display: flex;
+      flex-direction: column;
       line-height: 1.15;
+      text-align: right;
     }
 
-    .sih-title {
-      font-size: 19px;
+    .sih-title-text {
+      font-size: 13px;
       font-weight: 900;
-      letter-spacing: 0.5px;
       color: #1E293B;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
     }
 
-    .sih-sub {
-      font-size: 19px;
-      font-weight: 900;
+    .sih-sub-text {
+      font-size: 10.5px;
+      font-weight: 700;
       color: #0284C7;
-      letter-spacing: 1px;
+      letter-spacing: 0.3px;
     }
 
     /* ======================================================== */
-    /* 2. MAIN SLIDE CONTENT: 2-COLUMN LAYOUT                   */
+    /* 2. MAIN BODY GRID                                        */
     /* ======================================================== */
-    .slide-body {
-      flex: 1;
-      padding: 12px 44px 10px 44px;
+    .slide-content {
+      height: calc(1080px - 68px - 36px);
+      padding: 8px 36px 6px 36px;
       display: grid;
-      grid-template-columns: 550px 1fr;
-      gap: 22px;
-      height: calc(1080px - 80px - 44px);
+      grid-template-columns: 460px 1fr;
+      gap: 18px;
     }
 
     /* ======================================================== */
-    /* LEFT COLUMN: TECH STACK + ZERO HARDWARE + POWERED BY     */
+    /* LEFT COLUMN: TECHNOLOGY STACK & POWERED BY               */
     /* ======================================================== */
     .left-col {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 7px;
       height: 100%;
     }
 
     .section-label {
-      font-size: 20px;
-      font-weight: 800;
-      color: #0369A1;
+      font-size: 17.5px;
+      font-weight: 900;
+      color: #0284C7;
       text-decoration: underline;
       text-underline-offset: 4px;
       letter-spacing: 0.2px;
-      margin-bottom: -2px;
     }
 
-    .tech-stack-box {
+    .tech-stack-card {
       background: #FFFFFF;
       border: 1.8px solid #0F172A;
-      border-radius: 14px;
-      padding: 14px 18px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+      border-radius: 12px;
+      padding: 10px 14px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
       display: flex;
       flex-direction: column;
-      gap: 7.5px;
+      gap: 5.5px;
     }
 
     .tech-item {
       display: flex;
       align-items: flex-start;
-      gap: 8px;
-      font-size: 13px;
-      line-height: 1.38;
+      gap: 7px;
+      font-size: 11.5px;
+      line-height: 1.34;
       color: #1E293B;
     }
 
     .bullet-dot {
-      width: 6px;
-      height: 6px;
+      width: 5px;
+      height: 5px;
       background: #0F172A;
       border-radius: 50%;
-      margin-top: 6px;
+      margin-top: 5px;
       flex-shrink: 0;
     }
 
-    .tech-label {
+    .tech-name {
       font-weight: 800;
       color: #0F172A;
       white-space: nowrap;
     }
 
-    .tech-val {
+    .tech-desc {
       color: #334155;
       font-weight: 500;
     }
 
-    .tech-val code {
+    .tech-code {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 11.5px;
+      font-size: 10.5px;
       background: #F1F5F9;
       padding: 1px 4px;
-      border-radius: 4px;
+      border-radius: 3px;
       color: #0369A1;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     /* Highlight Banner */
     .zero-hardware-banner {
       background: #DCFCE7;
       border: 1.5px solid #16A34A;
-      border-radius: 10px;
-      padding: 8px 12px;
-      font-size: 12.5px;
-      font-weight: 700;
+      border-radius: 8px;
+      padding: 6px 8px;
+      font-size: 11px;
+      font-weight: 800;
       color: #15803D;
-      line-height: 1.35;
+      line-height: 1.3;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      margin-top: 1px;
     }
 
     .zero-hardware-tag {
       background: #16A34A;
       color: #FFFFFF;
-      padding: 2px 7px;
+      padding: 2px 6px;
       border-radius: 4px;
-      font-size: 11px;
-      font-weight: 800;
+      font-size: 9.5px;
+      font-weight: 900;
       letter-spacing: 0.5px;
       text-transform: uppercase;
       flex-shrink: 0;
     }
 
-    /* Powered By Box */
+    /* Powered By Container */
     .powered-by-wrap {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
       flex: 1;
-    }
-
-    .powered-by-label {
-      font-size: 17px;
-      font-weight: 800;
-      color: #0369A1;
-      text-decoration: underline;
-      text-underline-offset: 4px;
     }
 
     .powered-by-box {
       border: 1.8px solid #0F172A;
-      border-radius: 14px;
+      border-radius: 12px;
       background: #F8FAFC;
-      padding: 12px 16px;
+      padding: 6px 8px;
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      grid-template-rows: repeat(2, 1fr);
-      gap: 10px;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 5px;
       align-items: center;
       justify-items: center;
       flex: 1;
     }
 
-    .brand-item {
+    .brand-pill {
+      background: #FFFFFF;
+      border: 1.2px solid #E2E8F0;
+      border-radius: 8px;
+      padding: 3px 5px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 3px;
+      gap: 2px;
       width: 100%;
+      height: 100%;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
     }
 
-    .brand-icon {
-      height: 30px;
+    .brand-svg {
+      height: 22px;
       width: auto;
-      max-width: 42px;
-      object-fit: contain;
+      max-width: 32px;
     }
 
-    .brand-name {
-      font-size: 10px;
-      font-weight: 700;
-      color: #475569;
+    .brand-label {
+      font-size: 8.5px;
+      font-weight: 800;
+      color: #334155;
       text-align: center;
     }
 
     /* ======================================================== */
-    /* RIGHT COLUMN: MULTI-USER SYSTEM ARCHITECTURE FLOWCHART   */
+    /* RIGHT COLUMN: FLOWCHART + 3 CORE STAGES                  */
     /* ======================================================== */
     .right-col {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
       height: 100%;
     }
 
-    /* Top Connected Users Layer */
-    .users-header-bar {
+    /* -------------------------------------------------------- */
+    /* UPPER SECTION: INTUITIVE YES/NO LOGIC FLOWCHART          */
+    /* -------------------------------------------------------- */
+    .flowchart-wrapper {
+      background: #FFFFFF;
+      border: 1.8px solid #0F172A;
+      border-radius: 12px;
+      padding: 8px 12px 6px 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      height: 615px;
+      position: relative;
+    }
+
+    .flowchart-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: -2px;
+      border-bottom: 1px solid #E2E8F0;
+      padding-bottom: 4px;
     }
 
-    .users-header-title {
-      font-size: 16px;
-      font-weight: 800;
-      color: #1E293B;
+    .flowchart-title {
+      font-size: 14.5px;
+      font-weight: 900;
+      color: #0F172A;
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    .users-header-badge {
+    .flowchart-badge {
       background: #E0F2FE;
       color: #0369A1;
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 800;
       padding: 2px 8px;
       border-radius: 9999px;
       border: 1px solid #BAE6FD;
     }
 
-    .connected-users-bar {
-      display: grid;
-      grid-template-columns: 1.15fr 1fr 1fr 1fr;
-      gap: 10px;
-    }
-
-    .user-pill-card {
-      background: #F8FAFC;
-      border-radius: 10px;
-      border: 1.5px solid #CBD5E1;
-      padding: 8px 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      position: relative;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-    }
-
-    .user-pill-card.active-passenger {
-      border-color: #0284C7;
-      background: #F0F9FF;
-    }
-
-    .user-pill-card.active-crew {
-      border-color: #D97706;
-      background: #FFFBEB;
-    }
-
-    .user-pill-card.active-controller {
-      border-color: #7C3AED;
-      background: #FAF5FF;
-    }
-
-    .user-pill-card.active-station {
-      border-color: #059669;
-      background: #ECFDF5;
-    }
-
-    .user-badge-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .user-info {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.2;
-    }
-
-    .user-role-title {
-      font-size: 12.5px;
-      font-weight: 800;
-      color: #0F172A;
-    }
-
-    .user-role-desc {
-      font-size: 10.5px;
-      font-weight: 600;
-      color: #64748B;
-    }
-
     /* Flowchart Canvas Area */
-    .flowchart-container {
-      background: #FFFFFF;
-      border: 1.5px solid #CBD5E1;
-      border-radius: 14px;
-      padding: 14px 16px 12px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+    .flow-diagram-container {
       position: relative;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
       flex: 1;
+      width: 100%;
+      height: 485px;
     }
 
-    /* Flowchart Row 1: Ingestion Bus */
-    .flow-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      position: relative;
-    }
-
-    .flow-box {
+    /* Nodes */
+    .fc-box {
+      position: absolute;
       border-radius: 8px;
-      padding: 7px 12px;
+      padding: 5px 9px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
-      position: relative;
-      min-height: 48px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+      z-index: 2;
     }
 
-    .flow-box-title {
-      font-size: 12px;
+    .fc-title {
+      font-size: 11px;
       font-weight: 800;
+      line-height: 1.2;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+
+    .fc-desc {
+      font-size: 9px;
+      font-weight: 600;
+      margin-top: 2px;
       line-height: 1.2;
     }
 
-    .flow-box-sub {
-      font-size: 10px;
-      font-weight: 600;
-      opacity: 0.9;
-      margin-top: 2px;
-    }
+    /* Color Themes */
+    .c-blue { background: #EFF6FF; border: 1.5px solid #3B82F6; color: #1D4ED8; }
+    .c-green { background: #ECFDF5; border: 1.5px solid #10B981; color: #047857; }
+    .c-amber { background: #FFFBEB; border: 1.5px solid #F59E0B; color: #B45309; }
+    .c-rose { background: #FFF1F2; border: 1.5px solid #F43F5E; color: #BE123C; }
+    .c-purple { background: #FAF5FF; border: 1.5px solid #8B5CF6; color: #6D28D9; }
+    .c-orange { background: #FFF7ED; border: 1.5px solid #EA580C; color: #C2410C; }
 
-    /* Box Styles */
-    .box-blue {
-      background: #EFF6FF;
-      border: 1.5px solid #3B82F6;
-      color: #1D4ED8;
-    }
-
-    .box-amber {
-      background: #FFFBEB;
-      border: 1.5px solid #F59E0B;
-      color: #B45309;
-    }
-
-    .box-emerald {
-      background: #ECFDF5;
-      border: 1.5px solid #10B981;
-      color: #047857;
-    }
-
-    .box-purple {
-      background: #FAF5FF;
-      border: 1.5px solid #8B5CF6;
-      color: #6D28D9;
-    }
-
-    .box-slate {
-      background: #F8FAFC;
-      border: 1.5px solid #64748B;
-      color: #334155;
-    }
-
-    /* Connector Arrows */
-    .flow-arrow-right {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #64748B;
-      font-size: 16px;
-      font-weight: 900;
-      flex-shrink: 0;
-    }
-
-    .flow-arrow-down {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #64748B;
-      font-size: 15px;
-      font-weight: 900;
-      margin: -3px 0;
-    }
-
-    /* Middle 3 Parallel Operational Streams */
-    .streams-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-    }
-
-    .stream-card {
-      border-radius: 8px;
-      border: 1.5px solid #CBD5E1;
-      background: #F8FAFC;
-      padding: 8px 10px;
+    /* Decision Diamond / Hexagon Box */
+    .fc-hex {
+      position: absolute;
+      background: #FEF3C7;
+      border: 1.6px solid #D97706;
+      color: #92400E;
+      border-radius: 10px;
+      padding: 5px 9px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(217, 119, 6, 0.15);
+      z-index: 2;
     }
 
-    .stream-header {
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      padding-bottom: 3px;
-      border-bottom: 1.2px dashed #CBD5E1;
+    .fc-hex-title {
+      font-size: 10.5px;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    .fc-hex-desc {
+      font-size: 8.5px;
+      font-weight: 700;
+      opacity: 0.9;
+      margin-top: 1px;
+    }
+
+    /* SVG Connectors */
+    .fc-svg-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .fc-line { stroke: #64748B; stroke-width: 2; fill: none; }
+    .fc-line-green { stroke: #10B981; stroke-width: 2; fill: none; }
+    .fc-line-red { stroke: #EF4444; stroke-width: 2; fill: none; }
+
+    .fc-tag-yes {
+      position: absolute;
+      background: #DCFCE7;
+      color: #15803D;
+      border: 1px solid #86EFAC;
+      border-radius: 4px;
+      font-size: 8.5px;
+      font-weight: 900;
+      padding: 1px 5px;
+      z-index: 3;
+    }
+
+    .fc-tag-no {
+      position: absolute;
+      background: #FFE4E6;
+      color: #BE123C;
+      border: 1px solid #FDA4AF;
+      border-radius: 4px;
+      font-size: 8.5px;
+      font-weight: 900;
+      padding: 1px 5px;
+      z-index: 3;
+    }
+
+    /* Terminal Output Stakeholders Bar */
+    .terminal-output-row {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr 1fr 0.85fr;
+      gap: 8px;
+      width: 100%;
+      padding-top: 5px;
+      border-top: 1.2px dashed #CBD5E1;
+    }
+
+    .terminal-card {
+      background: #F8FAFC;
+      border: 1.4px solid #CBD5E1;
+      border-radius: 8px;
+      padding: 5px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      position: relative;
+    }
+
+    .terminal-card.active-passenger { border-color: #0284C7; background: #F0F9FF; }
+    .terminal-card.active-controller { border-color: #7C3AED; background: #FAF5FF; }
+    .terminal-card.active-station { border-color: #059669; background: #ECFDF5; }
+    .terminal-card.active-feeder { border-color: #D97706; background: #FFFBEB; }
+
+    .terminal-header {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-    }
-
-    .stream-step {
-      background: #FFFFFF;
-      border: 1.2px solid #E2E8F0;
-      border-radius: 6px;
-      padding: 5px 7px;
+      gap: 5px;
       font-size: 10.5px;
-      line-height: 1.3;
-    }
-
-    .stream-step b {
+      font-weight: 800;
       color: #0F172A;
-      font-weight: 700;
     }
 
-    .stream-step span {
-      color: #64748B;
-      font-size: 9.5px;
-      display: block;
+    .terminal-content {
+      font-size: 9px;
+      font-weight: 600;
+      color: #475569;
+      line-height: 1.25;
     }
 
-    /* Bottom 3-Stage Process Pipeline */
-    .pipeline-summary-box {
+    /* -------------------------------------------------------- */
+    /* LOWER SECTION: 3 CONNECTED CORE STAGES (INPUT/PROC/OUT)  */
+    /* -------------------------------------------------------- */
+    .stages-wrapper {
+      display: grid;
+      grid-template-columns: 1.1fr 30px 1.45fr 30px 1.1fr;
+      align-items: center;
+      height: 295px;
+    }
+
+    .stage-card {
       background: #FFFFFF;
       border: 1.8px solid #0F172A;
       border-radius: 12px;
-      padding: 9px 14px;
-      display: grid;
-      grid-template-columns: 1fr auto 1.6fr auto 1fr;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .pipeline-stage {
+      padding: 8px 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      height: 100%;
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      gap: 5px;
     }
 
-    .pipeline-stage-title {
-      font-size: 12px;
-      font-weight: 800;
-      color: #0F172A;
-      text-align: center;
-      padding-bottom: 2px;
-      border-bottom: 1.5px solid #CBD5E1;
-    }
-
-    .pipeline-stage-items {
-      display: flex;
-      flex-direction: column;
-      gap: 2.5px;
-      font-size: 10px;
-      color: #334155;
-      font-weight: 600;
-      text-align: center;
-    }
-
-    .pipeline-arrow {
-      color: #0F172A;
-      font-size: 18px;
-      font-weight: 900;
-    }
-
-    /* ======================================================== */
-    /* 3. SLIDE FOOTER BAR                                      */
-    /* ======================================================== */
-    .slide-footer {
-      height: 44px;
-      background: #0072BC;
-      color: #FFFFFF;
-      padding: 0 48px;
+    .stage-badge-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 15px;
-      font-weight: 600;
+      padding-bottom: 4px;
+      border-bottom: 1.5px solid #E2E8F0;
     }
 
-    .footer-left-icons {
+    .stage-title {
+      font-size: 13px;
+      font-weight: 900;
+      color: #0F172A;
       display: flex;
       align-items: center;
-      gap: 16px;
-      opacity: 0.9;
+      gap: 6px;
     }
 
-    .footer-center-text {
-      letter-spacing: 0.5px;
+    .stage-tag {
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .tag-blue { background: #E0F2FE; color: #0284C7; }
+    .tag-purple { background: #F3E8FF; color: #7E22CE; }
+    .tag-green { background: #DCFCE7; color: #15803D; }
+
+    .stage-arrow-connector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stage-arrow-svg {
+      width: 26px;
+      height: 26px;
+      stroke: #0284C7;
+      fill: #0284C7;
+    }
+
+    /* Stage 1: Input Ingestion items */
+    .input-stream-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+      justify-content: space-around;
+    }
+
+    .stream-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 6px;
+      padding: 3.5px 7px;
+    }
+
+    .stream-icon-badge {
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+
+    .stream-text-col {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+
+    .stream-name {
+      font-size: 10.5px;
+      font-weight: 800;
+      color: #0F172A;
+    }
+
+    .stream-spec {
+      font-size: 8.5px;
+      font-weight: 600;
+      color: #64748B;
+    }
+
+    /* Stage 2: Processing Core & Physics Equations */
+    .physics-formula-container {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+      justify-content: space-around;
+    }
+
+    .formula-pill-box {
+      background: #F8FAFC;
+      border: 1.2px solid #CBD5E1;
+      border-radius: 7px;
+      padding: 4px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5px;
+    }
+
+    .formula-header {
+      font-size: 10px;
+      font-weight: 800;
+      color: #0F172A;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .formula-tag {
+      font-size: 8px;
+      font-weight: 800;
+      color: #6D28D9;
+      background: #EDE9FE;
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+
+    .formula-math {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9.5px;
       font-weight: 700;
+      color: #0369A1;
+      background: #FFFFFF;
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid #E2E8F0;
+      letter-spacing: -0.2px;
+    }
+
+    /* Stage 3: Output Delivery */
+    .output-device-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+      justify-content: space-around;
+    }
+
+    .output-item-box {
+      background: #F8FAFC;
+      border: 1.2px solid #CBD5E1;
+      border-radius: 7px;
+      padding: 4px 7px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .output-icon-box {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      flex-shrink: 0;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+    }
+
+    .output-detail-col {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+
+    .output-heading {
+      font-size: 10.5px;
+      font-weight: 800;
+      color: #0F172A;
+    }
+
+    .output-desc-text {
+      font-size: 8.5px;
+      font-weight: 600;
+      color: #475569;
+    }
+
+    /* ======================================================== */
+    /* 3. FOOTER (SIH Official Template Alignment)              */
+    /* ======================================================== */
+    .slide-footer {
+      height: 36px;
+      background: #0284C7;
+      padding: 0 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #FFFFFF;
+    }
+
+    .footer-template-text {
+      font-size: 13.5px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
     }
 
     .footer-slide-num {
-      font-size: 22px;
-      font-weight: 800;
+      font-size: 15px;
+      font-weight: 900;
     }
   </style>
 </head>
 <body>
 
   <!-- ======================================================== -->
-  <!-- 1. TOP HEADER                                            -->
+  <!-- 1. SLIDE HEADER                                          -->
   <!-- ======================================================== -->
-  <div class="slide-header">
+  <header class="slide-header">
     <div class="team-pill">Karasuno</div>
-
-    <div class="header-title-block">
-      <div class="main-title">TECHNICAL APPROACH</div>
-    </div>
-
-    <div class="sih-branding">
-      <svg width="42" height="42" viewBox="0 0 100 100" fill="none">
-        <circle cx="50" cy="50" r="45" stroke="#F97316" stroke-width="4" stroke-dasharray="6 6"/>
-        <path d="M30 50L45 65L72 32" stroke="#16A34A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="50" cy="50" r="8" fill="#0284C7"/>
+    <h1 class="slide-title">TECHNICAL APPROACH</h1>
+    <div class="sih-badge-wrap">
+      <div class="sih-text-block">
+        <span class="sih-title-text">SMART INDIA HACKATHON 2026</span>
+        <span class="sih-sub-text">Ministry of Railways • ID: 26028</span>
+      </div>
+      <!-- Official SIH Logo Representation -->
+      <svg class="sih-logo-img" viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M40 20C30 20 25 30 25 40C25 50 30 60 40 60C45 60 48 56 50 52C52 56 55 60 60 60C70 60 75 50 75 40C75 30 70 20 60 20C55 20 52 24 50 28C48 24 45 20 40 20Z" fill="#F97316"/>
+        <circle cx="38" cy="38" r="6" fill="#FFFFFF"/>
+        <circle cx="62" cy="38" r="6" fill="#10B981"/>
+        <path d="M45 62L55 62L52 70L48 70Z" fill="#3B82F6"/>
+        <text x="50" y="77" font-family="'Inter', sans-serif" font-size="7" font-weight="900" fill="#0F172A" text-anchor="middle">SIH 2026</text>
       </svg>
-      <div class="sih-text">
-        <div class="sih-title">SMART INDIA</div>
-        <div class="sih-sub">HACKATHON 2026</div>
-      </div>
     </div>
-  </div>
+  </header>
 
   <!-- ======================================================== -->
-  <!-- 2. MAIN 2-COLUMN BODY                                    -->
+  <!-- 2. MAIN BODY CONTENT                                     -->
   <!-- ======================================================== -->
-  <div class="slide-body">
+  <main class="slide-content">
 
     <!-- ------------------------------------------------------ -->
-    <!-- LEFT COLUMN: TECHNOLOGY STACK & POWERED BY             -->
+    <!-- LEFT COLUMN: TECH STACK & LOGOS                        -->
     <!-- ------------------------------------------------------ -->
-    <div class="left-col">
-      <div class="section-label">Technology Stack</div>
+    <aside class="left-col">
+      <h2 class="section-label">Technology Stack</h2>
 
-      <div class="tech-stack-box">
-        <!-- 1. Mobile App -->
+      <!-- Tech Stack Bullet Card -->
+      <div class="tech-stack-card">
         <div class="tech-item">
-          <div class="bullet-dot"></div>
-          <div>
-            <span class="tech-label">Cross-Platform Mobile:</span>
-            <span class="tech-val"><b>React Native</b> (iOS &amp; Android native builds) &bull; React Navigation &bull; Reanimated 3 &bull; MMKV offline storage &bull; SQLite caching</span>
-          </div>
+          <span class="bullet-dot"></span>
+          <div><span class="tech-name">Mobile App:</span> <span class="tech-desc">React Native (iOS &amp; Android native), Reanimated 3, MapLibre GL radar</span></div>
+        </div>
+        <div class="tech-item">
+          <span class="bullet-dot"></span>
+          <div><span class="tech-name">Backend / API:</span> <span class="tech-desc">Python 3.11 (<span class="tech-code">FastAPI</span> Async), Node.js Gateway, WebSockets (<span class="tech-code">WSS</span>), REST</span></div>
+        </div>
+        <div class="tech-item">
+          <span class="bullet-dot"></span>
+          <div><span class="tech-name">AI / ML &amp; Graph DL:</span> <span class="tech-desc">PyTorch Geometric (<span class="tech-code">ST-GAT</span> Corridor Attention), ONNX Runtime (&lt;10ms)</span></div>
+        </div>
+        <div class="tech-item">
+          <span class="bullet-dot"></span>
+          <div><span class="tech-name">Physics Kinematics:</span> <span class="tech-desc">Newton-Davis dynamic tractive engine, grade, air drag &amp; RK4 integrator</span></div>
+        </div>
+        <div class="tech-item">
+          <span class="bullet-dot"></span>
+          <div><span class="tech-name">Data Streaming:</span> <span class="tech-desc">Apache Kafka (100k+ event/s KRaft), Redis 7.2 (<span class="tech-code">Pub/Sub</span> in-memory cache)</span></div>
+        </div>
+        <div class="tech-item">
+          <span class="bullet-dot"></span>
+          <div><span class="tech-name">Spatial &amp; Time-Series:</span> <span class="tech-desc">PostgreSQL 16 + <span class="tech-code">PostGIS</span> (1D rail chainage LRS), TimescaleDB</span></div>
+        </div>
+        <div class="tech-item">
+          <span class="bullet-dot"></span>
+          <div><span class="tech-name">Railway Ingestion:</span> <span class="tech-desc">BEL RTIS (NavIC 30s GPS), CRIS FOIS freight, COA logs, e-Caution TSR</span></div>
+        </div>
+        <div class="tech-item">
+          <span class="bullet-dot"></span>
+          <div><span class="tech-name">Security &amp; Hosting:</span> <span class="tech-desc">OAuth 2.0 / JWT, AES-256 GCM, Docker, Kubernetes on RailCloud / NIC</span></div>
         </div>
 
-        <!-- 2. Frontend State & UI -->
-        <div class="tech-item">
-          <div class="bullet-dot"></div>
-          <div>
-            <span class="tech-label">Mobile UI &amp; Radar:</span>
-            <span class="tech-val">React Native Paper &bull; React Native SVG Charts &bull; MapLibre GL / Leaflet tile layers &bull; Sonner native alerts &bull; Vaul drawer sheets</span>
-          </div>
-        </div>
-
-        <!-- 3. Backend Microservices -->
-        <div class="tech-item">
-          <div class="bullet-dot"></div>
-          <div>
-            <span class="tech-label">Backend &amp; Ingestion:</span>
-            <span class="tech-val"><b>Python 3.11</b> (FastAPI asynchronous microservices) &bull; Node.js API Gateway &bull; Pydantic v2 high-throughput validation schemas</span>
-          </div>
-        </div>
-
-        <!-- 4. Deep Learning & Graph AI -->
-        <div class="tech-item">
-          <div class="bullet-dot"></div>
-          <div>
-            <span class="tech-label">AI &amp; Graph Neural Net:</span>
-            <span class="tech-val"><b>PyTorch</b> (Spatio-Temporal Graph Attention Network — ST-GAT) &bull; PyTorch Geometric &bull; ONNX Runtime (&lt; 10ms edge inference)</span>
-          </div>
-        </div>
-
-        <!-- 5. Kinematics & Physics Engine -->
-        <div class="tech-item">
-          <div class="bullet-dot"></div>
-          <div>
-            <span class="tech-label">Physics &amp; Kinematics:</span>
-            <span class="tech-val">Davis Equations engine (<code>A + B&middot;v + C&middot;v&sup2;</code> tractive friction) &bull; Grade &amp; curve resistance &bull; WAP-7 / WAG-9 acceleration curves</span>
-          </div>
-        </div>
-
-        <!-- 6. Streaming & Spatial Database -->
-        <div class="tech-item">
-          <div class="bullet-dot"></div>
-          <div>
-            <span class="tech-label">Streaming &amp; Spatial DB:</span>
-            <span class="tech-val"><b>Apache Kafka</b> (100k+ event/s telemetry bus) &bull; <b>Redis</b> (sub-ms in-memory cache) &bull; <b>PostgreSQL + PostGIS</b> linear rail chainage</span>
-          </div>
-        </div>
-
-        <!-- 7. Railway Data Interfaces -->
-        <div class="tech-item">
-          <div class="bullet-dot"></div>
-          <div>
-            <span class="tech-label">Telemetry &amp; Gov Feeds:</span>
-            <span class="tech-val">BEL RTIS (ISRO NavIC 30s GPS) &bull; CRIS FOIS freight &bull; COA Control Office &bull; S&amp;T Data Loggers &bull; IMD Doppler Weather Radar</span>
-          </div>
-        </div>
-
-        <!-- 8. Deployment & Containers -->
-        <div class="tech-item">
-          <div class="bullet-dot"></div>
-          <div>
-            <span class="tech-label">DevOps &amp; Infrastructure:</span>
-            <span class="tech-val">Docker containerization &bull; Kubernetes orchestration &bull; GitHub Actions CI/CD &bull; Helm deployment on Indian Railways NIC cloud</span>
-          </div>
+        <!-- Zero-Hardware Callout -->
+        <div class="zero-hardware-banner">
+          <span class="zero-hardware-tag">100% ZERO-HARDWARE</span>
+          <span>Taps existing statutory Indian Railways GPS &amp; CRIS feeds. No engine modifications.</span>
         </div>
       </div>
 
-      <!-- 100% Zero-Hardware Highlight Banner -->
-      <div class="zero-hardware-banner">
-        <span class="zero-hardware-tag">100% Zero-Hardware</span>
-        <span>Runs purely on existing BEL RTIS GPS &amp; CRIS software feeds. No loco modifications needed.</span>
-      </div>
-
-      <!-- Powered By Logos Cluster -->
+      <!-- Powered By Logos Box -->
       <div class="powered-by-wrap">
-        <div class="powered-by-label">Powered By</div>
+        <h3 class="section-label" style="font-size: 16px;">Powered By</h3>
         <div class="powered-by-box">
-          <!-- React Native -->
-          <div class="brand-item">
-            <svg class="brand-icon" viewBox="0 0 100 100" fill="none">
-              <ellipse cx="50" cy="50" rx="42" ry="16" stroke="#00D8FF" stroke-width="4" transform="rotate(30 50 50)"/>
-              <ellipse cx="50" cy="50" rx="42" ry="16" stroke="#00D8FF" stroke-width="4" transform="rotate(90 50 50)"/>
-              <ellipse cx="50" cy="50" rx="42" ry="16" stroke="#00D8FF" stroke-width="4" transform="rotate(150 50 50)"/>
-              <circle cx="50" cy="50" r="7" fill="#00D8FF"/>
-            </svg>
-            <span class="brand-name">React Native</span>
-          </div>
-
           <!-- Python -->
-          <div class="brand-item">
-            <svg class="brand-icon" viewBox="0 0 100 100" fill="none">
-              <path d="M48 10C30 10 32 18 32 18L32 26L48 26L48 30L22 30C22 30 10 28 10 46C10 64 20 62 20 62L26 62L26 54C26 54 26 44 36 44L52 44C52 44 60 44 60 36L60 18C60 18 62 10 48 10Z" fill="#3776AB"/>
-              <circle cx="38" cy="18" r="3" fill="#FFFFFF"/>
-              <path d="M52 90C70 90 68 82 68 82L68 74L52 74L52 70L78 70C78 70 90 72 90 54C90 36 80 38 80 38L74 38L74 46C74 46 74 56 64 56L48 56C48 56 40 56 40 64L40 82C40 82 38 90 52 90Z" fill="#FFD43B"/>
-              <circle cx="62" cy="82" r="3" fill="#FFFFFF"/>
+          <div class="brand-pill">
+            <svg class="brand-svg" viewBox="0 0 110 110">
+              <path d="M53.7 3.3c-24.8 0-23.3 10.7-23.3 10.7l.1 11.1h23.7v3.4H20.4S4 26.6 4 51.5c0 24.8 14.4 23.9 14.4 23.9h8.6v-12.1s-.5-14.4 14.2-14.4h24.5s13.7.2 13.7-13.3V16.8S81.2 3.3 53.7 3.3zm-13.1 7.2c2.7 0 4.8 2.2 4.8 4.8 0 2.7-2.2 4.8-4.8 4.8s-4.8-2.2-4.8-4.8c0-2.6 2.2-4.8 4.8-4.8z" fill="#366D9C"/>
+              <path d="M56.3 106.7c24.8 0 23.3-10.7 23.3-10.7l-.1-11.1H55.8v-3.4h33.8s16.4 1.9 16.4-23c0-24.8-14.4-23.9-14.4-23.9h-8.6v12.1s.5 14.4-14.2 14.4H44.3s-13.7-.2-13.7 13.3v18.8s-1.8 13.5 25.7 13.5zm13.1-7.2c-2.7 0-4.8-2.2-4.8-4.8 0-2.7 2.2-4.8 4.8-4.8s4.8 2.2 4.8 4.8c0 2.6-2.2 4.8-4.8 4.8z" fill="#FFD43B"/>
             </svg>
-            <span class="brand-name">Python</span>
+            <span class="brand-label">Python</span>
           </div>
-
           <!-- PyTorch -->
-          <div class="brand-item">
-            <svg class="brand-icon" viewBox="0 0 100 100" fill="none">
-              <path d="M54 20L62 28M54 20C40 20 30 32 30 46C30 58 38 68 50 70C62 72 74 62 74 48C74 38 68 30 62 28L68 22" stroke="#EE4C2C" stroke-width="6" stroke-linecap="round"/>
-              <circle cx="66" cy="24" r="4" fill="#EE4C2C"/>
+          <div class="brand-pill">
+            <svg class="brand-svg" viewBox="0 0 100 100">
+              <path d="M54 12L46 20C57 31 57 49 46 60L54 68C70 52 70 28 54 12Z" fill="#EE4C2C"/>
+              <circle cx="68" cy="24" r="7" fill="#EE4C2C"/>
             </svg>
-            <span class="brand-name">PyTorch</span>
+            <span class="brand-label">PyTorch</span>
           </div>
-
+          <!-- React Native -->
+          <div class="brand-pill">
+            <svg class="brand-svg" viewBox="0 0 100 100">
+              <ellipse cx="50" cy="50" rx="42" ry="16" fill="none" stroke="#61DAFB" stroke-width="4" transform="rotate(30 50 50)"/>
+              <ellipse cx="50" cy="50" rx="42" ry="16" fill="none" stroke="#61DAFB" stroke-width="4" transform="rotate(90 50 50)"/>
+              <ellipse cx="50" cy="50" rx="42" ry="16" fill="none" stroke="#61DAFB" stroke-width="4" transform="rotate(150 50 50)"/>
+              <circle cx="50" cy="50" r="8" fill="#61DAFB"/>
+            </svg>
+            <span class="brand-label">React Native</span>
+          </div>
           <!-- Apache Kafka -->
-          <div class="brand-item">
-            <svg class="brand-icon" viewBox="0 0 100 100" fill="none">
-              <circle cx="50" cy="50" r="14" fill="#231F20"/>
-              <circle cx="24" cy="30" r="10" stroke="#231F20" stroke-width="4"/>
-              <circle cx="24" cy="70" r="10" stroke="#231F20" stroke-width="4"/>
-              <circle cx="76" cy="50" r="10" stroke="#231F20" stroke-width="4"/>
-              <line x1="33" y1="36" x2="41" y2="44" stroke="#231F20" stroke-width="4"/>
-              <line x1="33" y1="64" x2="41" y2="56" stroke="#231F20" stroke-width="4"/>
-              <line x1="66" y1="50" x2="57" y2="50" stroke="#231F20" stroke-width="4"/>
+          <div class="brand-pill">
+            <svg class="brand-svg" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="14" fill="#000000"/>
+              <circle cx="80" cy="30" r="10" fill="#000000"/>
+              <circle cx="80" cy="70" r="10" fill="#000000"/>
+              <circle cx="20" cy="30" r="10" fill="#000000"/>
+              <circle cx="20" cy="70" r="10" fill="#000000"/>
+              <line x1="50" y1="50" x2="80" y2="30" stroke="#000000" stroke-width="4"/>
+              <line x1="50" y1="50" x2="80" y2="70" stroke="#000000" stroke-width="4"/>
+              <line x1="50" y1="50" x2="20" y2="30" stroke="#000000" stroke-width="4"/>
+              <line x1="50" y1="50" x2="20" y2="70" stroke="#000000" stroke-width="4"/>
             </svg>
-            <span class="brand-name">Kafka</span>
+            <span class="brand-label">Kafka</span>
           </div>
-
           <!-- Redis -->
-          <div class="brand-item">
-            <svg class="brand-icon" viewBox="0 0 100 100" fill="none">
-              <path d="M15 40L50 20L85 40L50 60Z" fill="#D82C20"/>
-              <path d="M15 40L50 60L50 85L15 65Z" fill="#A32219"/>
-              <path d="M85 40L50 60L50 85L85 65Z" fill="#C0261C"/>
+          <div class="brand-pill">
+            <svg class="brand-svg" viewBox="0 0 100 100">
+              <polygon points="50,15 88,35 50,55 12,35" fill="#D82C20"/>
+              <polygon points="12,40 50,60 50,85 12,65" fill="#A32219"/>
+              <polygon points="88,40 50,60 50,85 88,65" fill="#C0281D"/>
             </svg>
-            <span class="brand-name">Redis</span>
+            <span class="brand-label">Redis</span>
           </div>
-
           <!-- PostgreSQL -->
-          <div class="brand-item">
-            <svg class="brand-icon" viewBox="0 0 100 100" fill="none">
-              <circle cx="50" cy="50" r="38" fill="#336791"/>
-              <path d="M35 40C35 30 45 25 55 25C65 25 70 32 70 42C70 54 62 62 55 68L45 74L45 58" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>
+          <div class="brand-pill">
+            <svg class="brand-svg" viewBox="0 0 100 100">
+              <path d="M50 15C32 15 22 28 22 45C22 62 33 75 42 79L42 85L50 82L58 85L58 79C67 75 78 62 78 45C78 28 68 15 50 15Z" fill="#336791"/>
+              <circle cx="40" cy="42" r="5" fill="#FFFFFF"/>
+              <circle cx="60" cy="42" r="5" fill="#FFFFFF"/>
             </svg>
-            <span class="brand-name">PostGIS</span>
+            <span class="brand-label">PostgreSQL</span>
           </div>
-
+          <!-- PostGIS -->
+          <div class="brand-pill">
+            <svg class="brand-svg" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="38" fill="none" stroke="#5B93C4" stroke-width="6"/>
+              <polygon points="50,20 62,50 50,44 38,50" fill="#E25A38"/>
+              <polygon points="50,80 62,50 50,44 38,50" fill="#336791"/>
+            </svg>
+            <span class="brand-label">PostGIS</span>
+          </div>
           <!-- FastAPI -->
-          <div class="brand-item">
-            <svg class="brand-icon" viewBox="0 0 100 100" fill="none">
-              <circle cx="50" cy="50" r="40" fill="#059669"/>
-              <path d="M48 22L30 52H48L44 78L68 44H50L54 22Z" fill="#FFFFFF"/>
+          <div class="brand-pill">
+            <svg class="brand-svg" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="42" fill="#059669"/>
+              <polygon points="54,18 28,52 48,52 44,82 72,46 52,46" fill="#FFFFFF"/>
             </svg>
-            <span class="brand-name">FastAPI</span>
+            <span class="brand-label">FastAPI</span>
           </div>
-
           <!-- Docker -->
-          <div class="brand-item">
-            <svg class="brand-icon" viewBox="0 0 100 100" fill="none">
-              <rect x="25" y="45" width="10" height="10" rx="1" fill="#0db7ed"/>
-              <rect x="38" y="45" width="10" height="10" rx="1" fill="#0db7ed"/>
-              <rect x="51" y="45" width="10" height="10" rx="1" fill="#0db7ed"/>
-              <rect x="38" y="32" width="10" height="10" rx="1" fill="#0db7ed"/>
-              <rect x="51" y="32" width="10" height="10" rx="1" fill="#0db7ed"/>
-              <path d="M15 58C15 72 30 82 50 82C75 82 85 68 85 58C75 58 70 52 70 52C65 58 55 58 50 58H15Z" fill="#0db7ed"/>
+          <div class="brand-pill">
+            <svg class="brand-svg" viewBox="0 0 100 100">
+              <path d="M88 48C84 46 80 48 76 52C70 42 58 40 50 40H12C8 60 22 80 50 80C80 80 92 62 92 50C92 48 90 48 88 48Z" fill="#2496ED"/>
+              <rect x="24" y="42" width="8" height="8" fill="#FFFFFF"/>
+              <rect x="34" y="42" width="8" height="8" fill="#FFFFFF"/>
+              <rect x="44" y="42" width="8" height="8" fill="#FFFFFF"/>
+              <rect x="34" y="32" width="8" height="8" fill="#FFFFFF"/>
+              <rect x="44" y="32" width="8" height="8" fill="#FFFFFF"/>
             </svg>
-            <span class="brand-name">Docker</span>
+            <span class="brand-label">Docker</span>
           </div>
-
-          <!-- Apple iOS -->
-          <div class="brand-item">
-            <svg class="brand-icon" viewBox="0 0 100 100" fill="none">
-              <path d="M68 28C64 32 58 35 52 34C51 28 54 22 58 18C62 14 68 12 70 12C70 18 68 24 68 28Z" fill="#0F172A"/>
-              <path d="M68 52C68 42 76 38 76 38C71 31 63 30 60 30C52 29 45 34 41 34C37 34 31 30 25 30C16 30 8 38 8 52C8 67 20 88 28 88C32 88 35 85 40 85C45 85 48 88 53 88C61 88 67 76 71 70C74 65 76 60 76 60C76 60 68 57 68 52Z" fill="#0F172A"/>
+          <!-- Kubernetes -->
+          <div class="brand-pill">
+            <svg class="brand-svg" viewBox="0 0 100 100">
+              <polygon points="50,12 85,32 85,68 50,88 15,68 15,32" fill="none" stroke="#326CE5" stroke-width="6"/>
+              <circle cx="50" cy="50" r="14" fill="#326CE5"/>
+              <line x1="50" y1="12" x2="50" y2="88" stroke="#326CE5" stroke-width="4"/>
+              <line x1="15" y1="32" x2="85" y2="68" stroke="#326CE5" stroke-width="4"/>
+              <line x1="15" y1="68" x2="85" y2="32" stroke="#326CE5" stroke-width="4"/>
             </svg>
-            <span class="brand-name">iOS</span>
+            <span class="brand-label">Kubernetes</span>
           </div>
-
-          <!-- Android -->
-          <div class="brand-item">
-            <svg class="brand-icon" viewBox="0 0 100 100" fill="none">
-              <path d="M30 40C30 28 40 20 50 20C60 20 70 28 70 40H30Z" fill="#3DDC84"/>
-              <circle cx="42" cy="30" r="2.5" fill="#FFFFFF"/>
-              <circle cx="58" cy="30" r="2.5" fill="#FFFFFF"/>
-              <line x1="36" y1="18" x2="30" y2="10" stroke="#3DDC84" stroke-width="3.5" stroke-linecap="round"/>
-              <line x1="64" y1="18" x2="70" y2="10" stroke="#3DDC84" stroke-width="3.5" stroke-linecap="round"/>
-              <rect x="30" y="44" width="40" height="34" rx="4" fill="#3DDC84"/>
-              <rect x="18" y="44" width="8" height="26" rx="4" fill="#3DDC84"/>
-              <rect x="74" y="44" width="8" height="26" rx="4" fill="#3DDC84"/>
-              <rect x="36" y="80" width="8" height="14" rx="3" fill="#3DDC84"/>
-              <rect x="56" y="80" width="8" height="14" rx="3" fill="#3DDC84"/>
+          <!-- ISRO / NavIC -->
+          <div class="brand-pill">
+            <svg class="brand-svg" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="42" fill="#F97316"/>
+              <path d="M50 15L62 38H38L50 15Z" fill="#FFFFFF"/>
+              <circle cx="50" cy="55" r="16" fill="#1E3A8A"/>
+              <circle cx="50" cy="55" r="8" fill="#FFFFFF"/>
             </svg>
-            <span class="brand-name">Android</span>
+            <span class="brand-label">ISRO NavIC</span>
+          </div>
+          <!-- Indian Railways / CRIS -->
+          <div class="brand-pill">
+            <svg class="brand-svg" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="42" fill="#1E3A8A"/>
+              <circle cx="50" cy="50" r="32" fill="#FFFFFF"/>
+              <path d="M36 34H64V58C64 64 58 70 50 70C42 70 36 64 36 58V34Z" fill="#991B1B"/>
+              <circle cx="43" cy="62" r="3.5" fill="#FBBF24"/>
+              <circle cx="57" cy="62" r="3.5" fill="#FBBF24"/>
+              <line x1="30" y1="74" x2="70" y2="74" stroke="#1E3A8A" stroke-width="3.5"/>
+            </svg>
+            <span class="brand-label">CRIS / IR</span>
           </div>
         </div>
       </div>
-    </div>
+    </aside>
 
     <!-- ------------------------------------------------------ -->
-    <!-- RIGHT COLUMN: MULTI-USER SYSTEM ARCHITECTURE FLOWCHART -->
+    <!-- RIGHT COLUMN: INTUITIVE YES/NO FLOWCHART & 3 STAGES    -->
     <!-- ------------------------------------------------------ -->
-    <div class="right-col">
+    <section class="right-col">
 
-      <!-- Header Banner: Connected Users -->
-      <div class="users-header-bar">
-        <div class="users-header-title">
-          <span>Connected Stakeholders &amp; Operational Actors</span>
-          <span class="users-header-badge">Unified Event Loop</span>
+      <!-- ==================================================== -->
+      <!-- TOP: SEQUENTIAL USER/SYSTEM YES-NO FLOWCHART         -->
+      <!-- ==================================================== -->
+      <div class="flowchart-wrapper">
+        <div class="flowchart-header">
+          <div class="flowchart-title">
+            <span>Operational Decision &amp; Dynamic Forecasting Flowchart</span>
+            <span class="flowchart-badge">Sequential Physics &amp; AI Intelligence</span>
+          </div>
+          <div style="font-size: 11px; font-weight: 700; color: #64748B;">
+            Input Telemetry &rarr; Physics Validation &rarr; Graph Ripple Reasoning &rarr; Conformal Arrival Window
+          </div>
         </div>
+
+        <!-- Visual Flow Diagram Area -->
+        <div class="flow-diagram-container">
+
+          <!-- SVG CONNECTING WIRES & ARROWS -->
+          <svg class="fc-svg-overlay" viewBox="0 0 1340 485">
+            <defs>
+              <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#64748B"/>
+              </marker>
+              <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#10B981"/>
+              </marker>
+              <marker id="arrow-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#EF4444"/>
+              </marker>
+              <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#0284C7"/>
+              </marker>
+            </defs>
+
+            <!-- Line 1: User Opens App -> Select Train -->
+            <path d="M 215 32 L 255 32" class="fc-line" marker-end="url(#arrow-blue)" stroke="#0284C7"/>
+            <!-- Line 2: Select Train -> Ingest RTIS -->
+            <path d="M 525 32 L 565 32" class="fc-line" marker-end="url(#arrow-blue)" stroke="#0284C7"/>
+            <!-- Line 3: Ingest RTIS -> Decision 1 -->
+            <path d="M 875 32 L 915 32" class="fc-line" marker-end="url(#arrow)" />
+
+            <!-- Decision 1 Branch NO -> Dead-Reckoning (Down-Right) -->
+            <path d="M 1180 32 L 1220 32 Q 1235 32 1235 48 L 1235 88" class="fc-line-red" marker-end="url(#arrow-red)"/>
+            <!-- Decision 1 Branch YES -> Rail-Snap (Down) -->
+            <path d="M 1045 56 L 1045 92" class="fc-line-green" marker-end="url(#arrow-green)"/>
+
+            <!-- Rejoin Dead-Reckoning to Rail-Snap Line -->
+            <path d="M 1150 116 L 1125 116" class="fc-line" marker-end="url(#arrow)"/>
+
+            <!-- From Rail-Snap -> Decision 2 (Caution Ahead?) -->
+            <path d="M 900 116 L 850 116" class="fc-line" marker-end="url(#arrow)"/>
+
+            <!-- Decision 2 Branch YES -> 3-Phase TSR Penalty (Left) -->
+            <path d="M 600 116 L 545 116" class="fc-line-red" marker-end="url(#arrow-red)"/>
+            <!-- Decision 2 Branch NO -> Cruise Speed (Down) -->
+            <path d="M 725 140 L 725 170 Q 725 185 700 185 L 545 185" class="fc-line-green" marker-end="url(#arrow-green)"/>
+
+            <!-- TSR Penalty & Cruise Speed Merge to Decision 3 (Preceding Block?) -->
+            <path d="M 245 116 L 210 116 Q 190 116 190 140 L 190 235 Q 190 255 220 255 L 255 255" class="fc-line" marker-end="url(#arrow)"/>
+            <path d="M 265 185 L 225 185 Q 205 185 205 210 L 205 255 L 255 255" class="fc-line" />
+
+            <!-- From Decision 3: Branch YES -> ST-GAT Ripple Model -->
+            <path d="M 525 255 L 585 255" class="fc-line-red" marker-end="url(#arrow-red)"/>
+            <!-- From Decision 3: Branch NO -> Clear Track Block -->
+            <path d="M 390 280 L 390 315 Q 390 330 420 330 L 585 330" class="fc-line-green" marker-end="url(#arrow-green)"/>
+
+            <!-- ST-GAT & Clear Track merge into Decision 4 (Approaching Terminal?) -->
+            <path d="M 875 255 L 910 255 Q 930 255 930 280 L 930 330 L 965 330" class="fc-line" marker-end="url(#arrow)"/>
+            <path d="M 865 330 L 965 330" class="fc-line" />
+
+            <!-- Decision 4: Branch YES -> Outer Platform Queue Solver -->
+            <path d="M 1225 330 L 1260 330 Q 1280 330 1280 355 L 1280 395 Q 1280 415 1255 415 L 1215 415" class="fc-line-red" marker-end="url(#arrow-red)"/>
+            <!-- Decision 4: Branch NO -> Continuous Corridor Tracking -->
+            <path d="M 1095 355 L 1095 390" class="fc-line-green" marker-end="url(#arrow-green)"/>
+
+            <!-- Platform Solver & Corridor Tracking merge into Conformal Engine -->
+            <path d="M 975 415 L 920 415" class="fc-line" marker-end="url(#arrow)"/>
+            <path d="M 610 415 L 535 415" class="fc-line-green" marker-end="url(#arrow-green)" stroke-width="2.5"/>
+
+            <!-- Conformal Engine to Display UI Box -->
+            <path d="M 230 415 L 175 415" class="fc-line-blue" marker-end="url(#arrow-blue)" stroke="#0284C7" stroke-width="2.5"/>
+          </svg>
+
+          <!-- ---------------- FLOW NODES ---------------- -->
+          <!-- Node 1: User Opens App -->
+          <div class="fc-box c-blue" style="top: 10px; left: 15px; width: 200px;">
+            <div class="fc-title">📱 User Opens App / Console</div>
+            <div class="fc-desc">Passenger / Section Controller / Station Master</div>
+          </div>
+
+          <!-- Node 2: Select Train -->
+          <div class="fc-box c-blue" style="top: 10px; left: 260px; width: 265px;">
+            <div class="fc-title">🔍 Select Train / Route GPS Detect</div>
+            <div class="fc-desc">e.g. #12301 New Delhi - Howrah Rajdhani</div>
+          </div>
+
+          <!-- Node 3: Ingest RTIS -->
+          <div class="fc-box c-green" style="top: 10px; left: 570px; width: 305px;">
+            <div class="fc-title">🛰️ Ingest RTIS NavIC Satellite Ping</div>
+            <div class="fc-desc">30s Live GPS Coordinates + Speed from 8,000+ Locos</div>
+          </div>
+
+          <!-- Decision 1: Signal Valid? -->
+          <div class="fc-hex" style="top: 8px; left: 920px; width: 260px;">
+            <div class="fc-hex-title">Live RTIS GPS Signal Valid?</div>
+            <div class="fc-hex-desc">Satellite / Cellular Handshake Check</div>
+          </div>
+          <span class="fc-tag-no" style="top: 22px; left: 1195px;">NO</span>
+          <span class="fc-tag-yes" style="top: 66px; left: 1052px;">YES</span>
+
+          <!-- Node Fallback: Dead-Reckoning Simulation -->
+          <div class="fc-box c-amber" style="top: 92px; left: 1155px; width: 175px;">
+            <div class="fc-title">⚠️ Dead-Reckoning</div>
+            <div class="fc-desc">Newton-Davis forward simulation during tunnel blackout</div>
+          </div>
+
+          <!-- Node 4: 1D Rail-Snap & Kalman -->
+          <div class="fc-box c-green" style="top: 94px; left: 905px; width: 240px;">
+            <div class="fc-title">📍 1D Rail-Snap &amp; Kalman Filter</div>
+            <div class="fc-desc">PostGIS LRS snaps coordinates to exact track chainage KM</div>
+          </div>
+
+          <!-- Decision 2: Caution Ahead? -->
+          <div class="fc-hex" style="top: 92px; left: 605px; width: 240px;">
+            <div class="fc-hex-title">TSR Caution / Fog Ahead?</div>
+            <div class="fc-hex-desc">e-Caution Form T/409 or IMD &lt;300m</div>
+          </div>
+          <span class="fc-tag-yes" style="top: 108px; left: 560px;">YES</span>
+          <span class="fc-tag-no" style="top: 152px; left: 735px;">NO</span>
+
+          <!-- Node: 3-Phase Caution Delay Penalty -->
+          <div class="fc-box c-rose" style="top: 94px; left: 250px; width: 290px;">
+            <div class="fc-title">🛑 3-Phase TSR Caution Delay Penalty</div>
+            <div class="fc-desc">&Delta;T<sub>tsr</sub> = Decel Loss + Zone Run + Power/Weight Tractive Recovery</div>
+          </div>
+
+          <!-- Node: Cruise Speed at Section MPS -->
+          <div class="fc-box c-green" style="top: 164px; left: 270px; width: 270px;">
+            <div class="fc-title">🟢 Cruise at Section MPS (130 km/h)</div>
+            <div class="fc-desc">WAP-7 / Train-18 operates at maximum line velocity</div>
+          </div>
+
+          <!-- Decision 3: Preceding Block Ahead? -->
+          <div class="fc-hex" style="top: 232px; left: 260px; width: 260px;">
+            <div class="fc-hex-title">Preceding Freight Block / Siding?</div>
+            <div class="fc-hex-desc">CRIS FOIS Freight Telemetry &amp; S&amp;T Status</div>
+          </div>
+          <span class="fc-tag-yes" style="top: 246px; left: 540px;">YES</span>
+          <span class="fc-tag-no" style="top: 300px; left: 398px;">NO</span>
+
+          <!-- Node: ST-GAT Ripple Model -->
+          <div class="fc-box c-purple" style="top: 232px; left: 590px; width: 280px;">
+            <div class="fc-title">🔄 ST-GAT Ripple &amp; Precedence Rule 401</div>
+            <div class="fc-desc">Graph Attention Network models cascading delay; loop siding overtake</div>
+          </div>
+
+          <!-- Node: Clear Track Block -->
+          <div class="fc-box c-green" style="top: 308px; left: 590px; width: 270px;">
+            <div class="fc-title">⚡ Unobstructed Block Clearance</div>
+            <div class="fc-desc">Green aspect automatic signaling forward</div>
+          </div>
+
+          <!-- Decision 4: Approaching Terminal Platform? -->
+          <div class="fc-hex" style="top: 306px; left: 970px; width: 250px;">
+            <div class="fc-hex-title">Terminal Platform Slot (&lt; 30 KM)?</div>
+            <div class="fc-hex-desc">Junction Outer Signal Clearance Check</div>
+          </div>
+          <span class="fc-tag-yes" style="top: 320px; left: 1235px;">YES</span>
+          <span class="fc-tag-no" style="top: 366px; left: 1102px;">NO</span>
+
+          <!-- Node: Platform Queue Solver -->
+          <div class="fc-box c-orange" style="top: 390px; left: 980px; width: 230px;">
+            <div class="fc-title">🚉 Platform Queuing &amp; Outer Hold</div>
+            <div class="fc-desc">&Delta;T<sub>outer</sub> = max(0, T<sub>dep</sub><sup>rake</sup> + T<sub>clear</sub> - T<sub>arr</sub>)</div>
+          </div>
+
+          <!-- Node: Bayesian Conformal Engine -->
+          <div class="fc-box c-green" style="top: 390px; left: 615px; width: 300px;">
+            <div class="fc-title">🎯 Bayesian Conformal Uncertainty Engine</div>
+            <div class="fc-desc">Calculates honest [P10, P50, P90] arrival window with 90% certainty</div>
+          </div>
+
+          <!-- Node: Final Live Radar UI Display -->
+          <div class="fc-box c-blue" style="top: 390px; left: 15px; width: 510px; border-width: 2px;">
+            <div class="fc-title" style="font-size: 12px;">🖥️ Display Real-Time Live Radar ETA Window &amp; Dispatch Feeds</div>
+            <div class="fc-desc" style="font-size: 9.5px;">Sub-millisecond broadcast across mobile apps, station LED screens &amp; section controllers (Auto-refreshes 30s)</div>
+          </div>
+
+        </div>
+
+        <!-- ---------------- ROW 5: MULTI-STAKEHOLDER TERMINAL OUTPUTS ---------------- -->
+        <div class="terminal-output-row">
+          <div class="terminal-card active-passenger">
+            <div class="terminal-header">📱 Passenger Mobile UI</div>
+            <div class="terminal-content">Live track radar map, [P10-P50-P90] arrival window &amp; plain-language root-cause delay badge.</div>
+          </div>
+          <div class="terminal-card active-controller">
+            <div class="terminal-header">🚦 Section Controller Cockpit</div>
+            <div class="terminal-content">COA conflict detection, automatic block section clearance &amp; loop line overtake advisory.</div>
+          </div>
+          <div class="terminal-card active-station">
+            <div class="terminal-header">🏢 Station Master Console</div>
+            <div class="terminal-content">Platform berthing turnover optimization, shunting engine &amp; loco pilot crew handover scheduling.</div>
+          </div>
+          <div class="terminal-card active-feeder">
+            <div class="terminal-header">🚕 Feeder Transit API</div>
+            <div class="terminal-content">City metro, bus feeder &amp; taxi booking auto-sync with dynamic P50 arrival timestamp.</div>
+          </div>
+        </div>
+
       </div>
 
-      <!-- 1. Connected Stakeholder / User Layer -->
-      <div class="connected-users-bar">
-        <!-- User 1: Passenger -->
-        <div class="user-pill-card active-passenger">
-          <div class="user-badge-icon" style="background: #E0F2FE;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0284C7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
-              <line x1="12" y1="18" x2="12.01" y2="18"/>
-            </svg>
-          </div>
-          <div class="user-info">
-            <span class="user-role-title">Passenger (iOS/Android)</span>
-            <span class="user-role-desc">React Native &bull; Live P10-P90 ETA</span>
-          </div>
-        </div>
+      <!-- ==================================================== -->
+      <!-- BOTTOM: 3 CONNECTED CORE STAGES (INPUT / PROC / OUT) -->
+      <!-- ==================================================== -->
+      <div class="stages-wrapper">
 
-        <!-- User 2: Loco Pilot / Guard -->
-        <div class="user-pill-card active-crew">
-          <div class="user-badge-icon" style="background: #FEF3C7;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="4" y="3" width="16" height="16" rx="2"/>
-              <path d="M4 11h16"/>
-              <path d="M12 3v8"/>
-              <circle cx="8" cy="15" r="1"/>
-              <circle cx="16" cy="15" r="1"/>
-            </svg>
-          </div>
-          <div class="user-info">
-            <span class="user-role-title">Loco Pilot / Guard</span>
-            <span class="user-role-desc">BEL RTIS NavIC 30s Speed</span>
-          </div>
-        </div>
-
-        <!-- User 3: Section Controller -->
-        <div class="user-pill-card active-controller">
-          <div class="user-badge-icon" style="background: #F3E8FF;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="3" width="20" height="14" rx="2"/>
-              <line x1="8" y1="21" x2="16" y2="21"/>
-              <line x1="12" y1="17" x2="12" y2="21"/>
-            </svg>
-          </div>
-          <div class="user-info">
-            <span class="user-role-title">Section Controller</span>
-            <span class="user-role-desc">COA Dispatch Cockpit &bull; Overtakes</span>
-          </div>
-        </div>
-
-        <!-- User 4: Station Master -->
-        <div class="user-pill-card active-station">
-          <div class="user-badge-icon" style="background: #D1FAE5;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-              <polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
-          </div>
-          <div class="user-info">
-            <span class="user-role-title">Station Master</span>
-            <span class="user-role-desc">Platform Clearance &bull; Rake Prep</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 2. System Architecture Interactive Flowchart -->
-      <div class="flowchart-container">
-
-        <!-- Stage A: Multi-Source Real-Time Ingestion Bus -->
-        <div class="flow-row">
-          <div class="flow-box box-blue" style="flex: 1.1;">
-            <div class="flow-box-title">1. BEL RTIS NavIC Satellite GPS</div>
-            <div class="flow-box-sub">30s live speed, loco class &amp; load</div>
-          </div>
-
-          <div class="flow-arrow-right">&rarr;</div>
-
-          <div class="flow-box box-blue" style="flex: 1.1;">
-            <div class="flow-box-title">2. CRIS FOIS &amp; S&amp;T Relays</div>
-            <div class="flow-box-sub">Freight train positions &amp; gate status</div>
-          </div>
-
-          <div class="flow-arrow-right">&rarr;</div>
-
-          <div class="flow-box box-purple" style="flex: 1.35;">
-            <div class="flow-box-title">3. Apache Kafka Ingestion Bus</div>
-            <div class="flow-box-sub">100k+ event/s buffer &bull; Redis in-memory cache</div>
-          </div>
-
-          <div class="flow-arrow-right">&rarr;</div>
-
-          <div class="flow-box box-emerald" style="flex: 1.15;">
-            <div class="flow-box-title">4. Kalman Rail-Map Matcher</div>
-            <div class="flow-box-sub">Snaps GPS to 1D rail chainage (KM<sub>t</sub>)</div>
-          </div>
-        </div>
-
-        <div class="flow-arrow-down">&darr;</div>
-
-        <!-- Stage B: Parallel Operational Conflict & Physics Streams -->
-        <div class="streams-grid">
-          <!-- Stream 1: Dynamic Headway & Signal Clearance -->
-          <div class="stream-card" style="border-top: 3px solid #F59E0B;">
-            <div class="stream-header" style="color: #B45309;">
-              <span>A. Headway &amp; Signals</span>
-              <span style="font-size: 9px; background: #FEF3C7; padding: 1px 5px; border-radius: 4px;">Automatic Blocks</span>
+        <!-- STAGE 1: INPUT INGESTION -->
+        <div class="stage-card">
+          <div class="stage-badge-header">
+            <div class="stage-title">
+              <span>1. Ingestion Stage</span>
             </div>
-            <div class="stream-step">
-              <b>Preceding Train Radar</b>
-              <span>Scans 4-aspect signal spacing ahead for slower freight or mail trains</span>
-            </div>
-            <div class="stream-step">
-              <b>Signal Halts Eliminated</b>
-              <span>Computes progressive slowing curves instead of surprise red-light stops</span>
-            </div>
+            <span class="stage-tag tag-blue">Zero Hardware</span>
           </div>
-
-          <!-- Stream 2: Kinematic Physics & Weather Bounds -->
-          <div class="stream-card" style="border-top: 3px solid #3B82F6;">
-            <div class="stream-header" style="color: #1D4ED8;">
-              <span>B. Davis Physics &amp; Weather</span>
-              <span style="font-size: 9px; background: #EFF6FF; padding: 1px 5px; border-radius: 4px;">F = m &middot; a</span>
+          <div class="input-stream-list">
+            <div class="stream-row">
+              <span class="stream-icon-badge">🛰️</span>
+              <div class="stream-text-col">
+                <span class="stream-name">BEL RTIS NavIC GPS</span>
+                <span class="stream-spec">30s live coordinates across 8,000+ locomotives</span>
+              </div>
             </div>
-            <div class="stream-step">
-              <b>Davis Tractive Drag</b>
-              <span>Calculates rolling friction, grade resistance &amp; WAP-7 tractive effort</span>
+            <div class="stream-row">
+              <span class="stream-icon-badge">🚂</span>
+              <div class="stream-text-col">
+                <span class="stream-name">CRIS FOIS Freight Telemetry</span>
+                <span class="stream-spec">Preceding freight rake tonnage, speed &amp; section status</span>
+              </div>
             </div>
-            <div class="stream-step">
-              <b>Statutory Fog Governor</b>
-              <span>IMD visibility &lt; 300m &rarr; Enforces GR 3.61 statutory 60 km/h cap</span>
+            <div class="stream-row">
+              <span class="stream-icon-badge">📋</span>
+              <div class="stream-text-col">
+                <span class="stream-name">COA Dispatch Records</span>
+                <span class="stream-spec">Section Controller line clearance, loops &amp; crossovers</span>
+              </div>
             </div>
-          </div>
-
-          <!-- Stream 3: Station Outer Queue & Turnaround -->
-          <div class="stream-card" style="border-top: 3px solid #10B981;">
-            <div class="stream-header" style="color: #047857;">
-              <span>C. Station &amp; Outer Queue</span>
-              <span style="font-size: 9px; background: #ECFDF5; padding: 1px 5px; border-radius: 4px;">Platform Clearance</span>
+            <div class="stream-row">
+              <span class="stream-icon-badge">⚠️</span>
+              <div class="stream-text-col">
+                <span class="stream-name">e-Caution TSR Form T/409</span>
+                <span class="stream-spec">Civil Engineering temporary speed restriction slow-orders</span>
+              </div>
             </div>
-            <div class="stream-step">
-              <b>Platform Berthing Model</b>
-              <span>Predicts if departure rake vacates platform before arriving train reaches outer</span>
-            </div>
-            <div class="stream-step">
-              <b>Outer Signal Trap Warning</b>
-              <span>Flags 15-25m outer signal holds 40 km before arrival with root cause</span>
+            <div class="stream-row">
+              <span class="stream-icon-badge">🌧️</span>
+              <div class="stream-text-col">
+                <span class="stream-name">IMD Doppler Radar</span>
+                <span class="stream-spec">Real-time fog visibility &lt;300m (GR 3.61 60km/h speed cap)</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="flow-arrow-down">&darr;</div>
+        <!-- ARROW 1 -> 2 -->
+        <div class="stage-arrow-connector">
+          <svg class="stage-arrow-svg" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="#0284C7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+        </div>
 
-        <!-- Stage C: Spatio-Temporal AI & Conformal Uncertainty -->
-        <div class="flow-row">
-          <div class="flow-box box-purple" style="flex: 1.8;">
-            <div class="flow-box-title">Spatio-Temporal Graph Attention Network (ST-GAT)</div>
-            <div class="flow-box-sub">Corridor-wide topological multigraph &bull; Dynamic node attention &bull; Cascading ripple propagation</div>
+        <!-- STAGE 2: PROCESSING & PHYSICS CORE -->
+        <div class="stage-card">
+          <div class="stage-badge-header">
+            <div class="stage-title">
+              <span>2. Processing Stage (Physics Kinematics &amp; AI)</span>
+            </div>
+            <span class="stage-tag tag-purple">Core Engine</span>
           </div>
-
-          <div class="flow-arrow-right">&rarr;</div>
-
-          <div class="flow-box box-amber" style="flex: 1.35;">
-            <div class="flow-box-title">Conformal Bayes Engine</div>
-            <div class="flow-box-sub">P10 &ndash; P90 Confidence Band (90% mathematically guaranteed)</div>
+          <div class="physics-formula-container">
+            <!-- Formula 1: Newton-Davis -->
+            <div class="formula-pill-box">
+              <div class="formula-header">
+                <span>Newton-Davis Dynamic Acceleration Engine</span>
+                <span class="formula-tag">Kinematics</span>
+              </div>
+              <div class="formula-math">a(t) = [ F_trac(v) - R_davis(v) - F_grade(&theta;) - F_curve(D) ] / M_effective</div>
+            </div>
+            <!-- Formula 2: Tractive & Air Resistance -->
+            <div class="formula-pill-box">
+              <div class="formula-header">
+                <span>WAP-7 Tractive Effort &amp; Modified Atmospheric Drag</span>
+                <span class="formula-tag">Aerodynamics</span>
+              </div>
+              <div class="formula-math">F_trac = min(&mu;Mg, P_rated&eta;/v) &nbsp;|&nbsp; R(v) = A + Bv + C&middot;[&rho;(T,H)/&rho;0]&middot;v&sup2;</div>
+            </div>
+            <!-- Formula 3: ST-GAT & Rule 401 -->
+            <div class="formula-pill-box">
+              <div class="formula-header">
+                <span>ST-GAT Spatial Graph Attention &amp; Operating Rule 401</span>
+                <span class="formula-tag">Network Graph</span>
+              </div>
+              <div class="formula-math">&alpha;_ij = Softmax(LeakyReLU(a^T [Wh_i || Wh_j])) &nbsp;|&nbsp; Loop Siding Delay</div>
+            </div>
+            <!-- Formula 4: Outer Signal Queue -->
+            <div class="formula-pill-box">
+              <div class="formula-header">
+                <span>Outer Signal Queuing &amp; Platform Clearance Solver</span>
+                <span class="formula-tag">Station Model</span>
+              </div>
+              <div class="formula-math">&Delta;T_outer = max( 0, &nbsp;T_dep^preceding + T_clearance - T_arr^approaching )</div>
+            </div>
           </div>
+        </div>
 
-          <div class="flow-arrow-right">&rarr;</div>
+        <!-- ARROW 2 -> 3 -->
+        <div class="stage-arrow-connector">
+          <svg class="stage-arrow-svg" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="#0284C7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+        </div>
 
-          <div class="flow-box box-emerald" style="flex: 1.85;">
-            <div class="flow-box-title">Synchronized Multi-User Dispatch</div>
-            <div class="flow-box-sub">Real-time WebSocket &amp; push sync across Mobile App &amp; Railway Control</div>
+        <!-- STAGE 3: OUTPUT DELIVERY -->
+        <div class="stage-card">
+          <div class="stage-badge-header">
+            <div class="stage-title">
+              <span>3. Output Stage</span>
+            </div>
+            <span class="stage-tag tag-green">Multi-User Delivery</span>
+          </div>
+          <div class="output-device-grid">
+            <div class="output-item-box">
+              <div class="output-icon-box">📱</div>
+              <div class="output-detail-col">
+                <span class="output-heading">Passenger Mobile Radar App</span>
+                <span class="output-desc-text">Dynamic [P10-P50-P90] arrival window, station radar &amp; plain delay root cause</span>
+              </div>
+            </div>
+            <div class="output-item-box">
+              <div class="output-icon-box">🚦</div>
+              <div class="output-detail-col">
+                <span class="output-heading">Section Controller Cockpit</span>
+                <span class="output-desc-text">Real-time headway warnings, automatic block clearance &amp; loop line overtake advisor</span>
+              </div>
+            </div>
+            <div class="output-item-box">
+              <div class="output-icon-box">🏢</div>
+              <div class="output-detail-col">
+                <span class="output-heading">Station Master Berthing Console</span>
+                <span class="output-desc-text">Platform occupancy turnover scheduler, shunting engine &amp; crew rostering sync</span>
+              </div>
+            </div>
+            <div class="output-item-box">
+              <div class="output-icon-box">🚕</div>
+              <div class="output-detail-col">
+                <span class="output-heading">Urban Feeder Transport APIs</span>
+                <span class="output-desc-text">Automated metro, city bus &amp; ride-hailing sync triggered by high-precision P50 ETA</span>
+              </div>
+            </div>
           </div>
         </div>
 
       </div>
 
-      <!-- 3. Bottom 3-Stage Process Pipeline (Input -> Processing -> Output) -->
-      <div class="pipeline-summary-box">
-        <!-- Stage 1: Input -->
-        <div class="pipeline-stage">
-          <div class="pipeline-stage-title" style="color: #0284C7;">1. Input Stage</div>
-          <div class="pipeline-stage-items">
-            <div>&bull; BEL RTIS NavIC GPS (30s)</div>
-            <div>&bull; FOIS Freight &amp; S&amp;T Relays</div>
-            <div>&bull; T/409 TSR Caution Orders</div>
-            <div>&bull; IMD Doppler Weather Radar</div>
-          </div>
-        </div>
+    </section>
 
-        <div class="pipeline-arrow">&rarr;</div>
-
-        <!-- Stage 2: Processing -->
-        <div class="pipeline-stage">
-          <div class="pipeline-stage-title" style="color: #7C3AED;">2. Processing Stage (GATI-SETU Engine)</div>
-          <div class="pipeline-stage-items">
-            <div>&bull; Kalman Track Snap &bull; Kafka Telemetry Bus</div>
-            <div>&bull; Davis Kinematics Engine (Friction, Grade, Loco Power)</div>
-            <div>&bull; ST-GAT Corridor Graph &bull; Conformal Uncertainty (P10-P90)</div>
-            <div>&bull; Outer Signal Queue &amp; Platform Clearance Solver</div>
-          </div>
-        </div>
-
-        <div class="pipeline-arrow">&rarr;</div>
-
-        <!-- Stage 3: Output -->
-        <div class="pipeline-stage">
-          <div class="pipeline-stage-title" style="color: #059669;">3. Output Stage</div>
-          <div class="pipeline-stage-items">
-            <div>&bull; <b>React Native App</b> (iOS &amp; Android)</div>
-            <div>&bull; 90% Honest Arrival Window</div>
-            <div>&bull; Human Delay Badges &amp; Radar</div>
-            <div>&bull; COA Dispatcher Overtake Advisory</div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-  </div>
+  </main>
 
   <!-- ======================================================== -->
-  <!-- 3. SLIDE FOOTER BAR                                      -->
+  <!-- 3. SLIDE FOOTER                                          -->
   <!-- ======================================================== -->
-  <div class="slide-footer">
-    <div class="footer-left-icons">
-      <span>&#x2039;</span>
-      <span>&#x270e;</span>
-      <span>&#x1f50d;</span>
-      <span>&#x1f4f9;</span>
-      <span>&bull;&bull;&bull;</span>
-      <span>&#x203a;</span>
-    </div>
-
-    <div class="footer-center-text">@SIH Idea submission- Template</div>
-
+  <footer class="slide-footer">
+    <div class="footer-template-text">@SIH Idea submission- Template</div>
     <div class="footer-slide-num">3</div>
-  </div>
+  </footer>
 
 </body>
 </html>

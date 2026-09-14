@@ -1,117 +1,94 @@
-# GATI-SETU: Technical Approach (Slide 3)
-
-**Smart India Hackathon 2026 | Problem ID: 26028 | Ministry of Railways / CRIS**  
-**Team:** Karasuno  
-**Slide Title:** TECHNICAL APPROACH (Slide 3 Official SIH Presentation Template)
+# 🚆 Slide 3: Technical Approach (GATI-SETU)
+**Smart India Hackathon 2026 | Problem Statement ID: 26028**  
+**Organization:** Ministry of Railways | **Theme:** Smart Automation | **Category:** Software (100% Zero-Hardware)
 
 ---
 
-## 1. Official SIH Slide 3 Presentation Graphic
-
-![GATI-SETU Technical Approach Slide](screenshots/technical_approach_slide.png)
-
-> **Interactive Presentation Template:** Located at [`docs/technical_approach_slide.html`](file:///Users/toru/.gemini/antigravity-ide/scratch/Railway-repo/docs/technical_approach_slide.html). Rendered at full 1080p (1920x1080) for evaluation juries, projector presentations, and technical audits.
+## 📸 Slide Visual Preview
+![Technical Approach Slide](file:///Users/toru/.gemini/antigravity-ide/scratch/Railway-repo/docs/screenshots/technical_approach_slide.png)
+*Interactive Presentation Canvas: [`docs/technical_approach_slide.html`](file:///Users/toru/.gemini/antigravity-ide/scratch/Railway-repo/docs/technical_approach_slide.html)*
 
 ---
 
-## 2. Technology Stack Breakdown
+## 1. 🛠️ Technology Stack Breakdown
 
-Our cross-platform solution connects passengers, loco pilots, section controllers, and station masters via a unified real-time event loop. **100% Zero-Hardware**: runs purely on existing BEL RTIS NavIC satellite GPS and CRIS software feeds without requiring locomotive retrofitting.
-
-| Layer | Technologies Selected | Rationale & Enterprise Specifications |
+| Domain / Layer | Technology & Framework | Purpose & Justification |
 | :--- | :--- | :--- |
-| **Cross-Platform Mobile** | **React Native** (iOS & Android native builds), React Navigation, Reanimated 3, MMKV, SQLite | Single high-performance native codebase for 1.4B passengers across both iOS and Android platforms; sub-millisecond local key-value store for offline timetable and cached station geometry. |
-| **Mobile UI & Radar** | React Native Paper, React Native SVG Charts, MapLibre GL / Leaflet tile layers, Sonner alerts, Vaul drawers | Fluid 60 FPS vector rendering of track radars, train speedometers, weather overlays, and accessible bottom sheets. |
-| **Backend & Ingestion** | **Python 3.11** (FastAPI async microservices), Node.js API Gateway, Pydantic v2 | High-concurrency event ingestion parsing 30-second RTIS telemetry packets across all 20,000+ active Indian Railways rakes. |
-| **Deep Learning & Graph AI** | **PyTorch** (Spatio-Temporal Graph Attention Network — ST-GAT), PyTorch Geometric, ONNX Runtime | Corridor-wide topological multigraph modeling dynamic track attention, signal dependencies, and ripple delay propagation with < 10ms edge inference. |
-| **Physics & Kinematics Engine**| Custom Newton-Davis Kinematics Engine ($A + B\cdot v + C\cdot v^2$), Grade & Curvature resistance solver | Eliminates the "GPS Speed Illusion" by evaluating locomotive horsepower (WAP-7 6,000 HP vs WAG-9 9,000 HP) and trailing tonnage (450t LHB vs 4,850t coal freight). |
-| **Streaming & Spatial Database**| **Apache Kafka** (100k+ event/s event bus), **Redis** (sub-ms cache), **PostgreSQL + PostGIS** | Real-time distributed pub-sub message broker paired with PostGIS 1D linear rail chainage ($KM_t$) calibration. |
-| **Railway Data Feeds** | BEL RTIS (ISRO NavIC 30s GPS), CRIS FOIS freight, COA Dispatcher, S&T Data Loggers, IMD Doppler Weather Radar | 100% zero-hardware integration leveraging existing Indian Railways telemetry and statutory weather feeds. |
-| **DevOps & Cloud** | Docker, Kubernetes, Helm Charts, GitHub Actions CI/CD | Enterprise containerization and automated blue-green rolling deployment on Indian Railways NIC cloud infrastructure. |
+| **📱 Mobile / Client** | **React Native (iOS & Android native)**, Reanimated 3, MapLibre GL radar, MMKV, SQLite | Single 60 FPS codebase; sub-millisecond offline caching; native railway track radar map. |
+| **⚡ Backend / API** | **Python 3.11 (FastAPI Async)**, Node.js Gateway, WebSockets (`WSS`), REST APIs | Non-blocking high-throughput telemetry ingestion; bi-directional live train sync. |
+| **🧠 AI / ML & Graph DL** | **PyTorch Geometric (ST-GAT)**, ONNX Runtime (<10ms edge inference) | Spatio-Temporal Graph Attention Network models corridor-wide topological delay ripples. |
+| **⚙️ Physics Kinematics** | **Newton-Davis Train Resistance Solver**, WAP-7 Tractive Curves, RK4 Integrator | Solves tractive effort curves, trailing weight inertia, grade, and aerodynamic drag. |
+| **📡 Data Streaming Bus** | **Apache Kafka (KRaft)**, Redis 7.2 (Pub/Sub & In-Memory Cache) | Handles 100k+ events/sec across 20,000 active rakes without message loss. |
+| **🗄️ Spatial & Time-Series DB** | **PostgreSQL 16 + PostGIS**, TimescaleDB | 1D linear rail chainage matching (LRS) and timestamped telemetry time-series storage. |
+| **🛰️ Railway Ingestion (100% Zero-Hardware)** | **BEL RTIS (ISRO NavIC 30s GPS)**, CRIS FOIS, COA, e-Caution (T/409 TSR), IMD Doppler Radar | **Zero Hardware**: Taps statutory digital feeds already live on Indian Railways. |
+| **🔒 Security & Cloud** | OAuth 2.0 / JWT, AES-256 GCM, Docker, Kubernetes on RailCloud / NIC | Strict Indian Railways / CRIS data governance and compartmentalized permissions. |
 
 ---
 
-## 3. Connected Stakeholders & Operational Actors (Unified Architecture)
+## 2. 🔄 Intuitive Operational Decision & Dynamic Forecasting Flowchart
 
-The system unifies all four key rail operational stakeholders into a single, synchronized event loop:
-
-1. **Passenger (iOS / Android Mobile App):**
-   - **Frontend:** React Native native app.
-   - **Interactions:** Searches live train routes, monitors honest $P_{10} - P_{90}$ arrival windows, views preceding freight radar, and receives human-readable delay badges.
-2. **Loco Pilot / Guard (Telemetry Feed):**
-   - **Hardware Interface:** ISRO NavIC BEL RTIS satellite receiver (already installed in 13,000+ locomotives).
-   - **Interactions:** Streams live 30-second speed, brake pipe pressure, loco class, and trailing tonnage into the Kafka ingestion bus.
-3. **Section Controller (COA Dispatch Cockpit):**
-   - **Interface:** Web-based Control Office Application (COA) dashboard.
-   - **Interactions:** Receives real-time AI headway conflict alerts and automated overtake recommendations (e.g., looping freight on Loop Line 2 to let high-speed mail pass).
-4. **Station Master (Platform Clearance & Turnaround):**
-   - **Interface:** Station Master Berthing & Turnaround Console.
-   - **Interactions:** Confirms platform vacation, monitoring rake cleaning and turnaround progress to prevent outer signal queue traps.
-
----
-
-## 4. Multi-User System Architecture & Implementation Methodology
+The flowchart models the sequential journey from telemetry capture to multi-stakeholder delivery with explicit **YES/NO** decision gateways:
 
 ```
-+---------------------------------------------------------------------------------------------------+
-| 1. TELEMETRY & DATA INGESTION BUS                                                                 |
-| BEL RTIS NavIC Satellite GPS (30s) + CRIS FOIS Freight Positions + S&T Relay Status + IMD Radar   |
-+---------------------------------------------------------------------------------------------------+
-                                                  |
-                                                  v
-+---------------------------------------------------------------------------------------------------+
-| 2. REAL-TIME STREAMING & MAP MATCHING                                                             |
-| Apache Kafka Telemetry Bus (100k+ ev/s) --> Kalman Filter Rail Snap (1D Track Chainage KM_t)      |
-+---------------------------------------------------------------------------------------------------+
-                                                  |
-                     +----------------------------+----------------------------+
-                     |                                                         |
-                     v                                                         v
-+------------------------------------------+             +------------------------------------------+
-| 3A. DYNAMIC HEADWAY & SIGNAL RADAR       |             | 3B. DAVIS KINEMATICS & WEATHER BOUNDS    |
-| - Preceding train spacing (4-aspect)     |             | - Davis tractive drag (A + Bv + Cv^2)    |
-| - Eliminates surprise red-signal stops   |             | - Statutory Fog Governor (GR 3.61 cap)   |
-+------------------------------------------+             +------------------------------------------+
-                     |                                                         |
-                     +----------------------------+----------------------------+
-                                                  |
-                                                  v
-+---------------------------------------------------------------------------------------------------+
-| 3C. STATION BERTHING & OUTER QUEUE PRE-CHECK                                                      |
-| Platform clearance solver: Checks if departing rake vacates platform before arriving train reaches |
-+---------------------------------------------------------------------------------------------------+
-                                                  |
-                                                  v
-+---------------------------------------------------------------------------------------------------+
-| 4. CORRIDOR GRAPH NEURAL NETWORK & UNCERTAINTY                                                    |
-| Spatio-Temporal Graph Attention Network (ST-GAT) --> Conformal Bayes Engine (P10 - P90 Bands)    |
-+---------------------------------------------------------------------------------------------------+
-                                                  |
-                                                  v
-+---------------------------------------------------------------------------------------------------+
-| 5. SYNCHRONIZED MULTI-USER DISPATCH                                                               |
-| Real-time WebSocket sync pushing simultaneously to:                                               |
-| - React Native Mobile App (Passengers)                                                            |
-| - COA Dispatcher Cockpit (Section Controllers)                                                    |
-| - Station Platform Turnaround (Station Masters)                                                   |
-+---------------------------------------------------------------------------------------------------+
+[ 📱 User Opens App / Console ]
+            │
+            ▼
+[ 🔍 Select Train / Route GPS Detect (e.g. #12301 Rajdhani) ]
+            │
+            ▼
+[ 🛰️ Ingest RTIS NavIC Satellite Ping (30s GPS + Speed) ]
+            │
+            ▼
+   < Live RTIS GPS Valid? >
+     ├─ [NO]  ──► [ ⚠️ Dead-Reckoning Simulation ] (Newton-Davis forward simulation in tunnel blackout)
+     │                     │
+     └─ [YES] ─────────────┴─► [ 📍 1D Rail-Snap & Kalman Filter (PostGIS LRS track chainage KM) ]
+                                            │
+                                            ▼
+                                < TSR Caution / Fog Ahead? >
+                                  ├─ [YES] ──► [ 🛑 3-Phase TSR Caution Delay Penalty ]
+                                  │                     │  (ΔT_tsr = Decel + Zone Run + Accel Recovery)
+                                  └─ [NO]  ──► [ 🟢 Cruise at Section MPS (130 km/h) ]
+                                                        │
+                                                        ▼
+                                    < Preceding Freight Block / Siding? >
+                                      ├─ [YES] ──► [ 🔄 ST-GAT Ripple Model & Precedence Rule 401 ]
+                                      │                     │  (Graph Attention cascading delay; loop siding)
+                                      └─ [NO]  ──► [ ⚡ Unobstructed Block Clearance (Green aspect) ]
+                                                            │
+                                                            ▼
+                                        < Terminal Platform Slot (< 30 KM)? >
+                                          ├─ [YES] ──► [ 🚉 Platform Queuing & Outer Signal Hold ]
+                                          │                     │  (ΔT_outer = max(0, T_dep + T_clear - T_arr))
+                                          └─ [NO]  ─────────────┴─► [ 🎯 Bayesian Conformal Uncertainty Engine ]
+                                                                                │  (Generates [P10, P50, P90] arrival window)
+                                                                                ▼
+                                                              [ 🖥️ Display Real-Time Live Radar ETA & Feeds ]
 ```
 
 ---
 
-## 5. Process Pipeline: Input -> Processing -> Output
+## 3. 📐 The 3 Core Processing Stages & Physics Formulations
 
-* **Input Stage:**
-  - BEL RTIS NavIC 30-second GPS & speed telemetry.
-  - FOIS freight train locations & load profiles.
-  - T/409 TSR engineering caution orders.
-  - IMD Doppler radar visibility & severe weather alerts.
-* **Processing Stage (GATI-SETU Core Engine):**
-  - Kalman filter snapping raw latitude/longitude to 1D rail chainage.
-  - Davis kinematic acceleration and deceleration curves.
-  - Spatio-Temporal Graph Attention Network (ST-GAT) modeling corridor-wide network ripple delays.
-  - Conformal prediction intervals generating guaranteed 90% arrival time bounds ($P_{10} - P_{90}$).
-* **Output Stage:**
-  - **Cross-Platform React Native App** (iOS & Android) with interactive track radar, live moving train map, and honest delay causes.
-  - Section Controller conflict resolution and overtake recommendations.
-  - Station Master platform pre-staging and turnaround coordination.
+### Stage 1: Ingestion Stage (100% Zero-Hardware)
+* **BEL RTIS NavIC GPS:** 30s live coordinates across 8,000+ locomotives.
+* **CRIS FOIS Freight Telemetry:** Preceding freight rake tonnage, speed, and section occupancy.
+* **COA Dispatch Records:** Section Controller line clearance, loops, and crossovers.
+* **e-Caution TSR Form T/409:** Civil engineering temporary speed restriction slow-orders.
+* **IMD Doppler Radar:** Real-time fog visibility (<300m enforces General Rule 3.61 statutory 60 km/h cap).
+
+### Stage 2: Processing Stage (Physics Kinematics & AI Core)
+1. **Newton-Davis Dynamic Acceleration Engine:**
+   $$a(t) = \frac{F_{\text{traction}}(v) - R_{\text{Davis}}(v) - F_{\text{gradient}}(\theta) - F_{\text{curve}}(D)}{M_{\text{effective}}}$$
+2. **WAP-7 Tractive Effort & Modified Atmospheric Drag:**
+   $$F_{\text{traction}} = \min\left(\mu M g, \frac{P_{\text{rated}} \eta}{v}\right), \quad R_{\text{Davis}}(v) = A + Bv + C \cdot \left[\frac{\rho(T,H)}{\rho_0}\right] v^2$$
+3. **ST-GAT Spatial Graph Attention & Operating Rule 401 Precedence:**
+   $$\alpha_{ij} = \text{Softmax}\left(\text{LeakyReLU}\left(\mathbf{a}^T[\mathbf{W}h_i \,\|\, \mathbf{W}h_j]\right)\right)$$
+4. **Outer Signal Queuing & Platform Clearance Solver:**
+   $$\Delta T_{\text{outer}} = \max\left(0, T_{\text{dep}}^{\text{preceding rake}} + T_{\text{clearance}} - T_{\text{arr}}^{\text{approaching train}}\right)$$
+
+### Stage 3: Output Stage (Multi-User Delivery)
+* **📱 Passenger Mobile Radar App:** Dynamic $[P_{10}, P_{50}, P_{90}]$ arrival window, live radar map, and plain-language root-cause delay badge.
+* **🚦 Section Controller Cockpit:** Real-time headway warnings, automatic block clearance, and loop line overtake advisor.
+* **🏢 Station Master Berthing Console:** Platform occupancy turnover scheduler, shunting engine, and loco pilot crew handover sync.
+* **🚕 Urban Feeder Transport APIs:** Automated city metro, feeder bus, and ride-hailing sync triggered by high-precision $P_{50}$ ETA.
