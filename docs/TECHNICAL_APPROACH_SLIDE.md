@@ -10,7 +10,34 @@
 
 ---
 
-## 1. 🛠️ Technology Stack Breakdown
+## 1. 👥 Multi-Stakeholder Operational Flowchart
+
+The Problem Statement explicitly mandates three distinct primary user interfaces (**Mobile Apps**, **Control Room Dashboards**, and **Station Displays & Planning**). The operational flowchart models each user's real-time interaction, decision gateway, and automated system resolution:
+
+### 📱 Lane 1: The Passenger (Mobile App & Real-Time Updates)
+* **Action:** Passenger opens mobile app, enters PNR / Train #12301, or auto-detects boarding station via GPS.
+* **Telemetry:** Ingests 30s BEL RTIS NavIC satellite stream; snaps coordinates strictly to track chainage KM (PostGIS LRS).
+* **Decision Gateway:** *Delay > 5 mins Detected?*
+  * **🟢 IF NO:** Displays smooth on-time track radar and next station countdown with verified green block headway.
+  * **🔴 IF YES:** Delivers Conformal $[P_{10}, P_{50}, P_{90}]$ arrival window with plain root-cause breakdown (*"Delayed 18m: Held at Outer Signal for Platform 4 rake clearance"*) and auto-syncs connecting city Metro / Cab bookings.
+
+### 🚦 Lane 2: The Section Controller (Control Room Dashboards)
+* **Action:** Section Controller logs into COA Control Room Cockpit to supervise 60 km block section headway and active rakes.
+* **Telemetry:** Ingests Form T/409 e-Caution speed orders, FOIS freight trailing tonnage, and S&T signal aspects.
+* **Decision Gateway:** *Preceding Block Conflict Ahead?*
+  * **🟢 IF NO:** Grants automatic through green aspect clearance without manual dispatcher intervention.
+  * **🟣 IF YES:** Rule 401 Siding Precedence Engine advises: *Loop preceding freight train #BOXN into siding at KM 142* &rarr; keeps high-priority Rajdhani running unobstructed at 130 km/h.
+
+### 🏢 Lane 3: Station Master & Platform Staff (Station Displays & Planning)
+* **Action:** Station Master monitors live terminal berthing board, scanning inbound trains within 30 km ingress zone.
+* **Telemetry:** Platform Occupancy Solver tracks preceding rake departure timestamp $T_{\text{dep}}$ and track circuit vacation.
+* **Decision Gateway:** *Designated Platform Free?*
+  * **🟢 IF YES:** Locks route to Platform 2, auto-triggers passenger boarding announcements, and dispatches station battery cars.
+  * **🔴 IF NO:** Solves Outer Signal Detention ($\Delta T_{\text{outer}} = \max(0, T_{\text{dep}} + T_{\text{clear}} - T_{\text{arr}})$), updates Station Platform LED displays & audio PIDS 25m in advance, and schedules coaching depot (CDO) rake cleaning & loco pilot shift handovers.
+
+---
+
+## 2. 🛠️ Technology Stack Breakdown
 
 | Domain / Layer | Technology & Framework | Purpose & Justification |
 | :--- | :--- | :--- |
@@ -22,49 +49,6 @@
 | **🗄️ Spatial & Time-Series DB** | **PostgreSQL 16 + PostGIS**, TimescaleDB | 1D linear rail chainage matching (LRS) and timestamped telemetry time-series storage. |
 | **🛰️ Railway Ingestion (100% Zero-Hardware)** | **BEL RTIS (ISRO NavIC 30s GPS)**, CRIS FOIS, COA, e-Caution (T/409 TSR), IMD Doppler Radar | **Zero Hardware**: Taps statutory digital feeds already live on Indian Railways. |
 | **🔒 Security & Cloud** | OAuth 2.0 / JWT, AES-256 GCM, Docker, Kubernetes on RailCloud / NIC | Strict Indian Railways / CRIS data governance and compartmentalized permissions. |
-
----
-
-## 2. 🔄 Intuitive Operational Decision & Dynamic Forecasting Flowchart
-
-The flowchart models the sequential journey from telemetry capture to multi-stakeholder delivery with explicit **YES/NO** decision gateways:
-
-```
-[ 📱 User Opens App / Console ]
-            │
-            ▼
-[ 🔍 Select Train / Route GPS Detect (e.g. #12301 Rajdhani) ]
-            │
-            ▼
-[ 🛰️ Ingest RTIS NavIC Satellite Ping (30s GPS + Speed) ]
-            │
-            ▼
-   < Live RTIS GPS Valid? >
-     ├─ [NO]  ──► [ ⚠️ Dead-Reckoning Simulation ] (Newton-Davis forward simulation in tunnel blackout)
-     │                     │
-     └─ [YES] ─────────────┴─► [ 📍 1D Rail-Snap & Kalman Filter (PostGIS LRS track chainage KM) ]
-                                            │
-                                            ▼
-                                < TSR Caution / Fog Ahead? >
-                                  ├─ [YES] ──► [ 🛑 3-Phase TSR Caution Delay Penalty ]
-                                  │                     │  (ΔT_tsr = Decel + Zone Run + Accel Recovery)
-                                  └─ [NO]  ──► [ 🟢 Cruise at Section MPS (130 km/h) ]
-                                                        │
-                                                        ▼
-                                    < Preceding Freight Block / Siding? >
-                                      ├─ [YES] ──► [ 🔄 ST-GAT Ripple Model & Precedence Rule 401 ]
-                                      │                     │  (Graph Attention cascading delay; loop siding)
-                                      └─ [NO]  ──► [ ⚡ Unobstructed Block Clearance (Green aspect) ]
-                                                            │
-                                                            ▼
-                                        < Terminal Platform Slot (< 30 KM)? >
-                                          ├─ [YES] ──► [ 🚉 Platform Queuing & Outer Signal Hold ]
-                                          │                     │  (ΔT_outer = max(0, T_dep + T_clear - T_arr))
-                                          └─ [NO]  ─────────────┴─► [ 🎯 Bayesian Conformal Uncertainty Engine ]
-                                                                                │  (Generates [P10, P50, P90] arrival window)
-                                                                                ▼
-                                                              [ 🖥️ Display Real-Time Live Radar ETA & Feeds ]
-```
 
 ---
 

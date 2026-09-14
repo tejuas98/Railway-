@@ -259,7 +259,7 @@
     }
 
     /* ======================================================== */
-    /* RIGHT COLUMN: FLOWCHART + 3 CORE STAGES                  */
+    /* RIGHT COLUMN: MULTI-USER FLOWCHART & 3 STAGES            */
     /* ======================================================== */
     .right-col {
       display: flex;
@@ -269,7 +269,7 @@
     }
 
     /* -------------------------------------------------------- */
-    /* UPPER SECTION: INTUITIVE YES/NO LOGIC FLOWCHART          */
+    /* UPPER SECTION: MULTI-USER DYNAMIC DECISION FLOWCHART     */
     /* -------------------------------------------------------- */
     .flowchart-wrapper {
       background: #FFFFFF;
@@ -279,7 +279,7 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.03);
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 5px;
       height: 615px;
       position: relative;
     }
@@ -288,7 +288,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid #E2E8F0;
+      border-bottom: 1.2px solid #E2E8F0;
       padding-bottom: 4px;
     }
 
@@ -311,162 +311,221 @@
       border: 1px solid #BAE6FD;
     }
 
-    /* Flowchart Canvas Area */
-    .flow-diagram-container {
-      position: relative;
+    /* Multi-Lane Container */
+    .multi-lane-container {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
       flex: 1;
       width: 100%;
       height: 485px;
+      justify-content: space-between;
     }
 
-    /* Nodes */
-    .fc-box {
-      position: absolute;
-      border-radius: 8px;
+    /* Individual User Lane */
+    .user-lane {
+      border-radius: 10px;
+      border: 1.5px solid #CBD5E1;
       padding: 5px 9px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.04);
-      z-index: 2;
+      gap: 4px;
+      position: relative;
+      flex: 1;
     }
 
-    .fc-title {
+    .lane-passenger { background: #F0F9FF; border-color: #0284C7; }
+    .lane-controller { background: #FAF5FF; border-color: #7C3AED; }
+    .lane-station { background: #ECFDF5; border-color: #059669; }
+
+    /* Lane Header Tag */
+    .lane-tag-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .lane-user-title {
       font-size: 11px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tag-passenger { color: #0369A1; }
+    .tag-controller { color: #6D28D9; }
+    .tag-station { color: #047857; }
+
+    .lane-mandate-badge {
+      font-size: 8px;
       font-weight: 800;
-      line-height: 1.2;
+      padding: 1px 6px;
+      border-radius: 4px;
+      background: #FFFFFF;
+      border: 1px solid currentColor;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    /* Lane Step Sequence Grid */
+    .lane-flow-grid {
+      display: grid;
+      grid-template-columns: 205px 28px 225px 28px 230px 32px 1fr;
+      align-items: center;
+      gap: 0px;
+      flex: 1;
+    }
+
+    /* Step Boxes */
+    .lane-step-box {
+      background: #FFFFFF;
+      border-radius: 7px;
+      border: 1.2px solid #CBD5E1;
+      padding: 4px 7px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+      height: 100%;
+      max-height: 52px;
+    }
+
+    .lane-step-title {
+      font-size: 9.5px;
+      font-weight: 800;
+      color: #0F172A;
       display: flex;
       align-items: center;
       gap: 4px;
       white-space: nowrap;
     }
 
-    .fc-desc {
-      font-size: 9px;
+    .lane-step-desc {
+      font-size: 8px;
       font-weight: 600;
-      margin-top: 2px;
+      color: #475569;
+      margin-top: 1px;
       line-height: 1.2;
     }
 
-    /* Color Themes */
-    .c-blue { background: #EFF6FF; border: 1.5px solid #3B82F6; color: #1D4ED8; }
-    .c-green { background: #ECFDF5; border: 1.5px solid #10B981; color: #047857; }
-    .c-amber { background: #FFFBEB; border: 1.5px solid #F59E0B; color: #B45309; }
-    .c-rose { background: #FFF1F2; border: 1.5px solid #F43F5E; color: #BE123C; }
-    .c-purple { background: #FAF5FF; border: 1.5px solid #8B5CF6; color: #6D28D9; }
-    .c-orange { background: #FFF7ED; border: 1.5px solid #EA580C; color: #C2410C; }
-
-    /* Decision Diamond / Hexagon Box */
-    .fc-hex {
-      position: absolute;
+    /* Decision Diamond in Lane */
+    .lane-decision-box {
       background: #FEF3C7;
-      border: 1.6px solid #D97706;
-      color: #92400E;
-      border-radius: 10px;
-      padding: 5px 9px;
+      border: 1.4px solid #D97706;
+      border-radius: 8px;
+      padding: 4px 6px;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
       text-align: center;
-      box-shadow: 0 2px 6px rgba(217, 119, 6, 0.15);
-      z-index: 2;
+      box-shadow: 0 1px 4px rgba(217, 119, 6, 0.15);
+      height: 100%;
+      max-height: 52px;
     }
 
-    .fc-hex-title {
-      font-size: 10.5px;
+    .lane-decision-title {
+      font-size: 9px;
       font-weight: 900;
-      line-height: 1.2;
+      color: #92400E;
+      line-height: 1.15;
     }
 
-    .fc-hex-desc {
-      font-size: 8.5px;
+    .lane-decision-sub {
+      font-size: 7.5px;
       font-weight: 700;
-      opacity: 0.9;
+      color: #B45309;
       margin-top: 1px;
     }
 
-    /* SVG Connectors */
-    .fc-svg-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    .fc-line { stroke: #64748B; stroke-width: 2; fill: none; }
-    .fc-line-green { stroke: #10B981; stroke-width: 2; fill: none; }
-    .fc-line-red { stroke: #EF4444; stroke-width: 2; fill: none; }
-
-    .fc-tag-yes {
-      position: absolute;
-      background: #DCFCE7;
-      color: #15803D;
-      border: 1px solid #86EFAC;
-      border-radius: 4px;
-      font-size: 8.5px;
-      font-weight: 900;
-      padding: 1px 5px;
-      z-index: 3;
-    }
-
-    .fc-tag-no {
-      position: absolute;
-      background: #FFE4E6;
-      color: #BE123C;
-      border: 1px solid #FDA4AF;
-      border-radius: 4px;
-      font-size: 8.5px;
-      font-weight: 900;
-      padding: 1px 5px;
-      z-index: 3;
-    }
-
-    /* Terminal Output Stakeholders Bar */
-    .terminal-output-row {
-      display: grid;
-      grid-template-columns: 1.15fr 1fr 1fr 0.85fr;
-      gap: 8px;
-      width: 100%;
-      padding-top: 5px;
-      border-top: 1.2px dashed #CBD5E1;
-    }
-
-    .terminal-card {
-      background: #F8FAFC;
-      border: 1.4px solid #CBD5E1;
-      border-radius: 8px;
-      padding: 5px 8px;
+    /* Dual Output Stack (YES & NO) */
+    .lane-output-stack {
       display: flex;
       flex-direction: column;
-      gap: 2px;
-      position: relative;
+      gap: 3px;
+      height: 100%;
+      justify-content: center;
     }
 
-    .terminal-card.active-passenger { border-color: #0284C7; background: #F0F9FF; }
-    .terminal-card.active-controller { border-color: #7C3AED; background: #FAF5FF; }
-    .terminal-card.active-station { border-color: #059669; background: #ECFDF5; }
-    .terminal-card.active-feeder { border-color: #D97706; background: #FFFBEB; }
-
-    .terminal-header {
+    .lane-sub-outcome {
+      background: #FFFFFF;
+      border-radius: 6px;
+      padding: 3px 6px;
       display: flex;
       align-items: center;
-      gap: 5px;
-      font-size: 10.5px;
+      gap: 6px;
+      border: 1.2px solid #CBD5E1;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    }
+
+    .outcome-tag {
+      font-size: 7.5px;
+      font-weight: 900;
+      padding: 1px 4px;
+      border-radius: 3px;
+      flex-shrink: 0;
+      letter-spacing: 0.3px;
+    }
+
+    .outcome-tag-yes { background: #DCFCE7; color: #15803D; border: 1px solid #86EFAC; }
+    .outcome-tag-no { background: #FFE4E6; color: #BE123C; border: 1px solid #FDA4AF; }
+
+    .outcome-text-col {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.15;
+    }
+
+    .outcome-main {
+      font-size: 9px;
       font-weight: 800;
       color: #0F172A;
     }
 
-    .terminal-content {
-      font-size: 9px;
+    .outcome-sub {
+      font-size: 7.5px;
       font-weight: 600;
       color: #475569;
-      line-height: 1.25;
+    }
+
+    /* Lane Connectors */
+    .lane-arrow-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .lane-arrow-svg {
+      width: 20px;
+      height: 14px;
+      fill: none;
+      stroke: #64748B;
+      stroke-width: 2;
+    }
+
+    /* Common Central Engine Ribbon */
+    .central-engine-strip {
+      background: #0F172A;
+      color: #FFFFFF;
+      border-radius: 6px;
+      padding: 3px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+    }
+
+    .strip-pill {
+      background: #0284C7;
+      color: #FFFFFF;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 8px;
+      font-weight: 900;
     }
 
     /* -------------------------------------------------------- */
@@ -907,218 +966,205 @@
     </aside>
 
     <!-- ------------------------------------------------------ -->
-    <!-- RIGHT COLUMN: INTUITIVE YES/NO FLOWCHART & 3 STAGES    -->
+    <!-- RIGHT COLUMN: MULTI-USER WORKFLOW DECISION FLOWCHART   -->
     <!-- ------------------------------------------------------ -->
     <section class="right-col">
 
       <!-- ==================================================== -->
-      <!-- TOP: SEQUENTIAL USER/SYSTEM YES-NO FLOWCHART         -->
+      <!-- UPPER: PRIMARY USERS OPERATIONAL FLOWCHART LANES     -->
       <!-- ==================================================== -->
       <div class="flowchart-wrapper">
         <div class="flowchart-header">
           <div class="flowchart-title">
-            <span>Operational Decision &amp; Dynamic Forecasting Flowchart</span>
-            <span class="flowchart-badge">Sequential Physics &amp; AI Intelligence</span>
+            <span>Primary Users Operational Decision Flowchart</span>
+            <span class="flowchart-badge">Mandated Multi-Stakeholder Ecosystem</span>
           </div>
           <div style="font-size: 11px; font-weight: 700; color: #64748B;">
-            Input Telemetry &rarr; Physics Validation &rarr; Graph Ripple Reasoning &rarr; Conformal Arrival Window
+            PS Mandate: Passengers (Mobile Apps) • Control Room Staff (Dashboards) • Station Staff (Displays &amp; Consoles)
           </div>
         </div>
 
-        <!-- Visual Flow Diagram Area -->
-        <div class="flow-diagram-container">
+        <!-- 3 DEDICATED USER LANES WITH FULL YES & NO OUTCOMES -->
+        <div class="multi-lane-container">
 
-          <!-- SVG CONNECTING WIRES & ARROWS -->
-          <svg class="fc-svg-overlay" viewBox="0 0 1340 485">
-            <defs>
-              <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 1 L 10 5 L 0 9 z" fill="#64748B"/>
-              </marker>
-              <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 1 L 10 5 L 0 9 z" fill="#10B981"/>
-              </marker>
-              <marker id="arrow-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 1 L 10 5 L 0 9 z" fill="#EF4444"/>
-              </marker>
-              <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 1 L 10 5 L 0 9 z" fill="#0284C7"/>
-              </marker>
-            </defs>
-
-            <!-- Line 1: User Opens App -> Select Train -->
-            <path d="M 215 32 L 255 32" class="fc-line" marker-end="url(#arrow-blue)" stroke="#0284C7"/>
-            <!-- Line 2: Select Train -> Ingest RTIS -->
-            <path d="M 525 32 L 565 32" class="fc-line" marker-end="url(#arrow-blue)" stroke="#0284C7"/>
-            <!-- Line 3: Ingest RTIS -> Decision 1 -->
-            <path d="M 875 32 L 915 32" class="fc-line" marker-end="url(#arrow)" />
-
-            <!-- Decision 1 Branch NO -> Dead-Reckoning (Down-Right) -->
-            <path d="M 1180 32 L 1220 32 Q 1235 32 1235 48 L 1235 88" class="fc-line-red" marker-end="url(#arrow-red)"/>
-            <!-- Decision 1 Branch YES -> Rail-Snap (Down) -->
-            <path d="M 1045 56 L 1045 92" class="fc-line-green" marker-end="url(#arrow-green)"/>
-
-            <!-- Rejoin Dead-Reckoning to Rail-Snap Line -->
-            <path d="M 1150 116 L 1125 116" class="fc-line" marker-end="url(#arrow)"/>
-
-            <!-- From Rail-Snap -> Decision 2 (Caution Ahead?) -->
-            <path d="M 900 116 L 850 116" class="fc-line" marker-end="url(#arrow)"/>
-
-            <!-- Decision 2 Branch YES -> 3-Phase TSR Penalty (Left) -->
-            <path d="M 600 116 L 545 116" class="fc-line-red" marker-end="url(#arrow-red)"/>
-            <!-- Decision 2 Branch NO -> Cruise Speed (Down) -->
-            <path d="M 725 140 L 725 170 Q 725 185 700 185 L 545 185" class="fc-line-green" marker-end="url(#arrow-green)"/>
-
-            <!-- TSR Penalty & Cruise Speed Merge to Decision 3 (Preceding Block?) -->
-            <path d="M 245 116 L 210 116 Q 190 116 190 140 L 190 235 Q 190 255 220 255 L 255 255" class="fc-line" marker-end="url(#arrow)"/>
-            <path d="M 265 185 L 225 185 Q 205 185 205 210 L 205 255 L 255 255" class="fc-line" />
-
-            <!-- From Decision 3: Branch YES -> ST-GAT Ripple Model -->
-            <path d="M 525 255 L 585 255" class="fc-line-red" marker-end="url(#arrow-red)"/>
-            <!-- From Decision 3: Branch NO -> Clear Track Block -->
-            <path d="M 390 280 L 390 315 Q 390 330 420 330 L 585 330" class="fc-line-green" marker-end="url(#arrow-green)"/>
-
-            <!-- ST-GAT & Clear Track merge into Decision 4 (Approaching Terminal?) -->
-            <path d="M 875 255 L 910 255 Q 930 255 930 280 L 930 330 L 965 330" class="fc-line" marker-end="url(#arrow)"/>
-            <path d="M 865 330 L 965 330" class="fc-line" />
-
-            <!-- Decision 4: Branch YES -> Outer Platform Queue Solver -->
-            <path d="M 1225 330 L 1260 330 Q 1280 330 1280 355 L 1280 395 Q 1280 415 1255 415 L 1215 415" class="fc-line-red" marker-end="url(#arrow-red)"/>
-            <!-- Decision 4: Branch NO -> Continuous Corridor Tracking -->
-            <path d="M 1095 355 L 1095 390" class="fc-line-green" marker-end="url(#arrow-green)"/>
-
-            <!-- Platform Solver & Corridor Tracking merge into Conformal Engine -->
-            <path d="M 975 415 L 920 415" class="fc-line" marker-end="url(#arrow)"/>
-            <path d="M 610 415 L 535 415" class="fc-line-green" marker-end="url(#arrow-green)" stroke-width="2.5"/>
-
-            <!-- Conformal Engine to Display UI Box -->
-            <path d="M 230 415 L 175 415" class="fc-line-blue" marker-end="url(#arrow-blue)" stroke="#0284C7" stroke-width="2.5"/>
-          </svg>
-
-          <!-- ---------------- FLOW NODES ---------------- -->
-          <!-- Node 1: User Opens App -->
-          <div class="fc-box c-blue" style="top: 10px; left: 15px; width: 200px;">
-            <div class="fc-title">📱 User Opens App / Console</div>
-            <div class="fc-desc">Passenger / Section Controller / Station Master</div>
+          <!-- ================= LANE 1: PASSENGER ================= -->
+          <div class="user-lane lane-passenger">
+            <div class="lane-tag-bar">
+              <div class="lane-user-title tag-passenger">
+                <span>📱 1. PASSENGER (Mobile App &amp; Real-Time Updates)</span>
+              </div>
+              <span class="lane-mandate-badge tag-passenger">PS Mandate: Mobile Apps</span>
+            </div>
+            <div class="lane-flow-grid">
+              <!-- Step 1: User Action -->
+              <div class="lane-step-box">
+                <div class="lane-step-title">👤 User Opens App</div>
+                <div class="lane-step-desc">Enters PNR / Train #12301 or GPS auto-detects boarding station</div>
+              </div>
+              <!-- Arrow -->
+              <div class="lane-arrow-box">
+                <svg class="lane-arrow-svg" viewBox="0 0 20 14"><path d="M2 7H16M11 2L16 7L11 12"/></svg>
+              </div>
+              <!-- Step 2: Telemetry -->
+              <div class="lane-step-box">
+                <div class="lane-step-title">🛰️ NavIC Live Stream</div>
+                <div class="lane-step-desc">Ingests 30s RTIS GPS; 1D Rail-Snap to active track chainage KM</div>
+              </div>
+              <!-- Arrow -->
+              <div class="lane-arrow-box">
+                <svg class="lane-arrow-svg" viewBox="0 0 20 14"><path d="M2 7H16M11 2L16 7L11 12"/></svg>
+              </div>
+              <!-- Decision: Delay Detected? -->
+              <div class="lane-decision-box">
+                <div class="lane-decision-title">Delay &gt; 5 mins Detected?</div>
+                <div class="lane-decision-sub">Kinematic vs Schedule Check</div>
+              </div>
+              <!-- Arrow -->
+              <div class="lane-arrow-box">
+                <svg class="lane-arrow-svg" viewBox="0 0 20 14"><path d="M2 7H16M11 2L16 7L11 12" stroke="#0284C7"/></svg>
+              </div>
+              <!-- Dual Output Stack (YES / NO) -->
+              <div class="lane-output-stack">
+                <div class="lane-sub-outcome" style="border-left: 3px solid #EF4444;">
+                  <span class="outcome-tag outcome-tag-yes">IF YES</span>
+                  <div class="outcome-text-col">
+                    <span class="outcome-main">🎯 Conformal [P10-P50-P90] ETA + Plain Root Cause ("Outer Signal platform hold")</span>
+                    <span class="outcome-sub">Pushes transparent delay reasoning &amp; auto-syncs connecting city Metro / Cab bookings.</span>
+                  </div>
+                </div>
+                <div class="lane-sub-outcome" style="border-left: 3px solid #10B981;">
+                  <span class="outcome-tag outcome-tag-no">IF NO</span>
+                  <div class="outcome-text-col">
+                    <span class="outcome-main">🟢 Smooth On-Time Track Radar &amp; Next Station Countdown</span>
+                    <span class="outcome-sub">Displays real-time locomotive speed (130 km/h) with verified green block headway.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <!-- Node 2: Select Train -->
-          <div class="fc-box c-blue" style="top: 10px; left: 260px; width: 265px;">
-            <div class="fc-title">🔍 Select Train / Route GPS Detect</div>
-            <div class="fc-desc">e.g. #12301 New Delhi - Howrah Rajdhani</div>
+          <!-- ================= LANE 2: CONTROL ROOM CONTROLLER ================= -->
+          <div class="user-lane lane-controller">
+            <div class="lane-tag-bar">
+              <div class="lane-user-title tag-controller">
+                <span>🚦 2. SECTION CONTROLLER (Control Room Dashboards)</span>
+              </div>
+              <span class="lane-mandate-badge tag-controller">PS Mandate: Control Room Dashboards</span>
+            </div>
+            <div class="lane-flow-grid">
+              <!-- Step 1: Controller Action -->
+              <div class="lane-step-box">
+                <div class="lane-step-title">🖥️ Log into COA Cockpit</div>
+                <div class="lane-step-desc">Section Controller monitors 60km block section headway &amp; active train rakes</div>
+              </div>
+              <!-- Arrow -->
+              <div class="lane-arrow-box">
+                <svg class="lane-arrow-svg" viewBox="0 0 20 14"><path d="M2 7H16M11 2L16 7L11 12"/></svg>
+              </div>
+              <!-- Step 2: Telemetry Ingestion -->
+              <div class="lane-step-box">
+                <div class="lane-step-title">📋 TSR Caution &amp; FOIS Feeds</div>
+                <div class="lane-step-desc">Ingests Form T/409 speed orders, freight tonnage &amp; S&amp;T signal aspects</div>
+              </div>
+              <!-- Arrow -->
+              <div class="lane-arrow-box">
+                <svg class="lane-arrow-svg" viewBox="0 0 20 14"><path d="M2 7H16M11 2L16 7L11 12"/></svg>
+              </div>
+              <!-- Decision: Conflict Detected? -->
+              <div class="lane-decision-box">
+                <div class="lane-decision-title">Preceding Block Conflict?</div>
+                <div class="lane-decision-sub">Slow Freight / TSR Ripple</div>
+              </div>
+              <!-- Arrow -->
+              <div class="lane-arrow-box">
+                <svg class="lane-arrow-svg" viewBox="0 0 20 14"><path d="M2 7H16M11 2L16 7L11 12" stroke="#7C3AED"/></svg>
+              </div>
+              <!-- Dual Output Stack (YES / NO) -->
+              <div class="lane-output-stack">
+                <div class="lane-sub-outcome" style="border-left: 3px solid #7C3AED;">
+                  <span class="outcome-tag outcome-tag-yes">IF YES</span>
+                  <div class="outcome-text-col">
+                    <span class="outcome-main">🔄 Rule 401 Siding Precedence Advisory (Loop Slower Freight)</span>
+                    <span class="outcome-sub">AI advises: Divert goods train #BOXN into loop siding at KM 142 &rarr; keeps Rajdhani running at MPS.</span>
+                  </div>
+                </div>
+                <div class="lane-sub-outcome" style="border-left: 3px solid #10B981;">
+                  <span class="outcome-tag outcome-tag-no">IF NO</span>
+                  <div class="outcome-text-col">
+                    <span class="outcome-main">⚡ Automatic Sectional Through Green Aspect Clearance</span>
+                    <span class="outcome-sub">Confirms uninterrupted 4-aspect block signaling forward without dispatcher intervention.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <!-- Node 3: Ingest RTIS -->
-          <div class="fc-box c-green" style="top: 10px; left: 570px; width: 305px;">
-            <div class="fc-title">🛰️ Ingest RTIS NavIC Satellite Ping</div>
-            <div class="fc-desc">30s Live GPS Coordinates + Speed from 8,000+ Locos</div>
+          <!-- ================= LANE 3: STATION MASTER & PLATFORM STAFF ================= -->
+          <div class="user-lane lane-station">
+            <div class="lane-tag-bar">
+              <div class="lane-user-title tag-station">
+                <span>🏢 3. STATION MASTER &amp; PLATFORM STAFF (Station Displays &amp; Planning)</span>
+              </div>
+              <span class="lane-mandate-badge tag-station">PS Mandate: Station Displays &amp; Planning</span>
+            </div>
+            <div class="lane-flow-grid">
+              <!-- Step 1: Staff Action -->
+              <div class="lane-step-box">
+                <div class="lane-step-title">🚉 Monitor Berthing Board</div>
+                <div class="lane-step-desc">Station Master scans trains approaching junction ingress zone (&lt; 30 KM)</div>
+              </div>
+              <!-- Arrow -->
+              <div class="lane-arrow-box">
+                <svg class="lane-arrow-svg" viewBox="0 0 20 14"><path d="M2 7H16M11 2L16 7L11 12"/></svg>
+              </div>
+              <!-- Step 2: Telemetry Ingestion -->
+              <div class="lane-step-box">
+                <div class="lane-step-title">⏱️ Platform Occupancy Solver</div>
+                <div class="lane-step-desc">Tracks preceding rake departure timestamp T<sub>dep</sub> &amp; track circuit clearance</div>
+              </div>
+              <!-- Arrow -->
+              <div class="lane-arrow-box">
+                <svg class="lane-arrow-svg" viewBox="0 0 20 14"><path d="M2 7H16M11 2L16 7L11 12"/></svg>
+              </div>
+              <!-- Decision: Platform Free? -->
+              <div class="lane-decision-box">
+                <div class="lane-decision-title">Designated Platform Free?</div>
+                <div class="lane-decision-sub">T<sub>dep</sub> + T<sub>clear</sub> &lt; T<sub>arr</sub></div>
+              </div>
+              <!-- Arrow -->
+              <div class="lane-arrow-box">
+                <svg class="lane-arrow-svg" viewBox="0 0 20 14"><path d="M2 7H16M11 2L16 7L11 12" stroke="#059669"/></svg>
+              </div>
+              <!-- Dual Output Stack (YES / NO) -->
+              <div class="lane-output-stack">
+                <div class="lane-sub-outcome" style="border-left: 3px solid #EF4444;">
+                  <span class="outcome-tag outcome-tag-no">IF NO</span>
+                  <div class="outcome-text-col">
+                    <span class="outcome-main">📢 Solves &Delta;T<sub>outer</sub> Hold &rarr; Updates Station LED Displays &amp; PIDS Audio</span>
+                    <span class="outcome-sub">Alerts outer signal hold 25m in advance; mobilizes coaching depot (CDO) rake cleaning &amp; crew shift handover.</span>
+                  </div>
+                </div>
+                <div class="lane-sub-outcome" style="border-left: 3px solid #10B981;">
+                  <span class="outcome-tag outcome-tag-yes">IF YES</span>
+                  <div class="outcome-text-col">
+                    <span class="outcome-main">🟢 Direct Platform Reception &amp; Automated Berthing Clearance</span>
+                    <span class="outcome-sub">Locks route to Platform 2, auto-triggers passenger boarding announcements &amp; station battery car dispatch.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <!-- Decision 1: Signal Valid? -->
-          <div class="fc-hex" style="top: 8px; left: 920px; width: 260px;">
-            <div class="fc-hex-title">Live RTIS GPS Signal Valid?</div>
-            <div class="fc-hex-desc">Satellite / Cellular Handshake Check</div>
-          </div>
-          <span class="fc-tag-no" style="top: 22px; left: 1195px;">NO</span>
-          <span class="fc-tag-yes" style="top: 66px; left: 1052px;">YES</span>
-
-          <!-- Node Fallback: Dead-Reckoning Simulation -->
-          <div class="fc-box c-amber" style="top: 92px; left: 1155px; width: 175px;">
-            <div class="fc-title">⚠️ Dead-Reckoning</div>
-            <div class="fc-desc">Newton-Davis forward simulation during tunnel blackout</div>
+          <!-- CENTRAL CLOSED-LOOP STRIP -->
+          <div class="central-engine-strip">
+            <span>⚙️ UNIFIED REAL-TIME DATA &amp; PHYSICS ENGINE (GATI-SETU CORE)</span>
+            <div style="display: flex; gap: 8px;">
+              <span class="strip-pill">30s Event Loop</span>
+              <span class="strip-pill">Sub-10ms Inference</span>
+              <span class="strip-pill">100% Zero-Hardware</span>
+            </div>
           </div>
 
-          <!-- Node 4: 1D Rail-Snap & Kalman -->
-          <div class="fc-box c-green" style="top: 94px; left: 905px; width: 240px;">
-            <div class="fc-title">📍 1D Rail-Snap &amp; Kalman Filter</div>
-            <div class="fc-desc">PostGIS LRS snaps coordinates to exact track chainage KM</div>
-          </div>
-
-          <!-- Decision 2: Caution Ahead? -->
-          <div class="fc-hex" style="top: 92px; left: 605px; width: 240px;">
-            <div class="fc-hex-title">TSR Caution / Fog Ahead?</div>
-            <div class="fc-hex-desc">e-Caution Form T/409 or IMD &lt;300m</div>
-          </div>
-          <span class="fc-tag-yes" style="top: 108px; left: 560px;">YES</span>
-          <span class="fc-tag-no" style="top: 152px; left: 735px;">NO</span>
-
-          <!-- Node: 3-Phase Caution Delay Penalty -->
-          <div class="fc-box c-rose" style="top: 94px; left: 250px; width: 290px;">
-            <div class="fc-title">🛑 3-Phase TSR Caution Delay Penalty</div>
-            <div class="fc-desc">&Delta;T<sub>tsr</sub> = Decel Loss + Zone Run + Power/Weight Tractive Recovery</div>
-          </div>
-
-          <!-- Node: Cruise Speed at Section MPS -->
-          <div class="fc-box c-green" style="top: 164px; left: 270px; width: 270px;">
-            <div class="fc-title">🟢 Cruise at Section MPS (130 km/h)</div>
-            <div class="fc-desc">WAP-7 / Train-18 operates at maximum line velocity</div>
-          </div>
-
-          <!-- Decision 3: Preceding Block Ahead? -->
-          <div class="fc-hex" style="top: 232px; left: 260px; width: 260px;">
-            <div class="fc-hex-title">Preceding Freight Block / Siding?</div>
-            <div class="fc-hex-desc">CRIS FOIS Freight Telemetry &amp; S&amp;T Status</div>
-          </div>
-          <span class="fc-tag-yes" style="top: 246px; left: 540px;">YES</span>
-          <span class="fc-tag-no" style="top: 300px; left: 398px;">NO</span>
-
-          <!-- Node: ST-GAT Ripple Model -->
-          <div class="fc-box c-purple" style="top: 232px; left: 590px; width: 280px;">
-            <div class="fc-title">🔄 ST-GAT Ripple &amp; Precedence Rule 401</div>
-            <div class="fc-desc">Graph Attention Network models cascading delay; loop siding overtake</div>
-          </div>
-
-          <!-- Node: Clear Track Block -->
-          <div class="fc-box c-green" style="top: 308px; left: 590px; width: 270px;">
-            <div class="fc-title">⚡ Unobstructed Block Clearance</div>
-            <div class="fc-desc">Green aspect automatic signaling forward</div>
-          </div>
-
-          <!-- Decision 4: Approaching Terminal Platform? -->
-          <div class="fc-hex" style="top: 306px; left: 970px; width: 250px;">
-            <div class="fc-hex-title">Terminal Platform Slot (&lt; 30 KM)?</div>
-            <div class="fc-hex-desc">Junction Outer Signal Clearance Check</div>
-          </div>
-          <span class="fc-tag-yes" style="top: 320px; left: 1235px;">YES</span>
-          <span class="fc-tag-no" style="top: 366px; left: 1102px;">NO</span>
-
-          <!-- Node: Platform Queue Solver -->
-          <div class="fc-box c-orange" style="top: 390px; left: 980px; width: 230px;">
-            <div class="fc-title">🚉 Platform Queuing &amp; Outer Hold</div>
-            <div class="fc-desc">&Delta;T<sub>outer</sub> = max(0, T<sub>dep</sub><sup>rake</sup> + T<sub>clear</sub> - T<sub>arr</sub>)</div>
-          </div>
-
-          <!-- Node: Bayesian Conformal Engine -->
-          <div class="fc-box c-green" style="top: 390px; left: 615px; width: 300px;">
-            <div class="fc-title">🎯 Bayesian Conformal Uncertainty Engine</div>
-            <div class="fc-desc">Calculates honest [P10, P50, P90] arrival window with 90% certainty</div>
-          </div>
-
-          <!-- Node: Final Live Radar UI Display -->
-          <div class="fc-box c-blue" style="top: 390px; left: 15px; width: 510px; border-width: 2px;">
-            <div class="fc-title" style="font-size: 12px;">🖥️ Display Real-Time Live Radar ETA Window &amp; Dispatch Feeds</div>
-            <div class="fc-desc" style="font-size: 9.5px;">Sub-millisecond broadcast across mobile apps, station LED screens &amp; section controllers (Auto-refreshes 30s)</div>
-          </div>
-
-        </div>
-
-        <!-- ---------------- ROW 5: MULTI-STAKEHOLDER TERMINAL OUTPUTS ---------------- -->
-        <div class="terminal-output-row">
-          <div class="terminal-card active-passenger">
-            <div class="terminal-header">📱 Passenger Mobile UI</div>
-            <div class="terminal-content">Live track radar map, [P10-P50-P90] arrival window &amp; plain-language root-cause delay badge.</div>
-          </div>
-          <div class="terminal-card active-controller">
-            <div class="terminal-header">🚦 Section Controller Cockpit</div>
-            <div class="terminal-content">COA conflict detection, automatic block section clearance &amp; loop line overtake advisory.</div>
-          </div>
-          <div class="terminal-card active-station">
-            <div class="terminal-header">🏢 Station Master Console</div>
-            <div class="terminal-content">Platform berthing turnover optimization, shunting engine &amp; loco pilot crew handover scheduling.</div>
-          </div>
-          <div class="terminal-card active-feeder">
-            <div class="terminal-header">🚕 Feeder Transit API</div>
-            <div class="terminal-content">City metro, bus feeder &amp; taxi booking auto-sync with dynamic P50 arrival timestamp.</div>
-          </div>
         </div>
 
       </div>
