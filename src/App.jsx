@@ -32,16 +32,23 @@ import PanIndiaLiveMap from './components/PanIndiaLiveMap';
 import MobileRouteFinder from './components/MobileRouteFinder';
 import LiveGovDataCockpit from './components/LiveGovDataCockpit';
 import BasicAutonomousPrototype from './components/BasicAutonomousPrototype';
+import PassengerMobileApp from './components/PassengerMobileApp';
 
 export default function App() {
-  // Navigation tabs: 'prototype' | 'live-gov' | 'passenger' | 'station' | 'controller' | 'map' | 'route' | 'dossier'
+  const [viewMode, setViewMode] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('view') === 'cockpit') return 'cockpit';
+    return 'mobile'; // Default to pure simple mobile passenger app!
+  });
+
+  // Navigation tabs for desktop cockpit: 'prototype' | 'live-gov' | 'passenger' | 'station' | 'controller' | 'map' | 'route' | 'dossier'
   const getInitialTab = () => {
     const params = new URLSearchParams(window.location.search);
     const tabParam = params.get('tab');
     if (['prototype', 'live-gov', 'passenger', 'station', 'controller', 'map', 'route', 'dossier'].includes(tabParam)) {
       return tabParam;
     }
-    return 'prototype'; // Default to Basic Autonomous Prototype!
+    return 'prototype';
   };
 
   const [activeTab, setActiveTab] = useState(getInitialTab);
@@ -253,6 +260,25 @@ export default function App() {
     toast.info('🔄 Simulation Reset to Baseline Corridor State');
   };
 
+  if (viewMode === 'mobile') {
+    return (
+      <div className="relative min-h-screen bg-slate-950">
+        <Toaster position="top-center" richColors />
+        <PassengerMobileApp />
+        {/* Discreet switcher to desktop cockpit if ever needed */}
+        <div className="fixed bottom-3 right-3 z-50">
+          <button
+            onClick={() => setViewMode('cockpit')}
+            className="bg-slate-900/90 hover:bg-slate-800 text-slate-400 hover:text-white text-[11px] font-semibold px-3 py-1.5 rounded-full border border-slate-700/60 shadow-xl backdrop-blur-md flex items-center gap-1.5 transition-all"
+            title="Open Section Controller & Technical Audit Cockpit"
+          >
+            <span>🖥️ Desktop Cockpit</span>
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-amber-500 selection:text-slate-950">
       <Toaster position="top-right" richColors />
@@ -362,6 +388,14 @@ export default function App() {
 
           {/* Simulation Controls & Navigation Switcher */}
           <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={() => setViewMode('mobile')}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 text-xs font-semibold transition-colors mr-1"
+            >
+              <Train className="w-3.5 h-3.5" />
+              <span>📱 Mobile App</span>
+            </button>
+
             {/* Play/Pause & Speed Buttons */}
             <div className="flex items-center bg-slate-900 p-1 rounded-xl border border-slate-800 mr-2">
               <button
