@@ -31,16 +31,17 @@ import AuditDossier from './components/AuditDossier';
 import PanIndiaLiveMap from './components/PanIndiaLiveMap';
 import MobileRouteFinder from './components/MobileRouteFinder';
 import LiveGovDataCockpit from './components/LiveGovDataCockpit';
+import BasicAutonomousPrototype from './components/BasicAutonomousPrototype';
 
 export default function App() {
-  // Navigation tabs: 'route' | 'live-gov' | 'passenger' | 'station' | 'controller' | 'map' | 'dossier'
+  // Navigation tabs: 'prototype' | 'live-gov' | 'passenger' | 'station' | 'controller' | 'map' | 'route' | 'dossier'
   const getInitialTab = () => {
     const params = new URLSearchParams(window.location.search);
     const tabParam = params.get('tab');
-    if (['route', 'live-gov', 'passenger', 'station', 'controller', 'map', 'dossier'].includes(tabParam)) {
+    if (['prototype', 'live-gov', 'passenger', 'station', 'controller', 'map', 'route', 'dossier'].includes(tabParam)) {
       return tabParam;
     }
-    return 'live-gov'; // Default to authentic Live Government NTES Feed!
+    return 'prototype'; // Default to Basic Autonomous Prototype!
   };
 
   const [activeTab, setActiveTab] = useState(getInitialTab);
@@ -386,16 +387,17 @@ export default function App() {
             {/* Navigation Tabs */}
             <nav className="flex items-center bg-slate-900 p-1 rounded-2xl border border-slate-800 text-xs font-semibold overflow-x-auto max-w-full">
               <button
-                id="nav-tab-route"
-                onClick={() => setActiveTab('route')}
+                id="nav-tab-prototype"
+                onClick={() => setActiveTab('prototype')}
                 className={`px-3.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 whitespace-nowrap ${
-                  activeTab === 'route'
+                  activeTab === 'prototype'
                     ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20'
                     : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
-                <Search className="w-3.5 h-3.5 text-amber-400" />
-                <span>Find Trains (2D/3D)</span>
+                <Train className="w-3.5 h-3.5 text-slate-950" />
+                <span>Basic Live Prototype</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
               </button>
 
               <button
@@ -408,8 +410,7 @@ export default function App() {
                 }`}
               >
                 <Radio className="w-3.5 h-3.5 text-emerald-300 animate-pulse" />
-                <span>Live Gov NTES Feed</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                <span>Gov Data Pipeline</span>
               </button>
 
               <button
@@ -483,6 +484,10 @@ export default function App() {
 
       {/* Main Content View */}
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full">
+        {activeTab === 'prototype' && (
+          <BasicAutonomousPrototype onSwitchToAdvanced={() => setActiveTab('controller')} />
+        )}
+
         {activeTab === 'route' && (
           <MobileRouteFinder
             onSelectCorridorTrain={(trainId) => {

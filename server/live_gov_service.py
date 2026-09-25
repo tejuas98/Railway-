@@ -113,6 +113,9 @@ class LiveGovRailwayService:
         now_dt = datetime.now()
         today_str = now_dt.strftime("%d-%b-%Y")
 
+        if train_no in self.last_cache and (time.time() - self.last_cache[train_no].get("_cached_at", 0) < 60):
+            return self.last_cache[train_no]
+
         try:
             # 1. Bootstrap session with NTES
             self.session.get(f"{NTES_BASE_URL}/", timeout=6)
@@ -209,7 +212,8 @@ class LiveGovRailwayService:
                 "route_timeline": unique_stations,
                 "live_weather": weather_data,
                 "timestamp_utc": datetime.now(timezone.utc).isoformat(),
-                "is_fallback": False
+                "is_fallback": False,
+                "_cached_at": time.time()
             }
             self.last_cache[train_no] = result
             return result
