@@ -544,6 +544,9 @@ def get_live_gov_train_eta(train_number: str = "12302"):
             "platform_assigned": active_stn["platform"],
             "distance_km": active_stn["distance_km"]
         },
+        "train_specs": live_data.get("train_specs", {}),
+        "ground_realities": live_data.get("ground_realities", {}),
+        "empirical_punctuality": live_data.get("empirical_punctuality", {}),
         "telemetry_live": {
             "current_observed_delay_min": live_delay,
             "scheduled_arrival_time": sched_str,
