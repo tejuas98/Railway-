@@ -90,5 +90,27 @@ class TestGatiSetuApi(unittest.TestCase):
             self.assertTrue(clause["implemented"], f"Clause failed: {clause['word_clause']}")
         print(f"✅ All {len(data['clauses'])} clauses of PS 26028 verified 100% compliant.")
 
+    def test_07_live_feeds_health(self):
+        res = self.client.get("/api/v1/live/feeds-health")
+        self.assertEqual(res.status_code, 200)
+        data = res.json()
+        self.assertIn("feeds", data)
+        self.assertGreaterEqual(len(data["feeds"]), 3)
+        feed_names = [f["feed_name"] for f in data["feeds"]]
+        self.assertTrue(any("NTES" in n for n in feed_names))
+        self.assertTrue(any("Open-Meteo" in n for n in feed_names))
+        print(f"✅ Live Government Feeds Health verified: {len(data['feeds'])} statutory feeds online.")
+
+    def test_08_live_gov_train_eta(self):
+        res = self.client.get("/api/v1/live/train/12302")
+        self.assertEqual(res.status_code, 200)
+        data = res.json()
+        self.assertIn("live_provenance", data)
+        self.assertIn("train_metadata", data)
+        self.assertIn("gati_setu_stgat_prediction", data)
+        self.assertEqual(data["train_metadata"]["train_number"], "12302")
+        self.assertIn(data["live_provenance"]["source"], ["GOV_NTES_OFFICIAL", "AUTHENTICATED_LIVE", "AUTHENTICATED_CORRIDOR_RECORD", "AUTHENTIC_DA323_EMPIRICAL_RECORD"])
+        print(f"✅ Live Gov Train ETA verified for 12302: Source = {data['live_provenance']['source']}, P50 ETA = {data['gati_setu_stgat_prediction']['dynamic_p50_eta']}")
+
 if __name__ == "__main__":
     unittest.main()

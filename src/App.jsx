@@ -30,16 +30,17 @@ import SectionControllerCockpit from './components/SectionControllerCockpit';
 import AuditDossier from './components/AuditDossier';
 import PanIndiaLiveMap from './components/PanIndiaLiveMap';
 import MobileRouteFinder from './components/MobileRouteFinder';
+import LiveGovDataCockpit from './components/LiveGovDataCockpit';
 
 export default function App() {
-  // Navigation tabs: 'route' | 'passenger' | 'station' | 'controller' | 'map' | 'dossier'
+  // Navigation tabs: 'route' | 'live-gov' | 'passenger' | 'station' | 'controller' | 'map' | 'dossier'
   const getInitialTab = () => {
     const params = new URLSearchParams(window.location.search);
     const tabParam = params.get('tab');
-    if (['route', 'passenger', 'station', 'controller', 'map', 'dossier'].includes(tabParam)) {
+    if (['route', 'live-gov', 'passenger', 'station', 'controller', 'map', 'dossier'].includes(tabParam)) {
       return tabParam;
     }
-    return 'route'; // Default to the Where-Is-My-Train Station-to-Station route finder!
+    return 'live-gov'; // Default to authentic Live Government NTES Feed!
   };
 
   const [activeTab, setActiveTab] = useState(getInitialTab);
@@ -389,12 +390,26 @@ export default function App() {
                 onClick={() => setActiveTab('route')}
                 className={`px-3.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 whitespace-nowrap ${
                   activeTab === 'route'
+                    ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                <Search className="w-3.5 h-3.5 text-amber-400" />
+                <span>Find Trains (2D/3D)</span>
+              </button>
+
+              <button
+                id="nav-tab-live-gov"
+                onClick={() => setActiveTab('live-gov')}
+                className={`px-3.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 whitespace-nowrap ${
+                  activeTab === 'live-gov'
                     ? 'bg-emerald-600 text-white font-bold shadow-md shadow-emerald-600/30'
                     : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
-                <Search className="w-3.5 h-3.5 text-emerald-300" />
-                <span>Find Trains (2D/3D)</span>
+                <Radio className="w-3.5 h-3.5 text-emerald-300 animate-pulse" />
+                <span>Live Gov NTES Feed</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
               </button>
 
               <button
@@ -475,6 +490,10 @@ export default function App() {
               setActiveTab('passenger');
             }}
           />
+        )}
+
+        {activeTab === 'live-gov' && (
+          <LiveGovDataCockpit liveWeather={liveWeather} />
         )}
 
         {activeTab === 'passenger' && (
