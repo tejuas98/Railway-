@@ -8,7 +8,11 @@ import {
   HelpCircle,
   ShieldAlert,
   ArrowUpDown,
-  Radio
+  Radio,
+  Users,
+  Car,
+  Sparkles,
+  Train
 } from 'lucide-react';
 import { CORRIDOR_STATIONS } from '../data/corridorData';
 import { calculateDynamicGatiSetuEta, calculateLegacyNtesEta } from '../engine/gatiSetuEngine';
@@ -215,6 +219,129 @@ export default function StationCidsDisplay({ trains, disruptions }) {
               )}
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Downstream Operations: Crew Scheduling (HOER) & Cleaning Operations */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Crew Scheduling & HOER 8-Hour Duty Limit Watch */}
+        <div className="glass-panel p-6 rounded-3xl">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Users className="w-5 h-5 text-amber-400" />
+              <h3 className="text-base font-bold text-white">Loco Crew & Guard Scheduling (HOER Watch)</h3>
+            </div>
+            <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30">
+              Statutory 8h Limit
+            </span>
+          </div>
+          <p className="text-xs text-slate-400 mb-4">
+            Prevents safety-critical loco pilot duty-hour breaches under Indian Railways Hours of Employment Regulations (HOER).
+          </p>
+
+          <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3">
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-slate-400">Assigned Rake:</span>
+              <span className="font-mono font-bold text-white">Train #12302 (Howrah Rajdhani)</span>
+            </div>
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-slate-400">Loco Pilot & Guard:</span>
+              <span className="font-mono text-slate-200">R. K. Sharma / A. K. Srivastava (HQ: TDL)</span>
+            </div>
+            <div className="space-y-1">
+              <div className="flex justify-between text-xs font-mono">
+                <span className="text-slate-400">Duty Elapsed: 6h 45m</span>
+                <span className="text-amber-400 font-bold">Predicted Arrival Duty: 7h 35m / 8h 00m</span>
+              </div>
+              <div className="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                <div className="bg-amber-400 h-full rounded-full" style={{ width: '94.8%' }}></div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 text-xs text-amber-300 bg-amber-950/30 p-2.5 rounded-xl border border-amber-500/30">
+              <AlertTriangle className="w-4 h-4 flex-none text-amber-400" />
+              <span>Relief Crew alerted on PF-2 at Kanpur Central. Automatic handoff scheduled in 35 mins.</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Cleaning Operations & Rake Wash Pit Dispatch */}
+        <div className="glass-panel p-6 rounded-3xl">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-emerald-400" />
+              <h3 className="text-base font-bold text-white">Terminal Cleaning & Rake Turnaround</h3>
+            </div>
+            <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30">
+              Turnaround Sync
+            </span>
+          </div>
+          <p className="text-xs text-slate-400 mb-4">
+            Synchronizes terminal wash-pit labor, water refilling, and coach sanitization crews with dynamic ETA.
+          </p>
+
+          <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3">
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-slate-400">Delayed Rake Holding PF-1:</span>
+              <span className="font-mono font-bold text-rose-400">Train #14163 (Sangam Exp)</span>
+            </div>
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-slate-400">Assigned Cleaning Team:</span>
+              <span className="font-mono text-slate-200">Team Charlie (16 sanitizers)</span>
+            </div>
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-slate-400">Remaining Turnaround Window:</span>
+              <span className="font-mono text-emerald-400 font-bold">18 mins remaining (Expedited)</span>
+            </div>
+            <div className="flex items-center gap-2 text-xs text-emerald-300 bg-emerald-950/30 p-2.5 rounded-xl border border-emerald-500/30">
+              <CheckCircle className="w-4 h-4 flex-none text-emerald-400" />
+              <span>Incoming Train #12302 diverted to PF-2; zero passenger wait, cleaning finishes at 22:42.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Downstream Logistics & Feeder Transport Services Integration */}
+      <div className="glass-panel p-6 rounded-3xl">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <Car className="w-5 h-5 text-sky-400" />
+            <h3 className="text-base font-bold text-white">Downstream Feeder Transport & City Logistics Interconnect</h3>
+          </div>
+          <span className="text-xs text-slate-400 font-mono">
+            PS 26028 Statutory Multimodal API Live Stream
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-bold text-sky-400 uppercase">UPMRC Kanpur Metro</span>
+              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">Synced</span>
+            </div>
+            <div className="text-sm font-bold text-white mb-1">Orange Line (Gate 1 Concourse)</div>
+            <div className="text-xs text-slate-400 mb-2">Last scheduled metro departure: 23:15</div>
+            <div className="text-[11px] text-emerald-400 font-mono">Dynamic ETA 22:45 gives passengers 30m safe transfer window.</div>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-bold text-amber-400 uppercase">Pre-Paid Cab / Auto Stand</span>
+              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300">Surge Buffer</span>
+            </div>
+            <div className="text-sm font-bold text-white mb-1">Gate 3 City Side Booth</div>
+            <div className="text-xs text-slate-400 mb-2">Demand surge of ~1,400 passengers at 22:45</div>
+            <div className="text-[11px] text-amber-400 font-mono">Traffic Police queue alerted; 45 extra autos marshalled to stand.</div>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-bold text-purple-400 uppercase">Parcel & Cargo Logistics</span>
+              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300">Slot Adjusted</span>
+            </div>
+            <div className="text-sm font-bold text-white mb-1">IR Express Cargo Shed Bay 4</div>
+            <div className="text-xs text-slate-400 mb-2">Coaching rake parcel van loading schedule</div>
+            <div className="text-[11px] text-purple-400 font-mono">Labor dispatch held by 25m to synchronize with rake arrival.</div>
+          </div>
         </div>
       </div>
     </div>

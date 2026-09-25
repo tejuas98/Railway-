@@ -231,6 +231,40 @@ export function calculateDynamicGatiSetuEta(train, targetStationCode, disruption
     }
   }
 
+  // --- FACTOR 6: Unscheduled Maintenance Blocks (Track Engineering & OHE) ---
+  if (disruptions.maintenanceBlocks) {
+    disruptions.maintenanceBlocks.forEach(mb => {
+      if (mb.active && train.currentKm < 418 && targetStation.km >= 412) {
+        totalDynamicDelayMin += mb.delayPenaltyMin;
+        delayFactors.push({
+          type: 'MAINTENANCE_BLOCK',
+          badge: '🔧 Maintenance Block',
+          color: 'amber',
+          title: mb.type,
+          impactMin: `+${mb.delayPenaltyMin}m`,
+          description: mb.impactDesc
+        });
+      }
+    });
+  }
+
+  // --- FACTOR 7: Level Crossing (LC) Gates (Road Traffic Clearance Delay) ---
+  if (disruptions.levelCrossingGates) {
+    disruptions.levelCrossingGates.forEach(lc => {
+      if (lc.activeHold && train.currentKm < lc.km && targetStation.km >= lc.km) {
+        totalDynamicDelayMin += lc.roadTrafficHoldMin;
+        delayFactors.push({
+          type: 'LEVEL_CROSSING_GATE',
+          badge: '🚧 LC Gate Hold',
+          color: 'orange',
+          title: `${lc.name} (KM ${lc.km})`,
+          impactMin: `+${lc.roadTrafficHoldMin}m`,
+          description: lc.impactDesc
+        });
+      }
+    });
+  }
+
   // Calculate Expected Dynamic ETA (P50)
   const dynamicEtaMinutes = schMinutes + totalDynamicDelayMin;
 

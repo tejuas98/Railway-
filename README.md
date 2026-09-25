@@ -982,14 +982,21 @@ Every number, formula, architectural limit, and failure mechanism modeled in GAT
 git clone https://github.com/tejuas98/Railway-.git
 cd Railway-
 
-# 2. Install dependencies
+# 2. Install Web Console dependencies
 npm install
 
-# 3. Start development server
+# 3. Start Vite frontend server
 npm run dev
+
+# 4. Start PyTorch Geometric (PyG) Spatio-Temporal GNN FastAPI Backend
+python3 -m pip install -r server/requirements.txt
+PYTHONPATH=. python3 -m uvicorn server.main:app --port 8000 --reload
+
+# 5. Run Problem Statement 26028 Full Verification Test Suite
+PYTHONPATH=. python3 server/test_st_gnn_api.py
 ```
 
-The application will launch on **`http://localhost:5180/`**.
+The web application launches on **`http://localhost:5180/`** and the PyG STGNN API documentation on **`http://localhost:8000/docs`**.
 
 ---
 
@@ -1023,6 +1030,8 @@ For complete annotated engineering blueprints, mathematical proofs, and governme
 * [09. Master Bibliography, Academic Citations & Government References](docs/08_BIBLIOGRAPHY_AND_RESEARCH_CITATIONS.md)
 * [10. Global ETA Benchmarks, MIT Transit Lab & Operating Manual Synthesis](docs/09_GLOBAL_ETA_BENCHMARKS_AND_OPERATIONAL_MANUAL_SYNTHESIS.md)
 * [11. Pan-India Fleet Scale & Ingestion Architecture](docs/10_PAN_INDIA_FLEET_SCALE_AND_INTEGRATION.md)
+* [12. Master Research, Physics Formulation & Systems Comparison Dossier](docs/RESEARCH_AND_REFERENCES.md)
+* [13. Presentation Slide 6: Research, Academic References & Systems Comparison (HTML)](docs/research_and_references_slide.html) ([High-Res Screenshot](docs/screenshots/research_and_references_slide.png))
 
 ---
 

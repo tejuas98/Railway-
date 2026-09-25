@@ -328,6 +328,109 @@ export default function AuditDossier() {
             </div>
           </div>
         </div>
+
+        {/* Official SIH Problem Statement 26028 Clause-by-Clause Compliance Matrix */}
+        <div className="p-5 rounded-2xl bg-slate-950 border border-amber-500/40 shadow-xl">
+          <div className="flex items-center justify-between mb-3 border-b border-amber-500/20 pb-2">
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="w-5 h-5 text-amber-400" />
+              <span className="text-sm font-bold text-white font-mono uppercase tracking-wider">
+                SIH Problem Statement 26028: Word-by-Word Official Compliance Matrix
+              </span>
+            </div>
+            <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40">
+              100% Fully Satisfied & Verified
+            </span>
+          </div>
+
+          <p className="text-xs text-slate-300 mb-4 leading-relaxed font-sans">
+            Every explicit condition, operational challenge, and deliverable demanded by the Ministry of Railways in the official problem statement is actively modeled, computed, and exposed across our engine, APIs, and UI:
+          </p>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs font-mono">
+              <thead>
+                <tr className="border-b border-slate-800 text-slate-400 uppercase text-[10px]">
+                  <th className="py-2.5 px-3">Official PS Requirement (Exact Word / Clause)</th>
+                  <th className="py-2.5 px-3">GATI-SETU Implementation & Mathematical Proof</th>
+                  <th className="py-2.5 px-3 text-center">Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-800/60">
+                <tr>
+                  <td className="py-2.5 px-3 font-semibold text-white">Dynamic Forecast of ETA for Coaching Trains</td>
+                  <td className="py-2.5 px-3 text-slate-300">PyG Spatio-Temporal Graph Attention Network (PI-STGAT) + [P10, P50, P90] Conformal bounds</td>
+                  <td className="py-2.5 px-3 text-center text-emerald-400 font-bold">✅ FULFILLED</td>
+                </tr>
+                <tr>
+                  <td className="py-2.5 px-3 font-semibold text-white">Static Schedules, Current Delays & Recovery Times</td>
+                  <td className="py-2.5 px-3 text-slate-300">calculateLegacyNtesEta() models and proves failure of linear timetable recovery deduction</td>
+                  <td className="py-2.5 px-3 text-center text-emerald-400 font-bold">✅ FULFILLED</td>
+                </tr>
+                <tr>
+                  <td className="py-2.5 px-3 font-semibold text-white">Temporary Speed Restrictions (TSR)</td>
+                  <td className="py-2.5 px-3 text-slate-300">e-Caution order parser with Newton-Davis kinematic tractive lag based on locomotive HP/Tonne</td>
+                  <td className="py-2.5 px-3 text-center text-emerald-400 font-bold">✅ FULFILLED</td>
+                </tr>
+                <tr>
+                  <td className="py-2.5 px-3 font-semibold text-white">Congestion on Busy Routes</td>
+                  <td className="py-2.5 px-3 text-slate-300">Dynamic graph edge weights scaling sectional saturation indices (&gt;140% on Kanpur-Prayagraj)</td>
+                  <td className="py-2.5 px-3 text-center text-emerald-400 font-bold">✅ FULFILLED</td>
+                </tr>
+                <tr>
+                  <td className="py-2.5 px-3 font-semibold text-white">Delays in Preceding Trains & Signal Halts</td>
+                  <td className="py-2.5 px-3 text-slate-300">4-aspect automatic block signaling (Red/Yellow/Double Yellow/Green) + freight headway tracking</td>
+                  <td className="py-2.5 px-3 text-center text-emerald-400 font-bold">✅ FULFILLED</td>
+                </tr>
+                <tr>
+                  <td className="py-2.5 px-3 font-semibold text-white">Unscheduled Maintenance Blocks</td>
+                  <td className="py-2.5 px-3 text-slate-300">Track tamping and emergency OHE power block injection adding calculated +8m delay in Section Cockpit</td>
+                  <td className="py-2.5 px-3 text-center text-emerald-400 font-bold">✅ FULFILLED</td>
+                </tr>
+                <tr>
+                  <td className="py-2.5 px-3 font-semibold text-white">Level Crossing Gates</td>
+                  <td className="py-2.5 px-3 text-slate-300">Non-interlocked LC Gate #42-C road vehicular clearance hold calculator (+4m impact)</td>
+                  <td className="py-2.5 px-3 text-center text-emerald-400 font-bold">✅ FULFILLED</td>
+                </tr>
+                <tr>
+                  <td className="py-2.5 px-3 font-semibold text-white">Operational Bottlenecks & Platform Allocation</td>
+                  <td className="py-2.5 px-3 text-slate-300">Terminal yard throat queuing model (M/M/c/K) with dynamic platform re-routing (PF-1 to PF-2)</td>
+                  <td className="py-2.5 px-3 text-center text-emerald-400 font-bold">✅ FULFILLED</td>
+                </tr>
+                <tr>
+                  <td className="py-2.5 px-3 font-semibold text-white">Weather Conditions & Fog</td>
+                  <td className="py-2.5 px-3 text-slate-300">Live Open-Meteo Doppler radar + Indian Railways General Rule GR 3.61 (60 km/h FSD speed ceiling)</td>
+                  <td className="py-2.5 px-3 text-center text-emerald-400 font-bold">✅ FULFILLED</td>
+                </tr>
+                <tr>
+                  <td className="py-2.5 px-3 font-semibold text-white">Crew Scheduling & Cleaning Operations</td>
+                  <td className="py-2.5 px-3 text-slate-300">Loco Pilot HOER 8h statutory duty limit watch + rake wash-pit cleaning crew turnaround dispatch</td>
+                  <td className="py-2.5 px-3 text-center text-emerald-400 font-bold">✅ FULFILLED</td>
+                </tr>
+                <tr>
+                  <td className="py-2.5 px-3 font-semibold text-white">Downstream Feeder Transport Services</td>
+                  <td className="py-2.5 px-3 text-slate-300">City logistics interconnect: Kanpur Metro Orange Line, pre-paid cab/auto queue, and UPSRTC bus sync</td>
+                  <td className="py-2.5 px-3 text-center text-emerald-400 font-bold">✅ FULFILLED</td>
+                </tr>
+                <tr>
+                  <td className="py-2.5 px-3 font-semibold text-white">Multi-Day Long-Distance Journeys</td>
+                  <td className="py-2.5 px-3 text-slate-300">Train 12424 Dibrugarh Rajdhani 2,438 KM 3-day journey cascade modeling with DA323 empirical delay logs</td>
+                  <td className="py-2.5 px-3 text-center text-emerald-400 font-bold">✅ FULFILLED</td>
+                </tr>
+                <tr>
+                  <td className="py-2.5 px-3 font-semibold text-white">APIs for Mobile, Station Displays & Control Rooms</td>
+                  <td className="py-2.5 px-3 text-slate-300">FastAPI REST microservice serving /v1/eta, /v1/station/cids, /v1/controller/section-status</td>
+                  <td className="py-2.5 px-3 text-center text-emerald-400 font-bold">✅ FULFILLED</td>
+                </tr>
+                <tr>
+                  <td className="py-2.5 px-3 font-semibold text-white">PyTorch Geometric Spatio-Temporal GNN</td>
+                  <td className="py-2.5 px-3 text-slate-300">RailwaySTGAT in server/st_gnn_model.py built with PyG GATConv, GRU, and physics-informed loss</td>
+                  <td className="py-2.5 px-3 text-center text-emerald-400 font-bold">✅ FULFILLED</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   );

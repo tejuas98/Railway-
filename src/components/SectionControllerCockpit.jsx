@@ -12,7 +12,9 @@ import {
   RotateCcw,
   Zap,
   Activity,
-  CheckCircle2
+  CheckCircle2,
+  Wrench,
+  Car
 } from 'lucide-react';
 import { CORRIDOR_STATIONS } from '../data/corridorData';
 
@@ -22,12 +24,16 @@ export default function SectionControllerCockpit({
   onToggleTsr,
   onToggleFog,
   onTogglePlatformHold,
+  onToggleMaintenance,
+  onToggleLcGate,
   onExecuteOvertake,
   onResetSimulation
 }) {
   const tsrActive = disruptions.tsrOrders[0].active;
   const fogActive = disruptions.weatherConditions.fogActive;
   const platformHoldActive = disruptions.platformStatus.outerSignalHoldActive;
+  const maintenanceActive = disruptions.maintenanceBlocks?.[0]?.active ?? false;
+  const lcGateActive = disruptions.levelCrossingGates?.[0]?.activeHold ?? false;
   const precedence = disruptions.dispatchPrecedence;
 
   return (
@@ -77,15 +83,15 @@ export default function SectionControllerCockpit({
           </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
           {/* Disruption 1: 30 km/h Caution Order at Panki */}
-          <div className={`p-4 rounded-2xl border transition-all ${
-            tsrActive ? 'bg-amber-950/20 border-amber-500/50' : 'bg-slate-900/60 border-slate-800'
+          <div className={`p-3.5 rounded-2xl border transition-all ${
+            tsrActive ? 'bg-amber-950/20 border-amber-500/50 ring-1 ring-amber-500/30' : 'bg-slate-900/60 border-slate-800'
           }`}>
             <div className="flex items-center justify-between mb-2">
               <span className="flex items-center gap-1.5 text-xs font-bold text-amber-400">
                 <Construction className="w-4 h-4" />
-                <span>e-Caution TSR Order</span>
+                <span>e-Caution TSR</span>
               </span>
               <button
                 id="toggle-tsr-caution"
@@ -99,20 +105,20 @@ export default function SectionControllerCockpit({
                 }`} />
               </button>
             </div>
-            <div className="text-xs font-bold text-slate-100">30 km/h Speed Restriction at Panki (KM 434-437.5)</div>
+            <div className="text-xs font-bold text-slate-100">30 km/h at Panki (KM 434)</div>
             <div className="text-[11px] text-slate-400 mt-1">
-              Track ballast renewal on Down Main Line. Adds 9-14m running time for all arriving trains.
+              Track ballast tamping on Down Main. Adds +9m running lag.
             </div>
           </div>
 
           {/* Disruption 2: Winter Fog */}
-          <div className={`p-4 rounded-2xl border transition-all ${
-            fogActive ? 'bg-cyan-950/20 border-cyan-500/50' : 'bg-slate-900/60 border-slate-800'
+          <div className={`p-3.5 rounded-2xl border transition-all ${
+            fogActive ? 'bg-cyan-950/20 border-cyan-500/50 ring-1 ring-cyan-500/30' : 'bg-slate-900/60 border-slate-800'
           }`}>
             <div className="flex items-center justify-between mb-2">
               <span className="flex items-center gap-1.5 text-xs font-bold text-cyan-400">
                 <CloudFog className="w-4 h-4" />
-                <span>Winter Fog Ceiling</span>
+                <span>Fog GR 3.61</span>
               </span>
               <button
                 id="toggle-fog-ceiling"
@@ -126,20 +132,20 @@ export default function SectionControllerCockpit({
                 }`} />
               </button>
             </div>
-            <div className="text-xs font-bold text-slate-100">Visibility &lt; 150m in Tundla-Etawah (KM 209-301)</div>
+            <div className="text-xs font-bold text-slate-100">Visibility &lt; 150m (TDL-ETW)</div>
             <div className="text-[11px] text-slate-400 mt-1">
-              Enforces Fog Safe Device (FSD) rules capping maximum speed at 60 km/h under GR 3.61.
+              Fog Safe Device caps speed at 60 km/h under GR 3.61.
             </div>
           </div>
 
           {/* Disruption 3: Outer Signal Platform Blockage */}
-          <div className={`p-4 rounded-2xl border transition-all ${
-            platformHoldActive ? 'bg-rose-950/20 border-rose-500/50' : 'bg-slate-900/60 border-slate-800'
+          <div className={`p-3.5 rounded-2xl border transition-all ${
+            platformHoldActive ? 'bg-rose-950/20 border-rose-500/50 ring-1 ring-rose-500/30' : 'bg-slate-900/60 border-slate-800'
           }`}>
             <div className="flex items-center justify-between mb-2">
               <span className="flex items-center gap-1.5 text-xs font-bold text-rose-400">
                 <AlertOctagon className="w-4 h-4" />
-                <span>Platform 1 Blockage</span>
+                <span>PF 1 Blockage</span>
               </span>
               <button
                 id="toggle-platform-hold"
@@ -153,9 +159,63 @@ export default function SectionControllerCockpit({
                 }`} />
               </button>
             </div>
-            <div className="text-xs font-bold text-slate-100">Kanpur Central PF 1 Rake Cleaning Delay</div>
+            <div className="text-xs font-bold text-slate-100">Kanpur PF 1 Hold</div>
             <div className="text-[11px] text-slate-400 mt-1">
-              Traps incoming Howrah Rajdhani at outer signal for 24 minutes while NTES reports false arrival.
+              Rake cleaning delay holds incoming train at outer signal.
+            </div>
+          </div>
+
+          {/* Disruption 4: Unscheduled Maintenance Block */}
+          <div className={`p-3.5 rounded-2xl border transition-all ${
+            maintenanceActive ? 'bg-amber-950/20 border-amber-500/50 ring-1 ring-amber-500/30' : 'bg-slate-900/60 border-slate-800'
+          }`}>
+            <div className="flex items-center justify-between mb-2">
+              <span className="flex items-center gap-1.5 text-xs font-bold text-amber-400">
+                <Wrench className="w-4 h-4" />
+                <span>Maint. Block</span>
+              </span>
+              <button
+                id="toggle-maintenance-block"
+                onClick={onToggleMaintenance}
+                className={`relative inline-flex h-5 w-10 items-center rounded-full transition-colors ${
+                  maintenanceActive ? 'bg-amber-500' : 'bg-slate-700'
+                }`}
+              >
+                <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  maintenanceActive ? 'translate-x-5' : 'translate-x-1'
+                }`} />
+              </button>
+            </div>
+            <div className="text-xs font-bold text-slate-100">OHE Power Block (KM 412)</div>
+            <div className="text-[11px] text-slate-400 mt-1">
+              Emergency traction wire adjustment. Adds +8m delay.
+            </div>
+          </div>
+
+          {/* Disruption 5: Level Crossing Gate */}
+          <div className={`p-3.5 rounded-2xl border transition-all ${
+            lcGateActive ? 'bg-orange-950/20 border-orange-500/50 ring-1 ring-orange-500/30' : 'bg-slate-900/60 border-slate-800'
+          }`}>
+            <div className="flex items-center justify-between mb-2">
+              <span className="flex items-center gap-1.5 text-xs font-bold text-orange-400">
+                <Car className="w-4 h-4" />
+                <span>LC Gate #42-C</span>
+              </span>
+              <button
+                id="toggle-lc-gate"
+                onClick={onToggleLcGate}
+                className={`relative inline-flex h-5 w-10 items-center rounded-full transition-colors ${
+                  lcGateActive ? 'bg-orange-500' : 'bg-slate-700'
+                }`}
+              >
+                <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  lcGateActive ? 'translate-x-5' : 'translate-x-1'
+                }`} />
+              </button>
+            </div>
+            <div className="text-xs font-bold text-slate-100">Road Traffic Gate Hold</div>
+            <div className="text-[11px] text-slate-400 mt-1">
+              Vehicular queue prevents boom barrier close (+4m).
             </div>
           </div>
         </div>

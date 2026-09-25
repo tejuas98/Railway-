@@ -70,5 +70,80 @@ export const INITIAL_DISRUPTIONS = {
     priorityTrainPassing: '12560', // Let Shiv Ganga Express run through main line
     timeSavedMinutes: 19,
     status: 'Pending Controller Execution'
+  },
+
+  // 6. Unscheduled Maintenance Blocks (Engineering & OHE Power Blocks)
+  maintenanceBlocks: [
+    {
+      id: 'MB-NCR-402',
+      section: 'Rura - Panki Dham (KM 412 - 418)',
+      type: 'Unscheduled OHE Traction Inspection Block',
+      active: true,
+      maxAllowedSpeedKmH: 45,
+      delayPenaltyMin: 8,
+      cause: 'Emergency contact wire tensioning following temperature drop',
+      impactDesc: 'Traction speed restricted to 45 km/h; adds +8m delay to trailing coaching trains'
+    }
+  ],
+
+  // 7. Level Crossing (LC) Gates (Road Traffic & Gate Closure Holds)
+  levelCrossingGates: [
+    {
+      id: 'LC-42-C',
+      name: 'Panki Bypass Level Crossing #42-C',
+      km: 432.4,
+      interlocked: false,
+      activeHold: true,
+      roadTrafficHoldMin: 4,
+      affectedTrain: '12302',
+      cause: 'Heavy vehicular queue on State Highway 5; gateman delayed closing boom barrier',
+      impactDesc: 'Outer caution aspect approach; adds +4m lost time'
+    }
+  ],
+
+  // 8. Crew Scheduling & HOER (Hours of Employment Regulations) Watch
+  crewScheduling: {
+    trainNumber: '12302',
+    locoPilotName: 'R. K. Sharma (HQ: TDL)',
+    guardName: 'A. K. Srivastava (HQ: TDL)',
+    dutyCommencedAt: '14:30',
+    maxStatutoryDutyHours: 8.0, // Indian Railways HOER 8-hour shift ceiling
+    currentDutyElapsedHours: 6.75, // 6h 45m
+    predictedDutyAtArrivalHours: 7.58, // 7h 35m
+    dutyStatus: 'Approaching Statutory Limit',
+    reliefCrewStandbyStation: 'CNB Platform 2',
+    impactDesc: 'Relief crew must be alerted at Kanpur Central to prevent duty breach detention'
+  },
+
+  // 9. Downstream Feeder Transport & Logistics Integration
+  feederTransit: {
+    stationCode: 'CNB',
+    stationName: 'Kanpur Central',
+    services: [
+      {
+        type: 'METRO',
+        agency: 'UPMRC Kanpur Metro',
+        route: 'Orange Line (IIT Kanpur - Naubasta)',
+        gate: 'Gate 1 Concourse Walkway',
+        scheduledDeparture: '23:15',
+        syncStatus: 'Synced with GATI-SETU ETA (22:45 arrival allows 30m buffer)',
+        connectProbability: '96.4%'
+      },
+      {
+        type: 'PREPAID_CAB_AUTO',
+        agency: 'Kanpur Traffic Police Pre-Paid Booth',
+        gate: 'Gate 3 City Side',
+        surgeAlert: 'High Demand Surge (+1,400 passengers) at 22:45',
+        syncStatus: 'Fleet Queue Buffer Expanded by 45 vehicles'
+      },
+      {
+        type: 'PARCEL_LOGISTICS',
+        agency: 'IR Cargo Express & India Post Nodal',
+        bay: 'Parcel Shed Bay 4',
+        loadingSlot: '23:00 - 23:40',
+        syncStatus: 'Forklift & Labor Dispatch Delayed by 25m to match actual rake birth'
+      }
+    ]
   }
 };
+

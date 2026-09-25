@@ -186,6 +186,38 @@ export default function App() {
     });
   };
 
+  const handleToggleMaintenance = () => {
+    setDisruptions(prev => {
+      const updated = {
+        ...prev,
+        maintenanceBlocks: prev.maintenanceBlocks.map(mb => ({ ...mb, active: !mb.active }))
+      };
+      const isActive = updated.maintenanceBlocks[0]?.active;
+      toast(isActive ? '🔧 Unscheduled OHE Power Block Imposed (+8m)' : '⚡ Maintenance Block Cleared: OHE Energized', {
+        description: isActive
+          ? 'Emergency track/overhead traction inspection in Rura-Panki section.'
+          : 'Normal track line speed restored.'
+      });
+      return updated;
+    });
+  };
+
+  const handleToggleLcGate = () => {
+    setDisruptions(prev => {
+      const updated = {
+        ...prev,
+        levelCrossingGates: prev.levelCrossingGates.map(lc => ({ ...lc, activeHold: !lc.activeHold }))
+      };
+      const isActive = updated.levelCrossingGates[0]?.activeHold;
+      toast(isActive ? '🚧 Level Crossing Gate #42-C Road Traffic Hold (+4m)' : '🟢 Level Crossing Gate Closed & Interlocked', {
+        description: isActive
+          ? 'State Highway 5 vehicular queue held boom barrier open.'
+          : 'Gate interlocked with signal relay. Line clear.'
+      });
+      return updated;
+    });
+  };
+
   const handleExecuteOvertake = () => {
     setDisruptions(prev => ({
       ...prev,
@@ -471,6 +503,8 @@ export default function App() {
             onToggleTsr={handleToggleTsr}
             onToggleFog={handleToggleFog}
             onTogglePlatformHold={handleTogglePlatformHold}
+            onToggleMaintenance={handleToggleMaintenance}
+            onToggleLcGate={handleToggleLcGate}
             onExecuteOvertake={handleExecuteOvertake}
             onResetSimulation={handleResetSimulation}
           />

@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920, height=1080, initial-scale=1.0" />
+  <title>GATI-SETU - Research, Academic References & Systems Comparison (Slide 6)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cinzel:wght@700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    @page {
+      size: 1920px 1080px;
+      margin: 0;
+    }
+
+    @media print {
+      html, body {
+        width: 1920px !important;
+        height: 1080px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+    }
+
+    body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #FFFFFF;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #0F172A;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ======================================================== */
+    /* 1. TOP HEADER                                            */
+    /* ======================================================== */
+    .slide-header {
+      height: 74px;
+      padding: 8px 48px 6px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #E2E8F0;
+      position: relative;
+    }
+
+    .team-badge-wrap {
+      width: 260px;
+    }
+
+    .team-oval {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 2.5px solid #4338CA;
+      border-radius: 9999px;
+      padding: 6px 28px;
+      background: #FFFFFF;
+      box-shadow: 0 2px 6px rgba(67, 56, 202, 0.08);
+    }
+
+    .team-oval-title {
+      font-size: 21px;
+      font-weight: 800;
+      color: #1E1B4B;
+      letter-spacing: -0.3px;
+    }
+
+    .header-center-wrap {
+      text-align: center;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .main-title {
+      font-family: 'Cinzel', serif;
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: 2.5px;
+      color: #0F172A;
+      text-transform: uppercase;
+      line-height: 1.1;
+    }
+
+    .main-subtitle {
+      font-size: 15px;
+      font-weight: 600;
+      color: #475569;
+      margin-top: 2px;
+      letter-spacing: 0.2px;
+    }
+
+    .sih-badge-wrap {
+      width: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    .sih-emblem-svg {
+      width: 52px;
+      height: 52px;
+    }
+
+    .sih-text {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+
+    .sih-text .line1, .sih-text .line2 {
+      font-size: 14.5px;
+      font-weight: 900;
+      color: #1E3A8A;
+      line-height: 1.1;
+      letter-spacing: 0.5px;
+    }
+
+    .sih-text .year {
+      font-size: 20px;
+      font-weight: 900;
+      color: #047857;
+      line-height: 1.1;
+      margin-top: 1px;
+    }
+
+    /* ======================================================== */
+    /* 2. MAIN SLIDE CONTENT: COMPACT 2-COLUMN LAYOUT           */
+    /* ======================================================== */
+    .slide-body {
+      flex: 1;
+      padding: 8px 36px 6px 36px;
+      display: grid;
+      grid-template-columns: 1040px 1fr;
+      gap: 18px;
+      height: calc(1080px - 74px - 40px);
+    }
+
+    /* ======================================================== */
+    /* LEFT COLUMN: COMPARISON TABLE + PHYSICS MATHS ENGINE     */
+    /* ======================================================== */
+    .left-col {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      height: 100%;
+    }
+
+    .section-header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #0284C7;
+      padding-bottom: 4px;
+    }
+
+    .section-title {
+      font-size: 16.5px;
+      font-weight: 900;
+      color: #0F172A;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .section-subtitle-pill {
+      background: #E0F2FE;
+      color: #0369A1;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 2.5px 10px;
+      border-radius: 9999px;
+      border: 1px solid #BAE6FD;
+    }
+
+    /* COMPARISON TABLE STYLING */
+    .table-container {
+      background: #FFFFFF;
+      border: 2px solid #CBD5E1;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+    }
+
+    .comp-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.8px;
+      text-align: left;
+    }
+
+    .comp-table th {
+      padding: 7px 9px;
+      font-weight: 900;
+      font-size: 14px;
+      border-bottom: 2px solid #CBD5E1;
+      border-right: 1px solid #E2E8F0;
+      line-height: 1.2;
+    }
+
+    .comp-table th:last-child {
+      border-right: none;
+    }
+
+    .th-link {
+      color: #1E3A8A;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      font-weight: 900;
+    }
+
+    .th-link:hover {
+      color: #2563EB;
+    }
+
+    .th-features {
+      background: #F8FAFC;
+      color: #1E293B;
+      width: 170px;
+    }
+
+    .th-our {
+      background: #DCFCE7;
+      color: #166534;
+      width: 270px;
+      border-top: 3.5px solid #16A34A;
+      text-align: center;
+      font-size: 14.5px;
+    }
+
+    .th-ntes {
+      background: #F1F5F9;
+      color: #334155;
+      width: 195px;
+      text-align: center;
+    }
+
+    .th-wimt {
+      background: #F1F5F9;
+      color: #334155;
+      width: 195px;
+      text-align: center;
+    }
+
+    .th-other {
+      background: #F1F5F9;
+      color: #334155;
+      width: 205px;
+      text-align: center;
+    }
+
+    .comp-table td {
+      padding: 6px 9px;
+      border-bottom: 1px solid #E2E8F0;
+      border-right: 1px solid #E2E8F0;
+      line-height: 1.24;
+      vertical-align: middle;
+    }
+
+    .comp-table td:last-child {
+      border-right: none;
+    }
+
+    .comp-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .td-feature-title {
+      font-weight: 900;
+      color: #0F172A;
+      background: #FAF5FF;
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .feature-tag {
+      font-size: 11px;
+      color: #7C3AED;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .td-our {
+      background: #F0FDF4;
+      font-weight: 600;
+      color: #14532D;
+      font-size: 13.8px;
+      border-left: 2px solid #86EFAC;
+      border-right: 2px solid #86EFAC;
+    }
+
+    .td-our b {
+      color: #15803D;
+      font-weight: 900;
+      font-size: 14.2px;
+      display: block;
+      margin-bottom: 1px;
+    }
+
+    .td-other {
+      background: #FFFFFF;
+      color: #334155;
+      font-size: 13.2px;
+    }
+
+    .td-other b {
+      color: #0F172A;
+      font-weight: 800;
+      font-size: 13.6px;
+      display: block;
+      margin-bottom: 1px;
+    }
+
+    /* PHYSICS & MATHS FOUNDATION BOX */
+    .physics-box {
+      background: #FFFFFF;
+      border: 2px solid #0F172A;
+      border-radius: 10px;
+      padding: 8px 12px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .physics-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1.5px dashed #CBD5E1;
+      padding-bottom: 4px;
+    }
+
+    .physics-title {
+      font-size: 15px;
+      font-weight: 900;
+      color: #0F172A;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .physics-badge {
+      background: #FEF3C7;
+      color: #92400E;
+      border: 1px solid #FDE68A;
+      font-size: 11.5px;
+      font-weight: 800;
+      padding: 2.5px 9px;
+      border-radius: 5px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .physics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+
+    .math-card {
+      background: #F8FAFC;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 8px;
+      padding: 6px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .math-card-title {
+      font-size: 12.5px;
+      font-weight: 900;
+      color: #1E293B;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .math-formula {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.6px;
+      font-weight: 800;
+      color: #0369A1;
+      background: #FFFFFF;
+      padding: 3px 5px;
+      border-radius: 5px;
+      border: 1.2px solid #CBD5E1;
+      text-align: center;
+      margin: 2px 0;
+      white-space: nowrap;
+    }
+
+    .math-desc {
+      font-size: 11.8px;
+      color: #475569;
+      line-height: 1.22;
+      font-weight: 600;
+    }
+
+    /* ======================================================== */
+    /* RIGHT COLUMN: EXPANDED CATEGORIZED CITATIONS             */
+    /* ======================================================== */
+    .right-col {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      height: 100%;
+    }
+
+    .cat-card {
+      background: #FFFFFF;
+      border-radius: 9px;
+      padding: 8px 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 4.5px;
+      position: relative;
+    }
+
+    .card-academic {
+      border: 1.8px solid #6366F1;
+      border-left: 5px solid #4F46E5;
+    }
+
+    .card-gov {
+      border: 1.8px solid #10B981;
+      border-left: 5px solid #059669;
+    }
+
+    .card-validation {
+      border: 1.8px solid #F59E0B;
+      border-left: 5px solid #D97706;
+    }
+
+    .card-deliverables {
+      border: 1.8px solid #0284C7;
+      border-left: 5px solid #0369A1;
+      background: #F8FAFC;
+    }
+
+    .cat-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #E2E8F0;
+      padding-bottom: 3px;
+    }
+
+    .cat-card-title {
+      font-size: 13.5px;
+      font-weight: 900;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .cat-card-title.academic { color: #4338CA; }
+    .cat-card-title.gov { color: #065F46; }
+    .cat-card-title.val { color: #92400E; }
+    .cat-card-title.del { color: #075985; }
+
+    .cat-card-badge {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 1px 7px;
+      border-radius: 4px;
+    }
+
+    .badge-academic { background: #EEF2FF; color: #4338CA; border: 1px solid #C7D2FE; }
+    .badge-gov { background: #ECFDF5; color: #065F46; border: 1px solid #A7F3D0; }
+    .badge-val { background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; }
+    .badge-del { background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD; }
+
+    /* DUAL COLUMN GRID FOR COMPACT INDIVIDUAL LINKS */
+    .cat-grid-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4.5px 12px;
+    }
+
+    .cat-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 5px;
+      font-size: 12.4px;
+      line-height: 1.2;
+      color: #1E293B;
+    }
+
+    .cat-item .bullet {
+      color: #6366F1;
+      font-size: 11.5px;
+      line-height: 1;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .bullet-gov { color: #059669 !important; }
+    .bullet-val { color: #D97706 !important; }
+    .bullet-del { color: #0284C7 !important; }
+
+    .cat-item a {
+      color: #1D4ED8;
+      font-weight: 800;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      font-size: 12.6px;
+    }
+
+    .cat-item a:hover {
+      color: #1E40AF;
+    }
+
+    .cat-item .subtext {
+      color: #475569;
+      font-size: 11.4px;
+      display: block;
+      margin-top: 0.5px;
+      font-weight: 500;
+    }
+
+    /* VALIDATION METRICS PILLS */
+    .validation-pills-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 7px;
+    }
+
+    .val-pill {
+      background: #FFFBEB;
+      border: 1.2px solid #FDE68A;
+      border-radius: 6px;
+      padding: 4px 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5px;
+      text-align: center;
+    }
+
+    .val-pill-num {
+      font-size: 15px;
+      font-weight: 900;
+      color: #B45309;
+    }
+
+    .val-pill-label {
+      font-size: 11.2px;
+      font-weight: 600;
+      color: #78350F;
+      line-height: 1.18;
+    }
+
+    /* GOVERNMENT ECOSYSTEM SEALS STRIP */
+    .gov-seals-strip {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 10px;
+      background: #F8FAFC;
+      border: 1.5px solid #CBD5E1;
+      border-radius: 9px;
+      padding: 7px 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+
+    .gov-seal-card {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #FFFFFF;
+      border: 1.2px solid #E2E8F0;
+      border-radius: 7px;
+      padding: 6px 9px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+
+    .gov-seal-card svg {
+      width: 26px;
+      height: 26px;
+      flex-shrink: 0;
+    }
+
+    .gov-seal-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.15;
+    }
+
+    .gov-seal-title {
+      font-size: 11.5px;
+      font-weight: 900;
+      color: #0F172A;
+      letter-spacing: 0.2px;
+    }
+
+    .gov-seal-sub {
+      font-size: 9.5px;
+      font-weight: 600;
+      color: #64748B;
+    }
+
+    /* ======================================================== */
+    /* 3. SLIDE FOOTER BAR                                      */
+    /* ======================================================== */
+    .slide-footer {
+      height: 40px;
+      background: #0284C7;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 36px;
+      color: #FFFFFF;
+    }
+
+    .footer-tools {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-tool-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #FFFFFF;
+      font-weight: 700;
+    }
+
+    .footer-template-text {
+      font-size: 16px;
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: 0.2px;
+    }
+
+    .footer-slide-num {
+      font-size: 22px;
+      font-weight: 900;
+      color: #FFFFFF;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======================================================== -->
+  <!-- 1. TOP SLIDE HEADER                                      -->
+  <!-- ======================================================== -->
+  <div class="slide-header">
+
+    <!-- Team Badge (Top Left) -->
+    <div class="team-badge-wrap">
+      <div class="team-oval">
+        <span class="team-oval-title">Karasuno</span>
+      </div>
+    </div>
+
+    <!-- Center Main Title -->
+    <div class="header-center-wrap">
+      <h1 class="main-title">RESEARCH AND REFERENCES</h1>
+      <div class="main-subtitle">Empirical Literature, Physics Kinematics Formulation &amp; Systems Evaluation Matrix</div>
+    </div>
+
+    <!-- SIH 2026 Emblem & Badge (Top Right) -->
+    <div class="sih-badge-wrap">
+      <svg class="sih-emblem-svg" viewBox="0 0 100 100" fill="none">
+        <path d="M48 12 C32 12 20 25 20 42 C20 53 26 62 34 68 L34 78 L48 78 Z" fill="#F97316"/>
+        <path d="M48 20 C36 20 27 29 27 42 C27 50 31 57 37 62 L37 72 L48 72 Z" fill="#FFFFFF"/>
+        <circle cx="38" cy="40" r="4" fill="#F97316"/>
+        <circle cx="34" cy="52" r="3.5" fill="#F97316"/>
+        <path d="M52 12 C68 12 80 25 80 42 C80 53 74 62 66 68 L66 78 L52 78 Z" fill="#10B981"/>
+        <text x="56" y="32" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="900" fill="#FFFFFF">0101</text>
+        <text x="56" y="46" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="900" fill="#FFFFFF">1010</text>
+        <text x="56" y="60" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="900" fill="#FFFFFF">0101</text>
+        <path d="M38 78 L62 78 L58 88 L42 88 Z" fill="#1E3A8A"/>
+        <text x="50" y="97" font-family="'Inter', sans-serif" font-size="9" font-weight="900" fill="#1E3A8A" text-anchor="middle">SIH</text>
+      </svg>
+      <div class="sih-text">
+        <span class="line1">SMART INDIA</span>
+        <span class="line2">HACKATHON</span>
+        <span class="year">2026</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- 2. MAIN 2-COLUMN SLIDE BODY                              -->
+  <!-- ======================================================== -->
+  <div class="slide-body">
+
+    <!-- ------------------------------------------------------ -->
+    <!-- LEFT COLUMN: MASTER SYSTEMS COMPARISON + PHYSICS MATHS -->
+    <!-- ------------------------------------------------------ -->
+    <div class="left-col">
+
+      <div class="section-header-bar">
+        <div class="section-title">
+          <span>❖ 1. MASTER SYSTEMS COMPARISON</span>
+        </div>
+        <div class="section-subtitle-pill">GATI-SETU vs. Existing Systems (Direct Web Portals)</div>
+      </div>
+
+      <!-- COMPARISON TABLE -->
+      <div class="table-container">
+        <table class="comp-table">
+          <thead>
+            <tr>
+              <th class="th-features">Evaluation Dimension</th>
+              <th class="th-our">★ GATI-SETU (OUR SYSTEM)</th>
+              <th class="th-ntes"><a href="https://enquiry.indianrail.gov.in/mntes/" target="_blank" class="th-link">NTES (CRIS) ↗</a></th>
+              <th class="th-wimt"><a href="https://whereismytrain.in" target="_blank" class="th-link">Where Is My Train ↗</a></th>
+              <th class="th-other"><a href="https://www.railyatri.in" target="_blank" class="th-link">RailYatri ↗</a></th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Row 1: Core Prediction Engine -->
+            <tr>
+              <td class="td-feature-title">
+                <span>Core ETA Model</span>
+                <span class="feature-tag">Prediction Engine</span>
+              </td>
+              <td class="td-our">
+                <b>★ Physics ODE + Graph AI</b>
+                RK4 forward integration + ST-GAT
+              </td>
+              <td class="td-other">
+                <b>Static Timetable + Linear</b>
+                Naive D / V<sub>avg</sub> subtraction; manual logs
+              </td>
+              <td class="td-other">
+                <b>Cell-Tower Triangulation</b>
+                Rolling moving-average from pings
+              </td>
+              <td class="td-other">
+                <b>Historical Averages</b>
+                Static route lookup; zero physics
+              </td>
+            </tr>
+
+            <!-- Row 2: Locomotive & Trailing Load -->
+            <tr>
+              <td class="td-feature-title">
+                <span>Locomotive &amp; Load</span>
+                <span class="feature-tag">Tractive Power (P/M)</span>
+              </td>
+              <td class="td-our">
+                <b>Locomotive Tractive Curves</b>
+                WAP-7, Vande Bharat &amp; WAG-9 curves
+              </td>
+              <td class="td-other">
+                <b>Zero Physics Awareness</b>
+                Assumes identical acceleration for all
+              </td>
+              <td class="td-other">
+                <b>Zero Physics Awareness</b>
+                Blind to engine power &amp; rake tonnage
+              </td>
+              <td class="td-other">
+                <b>Dimensionless Mass</b>
+                Treats all rake types identically
+              </td>
+            </tr>
+
+            <!-- Row 3: Gradients & Curvature -->
+            <tr>
+              <td class="td-feature-title">
+                <span>Track Geography</span>
+                <span class="feature-tag">Gradients &amp; Turnouts</span>
+              </td>
+              <td class="td-our">
+                <b>Elevation Profile Ingestion</b>
+                Ruling grade (M·g·sin θ) + turnout drag
+              </td>
+              <td class="td-other">
+                <b>Ignores Track Geometry</b>
+                Omits gradient resistance &amp; limits
+              </td>
+              <td class="td-other">
+                <b>Flat Track Assumption</b>
+                Blind to elevation profile &amp; Ghats
+              </td>
+              <td class="td-other">
+                <b>No Elevation Data</b>
+                Assumes flat track throughout
+              </td>
+            </tr>
+
+            <!-- Row 4: Weather & Winter Fog -->
+            <tr>
+              <td class="td-feature-title">
+                <span>Weather &amp; Fog</span>
+                <span class="feature-tag">Adhesion &amp; Rule GR 3.61</span>
+              </td>
+              <td class="td-our">
+                <b>Live Doppler &amp; Rule GR 3.61</b>
+                60 km/h fog cap + wet rail adhesion loss
+              </td>
+              <td class="td-other">
+                <b>Zero Weather Ingestion</b>
+                Retrospective manual station logs
+              </td>
+              <td class="td-other">
+                <b>Static UI Icon Only</b>
+                Visual icon display; zero algorithm impact
+              </td>
+              <td class="td-other">
+                <b>No Weather Link</b>
+                Assumes dry, clear track year-round
+              </td>
+            </tr>
+
+            <!-- Row 5: Delay Cascades & Precedence -->
+            <tr>
+              <td class="td-feature-title">
+                <span>Delay Cascades</span>
+                <span class="feature-tag">Rule 401 Precedence</span>
+              </td>
+              <td class="td-our">
+                <b>Dynamic Graph Attention (α<sub>ij</sub>)</b>
+                Rule 401 priority &amp; loop line overtakes
+              </td>
+              <td class="td-other">
+                <b>Isolated Section View</b>
+                Assumes track ahead is clear until halt
+              </td>
+              <td class="td-other">
+                <b>Single-Train Tunnel Vision</b>
+                Tracks only user's train; blind to traffic
+              </td>
+              <td class="td-other">
+                <b>Isolated Corridor View</b>
+                Cannot model secondary cascades
+              </td>
+            </tr>
+
+            <!-- Row 6: Terminal Yard Holding -->
+            <tr>
+              <td class="td-feature-title">
+                <span>Terminal Yard Dwell</span>
+                <span class="feature-tag">Outer Signal Queuing</span>
+              </td>
+              <td class="td-our">
+                <b>Markovian Queuing Model</b>
+                Predicts platform clearance &amp; holds
+              </td>
+              <td class="td-other">
+                <b>Masks Terminal Delays</b>
+                Marks "arrived" before entering yard
+              </td>
+              <td class="td-other">
+                <b>Reactive Halts Only</b>
+                Detects delay only after dead stop
+              </td>
+              <td class="td-other">
+                <b>No Yard Modeling</b>
+                Assumes instant platform entry
+              </td>
+            </tr>
+
+            <!-- Row 7: Output Honesty -->
+            <tr>
+              <td class="td-feature-title">
+                <span>Output Honesty</span>
+                <span class="feature-tag">Arrival Uncertainty</span>
+              </td>
+              <td class="td-our">
+                <b>Honest Window [P10–P90]</b>
+                Calibrated arrival interval + delay badge
+              </td>
+              <td class="td-other">
+                <b>Single False Timestamp</b>
+                Jumps erratically by 2–4 hours
+              </td>
+              <td class="td-other">
+                <b>Single Timestamp</b>
+                Freezes during cellular dead zones
+              </td>
+              <td class="td-other">
+                <b>Single Timestamp</b>
+                High variance during fog &amp; monsoon
+              </td>
+            </tr>
+
+            <!-- Row 8: Latency & Hardware -->
+            <tr>
+              <td class="td-feature-title">
+                <span>Hardware &amp; Latency</span>
+                <span class="feature-tag">Deployment Footprint</span>
+              </td>
+              <td class="td-our">
+                <b>&lt; 500ms Edge · 100% Software Layer</b>
+                Runs on existing 8,500+ BEL RTIS locos
+              </td>
+              <td class="td-other">
+                <b>5–15 min Batch Refresh</b>
+                Centralized OLTP database bottleneck
+              </td>
+              <td class="td-other">
+                <b>Crowdsource Dependent</b>
+                Requires active phones &amp; drains battery
+              </td>
+              <td class="td-other">
+                <b>High Server Polling</b>
+                Heavy cloud API query latency
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- PHYSICS & MATHEMATICS VALIDATION BOX -->
+      <div class="physics-box">
+        <div class="physics-header">
+          <div class="physics-title">
+            <span>⚡ 2. GOVERNING PHYSICS KINEMATICS &amp; MATHEMATICAL FORMULATION</span>
+          </div>
+          <div class="physics-badge">Runge-Kutta 4 · Davis Equation · ST-GAT Attention</div>
+        </div>
+
+        <div class="physics-grid">
+          <!-- Math Card 1: Forward Kinematics ODE -->
+          <div class="math-card">
+            <div class="math-card-title">① Newton-Davis Kinematics</div>
+            <div class="math-formula">dv/dt = [F<sub>tr</sub>(v) − R<sub>Davis</sub> − M·g·sin θ] / M<sub>eff</sub></div>
+            <div class="math-desc">Tractive curves (WAP-7, Vande Bharat) vs. trailing tonnage &amp; gradients.</div>
+          </div>
+
+          <!-- Math Card 2: Davis Running Resistance -->
+          <div class="math-card">
+            <div class="math-card-title">② Davis Resistance Equation</div>
+            <div class="math-formula">R<sub>Davis</sub>(v) = A + B·v + C·v² + F<sub>turnout</sub></div>
+            <div class="math-desc">Bearing friction (A), flange damping (B·v), aero drag (C·v²), turnout drag.</div>
+          </div>
+
+          <!-- Math Card 3: ST-GAT & Platform Queue -->
+          <div class="math-card">
+            <div class="math-card-title">③ Network Graph &amp; Yard Queue</div>
+            <div class="math-formula">α<sub>ij</sub> = Softmax(ST-GAT) · ΔT = max(0, Δt<sub>queue</sub>)</div>
+            <div class="math-desc">7,325 IRN node delay propagation &amp; outer-signal platform holds.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ------------------------------------------------------ -->
+    <!-- RIGHT COLUMN: EXPANDED CITATIONS, PS & EXISTING SITES  -->
+    <!-- ------------------------------------------------------ -->
+    <div class="right-col">
+
+      <div class="section-header-bar">
+        <div class="section-title">
+          <span>❖ 3. RESEARCH, PS DOSSIER &amp; SYSTEM PORTALS</span>
+        </div>
+        <div class="section-subtitle-pill">Academic Literature, PS SIH26028 &amp; Existing Systems</div>
+      </div>
+
+      <!-- CARD 1: ACADEMIC FOUNDATION & LITERATURE (DUAL COLUMN - EVERY LINK SEPARATE) -->
+      <div class="cat-card card-academic">
+        <div class="cat-card-header">
+          <div class="cat-card-title academic">
+            <span>🎓 ACADEMIC PAPERS &amp; GLOBAL RAIL RESEARCH</span>
+          </div>
+          <span class="cat-card-badge badge-academic">Peer-Reviewed Literature</span>
+        </div>
+        <div class="cat-grid-2col">
+          <!-- Left Column Papers -->
+          <div class="cat-item">
+            <span class="bullet">◆</span>
+            <div>
+              <a href="https://doi.org/10.1016/j.tre.2020.102022" target="_blank">Elsevier TR-E (Kumar et al., 2025)</a>
+              <span class="subtext">44.34% legacy MAPE error; GATI-SETU cuts MAE by 85.4%.</span>
+            </div>
+          </div>
+          <div class="cat-item">
+            <span class="bullet">◆</span>
+            <div>
+              <a href="https://backend.orbit.dtu.dk/ws/portalfiles/portal/110602997/PhD_2013_02.pdf" target="_blank">DTU Denmark PhD (Schittenhelm 2013)</a>
+              <span class="subtext">Knock-on delay threshold: d<sub>sec</sub> = max(0, d<sub>pri</sub> − t<sub>buf</sub>).</span>
+            </div>
+          </div>
+          <div class="cat-item">
+            <span class="bullet">◆</span>
+            <div>
+              <a href="https://lab-work.github.io/download/barbour2018prediction.pdf" target="_blank">MIT Operations Research (Barbour 2018)</a>
+              <span class="subtext">14–21% ETA gains via conflicting traffic &amp; HP-to-tonnage.</span>
+            </div>
+          </div>
+          <div class="cat-item">
+            <span class="bullet">◆</span>
+            <div>
+              <a href="https://arxiv.org/abs/2510.01262" target="_blank">arXiv:2510.01262 (RSTGCN Graph)</a>
+              <span class="subtext">Spatio-Temporal Graph Network across 7,325 IRN stations.</span>
+            </div>
+          </div>
+          <div class="cat-item">
+            <span class="bullet">◆</span>
+            <div>
+              <a href="https://www.researchgate.net/publication/396261601_Ten_quick_tips_for_improving_estimated_time_of_arrival_predictions_using_machine_learning_in_logistics_and_transportation_systems" target="_blank">ResearchGate: 10 ML ETA Tips (2025)</a>
+              <span class="subtext">Real-time telematics streaming &amp; hybrid physics-GNN.</span>
+            </div>
+          </div>
+          <div class="cat-item">
+            <span class="bullet">◆</span>
+            <div>
+              <a href="https://arxiv.org/abs/2510.09350" target="_blank">arXiv:2510.09350 (ST-GAT Attention)</a>
+              <span class="subtext">Dynamic attention weights (α<sub>ij</sub>) for delay cascades.</span>
+            </div>
+          </div>
+          <div class="cat-item">
+            <span class="bullet">◆</span>
+            <div>
+              <a href="https://pdfs.semanticscholar.org/9f67/39912a7ea225287d86df71dc40a58eb98d9b.pdf" target="_blank">Eastern-European Journal (Prokhorchenko)</a>
+              <span class="subtext">Train mass (M), length (L) &amp; congestion travel times.</span>
+            </div>
+          </div>
+          <div class="cat-item">
+            <span class="bullet">◆</span>
+            <div>
+              <a href="https://transitlab.mit.edu/" target="_blank">Japan COSMOS &amp; Swiss SBB Research</a>
+              <span class="subtext">Sub-24s automated conflict graphs &amp; Taktfahrplan.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 2: PS BRIEF, GOVT STANDARDS & EXISTING SYSTEMS (EVERY LINK ITS OWN SEPARATE ENTRY) -->
+      <div class="cat-card card-gov">
+        <div class="cat-card-header">
+          <div class="cat-card-title gov">
+            <span>🏛️ PS SIH26028 DOSSIER &amp; EXISTING SYSTEM PORTALS</span>
+          </div>
+          <span class="cat-card-badge badge-gov">Official Portals &amp; Systems</span>
+        </div>
+        <div class="cat-grid-2col">
+          <!-- Col 1: PS Brief & Existing Software Systems -->
+          <div class="cat-item">
+            <span class="bullet bullet-gov">◆</span>
+            <div>
+              <a href="https://sih.gov.in" target="_blank">SIH 2026 Portal (PS SIH26028)</a>
+              <span class="subtext">Official MoR dynamic ETA mandate for coaching trains.</span>
+            </div>
+          </div>
+          <div class="cat-item">
+            <span class="bullet bullet-gov">◆</span>
+            <div>
+              <a href="https://bel-india.in/product/real-time-train-information-system-rtis/" target="_blank">Existing Hardware: BEL RTIS (LDU)</a>
+              <span class="subtext">8,500+ locos with 30s automated satellite GPS telemetry.</span>
+            </div>
+          </div>
+          <div class="cat-item">
+            <span class="bullet bullet-gov">◆</span>
+            <div>
+              <a href="https://www.sihbuddy.in/ps/SIH26028" target="_blank">SIH Buddy (PS26028 Deep Dive)</a>
+              <span class="subtext">Audited rubric: 4-station downstream confidence bands.</span>
+            </div>
+          </div>
+          <div class="cat-item">
+            <span class="bullet bullet-gov">◆</span>
+            <div>
+              <a href="https://www.sac.gov.in" target="_blank">ISRO Space Applications (SAC NavIC)</a>
+              <span class="subtext">Sub-5m satellite GPS &amp; GSAT-MSS in zero-cell zones.</span>
+            </div>
+          </div>
+          <div class="cat-item">
+            <span class="bullet bullet-gov">◆</span>
+            <div>
+              <a href="https://enquiry.indianrail.gov.in/mntes/" target="_blank">Existing System: Official NTES Portal</a>
+              <span class="subtext">Legacy formula: Schedule + Delay − Slack baseline.</span>
+            </div>
+          </div>
+          <div class="cat-item">
+            <span class="bullet bullet-gov">◆</span>
+            <div>
+              <a href="https://indianrailways.gov.in/railwayboard/uploads/codesmanual/operating%20manual-traffic.pdf" target="_blank">IR Operating Manual (Rule 401)</a>
+              <span class="subtext">Statutory precedence hierarchy (Vande Bharat > Freight).</span>
+            </div>
+          </div>
+          <div class="cat-item">
+            <span class="bullet bullet-gov">◆</span>
+            <div>
+              <a href="https://cris.org.in" target="_blank">CRIS Portal (COA, FOIS &amp; ICMS)</a>
+              <span class="subtext">Managing agency for railway enterprise dispatch systems.</span>
+            </div>
+          </div>
+          <div class="cat-item">
+            <span class="bullet bullet-gov">◆</span>
+            <div>
+              <a href="https://indianrailways.gov.in" target="_blank">Railway General Rules (GR 3.61 Fog)</a>
+              <span class="subtext">Mandatory 60 km/h speed cap during dense winter fog.</span>
+            </div>
+          </div>
+          <div class="cat-item">
+            <span class="bullet bullet-gov">◆</span>
+            <div>
+              <a href="https://whereismytrain.in" target="_blank">Existing App: Where Is My Train</a>
+              <span class="subtext">Google crowdsourced cell pings; zero physics awareness.</span>
+            </div>
+          </div>
+          <div class="cat-item">
+            <span class="bullet bullet-gov">◆</span>
+            <div>
+              <a href="https://cag.gov.in" target="_blank">CAG Audit Report No. 32</a>
+              <span class="subtext">Punctuality audit exposing 15-min tolerance loophole.</span>
+            </div>
+          </div>
+          <div class="cat-item">
+            <span class="bullet bullet-gov">◆</span>
+            <div>
+              <a href="https://www.railyatri.in" target="_blank">Existing App: RailYatri.in</a>
+              <span class="subtext">Static historical averages without track geometry.</span>
+            </div>
+          </div>
+          <div class="cat-item">
+            <span class="bullet bullet-gov">◆</span>
+            <div>
+              <a href="https://railmadad.indianrailways.gov.in" target="_blank">RailMadad Grievance Portal</a>
+              <span class="subtext">Over 60% of complaints trace to outer-signal yard stabling.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 3: TECHNICAL VALIDATION & FIELD BENCHMARKS -->
+      <div class="cat-card card-validation">
+        <div class="cat-card-header">
+          <div class="cat-card-title val">
+            <span>🔬 TECHNICAL VALIDATION &amp; FIELD BENCHMARKS</span>
+          </div>
+          <span class="cat-card-badge badge-val">Empirical Metrics</span>
+        </div>
+        <div class="validation-pills-row">
+          <div class="val-pill">
+            <span class="val-pill-num">85.4% MAE Cut</span>
+            <span class="val-pill-label">Drops IR error from 44.34% to 6.47% (6.2 min MAE)</span>
+          </div>
+          <div class="val-pill">
+            <span class="val-pill-num">&lt; 500ms Latency</span>
+            <span class="val-pill-label">Instant re-routing across 7,325 stations upon caution orders</span>
+          </div>
+          <div class="val-pill">
+            <span class="val-pill-num">100% Software Layer</span>
+            <span class="val-pill-label">Runs natively on 8,500+ BEL-ISRO RTIS locomotives</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATUTORY ECOSYSTEM & DEPLOYMENT PARTNERS STRIP -->
+      <div class="gov-seals-strip">
+        <div class="gov-seal-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1E3A8A" stroke-width="2">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M12 3v18M3 12h18"/>
+          </svg>
+          <div class="gov-seal-text">
+            <span class="gov-seal-title">INDIAN RAILWAYS</span>
+            <span class="gov-seal-sub">Ministry of Railways</span>
+          </div>
+        </div>
+        <div class="gov-seal-card">
+          <svg viewBox="0 0 24 24" fill="#FEF3C7" stroke="#D97706" stroke-width="1.8">
+            <path d="M12 2l2.4 5.6 6 .5-4.5 4.1 1.3 5.9L12 15l-5.2 3.1 1.3-5.9-4.5-4.1 6-.5z"/>
+          </svg>
+          <div class="gov-seal-text">
+            <span class="gov-seal-title">MAKE IN INDIA</span>
+            <span class="gov-seal-sub">Indigenous Architecture</span>
+          </div>
+        </div>
+        <div class="gov-seal-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2">
+            <circle cx="12" cy="12" r="9"/>
+            <circle cx="12" cy="12" r="4"/>
+          </svg>
+          <div class="gov-seal-text">
+            <span class="gov-seal-title">ISRO NavIC</span>
+            <span class="gov-seal-sub">Satellite Telemetry</span>
+          </div>
+        </div>
+        <div class="gov-seal-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0284C7" stroke-width="2">
+            <rect x="3" y="4" width="18" height="16" rx="2"/>
+            <path d="M7 8h10M7 12h10M7 16h6"/>
+          </svg>
+          <div class="gov-seal-text">
+            <span class="gov-seal-title">BEL RTIS</span>
+            <span class="gov-seal-sub">8,500+ Locos Deployed</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- 3. SLIDE FOOTER BAR                                      -->
+  <!-- ======================================================== -->
+  <div class="slide-footer">
+    <div class="footer-tools">
+      <div class="footer-tool-icon">&#x2039;</div>
+      <div class="footer-tool-icon">&#x270E;</div>
+      <div class="footer-tool-icon">&#x1F50D;</div>
+      <div class="footer-tool-icon">&#x1F4F9;</div>
+      <div class="footer-tool-icon">&#x2026;</div>
+      <div class="footer-tool-icon">&#x203A;</div>
+    </div>
+
+    <div class="footer-template-text">@SIH Idea submission- Template</div>
+
+    <div class="footer-slide-num">6</div>
+  </div>
+
+</body>
+</html>
