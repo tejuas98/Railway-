@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=1920, height=1080, initial-scale=1.0" />
-  <title>GATI-SETU - Technical Approach (Slide 3)</title>
+  <title>GATI-SETU - Technical Approach (Slide 3) | SIH 2026</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cinzel:wght@700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet" />
@@ -32,12 +32,12 @@
     /* 1. TOP HEADER (SIH Official Template Alignment)          */
     /* ======================================================== */
     .slide-header {
-      height: 64px;
-      padding: 4px 44px;
+      height: 60px;
+      padding: 4px 38px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1.5px solid #E2E8F0;
+      border-bottom: 1.5px solid #CBD5E1;
       background: #FFFFFF;
       flex-shrink: 0;
     }
@@ -47,21 +47,21 @@
       align-items: center;
       justify-content: center;
       padding: 4px 22px;
-      border: 2px solid #334155;
+      border: 2px solid #0F172A;
       border-radius: 9999px;
       font-size: 14.5px;
       font-weight: 800;
       color: #0F172A;
       letter-spacing: 0.5px;
       background: #F8FAFC;
-      box-shadow: inset 0 0 0 1.5px #FFFFFF, 0 2px 4px rgba(0,0,0,0.04);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
     }
 
     .slide-title {
-      font-family: 'Cinzel', Georgia, serif;
+      font-family: 'Cinzel', 'Times New Roman', Georgia, serif;
       font-size: 32px;
       font-weight: 900;
-      letter-spacing: 2.5px;
+      letter-spacing: 3px;
       color: #0B192C;
       text-transform: uppercase;
       text-align: center;
@@ -73,12 +73,6 @@
       gap: 12px;
     }
 
-    .sih-logo-img {
-      height: 46px;
-      width: auto;
-      object-fit: contain;
-    }
-
     .sih-text-block {
       display: flex;
       flex-direction: column;
@@ -87,26 +81,32 @@
     }
 
     .sih-title-text {
-      font-size: 13px;
+      font-size: 13.5px;
       font-weight: 900;
-      color: #1E293B;
-      letter-spacing: 0.5px;
+      color: #0F172A;
+      letter-spacing: 0.6px;
       text-transform: uppercase;
     }
 
     .sih-sub-text {
-      font-size: 10.5px;
+      font-size: 11px;
       font-weight: 700;
       color: #0284C7;
       letter-spacing: 0.3px;
+    }
+
+    .sih-logo-svg {
+      height: 44px;
+      width: 44px;
+      flex-shrink: 0;
     }
 
     /* ======================================================== */
     /* 2. MAIN BODY GRID                                        */
     /* ======================================================== */
     .slide-content {
-      height: calc(1080px - 64px - 34px);
-      padding: 6px 36px 4px 36px;
+      height: calc(1080px - 60px - 34px);
+      padding: 8px 36px 6px 36px;
       display: grid;
       grid-template-columns: 440px 1fr;
       gap: 16px;
@@ -118,7 +118,7 @@
     .left-col {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
       height: 100%;
     }
 
@@ -129,6 +129,7 @@
       text-decoration: underline;
       text-underline-offset: 4px;
       letter-spacing: 0.2px;
+      margin-bottom: 1px;
     }
 
     .tech-stack-card {
@@ -152,8 +153,8 @@
     }
 
     .bullet-dot {
-      width: 5px;
-      height: 5px;
+      width: 5.5px;
+      height: 5.5px;
       background: #0F172A;
       border-radius: 50%;
       margin-top: 5px;
@@ -173,7 +174,7 @@
 
     .tech-code {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
+      font-size: 9.8px;
       background: #F1F5F9;
       padding: 1px 4px;
       border-radius: 3px;
@@ -181,12 +182,12 @@
       font-weight: 700;
     }
 
-    /* Highlight Banner */
+    /* Zero Hardware Banner */
     .zero-hardware-banner {
       background: #DCFCE7;
       border: 1.5px solid #16A34A;
       border-radius: 8px;
-      padding: 4.5px 8px;
+      padding: 5px 8px;
       font-size: 10.5px;
       font-weight: 800;
       color: #15803D;
@@ -194,7 +195,7 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      margin-top: 1px;
+      margin-top: 2px;
     }
 
     .zero-hardware-tag {
@@ -221,11 +222,11 @@
       border: 1.8px solid #0F172A;
       border-radius: 12px;
       background: #F8FAFC;
-      padding: 6px 8px;
+      padding: 7px 8px;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       grid-template-rows: repeat(3, 1fr);
-      gap: 5px;
+      gap: 6px;
       align-items: center;
       justify-items: center;
       flex: 1;
@@ -233,92 +234,83 @@
 
     .brand-pill {
       background: #FFFFFF;
-      border: 1.2px solid #E2E8F0;
+      border: 1.2px solid #CBD5E1;
       border-radius: 8px;
-      padding: 3px 5px;
+      padding: 5px 6px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 2px;
+      gap: 3px;
       width: 100%;
       height: 100%;
       box-shadow: 0 1px 3px rgba(0,0,0,0.03);
     }
 
     .brand-svg {
-      height: 22px;
+      height: 25px;
       width: auto;
     }
 
     .brand-label {
       font-size: 9.5px;
       font-weight: 800;
-      color: #334155;
+      color: #1E293B;
     }
 
     /* ======================================================== */
-    /* RIGHT COLUMN: DEEP TECHNICAL FLOWCHART                  */
+    /* RIGHT COLUMN: METHODOLOGY, FLOWCHART & 3-STAGE PIPELINE  */
     /* ======================================================== */
     .right-col {
       display: flex;
       flex-direction: column;
+      gap: 8px;
       height: 100%;
     }
 
+    /* 2A. TOP CONTAINER: OPERATIONAL DECISION FLOWCHART */
     .flowchart-master-card {
       background: #FFFFFF;
       border: 1.8px solid #0F172A;
       border-radius: 12px;
-      padding: 8px 14px 6px 14px;
+      padding: 7px 14px 6px 14px;
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
-      height: 100%;
+      flex: 1.55;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
 
-    /* Flowchart Top Bar */
     .flow-top-bar {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      border-bottom: 1.2px solid #E2E8F0;
-      padding-bottom: 5px;
-      margin-bottom: 3px;
-      flex-shrink: 0;
-    }
-
-    .flow-top-title-group {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      border-bottom: 1.2px solid #E2E8F0;
+      padding-bottom: 4px;
+      margin-bottom: 2px;
+      flex-shrink: 0;
     }
 
     .flow-main-heading {
-      font-size: 15.5px;
+      font-size: 14.5px;
       font-weight: 900;
       color: #0F172A;
       letter-spacing: 0.2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .flow-engine-badge {
       background: #E0F2FE;
       color: #0369A1;
-      font-size: 10.5px;
+      font-size: 10px;
       font-weight: 800;
       padding: 2px 9px;
       border-radius: 9999px;
       border: 1.2px solid #BAE6FD;
     }
 
-    .flow-subtitle {
-      font-size: 10.8px;
-      font-weight: 700;
-      color: #64748B;
-    }
-
-    /* Authentic Deep Flowchart Canvas */
     .pure-flowchart-canvas {
       display: flex;
       flex-direction: column;
@@ -326,7 +318,7 @@
       justify-content: space-between;
       flex: 1;
       width: 100%;
-      padding: 3px 0 1px 0;
+      padding: 1px 0;
     }
 
     .fc-step-row {
@@ -338,19 +330,18 @@
     .fc-row-parallel {
       display: flex;
       justify-content: center;
-      gap: 18px;
+      gap: 14px;
       width: 100%;
     }
 
-    /* Common Card Styles */
     .fc-card {
-      border-radius: 8px;
-      border: 1.6px solid #CBD5E1;
-      padding: 5px 12px;
-      box-shadow: 0 2px 5px rgba(15, 23, 42, 0.04);
+      border-radius: 7px;
+      border: 1.5px solid #CBD5E1;
+      padding: 4px 10px;
+      box-shadow: 0 2px 4px rgba(15, 23, 42, 0.03);
       display: flex;
       align-items: center;
-      gap: 9px;
+      gap: 8px;
       background: #FFFFFF;
     }
 
@@ -363,14 +354,14 @@
     .fc-card-red { background: #FFF1F2; border-color: #E11D48; }
 
     .fc-node-icon {
-      font-size: 17px;
+      font-size: 14px;
       flex-shrink: 0;
     }
 
     .fc-node-text {
       display: flex;
       flex-direction: column;
-      gap: 1.5px;
+      gap: 1px;
       text-align: left;
       flex: 1;
     }
@@ -384,7 +375,7 @@
     }
 
     .fc-node-title {
-      font-size: 11.8px;
+      font-size: 11.2px;
       font-weight: 900;
       color: #0F172A;
       display: flex;
@@ -393,19 +384,19 @@
     }
 
     .fc-node-sub {
-      font-size: 9.6px;
+      font-size: 9.2px;
       font-weight: 600;
       color: #334155;
-      line-height: 1.24;
+      line-height: 1.2;
     }
 
     .fc-math-pill {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 9.2px;
+      font-size: 8.6px;
       font-weight: 700;
       color: #0369A1;
       background: #FFFFFF;
-      padding: 1.5px 7px;
+      padding: 1px 6px;
       border-radius: 4px;
       border: 1px solid #CBD5E1;
       white-space: nowrap;
@@ -414,10 +405,10 @@
     .tag-zero-hw {
       background: #16A34A;
       color: #FFFFFF;
-      font-size: 8.5px;
+      font-size: 7.8px;
       font-weight: 900;
-      padding: 1.5px 6px;
-      border-radius: 3.5px;
+      padding: 1px 5px;
+      border-radius: 3px;
       letter-spacing: 0.3px;
       text-transform: uppercase;
       white-space: nowrap;
@@ -426,10 +417,10 @@
     .tag-cris {
       background: #1E3A8A;
       color: #FFFFFF;
-      font-size: 8.5px;
+      font-size: 7.8px;
       font-weight: 900;
-      padding: 1.5px 6px;
-      border-radius: 3.5px;
+      padding: 1px 5px;
+      border-radius: 3px;
       letter-spacing: 0.3px;
       text-transform: uppercase;
       white-space: nowrap;
@@ -438,24 +429,22 @@
     .tag-conformal {
       background: #7C3AED;
       color: #FFFFFF;
-      font-size: 8.5px;
+      font-size: 7.8px;
       font-weight: 900;
-      padding: 1.5px 6px;
-      border-radius: 3.5px;
+      padding: 1px 5px;
+      border-radius: 3px;
       letter-spacing: 0.3px;
       text-transform: uppercase;
       white-space: nowrap;
     }
 
-    /* Vertical Arrow Connectors */
     .fc-connector-v {
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 12px;
+      height: 8px;
     }
 
-    /* Decision Hexagons */
     .fc-decision-row {
       display: flex;
       justify-content: center;
@@ -469,10 +458,9 @@
     }
 
     .fc-hex-svg {
-      filter: drop-shadow(0 2px 4px rgba(217, 119, 6, 0.14));
+      filter: drop-shadow(0 2px 3px rgba(217, 119, 6, 0.12));
     }
 
-    /* Fork Connector & Labels */
     .fc-fork-connector {
       display: flex;
       flex-direction: column;
@@ -483,16 +471,13 @@
     .fc-merge-connector {
       display: flex;
       justify-content: center;
-      height: 12px;
+      height: 9px;
     }
 
-    /* ======================================================== */
-    /* Stage 4: MEShed OPERATIONAL DISPATCH FLOWS (NO BOX CONTAINERS) */
-    /* ======================================================== */
     .fc-stage4-container {
       display: grid;
-      grid-template-columns: 570px 750px;
-      gap: 20px;
+      grid-template-columns: 550px 770px;
+      gap: 16px;
       width: 100%;
     }
 
@@ -500,14 +485,14 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
       width: 100%;
     }
 
     .fc-sub-branches-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      gap: 8px;
       width: 100%;
     }
 
@@ -515,41 +500,187 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
     }
 
-    /* Feedback Loop Footer */
+    /* 2B. BOTTOM CONTAINER: 3-STAGE IMPLEMENTATION PIPELINE (SCRIPTIFY STYLE) */
+    .stages-master-card {
+      background: #FFFFFF;
+      border: 1.8px solid #0F172A;
+      border-radius: 12px;
+      padding: 8px 12px 6px 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+      flex: 1.15;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .stages-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1.2px solid #E2E8F0;
+      padding-bottom: 3px;
+      margin-bottom: 4px;
+    }
+
+    .stages-title {
+      font-size: 13px;
+      font-weight: 900;
+      color: #0F172A;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .stages-pill {
+      font-size: 9.5px;
+      font-weight: 800;
+      color: #15803D;
+      background: #DCFCE7;
+      padding: 1.5px 8px;
+      border-radius: 9999px;
+      border: 1px solid #86EFAC;
+    }
+
+    .stages-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr 1fr;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .stage-card {
+      border-radius: 8px;
+      border: 1.5px solid #0F172A;
+      background: #F8FAFC;
+      padding: 6px 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+    }
+
+    .stage-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 3px;
+      padding-bottom: 3px;
+      border-bottom: 1.2px solid #E2E8F0;
+    }
+
+    .stage-card-title {
+      font-size: 11.2px;
+      font-weight: 900;
+      color: #0F172A;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .stage-badge {
+      font-size: 8.2px;
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .stage-badge-input { background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD; }
+    .stage-badge-proc { background: #F3E8FF; color: #7E22CE; border: 1px solid #DDD6FE; }
+    .stage-badge-out { background: #FEF3C7; color: #B45309; border: 1px solid #FDE68A; }
+
+    /* Visual Pipeline Graphic inside Stage Cards (Matching Scriptify OCR Engine flow!) */
+    .stage-mini-visual {
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      border-radius: 6px;
+      padding: 3px 6px;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      font-size: 8.8px;
+      font-weight: 800;
+      color: #334155;
+    }
+
+    .mini-chip {
+      background: #F1F5F9;
+      padding: 1.5px 5px;
+      border-radius: 3px;
+      border: 1px solid #E2E8F0;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      white-space: nowrap;
+    }
+
+    .mini-arrow {
+      color: #0284C7;
+      font-weight: 900;
+      font-size: 9px;
+    }
+
+    .stage-sub-items {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5px;
+    }
+
+    .stage-sub-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 5px;
+      font-size: 9.3px;
+      color: #1E293B;
+      line-height: 1.25;
+    }
+
+    .stage-item-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #0284C7;
+      margin-top: 4px;
+      flex-shrink: 0;
+    }
+
+    .stage-item-strong {
+      font-weight: 800;
+      color: #0F172A;
+    }
+
+    /* Feedback Loop Strip */
     .fc-feedback-loop-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       border-top: 1.2px solid #E2E8F0;
-      padding-top: 5px;
+      padding-top: 3px;
+      margin-top: 3px;
       width: 100%;
-      margin-top: 2px;
-      flex-shrink: 0;
-    }
-
-    .fc-loop-icon {
-      font-size: 13px;
-      color: #0284C7;
-      margin-right: 6px;
     }
 
     .fc-loop-text {
-      font-size: 9.8px;
+      font-size: 9.3px;
       font-weight: 600;
       color: #334155;
       display: flex;
       align-items: center;
+      gap: 5px;
     }
 
     .fc-loop-badge {
       background: #F1F5F9;
       color: #0F172A;
-      font-size: 8.8px;
+      font-size: 8.2px;
       font-weight: 800;
-      padding: 2px 7px;
+      padding: 1.5px 7px;
       border-radius: 4px;
       border: 1px solid #CBD5E1;
     }
@@ -559,11 +690,11 @@
     /* ======================================================== */
     .slide-footer {
       height: 34px;
-      padding: 0 44px;
+      padding: 0 38px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-top: 1.5px solid #E2E8F0;
+      border-top: 1.5px solid #CBD5E1;
       background: #FFFFFF;
       flex-shrink: 0;
     }
@@ -593,13 +724,26 @@
     <div class="sih-badge-wrap">
       <div class="sih-text-block">
         <span class="sih-title-text">SMART INDIA HACKATHON 2026</span>
-        <span class="sih-sub-text">Ministry of Railways &bull; ID: 26028</span>
+        <span class="sih-sub-text">Ministry of Railways &bull; Problem ID: 26028</span>
       </div>
-      <img
-        class="sih-logo-img"
-        src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23F97316'/><path d='M30 50 Q50 20 70 50 Q50 80 30 50' fill='%23FFFFFF'/><circle cx='50' cy='50' r='10' fill='%231E3A8A'/></svg>"
-        alt="SIH Logo"
-      />
+      <!-- SIH Official Brain/Bulb Emblem SVG -->
+      <svg class="sih-logo-svg" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="46" fill="#F8FAFC" stroke="#0F172A" stroke-width="3"/>
+        <circle cx="50" cy="50" r="42" fill="#FFFFFF"/>
+        <!-- Tricolor Accent -->
+        <path d="M 12 50 A 38 38 0 0 1 88 50" fill="none" stroke="#FF9933" stroke-width="4.5"/>
+        <path d="M 12 50 A 38 38 0 0 0 88 50" fill="none" stroke="#138808" stroke-width="4.5"/>
+        <!-- Bulb / Tech Center -->
+        <circle cx="50" cy="44" r="14" fill="#0284C7"/>
+        <path d="M 44 56 L 56 56 L 54 64 L 46 64 Z" fill="#F59E0B"/>
+        <!-- Circuit dots -->
+        <circle cx="34" cy="40" r="3" fill="#0F172A"/>
+        <circle cx="66" cy="40" r="3" fill="#0F172A"/>
+        <circle cx="50" cy="24" r="3" fill="#0F172A"/>
+        <line x1="34" y1="40" x2="42" y2="44" stroke="#0F172A" stroke-width="1.8"/>
+        <line x1="66" y1="40" x2="58" y2="44" stroke="#0F172A" stroke-width="1.8"/>
+        <line x1="50" y1="24" x2="50" y2="30" stroke="#0F172A" stroke-width="1.8"/>
+      </svg>
     </div>
   </header>
 
@@ -609,7 +753,7 @@
   <main class="slide-content">
 
     <!-- ------------------------------------------------------ -->
-    <!-- LEFT COLUMN: TECH STACK & LOGOS (100% UNTOUCHED)        -->
+    <!-- LEFT COLUMN: TECH STACK & LOGOS                        -->
     <!-- ------------------------------------------------------ -->
     <aside class="left-col">
       <div class="section-label">Technology Stack</div>
@@ -629,7 +773,7 @@
         </div>
         <div class="tech-item">
           <div class="bullet-dot"></div>
-          <div><span class="tech-name">Physics Kinematics:</span> <span class="tech-desc">Newton-Davis dynamic tractive engine, grade, air drag &amp; RK4 integrator</span></div>
+          <div><span class="tech-name">Physics Kinematics:</span> <span class="tech-desc">Newton-Davis tractive engine, grade, air drag &amp; RK4 ODE numerical solver</span></div>
         </div>
         <div class="tech-item">
           <div class="bullet-dot"></div>
@@ -654,7 +798,7 @@
         </div>
       </div>
 
-      <!-- POWERED BY GRID -->
+      <!-- POWERED BY GRID (HIGH-DENSITY AUTHENTIC LOGOS) -->
       <div class="powered-by-wrap">
         <div class="section-label">Powered By</div>
         <div class="powered-by-box">
@@ -788,20 +932,19 @@
     </aside>
 
     <!-- ------------------------------------------------------ -->
-    <!-- RIGHT COLUMN: DEEP OPERATIONAL DECISION FLOWCHART      -->
+    <!-- RIGHT COLUMN: FLOWCHART + 3-STAGE IMPLEMENTATION       -->
     <!-- ------------------------------------------------------ -->
     <section class="right-col">
+      
+      <!-- 2A. TOP: MASTER DECISION & DISPATCH FLOWCHART -->
       <div class="flowchart-master-card">
         
         <!-- Flowchart Top Bar -->
         <div class="flow-top-bar">
-          <div class="flow-top-title-group">
-            <span class="flow-main-heading">⚡ GATI-SETU: Dynamic Closed-Loop Operational Decision Flowchart</span>
-            <span class="flow-engine-badge">Closed-Loop Ground Reality Engine</span>
+          <div class="flow-main-heading">
+            <span>⚡ GATI-SETU: Dynamic Closed-Loop Operational Decision Flowchart</span>
           </div>
-          <div class="flow-subtitle">
-            Statutory 30s NavIC Satellite Ingestion &bull; Physics-Informed Kinematics &amp; ST-GAT AI &bull; Rule 401 Precedence Dispatch
-          </div>
+          <span class="flow-engine-badge">Closed-Loop Ground Reality Engine &bull; Statutory 30s NavIC Ingestion</span>
         </div>
 
         <!-- Deep Flowchart Canvas -->
@@ -809,31 +952,31 @@
 
           <!-- LEVEL 1: USER / INGRESS -->
           <div class="fc-step-row">
-            <div class="fc-card fc-card-blue" style="width: 580px;">
+            <div class="fc-card fc-card-blue" style="width: 540px;">
               <div class="fc-node-icon">📱</div>
               <div class="fc-node-text">
                 <div class="fc-node-header-row">
-                  <span class="fc-node-title">Passenger &amp; Section Controller Ingress</span>
-                  <span class="tag-cris">NTES &amp; Query Ingress</span>
+                  <span class="fc-node-title">Passenger &amp; Section Controller Query Ingress</span>
+                  <span class="tag-cris">Query Ingress</span>
                 </div>
-                <div class="fc-node-sub">Train #12301 (Rajdhani) query / GPS geofence auto-detects boarding station</div>
+                <div class="fc-node-sub">Train #12301 / Station Geofence query triggers automated corridor evaluation</div>
               </div>
             </div>
           </div>
 
           <!-- CONNECTOR: LEVEL 1 -> LEVEL 2 -->
           <div class="fc-fork-connector">
-            <svg width="880" height="14" viewBox="0 0 880 14">
-              <line x1="440" y1="0" x2="440" y2="5" stroke="#0284C7" stroke-width="2" stroke-linecap="round"/>
-              <path d="M 440 5 L 220 5 L 220 10" fill="none" stroke="#0284C7" stroke-width="2" stroke-linecap="round"/>
-              <polygon points="217,9 220,14 223,9" fill="#0284C7"/>
-              <path d="M 440 5 L 660 5 L 660 10" fill="none" stroke="#0284C7" stroke-width="2" stroke-linecap="round"/>
-              <polygon points="657,9 660,14 663,9" fill="#0284C7"/>
+            <svg width="840" height="12" viewBox="0 0 840 12">
+              <line x1="420" y1="0" x2="420" y2="4" stroke="#0284C7" stroke-width="2" stroke-linecap="round"/>
+              <path d="M 420 4 L 210 4 L 210 9" fill="none" stroke="#0284C7" stroke-width="2" stroke-linecap="round"/>
+              <polygon points="207,8 210,12 213,8" fill="#0284C7"/>
+              <path d="M 420 4 L 630 4 L 630 9" fill="none" stroke="#0284C7" stroke-width="2" stroke-linecap="round"/>
+              <polygon points="627,8 630,12 633,8" fill="#0284C7"/>
             </svg>
           </div>
 
           <!-- LEVEL 2: DUAL STATUTORY INGESTION STREAMS -->
-          <div class="fc-row-parallel" style="width: 880px;">
+          <div class="fc-row-parallel" style="width: 840px;">
             <!-- Stream A: BEL RTIS Satellite Stream -->
             <div class="fc-card fc-card-cyan" style="flex: 1;">
               <div class="fc-node-icon">🛰️</div>
@@ -854,122 +997,118 @@
                   <span class="fc-node-title">CRIS COA Timetables &amp; TSR Orders</span>
                   <span class="tag-cris">Statutory Feeds</span>
                 </div>
-                <div class="fc-node-sub">Section block occupancy, timetable schedules &amp; e-Caution Temporary Speed Restrictions</div>
+                <div class="fc-node-sub">Section block occupancy, timetables &amp; e-Caution Temporary Speed Restrictions</div>
               </div>
             </div>
           </div>
 
           <!-- CONNECTOR: LEVEL 2 -> DECISION HEXAGON 1 -->
           <div class="fc-merge-connector">
-            <svg width="880" height="14" viewBox="0 0 880 14">
-              <path d="M 220 0 L 220 7 L 440 7 L 440 10" fill="none" stroke="#0284C7" stroke-width="2" stroke-linecap="round"/>
-              <path d="M 660 0 L 660 7 L 440 7" fill="none" stroke="#0284C7" stroke-width="2" stroke-linecap="round"/>
-              <polygon points="437,9 440,14 443,9" fill="#0284C7"/>
+            <svg width="840" height="12" viewBox="0 0 840 12">
+              <path d="M 210 0 L 210 6 L 420 6 L 420 9" fill="none" stroke="#0284C7" stroke-width="2" stroke-linecap="round"/>
+              <path d="M 630 0 L 630 6 L 420 6" fill="none" stroke="#0284C7" stroke-width="2" stroke-linecap="round"/>
+              <polygon points="417,8 420,12 423,8" fill="#0284C7"/>
             </svg>
           </div>
 
           <!-- LEVEL 3: DECISION HEXAGON 1 (GPS QUALITY GATE) -->
           <div class="fc-decision-row">
             <div class="fc-hex-box">
-              <svg class="fc-hex-svg" width="330" height="38" viewBox="0 0 330 38">
-                <polygon points="24,2 306,2 328,19 306,36 24,36 2,19" fill="#FEF3C7" stroke="#D97706" stroke-width="2"/>
-                <text x="165" y="18" text-anchor="middle" font-size="12" font-weight="900" fill="#92400E" font-family="'Inter', sans-serif">RTIS GPS Fix Valid?</text>
-                <text x="165" y="30" text-anchor="middle" font-size="9" font-weight="700" fill="#B45309" font-family="'Inter', sans-serif">Line-of-Sight Satellite Handshake Check</text>
+              <svg class="fc-hex-svg" width="310" height="32" viewBox="0 0 310 32">
+                <polygon points="20,2 290,2 308,16 290,30 20,30 2,16" fill="#FEF3C7" stroke="#D97706" stroke-width="1.8"/>
+                <text x="155" y="15" text-anchor="middle" font-size="11" font-weight="900" fill="#92400E" font-family="'Inter', sans-serif">RTIS GPS Fix Valid?</text>
+                <text x="155" y="26" text-anchor="middle" font-size="8.5" font-weight="700" fill="#B45309" font-family="'Inter', sans-serif">Line-of-Sight Satellite Handshake Check</text>
               </svg>
             </div>
           </div>
 
-          <!-- FORK CONNECTORS 1 (Splits to Dead-Reckoning vs Track-Snap) -->
+          <!-- FORK CONNECTORS 1 (Dead-Reckoning vs Track-Snap) -->
           <div class="fc-fork-connector">
-            <svg width="780" height="30" viewBox="0 0 780 30">
-              <line x1="390" y1="0" x2="390" y2="7" stroke="#D97706" stroke-width="2" stroke-linecap="round"/>
+            <svg width="740" height="24" viewBox="0 0 740 24">
+              <line x1="370" y1="0" x2="370" y2="5" stroke="#D97706" stroke-width="2" stroke-linecap="round"/>
               <!-- Left path: NO -->
-              <path d="M 390 7 L 195 7 L 195 24" fill="none" stroke="#E11D48" stroke-width="2" stroke-linecap="round"/>
-              <polygon points="192,22 195,28 198,22" fill="#E11D48"/>
+              <path d="M 370 5 L 185 5 L 185 19" fill="none" stroke="#E11D48" stroke-width="2" stroke-linecap="round"/>
+              <polygon points="182,17 185,23 188,17" fill="#E11D48"/>
               <!-- Right path: YES -->
-              <path d="M 390 7 L 585 7 L 585 24" fill="none" stroke="#16A34A" stroke-width="2" stroke-linecap="round"/>
-              <polygon points="582,22 585,28 588,22" fill="#16A34A"/>
+              <path d="M 370 5 L 555 5 L 555 19" fill="none" stroke="#16A34A" stroke-width="2" stroke-linecap="round"/>
+              <polygon points="552,17 555,23 558,17" fill="#16A34A"/>
               <!-- Left Badge: NO -->
-              <rect x="235" y="1" width="135" height="15" rx="3" fill="#FFE4E6" stroke="#FDA4AF" stroke-width="1"/>
-              <text x="302" y="12" text-anchor="middle" font-size="9" font-weight="900" fill="#BE123C" font-family="'Inter', sans-serif">❌ NO (Tunnel / Signal Lost)</text>
+              <rect x="225" y="0" width="125" height="13" rx="3" fill="#FFE4E6" stroke="#FDA4AF" stroke-width="1"/>
+              <text x="287" y="10" text-anchor="middle" font-size="8.5" font-weight="900" fill="#BE123C" font-family="'Inter', sans-serif">❌ NO (Tunnel / Lost)</text>
               <!-- Right Badge: YES -->
-              <rect x="410" y="1" width="135" height="15" rx="3" fill="#DCFCE7" stroke="#86EFAC" stroke-width="1"/>
-              <text x="477" y="12" text-anchor="middle" font-size="9" font-weight="900" fill="#15803D" font-family="'Inter', sans-serif">✅ YES (Satellite Fix Active)</text>
+              <rect x="390" y="0" width="125" height="13" rx="3" fill="#DCFCE7" stroke="#86EFAC" stroke-width="1"/>
+              <text x="452" y="10" text-anchor="middle" font-size="8.5" font-weight="900" fill="#15803D" font-family="'Inter', sans-serif">✅ YES (Satellite Fix)</text>
             </svg>
           </div>
 
           <!-- LEVEL 3B: PARALLEL SPATIAL RESOLUTION CARDS -->
-          <div class="fc-row-parallel" style="width: 780px;">
-            <!-- Branch Left: Dead Reckoning -->
+          <div class="fc-row-parallel" style="width: 740px;">
             <div class="fc-card fc-card-amber" style="flex: 1;">
-              <div class="fc-node-icon" style="font-size:15px;">⚠️</div>
+              <div class="fc-node-icon" style="font-size:13px;">⚠️</div>
               <div class="fc-node-text">
                 <span class="fc-node-title">Newton-Davis Dead-Reckoning</span>
-                <span class="fc-node-sub">RK4 numerical solver computes speed &amp; displacement through mountain tunnels/gorges</span>
+                <span class="fc-node-sub">RK4 solver calculates speed &amp; displacement through mountain tunnels/gorges</span>
               </div>
             </div>
 
-            <!-- Branch Right: Track-Snap -->
             <div class="fc-card fc-card-green" style="flex: 1;">
-              <div class="fc-node-icon" style="font-size:15px;">📍</div>
+              <div class="fc-node-icon" style="font-size:13px;">📍</div>
               <div class="fc-node-text">
                 <span class="fc-node-title">PostGIS LRS 1D Rail-Snap</span>
-                <span class="fc-node-sub">Linear referencing snaps raw WGS84 GPS coords to official statutory IR track chainage KM</span>
+                <span class="fc-node-sub">Snaps raw WGS84 GPS coords to official statutory IR track chainage KM</span>
               </div>
             </div>
           </div>
 
           <!-- MERGE CONNECTOR INTO FEATURE ALIGNMENT -->
           <div class="fc-merge-connector">
-            <svg width="780" height="14" viewBox="0 0 780 14">
-              <path d="M 195 0 L 195 7 L 390 7 L 390 10" fill="none" stroke="#475569" stroke-width="2" stroke-linecap="round"/>
-              <path d="M 585 0 L 585 7 L 390 7" fill="none" stroke="#475569" stroke-width="2" stroke-linecap="round"/>
-              <polygon points="387,9 390,14 393,9" fill="#475569"/>
+            <svg width="740" height="10" viewBox="0 0 740 10">
+              <path d="M 185 0 L 185 5 L 370 5 L 370 8" fill="none" stroke="#475569" stroke-width="2" stroke-linecap="round"/>
+              <path d="M 555 0 L 555 5 L 370 5" fill="none" stroke="#475569" stroke-width="2" stroke-linecap="round"/>
+              <polygon points="367,7 370,10 373,7" fill="#475569"/>
             </svg>
           </div>
 
           <!-- LEVEL 4: RDSO DYNAMIC FEATURE ALIGNMENT -->
           <div class="fc-step-row">
-            <div class="fc-card fc-card-slate" style="width: 920px; padding: 4px 14px;">
-              <div class="fc-node-icon" style="font-size:15px;">🔀</div>
+            <div class="fc-card fc-card-slate" style="width: 840px; padding: 3px 12px;">
+              <div class="fc-node-icon" style="font-size:13px;">🔀</div>
               <div class="fc-node-text">
                 <div class="fc-node-header-row">
                   <span class="fc-node-title">RDSO Multi-Source Dynamic Feature Alignment</span>
                   <span class="tag-cris" style="background:#475569;">Track Geometry &amp; e-Caution Fusion</span>
                 </div>
-                <div class="fc-node-sub">Synchronizes track chainage with 1:120 ruling gradient, curve radius, trailing load tonnage &amp; live TSR speed restrictions</div>
+                <div class="fc-node-sub">Synchronizes track chainage with 1:120 ruling gradient, curve radius, trailing load &amp; live TSR speed limits</div>
               </div>
             </div>
           </div>
 
-          <!-- CONNECTOR: LEVEL 4 -> DUAL COMPUTATIONAL CORE (SIDE BY SIDE!) -->
+          <!-- CONNECTOR: LEVEL 4 -> DUAL COMPUTATIONAL CORE -->
           <div class="fc-fork-connector">
-            <svg width="1040" height="14" viewBox="0 0 1040 14">
-              <line x1="520" y1="0" x2="520" y2="5" stroke="#7C3AED" stroke-width="2" stroke-linecap="round"/>
-              <path d="M 520 5 L 260 5 L 260 10" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round"/>
-              <polygon points="257,9 260,14 263,9" fill="#7C3AED"/>
-              <path d="M 520 5 L 780 5 L 780 10" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round"/>
-              <polygon points="777,9 780,14 783,9" fill="#7C3AED"/>
+            <svg width="980" height="10" viewBox="0 0 980 10">
+              <line x1="490" y1="0" x2="490" y2="4" stroke="#7C3AED" stroke-width="2" stroke-linecap="round"/>
+              <path d="M 490 4 L 245 4 L 245 8" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round"/>
+              <polygon points="242,7 245,10 248,7" fill="#7C3AED"/>
+              <path d="M 490 4 L 735 4 L 735 8" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round"/>
+              <polygon points="732,7 735,10 738,7" fill="#7C3AED"/>
             </svg>
           </div>
 
           <!-- LEVEL 5A: DUAL COMPUTATIONAL CORE (KINEMATICS & GRAPH AI SIDE BY SIDE) -->
-          <div class="fc-row-parallel" style="width: 1040px;">
-            <!-- Left Engine: Physics Kinematics -->
-            <div class="fc-card fc-card-slate" style="flex: 1; padding: 5px 12px;">
-              <div class="fc-node-icon" style="font-size:16px;">⚙️</div>
+          <div class="fc-row-parallel" style="width: 980px;">
+            <div class="fc-card fc-card-slate" style="flex: 1; padding: 4px 10px;">
+              <div class="fc-node-icon" style="font-size:14px;">⚙️</div>
               <div class="fc-node-text">
                 <div class="fc-node-header-row">
                   <span class="fc-node-title">Newton-Davis Kinematics Solver</span>
                   <span class="fc-math-pill">a(t) = [F_trac(v) - R_davis - F_grade] / M_eff</span>
                 </div>
-                <div class="fc-node-sub">WAP-7 / WAG-9 6000HP tractive effort curves, trailing load inertia &amp; RDSO aerodynamic drag</div>
+                <div class="fc-node-sub">WAP-7 / WAG-9 6000HP tractive effort curves, trailing inertia &amp; aerodynamic drag</div>
               </div>
             </div>
 
-            <!-- Right Engine: Spatio-Temporal GNN -->
-            <div class="fc-card fc-card-purple" style="flex: 1; padding: 5px 12px;">
-              <div class="fc-node-icon" style="font-size:16px;">🧠</div>
+            <div class="fc-card fc-card-purple" style="flex: 1; padding: 4px 10px;">
+              <div class="fc-node-icon" style="font-size:14px;">🧠</div>
               <div class="fc-node-text">
                 <div class="fc-node-header-row">
                   <span class="fc-node-title">Spatio-Temporal Graph Attention (ST-GAT)</span>
@@ -982,127 +1121,116 @@
 
           <!-- CONNECTOR: MERGE INTO CONFORMAL CALIBRATION -->
           <div class="fc-merge-connector">
-            <svg width="1040" height="14" viewBox="0 0 1040 14">
-              <path d="M 260 0 L 260 7 L 520 7 L 520 10" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round"/>
-              <path d="M 780 0 L 780 7 L 520 7" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round"/>
-              <polygon points="517,9 520,14 523,9" fill="#7C3AED"/>
+            <svg width="980" height="10" viewBox="0 0 980 10">
+              <path d="M 245 0 L 245 5 L 490 5 L 490 8" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round"/>
+              <path d="M 735 0 L 735 5 L 490 5" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round"/>
+              <polygon points="487,7 490,10 493,7" fill="#7C3AED"/>
             </svg>
           </div>
 
           <!-- LEVEL 5B: CONFORMAL UNCERTAINTY ENGINE -->
           <div class="fc-step-row">
-            <div class="fc-card fc-card-purple" style="width: 880px; padding: 4px 14px;">
-              <div class="fc-node-icon" style="font-size:15px;">🎯</div>
+            <div class="fc-card fc-card-purple" style="width: 840px; padding: 3px 12px;">
+              <div class="fc-node-icon" style="font-size:13px;">🎯</div>
               <div class="fc-node-text">
                 <div class="fc-node-header-row">
                   <span class="fc-node-title">Inductive Conformal Uncertainty Calibration</span>
                   <span class="tag-conformal">Certified [P10 &bull; P50 &bull; P90] ETA Window</span>
                 </div>
-                <div class="fc-node-sub">Generates 90% non-parametric coverage bounds against unexpected signal halts, weather fog, and track crossings</div>
+                <div class="fc-node-sub">Guarantees 90% non-parametric coverage bounds against signal halts, fog &amp; track crossings</div>
               </div>
             </div>
           </div>
 
           <!-- CONNECTOR: LEVEL 5B -> DECISION HEXAGON 2 -->
           <div class="fc-connector-v">
-            <svg width="16" height="12" viewBox="0 0 16 12">
-              <line x1="8" y1="0" x2="8" y2="7" stroke="#7C3AED" stroke-width="2" stroke-linecap="round"/>
-              <polygon points="5,6 8,11 11,6" fill="#7C3AED"/>
+            <svg width="14" height="9" viewBox="0 0 14 9">
+              <line x1="7" y1="0" x2="7" y2="5" stroke="#7C3AED" stroke-width="2" stroke-linecap="round"/>
+              <polygon points="4,4 7,8 10,4" fill="#7C3AED"/>
             </svg>
           </div>
 
           <!-- LEVEL 6: DECISION HEXAGON 2 (SCHEDULE CONFLICT & PRECEDENCE GATE) -->
           <div class="fc-decision-row">
             <div class="fc-hex-box">
-              <svg class="fc-hex-svg" width="360" height="38" viewBox="0 0 360 38">
-                <polygon points="26,2 334,2 356,19 334,36 26,36 2,19" fill="#FEF3C7" stroke="#D97706" stroke-width="2"/>
-                <text x="180" y="18" text-anchor="middle" font-size="12" font-weight="900" fill="#92400E" font-family="'Inter', sans-serif">Schedule Delay &gt; 5 Mins or Block Conflict?</text>
-                <text x="180" y="30" text-anchor="middle" font-size="9" font-weight="700" fill="#B45309" font-family="'Inter', sans-serif">Section Capacity &amp; Train Precedence Evaluation</text>
+              <svg class="fc-hex-svg" width="340" height="32" viewBox="0 0 340 32">
+                <polygon points="22,2 318,2 338,16 318,30 22,30 2,16" fill="#FEF3C7" stroke="#D97706" stroke-width="1.8"/>
+                <text x="170" y="15" text-anchor="middle" font-size="11" font-weight="900" fill="#92400E" font-family="'Inter', sans-serif">Schedule Delay &gt; 5 Mins or Block Conflict?</text>
+                <text x="170" y="26" text-anchor="middle" font-size="8.5" font-weight="700" fill="#B45309" font-family="'Inter', sans-serif">Section Capacity &amp; Train Precedence Evaluation</text>
               </svg>
             </div>
           </div>
 
-          <!-- FORK CONNECTORS 2 (Directly leads to individual flowchart branches!) -->
+          <!-- FORK CONNECTORS 2 -->
           <div class="fc-fork-connector">
-            <svg width="1340" height="28" viewBox="0 0 1340 28">
-              <line x1="670" y1="0" x2="670" y2="7" stroke="#D97706" stroke-width="2" stroke-linecap="round"/>
+            <svg width="1320" height="22" viewBox="0 0 1320 22">
+              <line x1="660" y1="0" x2="660" y2="5" stroke="#D97706" stroke-width="2" stroke-linecap="round"/>
               <!-- Left path: NO (Nominal) -->
-              <path d="M 670 7 L 285 7 L 285 22" fill="none" stroke="#16A34A" stroke-width="2" stroke-linecap="round"/>
-              <polygon points="282,20 285,26 288,20" fill="#16A34A"/>
+              <path d="M 660 5 L 280 5 L 280 17" fill="none" stroke="#16A34A" stroke-width="2" stroke-linecap="round"/>
+              <polygon points="277,15 280,21 283,15" fill="#16A34A"/>
               <!-- Right path: YES (Delay Mitigation) -->
-              <path d="M 670 7 L 965 7 L 965 22" fill="none" stroke="#E11D48" stroke-width="2" stroke-linecap="round"/>
-              <polygon points="962,20 965,26 968,20" fill="#E11D48"/>
+              <path d="M 660 5 L 950 5 L 950 17" fill="none" stroke="#E11D48" stroke-width="2" stroke-linecap="round"/>
+              <polygon points="947,15 950,21 953,15" fill="#E11D48"/>
               <!-- Left Badge: Nominal -->
-              <rect x="385" y="1" width="215" height="15" rx="3" fill="#DCFCE7" stroke="#16A34A" stroke-width="1"/>
-              <text x="492" y="12" text-anchor="middle" font-size="9" font-weight="900" fill="#15803D" font-family="'Inter', sans-serif">🟢 NO (&le; 5m) &mdash; Nominal On-Time Branch</text>
+              <rect x="380" y="0" width="205" height="13" rx="3" fill="#DCFCE7" stroke="#16A34A" stroke-width="1"/>
+              <text x="482" y="10" text-anchor="middle" font-size="8.5" font-weight="900" fill="#15803D" font-family="'Inter', sans-serif">🟢 NO (&le; 5m) &mdash; Nominal On-Time Branch</text>
               <!-- Right Badge: Mitigation -->
-              <rect x="715" y="1" width="215" height="15" rx="3" fill="#FFE4E6" stroke="#E11D48" stroke-width="1"/>
-              <text x="822" y="12" text-anchor="middle" font-size="9" font-weight="900" fill="#BE123C" font-family="'Inter', sans-serif">🔴 YES (&gt; 5m) &mdash; Delay Mitigation Branch</text>
+              <rect x="710" y="0" width="205" height="13" rx="3" fill="#FFE4E6" stroke="#E11D48" stroke-width="1"/>
+              <text x="812" y="10" text-anchor="middle" font-size="8.5" font-weight="900" fill="#BE123C" font-family="'Inter', sans-serif">🔴 YES (&gt; 5m) &mdash; Delay Mitigation Branch</text>
             </svg>
           </div>
 
-          <!-- ======================================================== -->
-          <!-- LEVEL 7: SEAMLESS MESHED FLOWCHART NODES (NO OUTER CARDS) -->
-          <!-- ======================================================== -->
+          <!-- LEVEL 7: SEAMLESS MESHED FLOWCHART NODES -->
           <div class="fc-stage4-container">
             
             <!-- LEFT FLOW: NOMINAL ON-TIME OPERATION -->
             <div class="fc-stage-branch-col">
-              
-              <!-- Node 6A: Controller 4-Aspect -->
-              <div class="fc-card fc-card-green" style="width: 100%; padding: 4px 10px;">
-                <span class="fc-node-icon" style="font-size:15px;">🚦</span>
+              <div class="fc-card fc-card-green" style="width: 100%; padding: 3px 8px;">
+                <span class="fc-node-icon" style="font-size:13px;">🚦</span>
                 <div class="fc-node-text">
                   <div class="fc-node-header-row">
                     <span class="fc-node-title">Section Controller: Automated 4-Aspect Headway</span>
                     <span class="tag-zero-hw" style="background:#15803D;">Green Wave</span>
                   </div>
-                  <div class="fc-node-sub">Corridor clear lock at 130 km/h MPS; continuous automated block headway regulation</div>
+                  <div class="fc-node-sub">Corridor clear lock at 130 km/h MPS; continuous automated block regulation</div>
                 </div>
               </div>
 
-              <!-- Arrow down -->
-              <div class="fc-connector-v" style="height: 7px;">
-                <svg width="12" height="7" viewBox="0 0 12 7"><polygon points="3,0 6,6 9,0" fill="#16A34A"/></svg>
+              <div class="fc-connector-v" style="height: 5px;">
+                <svg width="10" height="5" viewBox="0 0 10 5"><polygon points="2,0 5,4 8,0" fill="#16A34A"/></svg>
               </div>
 
-              <!-- Node 6B: Passenger Calibrated ETA -->
-              <div class="fc-card fc-card-blue" style="width: 100%; padding: 4px 10px;">
-                <span class="fc-node-icon" style="font-size:15px;">📱</span>
+              <div class="fc-card fc-card-blue" style="width: 100%; padding: 3px 8px;">
+                <span class="fc-node-icon" style="font-size:13px;">📱</span>
                 <div class="fc-node-text">
                   <div class="fc-node-header-row">
                     <span class="fc-node-title">Passenger Mobile App: Calibrated Arrival Window</span>
-                    <span class="tag-conformal" style="font-size:8px;">Live [P10-P90]</span>
+                    <span class="tag-conformal" style="font-size:7.5px;">Live [P10-P90]</span>
                   </div>
-                  <div class="fc-node-sub">Live train distance radar, platform walking navigation &amp; real-time coach composition</div>
+                  <div class="fc-node-sub">Live train distance radar, platform walking guide &amp; real-time coach composition</div>
                 </div>
               </div>
 
-              <!-- Arrow down -->
-              <div class="fc-connector-v" style="height: 7px;">
-                <svg width="12" height="7" viewBox="0 0 12 7"><polygon points="3,0 6,6 9,0" fill="#16A34A"/></svg>
+              <div class="fc-connector-v" style="height: 5px;">
+                <svg width="10" height="5" viewBox="0 0 10 5"><polygon points="2,0 5,4 8,0" fill="#16A34A"/></svg>
               </div>
 
-              <!-- Node 6C: Station Master & PIDS Sync -->
-              <div class="fc-card fc-card-cyan" style="width: 100%; padding: 4px 10px;">
-                <span class="fc-node-icon" style="font-size:15px;">🚉</span>
+              <div class="fc-card fc-card-cyan" style="width: 100%; padding: 3px 8px;">
+                <span class="fc-node-icon" style="font-size:13px;">🚉</span>
                 <div class="fc-node-text">
                   <div class="fc-node-header-row">
                     <span class="fc-node-title">Station Master: Route Relay Lock &amp; PIDS Sync</span>
                     <span class="tag-cris" style="background:#0F766E;">Automated Sync</span>
                   </div>
-                  <div class="fc-node-sub">Route relay lock verified; automated multilingual audio announcements &amp; platform LED sync</div>
+                  <div class="fc-node-sub">Route relay lock verified; automated multilingual audio &amp; platform LED sync</div>
                 </div>
               </div>
-
             </div>
 
-            <!-- RIGHT FLOW: DELAY MITIGATION (DEEP BRANCHING ARCHITECTURE) -->
+            <!-- RIGHT FLOW: DELAY MITIGATION -->
             <div class="fc-stage-branch-col">
-
-              <!-- Node 7A: Bottleneck & Conflict Classifier -->
-              <div class="fc-card fc-card-red" style="width: 100%; padding: 4px 10px;">
-                <span class="fc-node-icon" style="font-size:15px;">⚠️</span>
+              <div class="fc-card fc-card-red" style="width: 100%; padding: 3px 8px;">
+                <span class="fc-node-icon" style="font-size:13px;">⚠️</span>
                 <div class="fc-node-text">
                   <div class="fc-node-header-row">
                     <span class="fc-node-title">Section Bottleneck &amp; Conflict Classifier</span>
@@ -1112,80 +1240,202 @@
                 </div>
               </div>
 
-              <!-- Fork Connector to 2 Mitigation Sub-Branches -->
-              <div class="fc-fork-connector" style="height: 11px;">
-                <svg width="740" height="11" viewBox="0 0 740 11">
-                  <line x1="370" y1="0" x2="370" y2="4" stroke="#E11D48" stroke-width="2"/>
-                  <path d="M 370 4 L 185 4 L 185 8" fill="none" stroke="#E11D48" stroke-width="2"/>
-                  <polygon points="182,7 185,11 188,7" fill="#E11D48"/>
-                  <path d="M 370 4 L 555 4 L 555 8" fill="none" stroke="#E11D48" stroke-width="2"/>
-                  <polygon points="552,7 555,11 558,7" fill="#E11D48"/>
+              <!-- Fork Connector -->
+              <div class="fc-fork-connector" style="height: 8px;">
+                <svg width="730" height="8" viewBox="0 0 730 8">
+                  <line x1="365" y1="0" x2="365" y2="3" stroke="#E11D48" stroke-width="1.8"/>
+                  <path d="M 365 3 L 180 3 L 180 6" fill="none" stroke="#E11D48" stroke-width="1.8"/>
+                  <polygon points="177,5 180,8 183,5" fill="#E11D48"/>
+                  <path d="M 365 3 L 550 3 L 550 6" fill="none" stroke="#E11D48" stroke-width="1.8"/>
+                  <polygon points="547,5 550,8 553,5" fill="#E11D48"/>
                 </svg>
               </div>
 
-              <!-- 2 Parallel Sub-Branches Grid -->
+              <!-- 2 Sub-Branches Grid -->
               <div class="fc-sub-branches-grid">
-                
-                <!-- Sub-Branch 1: Rule 401 Freight Siding Loop -->
+                <!-- Sub-Branch 1 -->
                 <div class="fc-sub-branch-col">
-                  <div class="fc-card fc-card-amber" style="width: 100%; padding: 4px 8px;">
-                    <span class="fc-node-icon" style="font-size:14px;">🔄</span>
+                  <div class="fc-card fc-card-amber" style="width: 100%; padding: 3px 6px;">
+                    <span class="fc-node-icon" style="font-size:12px;">🔄</span>
                     <div class="fc-node-text">
-                      <span class="fc-node-title" style="font-size:10.5px;">Controller: Rule 401 Siding</span>
-                      <span class="fc-node-sub" style="font-size:8.8px;">Loops slow freight to siding at KM 142 to clear mainline</span>
+                      <span class="fc-node-title" style="font-size:10px;">Controller: Rule 401 Siding</span>
+                      <span class="fc-node-sub" style="font-size:8.2px;">Loops slow freight to siding at KM 142</span>
                     </div>
                   </div>
-                  <div class="fc-connector-v" style="height: 5px;">
-                    <svg width="10" height="5" viewBox="0 0 10 5"><polygon points="2,0 5,4 8,0" fill="#D97706"/></svg>
+                  <div class="fc-connector-v" style="height: 4px;">
+                    <svg width="8" height="4" viewBox="0 0 8 4"><polygon points="1,0 4,3 7,0" fill="#D97706"/></svg>
                   </div>
-                  <div class="fc-card fc-card-green" style="width: 100%; padding: 4px 8px;">
-                    <span class="fc-node-icon" style="font-size:14px;">⚡</span>
+                  <div class="fc-card fc-card-green" style="width: 100%; padding: 3px 6px;">
+                    <span class="fc-node-icon" style="font-size:12px;">⚡</span>
                     <div class="fc-node-text">
-                      <span class="fc-node-title" style="font-size:10.5px; color:#15803D;">Express Recovers 22m</span>
-                      <span class="fc-node-sub" style="font-size:8.8px;">Coaching train overtakes on mainline; signal clear</span>
+                      <span class="fc-node-title" style="font-size:10px; color:#15803D;">Express Recovers 22m</span>
+                      <span class="fc-node-sub" style="font-size:8.2px;">Mainline clear; priority coaching pass</span>
                     </div>
                   </div>
                 </div>
 
-                <!-- Sub-Branch 2: Terminus Outer Hold & Platform Shift -->
+                <!-- Sub-Branch 2 -->
                 <div class="fc-sub-branch-col">
-                  <div class="fc-card fc-card-red" style="width: 100%; padding: 4px 8px;">
-                    <span class="fc-node-icon" style="font-size:14px;">🛑</span>
+                  <div class="fc-card fc-card-red" style="width: 100%; padding: 3px 6px;">
+                    <span class="fc-node-icon" style="font-size:12px;">🛑</span>
                     <div class="fc-node-text">
-                      <span class="fc-node-title" style="font-size:10.5px;">Station: Outer Hold &amp; PF Shift</span>
-                      <span class="fc-node-sub" style="font-size:8.8px;">Predicts &Delta;T_outer; shifts rake dynamically to vacant PF-2</span>
+                      <span class="fc-node-title" style="font-size:10px;">Station: Outer Hold &amp; PF Shift</span>
+                      <span class="fc-node-sub" style="font-size:8.2px;">Predicts &Delta;T_outer; shifts to vacant PF-2</span>
                     </div>
                   </div>
-                  <div class="fc-connector-v" style="height: 5px;">
-                    <svg width="10" height="5" viewBox="0 0 10 5"><polygon points="2,0 5,4 8,0" fill="#E11D48"/></svg>
+                  <div class="fc-connector-v" style="height: 4px;">
+                    <svg width="8" height="4" viewBox="0 0 8 4"><polygon points="1,0 4,3 7,0" fill="#E11D48"/></svg>
                   </div>
-                  <div class="fc-card fc-card-purple" style="width: 100%; padding: 4px 8px;">
-                    <span class="fc-node-icon" style="font-size:14px;">📢</span>
+                  <div class="fc-card fc-card-purple" style="width: 100%; padding: 3px 6px;">
+                    <span class="fc-node-icon" style="font-size:12px;">📢</span>
                     <div class="fc-node-text">
-                      <span class="fc-node-title" style="font-size:10.5px; color:#6D28D9;">Passenger Root-Cause &amp; Metro</span>
-                      <span class="fc-node-sub" style="font-size:8.8px;">Alerts <em>"Held for PF-2"</em> + 1-tap metro/cab re-route</span>
+                      <span class="fc-node-title" style="font-size:10px; color:#6D28D9;">Passenger Alert &amp; Metro Sync</span>
+                      <span class="fc-node-sub" style="font-size:8.2px;">Alerts <em>"Held for PF-2"</em> + cab/metro re-route</span>
                     </div>
                   </div>
                 </div>
-
               </div>
-
             </div>
 
-          </div>
-
-          <!-- LEVEL 8: CLOSED-LOOP 30S FEEDBACK STRIP -->
-          <div class="fc-feedback-loop-bar">
-            <div class="fc-loop-text">
-              <span class="fc-loop-icon">🔄</span>
-              <span><strong>Closed-Loop Operational Feedback:</strong> BEL RTIS updates satellite coordinates every 30s &bull; Auto-recalibrates ST-GAT corridor graph &amp; Conformal quantiles &bull; 100% Zero-Hardware</span>
-            </div>
-            <div class="fc-loop-badge">Statutory IR Compliant</div>
           </div>
 
         </div>
 
       </div>
+
+      <!-- 2B. BOTTOM: 3-STAGE IMPLEMENTATION ARCHITECTURE (SCRIPTIFY STYLE) -->
+      <div class="stages-master-card">
+        
+        <div class="stages-header">
+          <div class="stages-title">
+            <span>⚙️ Master Implementation Architecture (Input &bull; Processing &bull; Output Pipeline)</span>
+          </div>
+          <span class="stages-pill">End-to-End Operational Lifecycle</span>
+        </div>
+
+        <div class="stages-grid">
+          
+          <!-- STAGE 1: INPUT STAGE -->
+          <div class="stage-card">
+            <div class="stage-card-header">
+              <span class="stage-card-title">📡 Input Stage</span>
+              <span class="stage-badge stage-badge-input">Statutory Ingress</span>
+            </div>
+
+            <!-- Mini Graphic Flow Strip -->
+            <div class="stage-mini-visual">
+              <span class="mini-chip">🛰️ NavIC 30s</span>
+              <span class="mini-arrow">➔</span>
+              <span class="mini-chip">📋 CRIS COA</span>
+              <span class="mini-arrow">➔</span>
+              <span class="mini-chip">⚠️ TSR Caution</span>
+            </div>
+
+            <div class="stage-sub-items">
+              <div class="stage-sub-item">
+                <div class="stage-item-dot" style="background:#0284C7;"></div>
+                <div><span class="stage-item-strong">BEL RTIS (ISRO NavIC):</span> 30s locomotive MSS transponder GPS telemetry (zero engine retrofits).</div>
+              </div>
+              <div class="stage-sub-item">
+                <div class="stage-item-dot" style="background:#0284C7;"></div>
+                <div><span class="stage-item-strong">CRIS COA &amp; FOIS Feeds:</span> Live block occupancy, interlocking line clears &amp; freight timetables.</div>
+              </div>
+              <div class="stage-sub-item">
+                <div class="stage-item-dot" style="background:#0284C7;"></div>
+                <div><span class="stage-item-strong">e-Caution Orders (TSR):</span> Active Temporary Speed Restrictions &amp; track maintenance blocks.</div>
+              </div>
+              <div class="stage-sub-item">
+                <div class="stage-item-dot" style="background:#0284C7;"></div>
+                <div><span class="stage-item-strong">RDSO Track Geometry &amp; Weather:</span> 1:120 ruling gradients, curve radius &amp; Open-Meteo fog radar.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STAGE 2: PROCESSING STAGE -->
+          <div class="stage-card">
+            <div class="stage-card-header">
+              <span class="stage-card-title">🧠 Processing Stage</span>
+              <span class="stage-badge stage-badge-proc">Dual-Core AI &amp; Physics</span>
+            </div>
+
+            <!-- Mini Graphic Flow Strip -->
+            <div class="stage-mini-visual">
+              <span class="mini-chip">📍 1D Rail-Snap</span>
+              <span class="mini-arrow">➔</span>
+              <span class="mini-chip">⚙️ Newton RK4</span>
+              <span class="mini-arrow">➔</span>
+              <span class="mini-chip">🧠 PyG ST-GAT</span>
+            </div>
+
+            <div class="stage-sub-items">
+              <div class="stage-sub-item">
+                <div class="stage-item-dot" style="background:#7C3AED;"></div>
+                <div><span class="stage-item-strong">PostGIS LRS 1D Rail-Snap:</span> Snaps raw WGS84 GPS drift to track chainage KM; RK4 dead-reckoning in tunnels.</div>
+              </div>
+              <div class="stage-sub-item">
+                <div class="stage-item-dot" style="background:#7C3AED;"></div>
+                <div><span class="stage-item-strong">Newton-Davis Kinematics:</span> Solves tractive effort curves (WAP-7 6350HP), brake deceleration &amp; rolling drag.</div>
+              </div>
+              <div class="stage-sub-item">
+                <div class="stage-item-dot" style="background:#7C3AED;"></div>
+                <div><span class="stage-item-strong">PyG ST-GAT Corridor Graph:</span> Graph attention network captures ripple delays across interconnected blocks.</div>
+              </div>
+              <div class="stage-sub-item">
+                <div class="stage-item-dot" style="background:#7C3AED;"></div>
+                <div><span class="stage-item-strong">Conformal Uncertainty &amp; Rule 401:</span> Certified [P10&bull;P50&bull;P90] ETA bounds + automated loop siding dispatcher.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STAGE 3: OUTPUT STAGE -->
+          <div class="stage-card">
+            <div class="stage-card-header">
+              <span class="stage-card-title">📱 Output Stage</span>
+              <span class="stage-badge stage-badge-out">Multi-Stakeholder Sync</span>
+            </div>
+
+            <!-- Mini Graphic Flow Strip -->
+            <div class="stage-mini-visual">
+              <span class="mini-chip">📱 Mobile Radar</span>
+              <span class="mini-arrow">➔</span>
+              <span class="mini-chip">🚦 4-Aspect Headway</span>
+              <span class="mini-arrow">➔</span>
+              <span class="mini-chip">🚉 CIDS Sync</span>
+            </div>
+
+            <div class="stage-sub-items">
+              <div class="stage-sub-item">
+                <div class="stage-item-dot" style="background:#D97706;"></div>
+                <div><span class="stage-item-strong">Passenger Mobile App:</span> Live [P10–P90] arrival window, coach composition, live radar &amp; 1-tap cab/metro reroute.</div>
+              </div>
+              <div class="stage-sub-item">
+                <div class="stage-item-dot" style="background:#D97706;"></div>
+                <div><span class="stage-item-strong">Section Controller Cockpit:</span> Automated 4-aspect headway regulation &amp; Rule 401 freight siding advisory.</div>
+              </div>
+              <div class="stage-sub-item">
+                <div class="stage-item-dot" style="background:#D97706;"></div>
+                <div><span class="stage-item-strong">Station Master CIDS / PIDS:</span> Real-time platform LED synchronization &amp; automated bilingual audio announcements.</div>
+              </div>
+              <div class="stage-sub-item">
+                <div class="stage-item-dot" style="background:#D97706;"></div>
+                <div><span class="stage-item-strong">Closed-Loop Recalibration:</span> 30-second continuous telemetry loop updates graph weights &amp; conformal bounds.</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Feedback Loop Footer -->
+        <div class="fc-feedback-loop-bar">
+          <div class="fc-loop-text">
+            <span>🔄</span>
+            <span><strong>Continuous Closed-Loop Operational Feedback:</strong> BEL RTIS updates satellite coordinates every 30s &bull; Auto-recalibrates ST-GAT corridor graph &amp; Conformal quantiles &bull; 100% Zero-Hardware</span>
+          </div>
+          <div class="fc-loop-badge">Statutory IR Compliant</div>
+        </div>
+
+      </div>
+
     </section>
 
   </main>
