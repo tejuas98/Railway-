@@ -22,13 +22,13 @@
   <!-- ======================================================== -->
   <!-- TOP MASTER NODE: UNIFIED GATI-SETU INGESTION             -->
   <!-- ======================================================== -->
-  <g transform="translate(360, 20)" filter="url(#masterShadow)">
-    <rect x="0" y="0" width="680" height="66" rx="10" fill="#E0F2FE" stroke="#0284C7" stroke-width="2.5"/>
-    <text x="340" y="27" font-size="14" font-weight="900" fill="#0369A1" text-anchor="middle" letter-spacing="0.5">
+  <g transform="translate(340, 20)" filter="url(#masterShadow)">
+    <rect x="0" y="0" width="720" height="66" rx="10" fill="#E0F2FE" stroke="#0284C7" stroke-width="2.5"/>
+    <text x="360" y="27" font-size="14" font-weight="900" fill="#0369A1" text-anchor="middle" letter-spacing="0.5">
       🚆 GATI-SETU Unified Multi-Stakeholder Railway Operating Engine
     </text>
-    <text x="340" y="48" font-size="11" font-weight="700" fill="#0F172A" text-anchor="middle">
-      Statutory Multi-Source Ingestion: BEL RTIS NavIC (GSAT-15) • CRIS COA/FOIS • e-Caution (TSR) • Open-Meteo
+    <text x="360" y="48" font-size="10.5" font-weight="700" fill="#0F172A" text-anchor="middle">
+      Statutory Ingestion: BEL RTIS NavIC • CRIS COA/FOIS • e-Caution (TSR) • Route Topology &amp; Gradients • Open-Meteo
     </text>
   </g>
 
@@ -91,8 +91,8 @@
   <!-- Step 1.4: Dynamic ETA -->
   <g transform="translate(70, 412)" filter="url(#boxShadow)">
     <rect x="0" y="0" width="340" height="62" rx="8" fill="#FEE2E2" stroke="#0F172A" stroke-width="2"/>
-    <text x="170" y="24" font-size="12" font-weight="900" fill="#0F172A" text-anchor="middle">⏱️ Calibrated Dynamic ETA View</text>
-    <text x="170" y="44" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">Physics ODE + ST-GAT AI • Adapts to ground speed limits &amp; fog</text>
+    <text x="170" y="24" font-size="12" font-weight="900" fill="#0F172A" text-anchor="middle">⏱️ Calibrated Dynamic ETA &amp; XAI Reason</text>
+    <text x="170" y="44" font-size="9.8" font-weight="600" fill="#475569" text-anchor="middle">Physics ODE + ST-GAT • Causal breakdown (Fog +15m, TSR +8m)</text>
   </g>
 
   <line x1="240" y1="474" x2="240" y2="486" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
@@ -100,8 +100,8 @@
   <!-- Step 1.5: Conformal Range -->
   <g transform="translate(70, 488)" filter="url(#boxShadow)">
     <rect x="0" y="0" width="340" height="62" rx="8" fill="#F3E8FF" stroke="#0F172A" stroke-width="2"/>
-    <text x="170" y="24" font-size="12" font-weight="900" fill="#0F172A" text-anchor="middle">🎯 Conformal Uncertainty Interval</text>
-    <text x="170" y="44" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">Displays [P10 • P50 • P90] arrival window • 90% certified coverage</text>
+    <text x="170" y="24" font-size="12" font-weight="900" fill="#0F172A" text-anchor="middle">🎯 Conformal Uncertainty &amp; Transfer Risk</text>
+    <text x="170" y="44" font-size="9.8" font-weight="600" fill="#475569" text-anchor="middle">Certified [P10 • P50 • P90] window • Evaluates junction connection risk</text>
   </g>
 
   <line x1="240" y1="550" x2="240" y2="562" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
@@ -110,7 +110,7 @@
   <g transform="translate(70, 564)" filter="url(#boxShadow)">
     <rect x="0" y="0" width="340" height="62" rx="8" fill="#E0E7FF" stroke="#0F172A" stroke-width="2"/>
     <text x="170" y="24" font-size="12" font-weight="900" fill="#0F172A" text-anchor="middle">🧭 Coach Radar &amp; Platform Walking Guide</text>
-    <text x="170" y="44" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">Exact rake layout (e.g. B4/A1) • Walking path to assigned platform</text>
+    <text x="170" y="44" font-size="9.8" font-weight="600" fill="#475569" text-anchor="middle">Exact rake layout (e.g. B4/A1) • Walking path to assigned platform</text>
   </g>
 
   <line x1="240" y1="626" x2="240" y2="638" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
@@ -119,7 +119,7 @@
   <g transform="translate(70, 640)" filter="url(#boxShadow)">
     <rect x="0" y="0" width="340" height="62" rx="8" fill="#DCFCE7" stroke="#0F172A" stroke-width="2"/>
     <text x="170" y="24" font-size="12" font-weight="900" fill="#15803D" text-anchor="middle">🚗 1-Tap Feeder Cab &amp; Metro Sync</text>
-    <text x="170" y="44" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">Pre-timed Uber/Ola pickup at destination • Zero waiting time</text>
+    <text x="170" y="44" font-size="9.8" font-weight="600" fill="#475569" text-anchor="middle">Pre-timed Uber/Ola pickup at destination • Zero waiting time</text>
   </g>
 
 
@@ -141,7 +141,7 @@
   <g transform="translate(530, 184)" filter="url(#boxShadow)">
     <rect x="0" y="0" width="340" height="62" rx="8" fill="#F0FDF4" stroke="#0F172A" stroke-width="2"/>
     <text x="170" y="24" font-size="12" font-weight="900" fill="#0F172A" text-anchor="middle">💻 Controller Launches Cockpit</text>
-    <text x="170" y="44" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">FastAPI WebSockets dashboard • Real-time 130 km/h corridor lock</text>
+    <text x="170" y="44" font-size="9.8" font-weight="600" fill="#475569" text-anchor="middle">FastAPI WebSockets dashboard • Real-time 130 km/h corridor lock</text>
   </g>
 
   <line x1="700" y1="246" x2="700" y2="258" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
@@ -150,7 +150,7 @@
   <g transform="translate(530, 260)" filter="url(#boxShadow)">
     <rect x="0" y="0" width="340" height="62" rx="8" fill="#DCFCE7" stroke="#0F172A" stroke-width="2"/>
     <text x="170" y="24" font-size="12" font-weight="900" fill="#0F172A" text-anchor="middle">🗺️ Multi-Train Stringline Chart</text>
-    <text x="170" y="44" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">Time-distance space diagram • Automatic block section occupancy</text>
+    <text x="170" y="44" font-size="9.8" font-weight="600" fill="#475569" text-anchor="middle">Time-distance space diagram • Automatic block section occupancy</text>
   </g>
 
   <line x1="700" y1="322" x2="700" y2="334" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
@@ -159,7 +159,7 @@
   <g transform="translate(530, 336)" filter="url(#boxShadow)">
     <rect x="0" y="0" width="340" height="62" rx="8" fill="#FEF3C7" stroke="#0F172A" stroke-width="2"/>
     <text x="170" y="24" font-size="12" font-weight="900" fill="#0F172A" text-anchor="middle">⚠️ Bottleneck &amp; Conflict Detection</text>
-    <text x="170" y="44" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">Graph AI predicts delays ahead • Flags preceding freight clashes</text>
+    <text x="170" y="44" font-size="9.8" font-weight="600" fill="#475569" text-anchor="middle">Graph AI predicts delays ahead • Flags preceding freight clashes</text>
   </g>
 
   <line x1="700" y1="398" x2="700" y2="410" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
@@ -167,8 +167,8 @@
   <!-- Step 2.4: AI Priority -->
   <g transform="translate(530, 412)" filter="url(#boxShadow)">
     <rect x="0" y="0" width="340" height="62" rx="8" fill="#EDE9FE" stroke="#0F172A" stroke-width="2"/>
-    <text x="170" y="24" font-size="12" font-weight="900" fill="#0F172A" text-anchor="middle">⚡ AI Precedence Scoring</text>
-    <text x="170" y="44" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">Dynamic priority: Rajdhani / Vande Bharat vs Freight dispatch</text>
+    <text x="170" y="24" font-size="12" font-weight="900" fill="#0F172A" text-anchor="middle">⚡ AI Precedence &amp; Simulation</text>
+    <text x="170" y="44" font-size="9.8" font-weight="600" fill="#475569" text-anchor="middle">Dynamic priority scoring • What-if simulation recovers headway</text>
   </g>
 
   <line x1="700" y1="474" x2="700" y2="486" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
@@ -177,7 +177,7 @@
   <g transform="translate(530, 488)" filter="url(#boxShadow)">
     <rect x="0" y="0" width="340" height="62" rx="8" fill="#FCE7F3" stroke="#0F172A" stroke-width="2"/>
     <text x="170" y="24" font-size="12" font-weight="900" fill="#0F172A" text-anchor="middle">🔁 Rule 401 Loop Siding Decision</text>
-    <text x="170" y="44" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">1-click siding diversion • Recovers +22 mins corridor headway</text>
+    <text x="170" y="44" font-size="9.8" font-weight="600" fill="#475569" text-anchor="middle">1-click siding diversion • Recovers +22 mins corridor headway</text>
   </g>
 
   <line x1="700" y1="550" x2="700" y2="562" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
@@ -186,7 +186,7 @@
   <g transform="translate(530, 564)" filter="url(#boxShadow)">
     <rect x="0" y="0" width="340" height="62" rx="8" fill="#E0F2FE" stroke="#0F172A" stroke-width="2"/>
     <text x="170" y="24" font-size="12" font-weight="900" fill="#0F172A" text-anchor="middle">📡 Auto-Broadcast TSR / Speed Order</text>
-    <text x="170" y="44" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">Direct digital push to loco cab display &amp; automatic track signals</text>
+    <text x="170" y="44" font-size="9.8" font-weight="600" fill="#475569" text-anchor="middle">Direct digital push to loco cab display &amp; automatic track signals</text>
   </g>
 
   <line x1="700" y1="626" x2="700" y2="638" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
@@ -195,7 +195,7 @@
   <g transform="translate(530, 640)" filter="url(#boxShadow)">
     <rect x="0" y="0" width="340" height="62" rx="8" fill="#DCFCE7" stroke="#0F172A" stroke-width="2"/>
     <text x="170" y="24" font-size="12" font-weight="900" fill="#15803D" text-anchor="middle">🟢 Section Throughput Optimized</text>
-    <text x="170" y="44" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">Zero cascading deadlock • +18% corridor capacity utilization</text>
+    <text x="170" y="44" font-size="9.8" font-weight="600" fill="#475569" text-anchor="middle">Zero cascading deadlock • +18% corridor capacity utilization</text>
   </g>
 
 
@@ -217,7 +217,7 @@
   <g transform="translate(990, 184)" filter="url(#boxShadow)">
     <rect x="0" y="0" width="340" height="62" rx="8" fill="#FAF5FF" stroke="#0F172A" stroke-width="2"/>
     <text x="170" y="24" font-size="12" font-weight="900" fill="#0F172A" text-anchor="middle">🖥️ Station Master Terminal Login</text>
-    <text x="170" y="44" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">Station intranet dashboard • 60-min lookahead arrival queue</text>
+    <text x="170" y="44" font-size="9.8" font-weight="600" fill="#475569" text-anchor="middle">Station intranet dashboard • 60-min lookahead arrival queue</text>
   </g>
 
   <line x1="1160" y1="246" x2="1160" y2="258" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
@@ -225,8 +225,8 @@
   <!-- Step 3.2: Dynamic Platform Allocation -->
   <g transform="translate(990, 260)" filter="url(#boxShadow)">
     <rect x="0" y="0" width="340" height="62" rx="8" fill="#F3E8FF" stroke="#0F172A" stroke-width="2"/>
-    <text x="170" y="24" font-size="12" font-weight="900" fill="#0F172A" text-anchor="middle">🚉 Dynamic Platform Allocation</text>
-    <text x="170" y="44" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">Conflict-free assignment (PF 4) avoiding track crossover clash</text>
+    <text x="170" y="24" font-size="12" font-weight="900" fill="#0F172A" text-anchor="middle">🚉 Dynamic Platform Allocation (PF 4)</text>
+    <text x="170" y="44" font-size="9.8" font-weight="600" fill="#475569" text-anchor="middle">Conflict-free assignment avoiding outer-signal &amp; track deadlocks</text>
   </g>
 
   <line x1="1160" y1="322" x2="1160" y2="334" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
@@ -235,7 +235,7 @@
   <g transform="translate(990, 336)" filter="url(#boxShadow)">
     <rect x="0" y="0" width="340" height="62" rx="8" fill="#E0F2FE" stroke="#0F172A" stroke-width="2"/>
     <text x="170" y="24" font-size="12" font-weight="900" fill="#0F172A" text-anchor="middle">📢 Automated CIDS LED &amp; Audio Sync</text>
-    <text x="170" y="44" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">Instant bilingual automated TTS PA &amp; platform LED guidance</text>
+    <text x="170" y="44" font-size="9.8" font-weight="600" fill="#475569" text-anchor="middle">Instant bilingual automated TTS PA &amp; platform LED guidance</text>
   </g>
 
   <line x1="1160" y1="398" x2="1160" y2="410" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
@@ -243,8 +243,8 @@
   <!-- Step 3.4: Turnaround Crew -->
   <g transform="translate(990, 412)" filter="url(#boxShadow)">
     <rect x="0" y="0" width="340" height="62" rx="8" fill="#FEF9C3" stroke="#0F172A" stroke-width="2"/>
-    <text x="170" y="24" font-size="12" font-weight="900" fill="#0F172A" text-anchor="middle">🧹 Turnaround Crew Dispatch</text>
-    <text x="170" y="44" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">Cleaning, watering &amp; linen teams alerted based on exact ETA</text>
+    <text x="170" y="24" font-size="12" font-weight="900" fill="#0F172A" text-anchor="middle">🧹 Turnaround Crew &amp; Cleaning Dispatch</text>
+    <text x="170" y="44" font-size="9.8" font-weight="600" fill="#475569" text-anchor="middle">Cleaning, watering &amp; linen teams alerted based on exact ETA</text>
   </g>
 
   <line x1="1160" y1="474" x2="1160" y2="486" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
@@ -253,7 +253,7 @@
   <g transform="translate(990, 488)" filter="url(#boxShadow)">
     <rect x="0" y="0" width="340" height="62" rx="8" fill="#FFEDD5" stroke="#0F172A" stroke-width="2"/>
     <text x="170" y="24" font-size="12" font-weight="900" fill="#0F172A" text-anchor="middle">👨‍✈️ Driver &amp; Guard Crew Lobby Sync</text>
-    <text x="170" y="44" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">Loco pilot rest &amp; handover scheduled • Eliminates crew idle wait</text>
+    <text x="170" y="44" font-size="9.8" font-weight="600" fill="#475569" text-anchor="middle">Loco pilot rest &amp; handover scheduled • Eliminates crew idle wait</text>
   </g>
 
   <line x1="1160" y1="550" x2="1160" y2="562" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
@@ -262,7 +262,7 @@
   <g transform="translate(990, 564)" filter="url(#boxShadow)">
     <rect x="0" y="0" width="340" height="62" rx="8" fill="#EDE9FE" stroke="#0F172A" stroke-width="2"/>
     <text x="170" y="24" font-size="12" font-weight="900" fill="#0F172A" text-anchor="middle">📦 Logistics &amp; Parcel Van Scheduling</text>
-    <text x="170" y="44" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">Downstream cargo docks &amp; postal mail vans alerted with precision</text>
+    <text x="170" y="44" font-size="9.8" font-weight="600" fill="#475569" text-anchor="middle">Downstream cargo docks &amp; postal mail vans alerted with precision</text>
   </g>
 
   <line x1="1160" y1="626" x2="1160" y2="638" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
@@ -271,7 +271,7 @@
   <g transform="translate(990, 640)" filter="url(#boxShadow)">
     <rect x="0" y="0" width="340" height="62" rx="8" fill="#DCFCE7" stroke="#0F172A" stroke-width="2"/>
     <text x="170" y="24" font-size="12" font-weight="900" fill="#15803D" text-anchor="middle">🏁 Seamless Station Turnaround</text>
-    <text x="170" y="44" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">Zero platform deadlock • Rapid boarding &amp; punctuality restored</text>
+    <text x="170" y="44" font-size="9.8" font-weight="600" fill="#475569" text-anchor="middle">Zero platform deadlock • Rapid boarding &amp; punctuality restored</text>
   </g>
 
 
