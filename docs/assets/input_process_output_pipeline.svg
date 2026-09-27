@@ -1,0 +1,274 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 260" width="1200" height="260" font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">
+  <defs>
+    <!-- Soft card shadow -->
+    <filter id="cardShadow" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="3" dy="3" stdDeviation="0" flood-color="#0F172A" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <!-- ==================================================== -->
+  <!-- CARD 1: INPUT STAGE                                 -->
+  <!-- ==================================================== -->
+  <g transform="translate(20, 15)">
+    <!-- Card Frame -->
+    <rect x="0" y="0" width="345" height="230" rx="10" fill="#F8FAFC" stroke="#0F172A" stroke-width="2.5" filter="url(#cardShadow)"/>
+    
+    <!-- Top Header Banner -->
+    <path d="M 0 10 Q 0 0 10 0 L 335 0 Q 345 0 345 10 L 345 32 L 0 32 Z" fill="#E2E8F0"/>
+    <line x1="0" y1="32" x2="345" y2="32" stroke="#0F172A" stroke-width="2"/>
+    <text x="172" y="21" font-size="12" font-weight="900" fill="#0F172A" text-anchor="middle" letter-spacing="0.5">INPUT STAGE</text>
+
+    <!-- Left Visual Area: Satellite + Train -->
+    <g transform="translate(10, 42)">
+      <rect x="0" y="0" width="105" height="135" rx="6" fill="#F0F9FF" stroke="#BAE6FD" stroke-width="1.5"/>
+      
+      <!-- Satellite GSAT-15 -->
+      <g transform="translate(52, 28)">
+        <rect x="-8" y="-6" width="16" height="12" rx="2" fill="#F97316" stroke="#0F172A" stroke-width="1.5"/>
+        <rect x="-24" y="-5" width="14" height="10" rx="1" fill="#38BDF8" stroke="#0F172A" stroke-width="1.2"/>
+        <rect x="10" y="-5" width="14" height="10" rx="1" fill="#38BDF8" stroke="#0F172A" stroke-width="1.2"/>
+        <circle cx="0" cy="0" r="2.5" fill="#FFFFFF"/>
+        <!-- Radio beams -->
+        <path d="M 0 8 L -22 45 M 0 8 L 22 45" stroke="#0284C7" stroke-width="1.5" stroke-dasharray="3,3"/>
+      </g>
+
+      <!-- Track -->
+      <line x1="8" y1="96" x2="97" y2="96" stroke="#0F172A" stroke-width="2.5"/>
+      <line x1="18" y1="96" x2="14" y2="102" stroke="#64748B" stroke-width="1.8"/>
+      <line x1="38" y1="96" x2="34" y2="102" stroke="#64748B" stroke-width="1.8"/>
+      <line x1="58" y1="96" x2="54" y2="102" stroke="#64748B" stroke-width="1.8"/>
+      <line x1="78" y1="96" x2="74" y2="102" stroke="#64748B" stroke-width="1.8"/>
+
+      <!-- Train Loco Engine -->
+      <g transform="translate(26, 75)">
+        <path d="M 0 0 L 52 0 Q 60 0 60 10 L 60 21 L 0 21 Z" fill="#DC2626" stroke="#0F172A" stroke-width="1.8"/>
+        <rect x="0" y="10" width="60" height="3" fill="#FFFFFF"/>
+        <polygon points="40,3 52,3 50,9 40,9" fill="#38BDF8" stroke="#0F172A" stroke-width="1.2"/>
+        <circle cx="12" cy="21" r="4" fill="#334155" stroke="#0F172A" stroke-width="1.5"/>
+        <circle cx="28" cy="21" r="4" fill="#334155" stroke="#0F172A" stroke-width="1.5"/>
+        <circle cx="48" cy="21" r="4" fill="#334155" stroke="#0F172A" stroke-width="1.5"/>
+      </g>
+
+      <text x="52" y="122" font-size="8.5" font-weight="800" fill="#0369A1" text-anchor="middle">NavIC 30s Telemetry</text>
+    </g>
+
+    <!-- Right Stacked Sub-Pills -->
+    <g transform="translate(124, 42)">
+      <!-- Pill 1 -->
+      <g transform="translate(0, 0)">
+        <rect x="0" y="0" width="210" height="28" rx="5" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+        <text x="8" y="18" font-size="10" font-weight="700" fill="#0F172A">🛰️ BEL RTIS NavIC (GSAT-15)</text>
+        <rect x="156" y="5" width="46" height="18" rx="3" fill="#E0F2FE"/>
+        <text x="179" y="17" font-size="8" font-weight="800" fill="#0369A1" text-anchor="middle">30s GPS</text>
+      </g>
+      <!-- Pill 2 -->
+      <g transform="translate(0, 36)">
+        <rect x="0" y="0" width="210" height="28" rx="5" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+        <text x="8" y="18" font-size="10" font-weight="700" fill="#0F172A">📋 CRIS COA &amp; FOIS Feeds</text>
+        <rect x="146" y="5" width="56" height="18" rx="3" fill="#E0F2FE"/>
+        <text x="174" y="17" font-size="8" font-weight="800" fill="#0369A1" text-anchor="middle">Block State</text>
+      </g>
+      <!-- Pill 3 -->
+      <g transform="translate(0, 72)">
+        <rect x="0" y="0" width="210" height="28" rx="5" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+        <text x="8" y="18" font-size="10" font-weight="700" fill="#0F172A">⚠️ e-Caution Orders (TSR)</text>
+        <rect x="142" y="5" width="60" height="18" rx="3" fill="#FEF3C7"/>
+        <text x="172" y="17" font-size="8" font-weight="800" fill="#B45309" text-anchor="middle">Speed Limits</text>
+      </g>
+      <!-- Pill 4 -->
+      <g transform="translate(0, 108)">
+        <rect x="0" y="0" width="210" height="28" rx="5" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+        <text x="8" y="18" font-size="10" font-weight="700" fill="#0F172A">🌤️ Open-Meteo Satellite</text>
+        <rect x="150" y="5" width="52" height="18" rx="3" fill="#E0F2FE"/>
+        <text x="176" y="17" font-size="8" font-weight="800" fill="#0369A1" text-anchor="middle">Fog / Rain</text>
+      </g>
+    </g>
+
+    <!-- Bottom Caption -->
+    <line x1="10" y1="192" x2="335" y2="192" stroke="#E2E8F0" stroke-width="1.2"/>
+    <text x="172" y="212" font-size="9" font-weight="700" fill="#64748B" text-anchor="middle">
+      Statutory Multi-Source Ingestion • 100% Zero New Hardware
+    </text>
+  </g>
+
+  <!-- ==================================================== -->
+  <!-- CONNECTING ARROW 1                                   -->
+  <!-- ==================================================== -->
+  <g transform="translate(378, 116)">
+    <path d="M 0 0 L 26 0 M 16 -8 L 26 0 L 16 8" fill="none" stroke="#0F172A" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- ==================================================== -->
+  <!-- CARD 2: PROCESSING STAGE                            -->
+  <!-- ==================================================== -->
+  <g transform="translate(425, 15)">
+    <!-- Card Frame -->
+    <rect x="0" y="0" width="350" height="230" rx="10" fill="#F8FAFC" stroke="#0F172A" stroke-width="2.5" filter="url(#cardShadow)"/>
+    
+    <!-- Top Header Banner -->
+    <path d="M 0 10 Q 0 0 10 0 L 340 0 Q 350 0 350 10 L 350 32 L 0 32 Z" fill="#E2E8F0"/>
+    <line x1="0" y1="32" x2="350" y2="32" stroke="#0F172A" stroke-width="2"/>
+    <text x="175" y="21" font-size="11.5" font-weight="900" fill="#0F172A" text-anchor="middle" letter-spacing="0.5">DIGITAL TWIN AI &amp; PHYSICS ENGINE</text>
+
+    <!-- Left Visual Area: Gears + AI -->
+    <g transform="translate(10, 42)">
+      <rect x="0" y="0" width="105" height="135" rx="6" fill="#FAF5FF" stroke="#E9D5FF" stroke-width="1.5"/>
+      
+      <!-- Big Blue Gear -->
+      <g transform="translate(42, 60)">
+        <circle cx="0" cy="0" r="22" fill="#0284C7" stroke="#0F172A" stroke-width="1.8"/>
+        <circle cx="0" cy="0" r="9" fill="#FFFFFF" stroke="#0F172A" stroke-width="1.5"/>
+        <rect x="-3" y="-28" width="6" height="7" fill="#0284C7" stroke="#0F172A" stroke-width="1.5"/>
+        <rect x="-3" y="21" width="6" height="7" fill="#0284C7" stroke="#0F172A" stroke-width="1.5"/>
+        <rect x="-28" y="-3" width="7" height="6" fill="#0284C7" stroke="#0F172A" stroke-width="1.5"/>
+        <rect x="21" y="-3" width="7" height="6" fill="#0284C7" stroke="#0F172A" stroke-width="1.5"/>
+        <rect x="-3" y="-28" width="6" height="7" fill="#0284C7" stroke="#0F172A" stroke-width="1.5" transform="rotate(45)"/>
+        <rect x="-3" y="-28" width="6" height="7" fill="#0284C7" stroke="#0F172A" stroke-width="1.5" transform="rotate(135)"/>
+        <rect x="-3" y="-28" width="6" height="7" fill="#0284C7" stroke="#0F172A" stroke-width="1.5" transform="rotate(225)"/>
+        <rect x="-3" y="-28" width="6" height="7" fill="#0284C7" stroke="#0F172A" stroke-width="1.5" transform="rotate(315)"/>
+      </g>
+
+      <!-- Coral Gear -->
+      <g transform="translate(74, 82)">
+        <circle cx="0" cy="0" r="15" fill="#F43F5E" stroke="#0F172A" stroke-width="1.8"/>
+        <circle cx="0" cy="0" r="5" fill="#FFFFFF" stroke="#0F172A" stroke-width="1.2"/>
+        <rect x="-2.5" y="-19" width="5" height="5" fill="#F43F5E" stroke="#0F172A" stroke-width="1.2"/>
+        <rect x="-2.5" y="14" width="5" height="5" fill="#F43F5E" stroke="#0F172A" stroke-width="1.2"/>
+        <rect x="-19" y="-2.5" width="5" height="5" fill="#F43F5E" stroke="#0F172A" stroke-width="1.2"/>
+        <rect x="14" y="-2.5" width="5" height="5" fill="#F43F5E" stroke="#0F172A" stroke-width="1.2"/>
+      </g>
+
+      <!-- Neural Node -->
+      <g transform="translate(74, 30)">
+        <line x1="-32" y1="30" x2="0" y2="0" stroke="#7C3AED" stroke-width="1.8" stroke-dasharray="2,2"/>
+        <circle cx="0" cy="0" r="10" fill="#7C3AED" stroke="#0F172A" stroke-width="1.5"/>
+        <circle cx="0" cy="0" r="3.5" fill="#FFFFFF"/>
+      </g>
+
+      <text x="52" y="122" font-size="8.5" font-weight="800" fill="#7C3AED" text-anchor="middle">Dual AI &amp; Physics</text>
+    </g>
+
+    <!-- Right Stacked Sub-Pills -->
+    <g transform="translate(124, 42)">
+      <!-- Pill 1 -->
+      <g transform="translate(0, 0)">
+        <rect x="0" y="0" width="215" height="28" rx="5" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+        <text x="8" y="18" font-size="9.6" font-weight="700" fill="#0F172A">📍 PostGIS 1D Rail-Snap &amp; RK4</text>
+        <rect x="157" y="5" width="50" height="18" rx="3" fill="#EDE9FE"/>
+        <text x="182" y="17" font-size="7.8" font-weight="800" fill="#6D28D9" text-anchor="middle">Track LRS</text>
+      </g>
+      <!-- Pill 2 -->
+      <g transform="translate(0, 36)">
+        <rect x="0" y="0" width="215" height="28" rx="5" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+        <text x="8" y="18" font-size="9.6" font-weight="700" fill="#0F172A">⚙️ Newton-Davis Kinematics</text>
+        <rect x="150" y="5" width="57" height="18" rx="3" fill="#EDE9FE"/>
+        <text x="178" y="17" font-size="7.8" font-weight="800" fill="#6D28D9" text-anchor="middle">ODE Solver</text>
+      </g>
+      <!-- Pill 3 -->
+      <g transform="translate(0, 72)">
+        <rect x="0" y="0" width="215" height="28" rx="5" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+        <text x="8" y="18" font-size="9.6" font-weight="700" fill="#0F172A">🧠 PyG ST-GAT Corridor Graph</text>
+        <rect x="148" y="5" width="59" height="18" rx="3" fill="#EDE9FE"/>
+        <text x="177" y="17" font-size="7.8" font-weight="800" fill="#6D28D9" text-anchor="middle">Attention AI</text>
+      </g>
+      <!-- Pill 4 -->
+      <g transform="translate(0, 108)">
+        <rect x="0" y="0" width="215" height="28" rx="5" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+        <text x="8" y="18" font-size="9.6" font-weight="700" fill="#0F172A">🎯 Conformal Uncertainty [P10-P90]</text>
+        <rect x="162" y="5" width="45" height="18" rx="3" fill="#EDE9FE"/>
+        <text x="184" y="17" font-size="7.8" font-weight="800" fill="#6D28D9" text-anchor="middle">Certified</text>
+      </g>
+    </g>
+
+    <!-- Bottom Caption -->
+    <line x1="10" y1="192" x2="340" y2="192" stroke="#E2E8F0" stroke-width="1.2"/>
+    <text x="175" y="212" font-size="9" font-weight="700" fill="#64748B" text-anchor="middle">
+      Physics Tractive Integration • 85.4% Error Reduction (6.2m MAE)
+    </text>
+  </g>
+
+  <!-- ==================================================== -->
+  <!-- CONNECTING ARROW 2                                   -->
+  <!-- ==================================================== -->
+  <g transform="translate(787, 116)">
+    <path d="M 0 0 L 26 0 M 16 -8 L 26 0 L 16 8" fill="none" stroke="#0F172A" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- ==================================================== -->
+  <!-- CARD 3: OUTPUT STAGE                                -->
+  <!-- ==================================================== -->
+  <g transform="translate(835, 15)">
+    <!-- Card Frame -->
+    <rect x="0" y="0" width="345" height="230" rx="10" fill="#F8FAFC" stroke="#0F172A" stroke-width="2.5" filter="url(#cardShadow)"/>
+    
+    <!-- Top Header Banner -->
+    <path d="M 0 10 Q 0 0 10 0 L 335 0 Q 345 0 345 10 L 345 32 L 0 32 Z" fill="#E2E8F0"/>
+    <line x1="0" y1="32" x2="345" y2="32" stroke="#0F172A" stroke-width="2"/>
+    <text x="172" y="21" font-size="12" font-weight="900" fill="#0F172A" text-anchor="middle" letter-spacing="0.5">OUTPUT STAGE</text>
+
+    <!-- Left Visual Area: Monitor + Signal -->
+    <g transform="translate(10, 42)">
+      <rect x="0" y="0" width="105" height="135" rx="6" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1.5"/>
+      
+      <!-- Monitor Frame -->
+      <g transform="translate(10, 16)">
+        <polygon points="38,62 48,62 50,72 36,72" fill="#475569" stroke="#0F172A" stroke-width="1.5"/>
+        <rect x="28" y="72" width="30" height="4" rx="1" fill="#0F172A"/>
+        <rect x="0" y="0" width="86" height="62" rx="5" fill="#0B132B" stroke="#0F172A" stroke-width="2"/>
+        
+        <!-- Live ETA Badge -->
+        <rect x="6" y="8" width="50" height="20" rx="2" fill="#1E293B"/>
+        <text x="10" y="22" font-size="9" font-weight="900" fill="#38BDF8">23:43 ETA</text>
+
+        <!-- PF 4* Pill -->
+        <rect x="60" y="8" width="20" height="20" rx="2" fill="#166534"/>
+        <text x="70" y="21" font-size="8" font-weight="900" fill="#FFFFFF" text-anchor="middle">PF 4*</text>
+
+        <!-- Signal Line Graphic -->
+        <circle cx="16" cy="44" r="5" fill="#22C55E"/>
+        <line x1="24" y1="44" x2="76" y2="44" stroke="#38BDF8" stroke-width="1.8"/>
+        <text x="24" y="38" font-size="5.5" font-weight="800" fill="#94A3B8">4-ASPECT CLEAR</text>
+      </g>
+
+      <text x="52" y="122" font-size="8.5" font-weight="800" fill="#15803D" text-anchor="middle">Multi-Stakeholder Sync</text>
+    </g>
+
+    <!-- Right Stacked Sub-Pills -->
+    <g transform="translate(124, 42)">
+      <!-- Pill 1 -->
+      <g transform="translate(0, 0)">
+        <rect x="0" y="0" width="210" height="28" rx="5" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+        <text x="8" y="18" font-size="9.6" font-weight="700" fill="#0F172A">📱 Passenger: Calibrated ETA</text>
+        <rect x="144" y="5" width="58" height="18" rx="3" fill="#DCFCE7"/>
+        <text x="173" y="17" font-size="7.8" font-weight="800" fill="#15803D" text-anchor="middle">Coach Radar</text>
+      </g>
+      <!-- Pill 2 -->
+      <g transform="translate(0, 36)">
+        <rect x="0" y="0" width="210" height="28" rx="5" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+        <text x="8" y="18" font-size="9.6" font-weight="700" fill="#0F172A">🚦 Section Controller Cockpit</text>
+        <rect x="138" y="5" width="64" height="18" rx="3" fill="#DCFCE7"/>
+        <text x="170" y="17" font-size="7.8" font-weight="800" fill="#15803D" text-anchor="middle">Rule 401 Siding</text>
+      </g>
+      <!-- Pill 3 -->
+      <g transform="translate(0, 72)">
+        <rect x="0" y="0" width="210" height="28" rx="5" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+        <text x="8" y="18" font-size="9.6" font-weight="700" fill="#0F172A">🚉 Station Master CIDS Sync</text>
+        <rect x="146" y="5" width="56" height="18" rx="3" fill="#DCFCE7"/>
+        <text x="174" y="17" font-size="7.8" font-weight="800" fill="#15803D" text-anchor="middle">LED &amp; Audio</text>
+      </g>
+      <!-- Pill 4 -->
+      <g transform="translate(0, 108)">
+        <rect x="0" y="0" width="210" height="28" rx="5" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+        <text x="8" y="18" font-size="9.6" font-weight="700" fill="#0F172A">🚗 1-Tap Feeder Cab / Metro</text>
+        <rect x="150" y="5" width="52" height="18" rx="3" fill="#DCFCE7"/>
+        <text x="176" y="17" font-size="7.8" font-weight="800" fill="#15803D" text-anchor="middle">Ola / Uber</text>
+      </g>
+    </g>
+
+    <!-- Bottom Caption -->
+    <line x1="10" y1="192" x2="335" y2="192" stroke="#E2E8F0" stroke-width="1.2"/>
+    <text x="172" y="212" font-size="9" font-weight="700" fill="#64748B" text-anchor="middle">
+      Transparent Operations • Zero Waiting • Dynamic Precedence
+    </text>
+  </g>
+</svg>
