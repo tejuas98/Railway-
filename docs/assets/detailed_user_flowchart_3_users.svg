@@ -2,10 +2,10 @@
   <defs>
     <!-- Card Drop Shadow -->
     <filter id="boxShadow" x="-5%" y="-5%" width="110%" height="115%">
-      <feDropShadow dx="2" dy="2.5" stdDeviation="0" flood-color="#0F172A" flood-opacity="0.12"/>
+      <feDropShadow dx="2" dy="2.5" stdDeviation="0" flood-color="#0F172A" flood-opacity="0.10"/>
     </filter>
     <filter id="masterShadow" x="-5%" y="-5%" width="110%" height="115%">
-      <feDropShadow dx="3" dy="3.5" stdDeviation="0" flood-color="#0F172A" flood-opacity="0.15"/>
+      <feDropShadow dx="3" dy="3.5" stdDeviation="0" flood-color="#0F172A" flood-opacity="0.12"/>
     </filter>
 
     <!-- Arrow Marker -->
@@ -17,25 +17,25 @@
   <!-- Background Canvas -->
   <rect width="1400" height="900" fill="#FFFFFF"/>
   <!-- Top Header Banner Tint -->
-  <rect x="0" y="0" width="1400" height="10" fill="#0284C7"/>
+  <rect x="0" y="0" width="1400" height="8" fill="#0284C7"/>
 
   <!-- ======================================================== -->
   <!-- TOP MASTER NODE: UNIFIED GATI-SETU INGESTION             -->
   <!-- ======================================================== -->
   <g transform="translate(340, 22)" filter="url(#masterShadow)">
-    <rect x="0" y="0" width="720" height="66" rx="10" fill="#E0F2FE" stroke="#0284C7" stroke-width="2.5"/>
+    <rect x="0" y="0" width="720" height="64" rx="10" fill="#F0F9FF" stroke="#0284C7" stroke-width="2.5"/>
     <text x="360" y="27" font-size="14" font-weight="900" fill="#0369A1" text-anchor="middle" letter-spacing="0.5">
       🚆 GATI-SETU Unified Multi-Stakeholder Railway Operating Engine
     </text>
-    <text x="360" y="48" font-size="10.5" font-weight="700" fill="#0F172A" text-anchor="middle">
-      Statutory Ingestion: BEL RTIS NavIC • CRIS COA/FOIS • e-Caution (TSR) • Route Topology &amp; Gradients • Open-Meteo
+    <text x="360" y="48" font-size="11" font-weight="700" fill="#334155" text-anchor="middle">
+      Single Statutory Ingestion Feed (BEL NavIC RTIS • CRIS COA • e-Caution TSR • Route Gradients)
     </text>
   </g>
 
   <!-- ======================================================== -->
   <!-- TOP BRANCHING CONNECTORS (Master to 3 Columns)           -->
   <!-- ======================================================== -->
-  <line x1="700" y1="88" x2="700" y2="112" stroke="#0F172A" stroke-width="3"/>
+  <line x1="700" y1="86" x2="700" y2="112" stroke="#0F172A" stroke-width="3"/>
   <line x1="240" y1="112" x2="1160" y2="112" stroke="#0F172A" stroke-width="3"/>
   
   <line x1="240" y1="112" x2="240" y2="132" stroke="#0F172A" stroke-width="3" marker-end="url(#arrowDown)"/>
@@ -44,6 +44,7 @@
 
   <!-- ======================================================== -->
   <!-- COLUMN 1: PASSENGER JOURNEY FLOW (LEFT)                  -->
+  <!-- Cohesive Warm Ivory Theme (#FFFBEB)                      -->
   <!-- ======================================================== -->
   <!-- Header Pill: Passenger -->
   <g transform="translate(130, 136)">
@@ -55,56 +56,57 @@
 
   <line x1="240" y1="172" x2="240" y2="194" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
 
-  <!-- Row 1 (Step 1.1): App Launch & Smart Search -->
+  <!-- Row 1: App Launch & Train Search -->
   <g transform="translate(70, 194)" filter="url(#boxShadow)">
-    <rect x="0" y="0" width="340" height="52" rx="8" fill="#FEF9C3" stroke="#0F172A" stroke-width="2"/>
+    <rect x="0" y="0" width="340" height="52" rx="8" fill="#FFFBEB" stroke="#0F172A" stroke-width="2"/>
     <text x="170" y="31" font-size="12.5" font-weight="800" fill="#0F172A" text-anchor="middle">📱 App Launch &amp; Smart Train Search</text>
   </g>
 
   <line x1="240" y1="246" x2="240" y2="268" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
 
-  <!-- Row 2 (Step 1.2): 1D Track Position -->
+  <!-- Row 2: 1D Track Position -->
   <g transform="translate(70, 268)" filter="url(#boxShadow)">
-    <rect x="0" y="0" width="340" height="52" rx="8" fill="#FFEDD5" stroke="#0F172A" stroke-width="2"/>
+    <rect x="0" y="0" width="340" height="52" rx="8" fill="#FFFBEB" stroke="#0F172A" stroke-width="2"/>
     <text x="170" y="31" font-size="12.5" font-weight="800" fill="#0F172A" text-anchor="middle">🛰️ Live 1D Track Position [PostGIS LRS]</text>
   </g>
 
   <line x1="240" y1="320" x2="240" y2="342" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
 
-  <!-- Row 3 (Step 1.3): Calibrated Dynamic ETA -->
+  <!-- Row 3: Calibrated Dynamic ETA -->
   <g transform="translate(70, 342)" filter="url(#boxShadow)">
-    <rect x="0" y="0" width="340" height="52" rx="8" fill="#FEE2E2" stroke="#0F172A" stroke-width="2"/>
+    <rect x="0" y="0" width="340" height="52" rx="8" fill="#FFFBEB" stroke="#0F172A" stroke-width="2"/>
     <text x="170" y="31" font-size="12.5" font-weight="800" fill="#0F172A" text-anchor="middle">⏱️ Calibrated Dynamic ETA [ST-GAT AI]</text>
   </g>
 
   <line x1="240" y1="394" x2="240" y2="416" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
 
-  <!-- Row 4 (Step 1.4): HERO DECISION NODE (With Description!) -->
+  <!-- Row 4: HERO DECISION NODE (Accented Rose/Warning) -->
   <g transform="translate(70, 416)" filter="url(#boxShadow)">
-    <rect x="0" y="0" width="340" height="72" rx="8" fill="#FAF5FF" stroke="#7C3AED" stroke-width="2.5"/>
-    <text x="170" y="28" font-size="12.5" font-weight="900" fill="#6D28D9" text-anchor="middle">🎯 Connection at Risk? [Decision]</text>
+    <rect x="0" y="0" width="340" height="72" rx="8" fill="#FEF2F2" stroke="#DC2626" stroke-width="2.5"/>
+    <text x="170" y="28" font-size="12.5" font-weight="900" fill="#991B1B" text-anchor="middle">🎯 Connection at Risk? [Decision]</text>
     <text x="170" y="52" font-size="10.5" font-weight="700" fill="#0F172A" text-anchor="middle">[Yes: Alt train re-route • No: [P10–P90] safe band]</text>
   </g>
 
   <line x1="240" y1="488" x2="240" y2="510" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
 
-  <!-- Row 5 (Step 1.5): Coach Radar & Platform Walk -->
+  <!-- Row 5: Coach Radar & Platform Walk -->
   <g transform="translate(70, 510)" filter="url(#boxShadow)">
-    <rect x="0" y="0" width="340" height="52" rx="8" fill="#E0E7FF" stroke="#0F172A" stroke-width="2"/>
+    <rect x="0" y="0" width="340" height="52" rx="8" fill="#FFFBEB" stroke="#0F172A" stroke-width="2"/>
     <text x="170" y="31" font-size="12.5" font-weight="800" fill="#0F172A" text-anchor="middle">🧭 Coach Radar &amp; Platform Walking Guide</text>
   </g>
 
   <line x1="240" y1="562" x2="240" y2="584" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
 
-  <!-- Row 6 (Step 1.6): Feeder Cab Sync -->
+  <!-- Row 6: Feeder Cab Sync -->
   <g transform="translate(70, 584)" filter="url(#boxShadow)">
-    <rect x="0" y="0" width="340" height="52" rx="8" fill="#DCFCE7" stroke="#0F172A" stroke-width="2"/>
-    <text x="170" y="31" font-size="12.5" font-weight="800" fill="#15803D" text-anchor="middle">🚗 1-Tap Feeder Cab &amp; Metro Sync</text>
+    <rect x="0" y="0" width="340" height="52" rx="8" fill="#FFFBEB" stroke="#0F172A" stroke-width="2"/>
+    <text x="170" y="31" font-size="12.5" font-weight="800" fill="#0F172A" text-anchor="middle">🚗 1-Tap Feeder Cab &amp; Metro Sync</text>
   </g>
 
 
   <!-- ======================================================== -->
   <!-- COLUMN 2: SECTION CONTROLLER COCKPIT FLOW (CENTER)       -->
+  <!-- Cohesive Mint / Sage Theme (#F0FDF4)                     -->
   <!-- ======================================================== -->
   <!-- Header Pill: Controller -->
   <g transform="translate(580, 136)">
@@ -116,7 +118,7 @@
 
   <line x1="700" y1="172" x2="700" y2="194" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
 
-  <!-- Row 1 (Step 2.1): Controller Cockpit Launch -->
+  <!-- Row 1: Controller Cockpit Launch -->
   <g transform="translate(530, 194)" filter="url(#boxShadow)">
     <rect x="0" y="0" width="340" height="52" rx="8" fill="#F0FDF4" stroke="#0F172A" stroke-width="2"/>
     <text x="170" y="31" font-size="12.5" font-weight="800" fill="#0F172A" text-anchor="middle">💻 Controller Cockpit Corridor Lock</text>
@@ -124,23 +126,23 @@
 
   <line x1="700" y1="246" x2="700" y2="268" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
 
-  <!-- Row 2 (Step 2.2): Multi-Train Stringline Chart -->
+  <!-- Row 2: Multi-Train Stringline Chart -->
   <g transform="translate(530, 268)" filter="url(#boxShadow)">
-    <rect x="0" y="0" width="340" height="52" rx="8" fill="#DCFCE7" stroke="#0F172A" stroke-width="2"/>
+    <rect x="0" y="0" width="340" height="52" rx="8" fill="#F0FDF4" stroke="#0F172A" stroke-width="2"/>
     <text x="170" y="31" font-size="12.5" font-weight="800" fill="#0F172A" text-anchor="middle">🗺️ Multi-Train Stringline Dispatch Chart</text>
   </g>
 
   <line x1="700" y1="320" x2="700" y2="342" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
 
-  <!-- Row 3 (Step 2.3): AI Precedence & Headway -->
+  <!-- Row 3: Dynamic Precedence & AI Simulation -->
   <g transform="translate(530, 342)" filter="url(#boxShadow)">
-    <rect x="0" y="0" width="340" height="52" rx="8" fill="#EDE9FE" stroke="#0F172A" stroke-width="2"/>
+    <rect x="0" y="0" width="340" height="52" rx="8" fill="#F0FDF4" stroke="#0F172A" stroke-width="2"/>
     <text x="170" y="31" font-size="12.5" font-weight="800" fill="#0F172A" text-anchor="middle">⚡ Dynamic Precedence &amp; AI Simulation</text>
   </g>
 
   <line x1="700" y1="394" x2="700" y2="416" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
 
-  <!-- Row 4 (Step 2.4): HERO DECISION NODE (With Description!) -->
+  <!-- Row 4: HERO DECISION NODE (Accented Amber/Bottleneck) -->
   <g transform="translate(530, 416)" filter="url(#boxShadow)">
     <rect x="0" y="0" width="340" height="72" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="2.5"/>
     <text x="170" y="28" font-size="12.5" font-weight="900" fill="#B45309" text-anchor="middle">⚠️ Section Bottleneck Ahead? [Decision]</text>
@@ -149,23 +151,24 @@
 
   <line x1="700" y1="488" x2="700" y2="510" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
 
-  <!-- Row 5 (Step 2.5): TSR Speed Order Broadcast -->
+  <!-- Row 5: Auto-Broadcast TSR / Speed Order -->
   <g transform="translate(530, 510)" filter="url(#boxShadow)">
-    <rect x="0" y="0" width="340" height="52" rx="8" fill="#E0F2FE" stroke="#0F172A" stroke-width="2"/>
+    <rect x="0" y="0" width="340" height="52" rx="8" fill="#F0FDF4" stroke="#0F172A" stroke-width="2"/>
     <text x="170" y="31" font-size="12.5" font-weight="800" fill="#0F172A" text-anchor="middle">📡 Auto-Broadcast TSR / Speed Order</text>
   </g>
 
   <line x1="700" y1="562" x2="700" y2="584" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
 
-  <!-- Row 6 (Step 2.6): Throughput Restored -->
+  <!-- Row 6: Section Throughput Restored -->
   <g transform="translate(530, 584)" filter="url(#boxShadow)">
-    <rect x="0" y="0" width="340" height="52" rx="8" fill="#DCFCE7" stroke="#0F172A" stroke-width="2"/>
-    <text x="170" y="31" font-size="12.5" font-weight="800" fill="#15803D" text-anchor="middle">🟢 Section Throughput Restored (+18%)</text>
+    <rect x="0" y="0" width="340" height="52" rx="8" fill="#F0FDF4" stroke="#0F172A" stroke-width="2"/>
+    <text x="170" y="31" font-size="12.5" font-weight="800" fill="#0F172A" text-anchor="middle">🟢 Section Throughput Restored (+18%)</text>
   </g>
 
 
   <!-- ======================================================== -->
   <!-- COLUMN 3: STATION MASTER & STAFF FLOW (RIGHT)            -->
+  <!-- Cohesive Cloud Violet Theme (#FAF5FF)                    -->
   <!-- ======================================================== -->
   <!-- Header Pill: Station Master -->
   <g transform="translate(1040, 136)">
@@ -177,7 +180,7 @@
 
   <line x1="1160" y1="172" x2="1160" y2="194" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
 
-  <!-- Row 1 (Step 3.1): Station Terminal Login -->
+  <!-- Row 1: Station Master Terminal Login -->
   <g transform="translate(990, 194)" filter="url(#boxShadow)">
     <rect x="0" y="0" width="340" height="52" rx="8" fill="#FAF5FF" stroke="#0F172A" stroke-width="2"/>
     <text x="170" y="31" font-size="12.5" font-weight="800" fill="#0F172A" text-anchor="middle">🖥️ Station Master Terminal Login</text>
@@ -185,23 +188,23 @@
 
   <line x1="1160" y1="246" x2="1160" y2="268" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
 
-  <!-- Row 2 (Step 3.2): Automated CIDS LED & Audio Sync -->
+  <!-- Row 2: Automated CIDS LED & Audio Sync -->
   <g transform="translate(990, 268)" filter="url(#boxShadow)">
-    <rect x="0" y="0" width="340" height="52" rx="8" fill="#E0F2FE" stroke="#0F172A" stroke-width="2"/>
+    <rect x="0" y="0" width="340" height="52" rx="8" fill="#FAF5FF" stroke="#0F172A" stroke-width="2"/>
     <text x="170" y="31" font-size="12.5" font-weight="800" fill="#0F172A" text-anchor="middle">📢 Automated CIDS LED &amp; Audio Sync</text>
   </g>
 
   <line x1="1160" y1="320" x2="1160" y2="342" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
 
-  <!-- Row 3 (Step 3.3): Turnaround Crew & Cleaning -->
+  <!-- Row 3: Turnaround Crew & Cleaning Dispatch -->
   <g transform="translate(990, 342)" filter="url(#boxShadow)">
-    <rect x="0" y="0" width="340" height="52" rx="8" fill="#FEF9C3" stroke="#0F172A" stroke-width="2"/>
+    <rect x="0" y="0" width="340" height="52" rx="8" fill="#FAF5FF" stroke="#0F172A" stroke-width="2"/>
     <text x="170" y="31" font-size="12.5" font-weight="800" fill="#0F172A" text-anchor="middle">🧹 Turnaround Crew &amp; Cleaning Dispatch</text>
   </g>
 
   <line x1="1160" y1="394" x2="1160" y2="416" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
 
-  <!-- Row 4 (Step 3.4): HERO DECISION NODE (With Description!) -->
+  <!-- Row 4: HERO DECISION NODE (Accented Purple/Platform) -->
   <g transform="translate(990, 416)" filter="url(#boxShadow)">
     <rect x="0" y="0" width="340" height="72" rx="8" fill="#F3E8FF" stroke="#7C3AED" stroke-width="2.5"/>
     <text x="170" y="28" font-size="12.5" font-weight="900" fill="#6D28D9" text-anchor="middle">🚉 Platform Conflict Ahead? [Decision]</text>
@@ -210,18 +213,18 @@
 
   <line x1="1160" y1="488" x2="1160" y2="510" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
 
-  <!-- Row 5 (Step 3.5): Logistics & Parcel Van Scheduling -->
+  <!-- Row 5: Logistics & Parcel Van Scheduling -->
   <g transform="translate(990, 510)" filter="url(#boxShadow)">
-    <rect x="0" y="0" width="340" height="52" rx="8" fill="#EDE9FE" stroke="#0F172A" stroke-width="2"/>
+    <rect x="0" y="0" width="340" height="52" rx="8" fill="#FAF5FF" stroke="#0F172A" stroke-width="2"/>
     <text x="170" y="31" font-size="12.5" font-weight="800" fill="#0F172A" text-anchor="middle">📦 Logistics &amp; Parcel Van Scheduling</text>
   </g>
 
   <line x1="1160" y1="562" x2="1160" y2="584" stroke="#0F172A" stroke-width="2.5" marker-end="url(#arrowDown)"/>
 
-  <!-- Row 6 (Step 3.6): Seamless Station Turnaround -->
+  <!-- Row 6: Seamless Station Turnaround -->
   <g transform="translate(990, 584)" filter="url(#boxShadow)">
-    <rect x="0" y="0" width="340" height="52" rx="8" fill="#DCFCE7" stroke="#0F172A" stroke-width="2"/>
-    <text x="170" y="31" font-size="12.5" font-weight="800" fill="#15803D" text-anchor="middle">🏁 Seamless Station Turnaround</text>
+    <rect x="0" y="0" width="340" height="52" rx="8" fill="#FAF5FF" stroke="#0F172A" stroke-width="2"/>
+    <text x="170" y="31" font-size="12.5" font-weight="800" fill="#0F172A" text-anchor="middle">🏁 Seamless Station Turnaround</text>
   </g>
 
 
@@ -240,11 +243,11 @@
 
   <!-- Bottom Master Node: Converged Operations -->
   <g transform="translate(340, 725)" filter="url(#masterShadow)">
-    <rect x="0" y="0" width="720" height="76" rx="10" fill="#DCFCE7" stroke="#16A34A" stroke-width="2.5"/>
-    <text x="360" y="32" font-size="14.5" font-weight="900" fill="#15803D" text-anchor="middle" letter-spacing="0.5">
+    <rect x="0" y="0" width="720" height="74" rx="10" fill="#F0FDF4" stroke="#16A34A" stroke-width="2.5"/>
+    <text x="360" y="31" font-size="14.5" font-weight="900" fill="#15803D" text-anchor="middle" letter-spacing="0.5">
       ✅ Converged Real-Time Operations: Single Source of Ground Truth
     </text>
-    <text x="360" y="54" font-size="11" font-weight="700" fill="#0F172A" text-anchor="middle">
+    <text x="360" y="52" font-size="11" font-weight="700" fill="#0F172A" text-anchor="middle">
       Zero Cascading Delays • Multi-Stakeholder Trust • High Network Punctuality &amp; Safety
     </text>
   </g>
